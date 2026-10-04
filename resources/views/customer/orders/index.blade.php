@@ -4,6 +4,10 @@
 
 @section('content')
 
+    <div class="store-transaction">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="store-account-shell">
+                <main class="store-account-content lg:order-2">
     <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
 
         <div class="mb-10">
@@ -158,5 +162,14 @@
         @endif
 
     </section>
-
+                <div class="store-page-back-wrap mt-4">
+                    @include('partials.back-link', ['href' => route('customer.dashboard'), 'label' => 'بازگشت به حساب'])
+                </div>
+                </main>
+                <aside class="lg:order-1">
+                    @include('partials.account-nav')
+                </aside>
+            </div>
+        </div>
+    </div>
 @endsection
