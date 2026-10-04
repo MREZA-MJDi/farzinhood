@@ -237,10 +237,6 @@ function initHomeHero() {
     let progressAnimation = null;
     let touchStartX = null;
 
-    const setProgress = () => {
-        const progress = hero.querySelector(".farzin-hero-rail__dots");
-        void progress;
-    };
 
     const stop = () => {
         if (timer) {
