@@ -1461,3 +1461,67 @@ input[type="radio"] {
         border-radius: 1rem;
     }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Phase 1 — Storefront composition
+|--------------------------------------------------------------------------
+*/
+
+.home-section { position: relative; }
+.home-section--categories,
+.home-section--editorial { background: var(--color-surface); }
+.home-section--featured { border-block: 1px solid var(--color-border); }
+.home-section--latest { border-top: 1px solid var(--color-border); }
+
+.home-category-grid { grid-auto-rows: 1fr; }
+.home-category-grid > a {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: .65rem;
+    border-radius: 1.75rem;
+    background: linear-gradient(145deg, #fff, #f8f9fb);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+.home-category-grid > a::after {
+    content: "";
+    position: absolute;
+    inset: auto 1rem .7rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent-600), transparent);
+    opacity: 0;
+    transform: scaleX(.5);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+}
+.home-category-grid > a:hover::after,
+.home-category-grid > a:focus-visible::after { opacity: .8; transform: scaleX(1); }
+
+.home-product-grid { align-items: stretch; }
+.home-product-grid > article { min-width: 0; }
+
+.home-section--editorial > div {
+    position: relative;
+    isolation: isolate;
+    box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 639px) {
+    .home-section--categories,
+    .home-section--featured,
+    .home-section--editorial,
+    .home-section--latest { padding-block: 3.5rem; }
+    .home-category-grid { gap: .7rem; }
+    .home-category-grid > a { padding: .5rem; border-radius: 1.35rem; }
+    .home-category-grid > a > div:last-child { padding: .7rem .45rem .55rem; }
+    .home-product-grid { column-gap: .7rem; row-gap: 2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-category-grid > a,
+    .home-category-grid > a::after { transition: none; }
+}
