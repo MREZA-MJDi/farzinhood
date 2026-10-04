@@ -41,8 +41,8 @@
                 class="absolute inset-0 opacity-[0.06]"
                 style="
                     background-image:
-                        linear-gradient(var(--color-neutral-0) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--color-neutral-0) 1px, transparent 1px);
+                        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px);
                     background-size: 42px 42px;
                 "
             ></div>
