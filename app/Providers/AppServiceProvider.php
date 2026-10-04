@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\Payment\PaymentGatewayInterface;
+use App\Services\Payment\UnavailablePaymentGateway;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,10 +12,13 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             PaymentGatewayInterface::class,
-            function () {
-                return app(
-//                    \App\Services\Payment\DummyPaymentGateway::class
+            function ($app) {
+                $gateway = config(
+                    'services.payment.gateway',
+                    UnavailablePaymentGateway::class
                 );
+
+                return $app->make($gateway);
             }
         );
     }
