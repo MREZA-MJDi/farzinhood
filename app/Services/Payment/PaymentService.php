@@ -16,278 +16,139 @@ class PaymentService
     ) {
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Start Payment
-    |--------------------------------------------------------------------------
-    */
-
     public function start(Order $order): Payment
     {
-        return DB::transaction(function () use ($order) {
-
-            $order = Order::query()
+        $payment = DB::transaction(function () use ($order): Payment {
+            $lockedOrder = Order::query()
                 ->lockForUpdate()
                 ->findOrFail($order->id);
 
-            /*
-             * Already paid
-             */
-            if ($order->payment_status === 'paid') {
-                throw new RuntimeException(
-                    'این سفارش قبلاً پرداخت شده است.'
-                );
+            if ($lockedOrder->payment_status === 'paid') {
+                throw new RuntimeException('این سفارش قبلاً پرداخت شده است.');
             }
 
-            /*
-             * Only pending orders are payable.
-             */
-            if ($order->status !== 'pending') {
-                throw new RuntimeException(
-                    'این سفارش در وضعیت قابل پرداخت نیست.'
-                );
+            if ($lockedOrder->status !== 'pending') {
+                throw new RuntimeException('این سفارش در وضعیت قابل پرداخت نیست.');
             }
 
-            /*
-             * Prevent multiple active payment attempts.
-             */
-            $existingPayment = $order->payments()
+            $existingPayment = $lockedOrder->payments()
                 ->where('status', 'pending')
                 ->latest()
                 ->first();
 
             if ($existingPayment) {
-                return $existingPayment->fresh();
+                return $existingPayment;
             }
 
-            /*
-             * Create local payment record first.
-             */
-            $payment = $order->payments()->create([
-                'gateway' => config(
-                    'services.payment.default',
-                    'gateway'
-                ),
-
-                'amount' => $order->total,
+            return $lockedOrder->payments()->create([
+                'gateway' => config('services.payment.default', 'gateway'),
+                'amount' => $lockedOrder->total,
                 'status' => 'pending',
             ]);
+        });
 
-            try {
+        try {
+            $result = $this->gateway->purchase($order);
 
-                $result = $this->gateway->purchase(
-                    $order
+            $authority = $result['authority'] ?? null;
+
+            if (! $authority) {
+                throw new RuntimeException(
+                    $result['message'] ?? 'درگاه پرداخت شناسه تراکنش معتبری برنگرداند.'
                 );
+            }
 
-                $authority = $result['authority'] ?? null;
+            return DB::transaction(function () use ($payment, $result, $authority): Payment {
+                $lockedPayment = Payment::query()
+                    ->lockForUpdate()
+                    ->findOrFail($payment->id);
 
-                if (! $authority) {
-                    throw new RuntimeException(
-                        $result['message']
-                        ?? 'درگاه پرداخت شناسه تراکنش معتبری برنگرداند.'
-                    );
+                if ($lockedPayment->status !== 'pending') {
+                    return $lockedPayment;
                 }
 
-                $payment->update([
+                $lockedPayment->update([
                     'transaction_id' => $authority,
-
                     'status' => 'pending',
-
-                    'gateway_message' =>
-                        $result['message'] ?? null,
-
+                    'gateway_message' => $result['message'] ?? null,
                     'gateway_response' => $result,
                 ]);
 
-                return $payment->fresh();
+                return $lockedPayment->fresh();
+            });
+        } catch (\Throwable $exception) {
+            $this->markPaymentFailure(
+                $payment->id,
+                $exception->getMessage()
+            );
 
-            } catch (\Throwable $exception) {
-
-                $payment->update([
-                    'status' => 'failed',
-
-                    'gateway_message' =>
-                        $exception->getMessage(),
-
-                    'gateway_response' => [
-                        'exception' =>
-                            get_class($exception),
-
-                        'message' =>
-                            $exception->getMessage(),
-                    ],
-                ]);
-
-                /*
-                 * Payment failed before user paid.
-                 * Release the stock reservation.
-                 */
-                $this->checkoutService
-                    ->releaseReservedStock($order);
-
-                $order->update([
-                    'payment_status' => 'failed',
-                    'status' => 'cancelled',
-                ]);
-
-                $order->statusHistories()->create([
-                    'from_status' => 'pending',
-                    'to_status' => 'cancelled',
-                    'changed_by' => null,
-                    'note' => 'ایجاد تراکنش پرداخت ناموفق بود و موجودی آزاد شد.',
-                ]);
-
-                throw $exception;
-            }
-        });
+            throw $exception;
+        }
     }
 
+    public function verify(Order $order, string $authority): Payment
+    {
+        $payment = $order->payments()
+            ->where('transaction_id', $authority)
+            ->latest()
+            ->first();
 
-    /*
-    |--------------------------------------------------------------------------
-    | Verify Payment
-    |--------------------------------------------------------------------------
-    */
+        if (! $payment) {
+            throw new RuntimeException('تراکنش پرداخت پیدا نشد.');
+        }
 
-    public function verify(
-        Order $order,
-        string $authority
-    ): Payment {
-        return DB::transaction(function () use (
-            $order,
-            $authority
-        ) {
+        if ($payment->status === 'successful') {
+            return $payment;
+        }
 
-            $order = Order::query()
-                ->lockForUpdate()
-                ->findOrFail($order->id);
+        if ((int) $payment->amount !== (int) $order->total) {
+            throw new RuntimeException('مبلغ تراکنش با مبلغ سفارش مطابقت ندارد.');
+        }
 
-            /*
-             * Already paid.
-             */
-            if ($order->payment_status === 'paid') {
+        try {
+            $result = $this->gateway->verify($order, $authority);
 
-                $payment = $order->payments()
-                    ->where('transaction_id', $authority)
-                    ->latest()
-                    ->first();
+            if (! ($result['success'] ?? false)) {
+                $message = $result['message'] ?? 'پرداخت تایید نشد.';
+                $this->markPaymentFailure($payment->id, $message);
 
-                if ($payment) {
-                    return $payment;
+                throw new RuntimeException($message);
+            }
+
+            return DB::transaction(function () use ($order, $payment, $result): Payment {
+                $lockedOrder = Order::query()
+                    ->lockForUpdate()
+                    ->findOrFail($order->id);
+
+                $lockedPayment = Payment::query()
+                    ->lockForUpdate()
+                    ->findOrFail($payment->id);
+
+                if ($lockedPayment->status === 'successful') {
+                    return $lockedPayment->fresh();
                 }
 
-                return $order->payments()
-                    ->where('status', 'paid')
-                    ->latest()
-                    ->firstOrFail();
-            }
-
-            /*
-             * Find the exact payment attempt.
-             */
-            $payment = $order->payments()
-                ->where('transaction_id', $authority)
-                ->latest()
-                ->first();
-
-            if (! $payment) {
-                throw new RuntimeException(
-                    'تراکنش پرداخت پیدا نشد.'
-                );
-            }
-
-            /*
-             * Already verified.
-             */
-            if ($payment->status === 'paid') {
-                return $payment;
-            }
-
-            /*
-             * Payment amount must match the current order.
-             */
-            if ((int) $payment->amount !== (int) $order->total) {
-                throw new RuntimeException(
-                    'مبلغ تراکنش با مبلغ سفارش مطابقت ندارد.'
-                );
-            }
-
-            try {
-
-                $result = $this->gateway->verify(
-                    $order,
-                    $authority
-                );
-
-                if (! ($result['success'] ?? false)) {
-
-                    $message =
-                        $result['message']
-                        ?? 'پرداخت تایید نشد.';
-
-                    $payment->update([
-                        'status' => 'failed',
-
-                        'gateway_message' =>
-                            $message,
-
-                        'gateway_response' =>
-                            $result,
-                    ]);
-
-                    $order->update([
-                        'payment_status' => 'failed',
-                        'status' => 'cancelled',
-                    ]);
-
-                    /*
-                     * Release reserved inventory.
-                     */
-                    $this->checkoutService
-                        ->releaseReservedStock($order);
-
-                    $order->statusHistories()->create([
-                        'from_status' => $order->status,
-                        'to_status' => 'cancelled',
-                        'changed_by' => null,
-                        'note' => 'پرداخت ناموفق بود و موجودی آزاد شد.',
-                    ]);
-
-                    throw new RuntimeException(
-                        $message
-                    );
+                if ($lockedOrder->payment_status === 'paid') {
+                    throw new RuntimeException('این سفارش قبلاً پرداخت شده است.');
                 }
 
-                /*
-                 * Successful payment.
-                 */
-                $payment->update([
-                    'status' => 'paid',
-
-                    'tracking_code' =>
-                        $result['tracking_code'] ?? null,
-
-                    'gateway_message' =>
-                        $result['message'] ?? null,
-
-                    'gateway_response' =>
-                        $result,
-
+                $lockedPayment->update([
+                    'status' => 'successful',
+                    'tracking_code' => $result['tracking_code'] ?? null,
+                    'gateway_message' => $result['message'] ?? null,
+                    'gateway_response' => $result,
                     'paid_at' => now(),
                 ]);
 
-                $oldStatus = $order->status;
+                $oldStatus = $lockedOrder->status;
 
-                $order->update([
+                $lockedOrder->update([
                     'payment_status' => 'paid',
                     'status' => 'processing',
                 ]);
 
-                /*
-                 * Order status transition.
-                 */
                 if ($oldStatus !== 'processing') {
-                    $order->statusHistories()->create([
+                    $lockedOrder->statusHistories()->create([
                         'from_status' => $oldStatus,
                         'to_status' => 'processing',
                         'changed_by' => null,
@@ -295,136 +156,126 @@ class PaymentService
                     ]);
                 }
 
+                return $lockedPayment->fresh();
+            });
+        } catch (\Throwable $exception) {
+            if ($payment->fresh()?->status === 'successful') {
                 return $payment->fresh();
-
-            } catch (\Throwable $exception) {
-
-                /*
-                 * Do not overwrite a successful payment.
-                 */
-                if ($payment->status !== 'paid') {
-
-                    $payment->update([
-                        'status' => 'failed',
-
-                        'gateway_message' =>
-                            $exception->getMessage(),
-                    ]);
-                }
-
-                throw $exception;
             }
-        });
+
+            throw $exception;
+        }
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Refund
-    |--------------------------------------------------------------------------
-    */
-
-    public function refund(
-        Order $order,
-        int $amount
-    ): Payment {
-        return DB::transaction(function () use (
-            $order,
-            $amount
-        ) {
-
-            $order = Order::query()
+    public function refund(Order $order, int $amount): Payment
+    {
+        return DB::transaction(function () use ($order, $amount): Payment {
+            $lockedOrder = Order::query()
                 ->lockForUpdate()
                 ->findOrFail($order->id);
 
-            if ($order->payment_status !== 'paid') {
-                throw new RuntimeException(
-                    'این سفارش پرداخت موفق ندارد.'
-                );
+            if ($lockedOrder->payment_status !== 'paid') {
+                throw new RuntimeException('این سفارش پرداخت موفق ندارد.');
             }
 
             if ($amount <= 0) {
-                throw new RuntimeException(
-                    'مبلغ بازگشت وجه باید بیشتر از صفر باشد.'
-                );
+                throw new RuntimeException('مبلغ بازگشت وجه باید بیشتر از صفر باشد.');
             }
 
-            /*
-             * Total refund amount already made.
-             */
             $refundedAmount = (int) abs(
-                $order->payments()
+                $lockedOrder->payments()
                     ->where('status', 'refunded')
                     ->sum('amount')
             );
 
             $remainingRefundable = max(
                 0,
-                (int) $order->total - $refundedAmount
+                (int) $lockedOrder->total - $refundedAmount
             );
 
             if ($amount > $remainingRefundable) {
-                throw new RuntimeException(
-                    'مبلغ بازگشت وجه از مبلغ قابل بازگشت بیشتر است.'
-                );
+                throw new RuntimeException('مبلغ بازگشت وجه از مبلغ قابل بازگشت بیشتر است.');
             }
 
-            /*
-             * Call gateway.
-             */
-            $result = $this->gateway->refund(
-                $order,
-                $amount
-            );
+            $result = $this->gateway->refund($lockedOrder, $amount);
 
             if (! ($result['success'] ?? false)) {
                 throw new RuntimeException(
-                    $result['message']
-                    ?? 'بازگشت وجه ناموفق بود.'
+                    $result['message'] ?? 'بازگشت وجه ناموفق بود.'
                 );
             }
 
-            /*
-             * Create refund payment record.
-             */
-            $payment = $order->payments()->create([
-                'gateway' => config(
-                    'services.payment.default',
-                    'gateway'
-                ),
-
+            $payment = $lockedOrder->payments()->create([
+                'gateway' => config('services.payment.default', 'gateway'),
                 'amount' => -$amount,
-
                 'status' => 'refunded',
-
-                'tracking_code' =>
-                    $result['tracking_code'] ?? null,
-
-                'gateway_message' =>
-                    $result['message'] ?? null,
-
-                'gateway_response' =>
-                    $result,
-
+                'tracking_code' => $result['tracking_code'] ?? null,
+                'gateway_message' => $result['message'] ?? null,
+                'gateway_response' => $result,
                 'paid_at' => now(),
             ]);
 
-            /*
-             * Full refund vs partial refund.
-             */
-            $newRefundedAmount =
-                $refundedAmount + $amount;
+            $newRefundedAmount = $refundedAmount + $amount;
 
-            $paymentStatus =
-                $newRefundedAmount >= (int) $order->total
+            $lockedOrder->update([
+                'payment_status' => $newRefundedAmount >= (int) $lockedOrder->total
                     ? 'refunded'
-                    : 'paid';
-
-            $order->update([
-                'payment_status' => $paymentStatus,
+                    : 'paid',
             ]);
 
             return $payment->fresh();
+        });
+    }
+
+    private function markPaymentFailure(
+        int $paymentId,
+        string $message
+    ): void {
+        DB::transaction(function () use ($paymentId, $message): void {
+            $payment = Payment::query()
+                ->lockForUpdate()
+                ->find($paymentId);
+
+            if (! $payment || $payment->status === 'successful') {
+                return;
+            }
+
+            $order = Order::query()
+                ->lockForUpdate()
+                ->find($payment->order_id);
+
+            if (! $order || $order->payment_status === 'paid') {
+                $payment->update([
+                    'status' => 'failed',
+                    'gateway_message' => $message,
+                ]);
+
+                return;
+            }
+
+            $payment->update([
+                'status' => 'failed',
+                'gateway_message' => $message,
+                'gateway_response' => [
+                    'error' => $message,
+                ],
+            ]);
+
+            $this->checkoutService->releaseReservedStock($order);
+
+            $oldStatus = $order->status;
+
+            $order->update([
+                'payment_status' => 'failed',
+                'status' => 'cancelled',
+            ]);
+
+            $order->statusHistories()->create([
+                'from_status' => $oldStatus,
+                'to_status' => 'cancelled',
+                'changed_by' => null,
+                'note' => 'پرداخت ناموفق بود و موجودی رزروشده آزاد شد.',
+            ]);
         });
     }
 }
