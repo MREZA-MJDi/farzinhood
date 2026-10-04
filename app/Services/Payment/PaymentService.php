@@ -207,7 +207,7 @@ class PaymentService
 
             $payment = $lockedOrder->payments()->create([
                 'gateway' => config('services.payment.default', 'gateway'),
-                'amount' => -$amount,
+                'amount' => $amount,
                 'status' => 'refunded',
                 'tracking_code' => $result['tracking_code'] ?? null,
                 'gateway_message' => $result['message'] ?? null,
