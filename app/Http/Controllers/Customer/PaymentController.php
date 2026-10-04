@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\PaymentService;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -17,31 +17,38 @@ class PaymentController extends Controller
 
     public function start(Request $request, Order $order): RedirectResponse
     {
-        abort_unless($order->user_id === $request->user()->id, 403);
+        abort_unless($order->user_id === $request->user()->id, 404);
 
         if ($order->payment_status === 'paid') {
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', 'This order has already been paid.');
+                ->with('success', 'این سفارش قبلاً پرداخت شده است.');
         }
 
         try {
-            $result = $this->paymentService->start($order);
+            $payment = $this->paymentService->start($order);
+            $redirectUrl = data_get(
+                $payment->gateway_response,
+                'redirect_url'
+            );
 
-            if (!empty($result['redirect_url'])) {
-                return redirect()->away($result['redirect_url']);
+            if (is_string($redirectUrl) && $redirectUrl !== '') {
+                return redirect()->away($redirectUrl);
             }
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', 'Payment request created successfully.');
+                ->with(
+                    'success',
+                    'درخواست پرداخت ایجاد شد. ادامه پرداخت از همین مسیر انجام می‌شود.'
+                );
 
         } catch (\Throwable $e) {
             report($e);
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Unable to start payment.');
+                ->with('error', 'شروع پرداخت ممکن نشد.');
         }
     }
 
@@ -54,31 +61,31 @@ class PaymentController extends Controller
         if ($authority === '') {
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Payment authority is missing.');
+                ->with('error', 'شناسه پرداخت دریافت نشد.');
         }
 
         try {
-            $result = $this->paymentService->verify(
+            $payment = $this->paymentService->verify(
                 $order,
                 $authority
             );
 
-            if (!empty($result['success'])) {
+            if ($payment->isSuccessful()) {
                 return redirect()
                     ->route('customer.orders.show', $order)
-                    ->with('success', 'Payment completed successfully.');
+                    ->with('success', 'پرداخت با موفقیت تایید شد.');
             }
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', $result['message'] ?? 'Payment verification failed.');
+                ->with('error', 'تایید پرداخت ناموفق بود.');
 
         } catch (\Throwable $e) {
             report($e);
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Payment verification failed.');
+                ->with('error', 'تأیید پرداخت ناموفق بود.');
         }
     }
 }

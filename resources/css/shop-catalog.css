@@ -1,0 +1,542 @@
+/*
+|--------------------------------------------------------------------------
+| Farzin / Livora-inspired Shop Catalog
+|--------------------------------------------------------------------------
+*/
+
+.shop-page__catalog-shell,
+.farzin-shop-body {
+    background: #f3efe8;
+}
+
+.shop-page__catalog-head {
+    position: relative;
+}
+
+.shop-page__catalog-head::after {
+    content: "";
+    display: block;
+    width: 4rem;
+    height: 2px;
+    margin-top: .45rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #9a7658, transparent);
+}
+
+.farzin-shop-header {
+    border-bottom: 1px solid #d6d0c7;
+    background: #faf9f6;
+}
+
+.farzin-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    color: #a79f93;
+    font-size: .63rem;
+}
+
+.farzin-breadcrumb a {
+    transition: color 180ms ease;
+}
+
+.farzin-breadcrumb a:hover {
+    color: #181715;
+}
+
+.farzin-shop-header__row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: clamp(2.5rem, 6vw, 4.8rem);
+}
+
+.farzin-shop-header__row > div > span {
+    color: #9a7658;
+    font-size: .62rem;
+    font-weight: 850;
+    letter-spacing: .2em;
+}
+
+.farzin-shop-header h1 {
+    margin-top: .65rem;
+    color: #181715;
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 650;
+    line-height: 1.02;
+    letter-spacing: -.05em;
+}
+
+.farzin-shop-header__row p {
+    max-width: 48ch;
+    margin-top: .7rem;
+    color: #a79f93;
+    font-size: .75rem;
+    line-height: 2;
+}
+
+.farzin-shop-header__count {
+    display: grid;
+    gap: .1rem;
+    flex: 0 0 auto;
+    text-align: left;
+}
+
+.farzin-shop-header__count b {
+    color: #181715;
+    font-size: 1.8rem;
+    font-weight: 750;
+}
+
+.farzin-shop-header__count span {
+    color: #a79f93;
+    font-size: .63rem;
+}
+
+.shop-category-rail {
+    display: flex;
+    gap: .55rem;
+    overflow-x: auto;
+    padding-bottom: 1.35rem;
+    scrollbar-width: none;
+}
+
+.shop-category-rail::-webkit-scrollbar {
+    display: none;
+}
+
+.shop-category-chip {
+    flex: 0 0 auto;
+    min-height: 2.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d6d0c7;
+    border-radius: 999px;
+    padding-inline: 1rem;
+    background: #faf9f6;
+    color: #a79f93;
+    font-size: .66rem;
+    font-weight: 800;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.shop-category-chip:hover,
+.shop-category-chip.is-active {
+    border-color: #181715;
+    background: #181715;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.farzin-shop-body {
+    min-height: 30rem;
+    padding-block: clamp(1.2rem, 3vw, 2rem) 4.5rem;
+}
+
+.farzin-shop-search {
+    display: flex;
+    min-height: 3.65rem;
+    padding: .3rem;
+    border: 1px solid #d6d0c7;
+    border-radius: 1.25rem;
+    background: #faf9f6;
+    box-shadow: 0 12px 35px rgb(24 23 21 / .05);
+}
+
+.farzin-shop-search input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding-inline: 1rem;
+    background: transparent;
+    color: #181715;
+    font-size: .74rem;
+}
+
+.farzin-shop-search input::placeholder {
+    color: #a79f93;
+}
+
+.farzin-shop-search button {
+    display: inline-flex;
+    min-width: 6.2rem;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    border: 0;
+    border-radius: 1rem;
+    background: #181715;
+    color: #fff;
+    font-size: .67rem;
+    font-weight: 900;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.farzin-shop-search button:hover {
+    background: #9a7658;
+    transform: translateY(-1px);
+}
+
+.farzin-shop-search button svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.farzin-shop-layout {
+    display: grid;
+    grid-template-columns: 245px minmax(0,1fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    margin-top: 1.6rem;
+    align-items: start;
+}
+
+.farzin-filter-card {
+    position: sticky;
+    top: 92px;
+    overflow: hidden;
+    border: 1px solid #d6d0c7;
+    border-radius: 1.5rem;
+    background: #faf9f6;
+    box-shadow: 0 12px 35px rgb(24 23 21 / .05);
+}
+
+.farzin-filter-card::before {
+    content: "";
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #181715, #9a7658);
+}
+
+.farzin-filter-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: .7rem;
+    padding: 1rem 1rem .75rem;
+}
+
+.farzin-filter-card__head > div > span,
+.farzin-filter-note > span {
+    color: #9a7658;
+    font-size: .56rem;
+    font-weight: 850;
+    letter-spacing: .18em;
+}
+
+.farzin-filter-card__head h2 {
+    margin-top: .25rem;
+    color: #181715;
+    font-size: .78rem;
+    font-weight: 900;
+}
+
+.farzin-filter-card__head a {
+    color: #a79f93;
+    font-size: .6rem;
+}
+
+.farzin-filter-card__head a:hover {
+    color: #181715;
+}
+
+.farzin-filter-form {
+    display: grid;
+    gap: .55rem;
+    padding: .9rem 1rem 1rem;
+}
+
+.farzin-filter-form label {
+    color: #5f584f;
+    font-size: .6rem;
+    font-weight: 800;
+}
+
+.farzin-filter-form select,
+.farzin-filter-form input {
+    width: 100%;
+    min-height: 2.8rem;
+    border: 1px solid #d6d0c7;
+    border-radius: .85rem;
+    padding-inline: .8rem;
+    outline: none;
+    background: #f3efe8;
+    color: #181715;
+    font-size: .66rem;
+}
+
+.farzin-filter-form select:focus,
+.farzin-filter-form input:focus {
+    border-color: #9a7658;
+    box-shadow: 0 0 0 4px rgb(154 118 88 / .1);
+}
+
+.farzin-filter-form button {
+    min-height: 2.85rem;
+    margin-top: .25rem;
+    border: 0;
+    border-radius: .85rem;
+    background: #181715;
+    color: #fff;
+    font-size: .66rem;
+    font-weight: 900;
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.farzin-filter-form button:hover {
+    background: #9a7658;
+    transform: translateY(-1px);
+}
+
+.farzin-filter-form__prices {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: .5rem;
+}
+
+.farzin-filter-form__prices > div {
+    display: grid;
+    gap: .35rem;
+}
+
+.farzin-filter-note {
+    margin-top: .7rem;
+    padding: 1rem;
+    border: 1px solid #d6d0c7;
+    border-radius: 1.5rem;
+    background: #eee8df;
+}
+
+.farzin-filter-note strong {
+    display: block;
+    margin-top: .45rem;
+    color: #181715;
+    font-size: .7rem;
+    line-height: 1.7;
+}
+
+.farzin-filter-note p {
+    margin-top: .35rem;
+    color: #a79f93;
+    font-size: .58rem;
+    line-height: 1.8;
+}
+
+.farzin-shop-products {
+    min-width: 0;
+}
+
+.farzin-results-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .85rem 0 .9rem;
+    border-bottom: 1px solid #d6d0c7;
+}
+
+.farzin-results-toolbar > div {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .55rem;
+    min-width: 0;
+}
+
+.farzin-results-toolbar > div > span {
+    color: #9a7658;
+    font-size: .56rem;
+    font-weight: 850;
+    letter-spacing: .18em;
+}
+
+.farzin-results-toolbar strong {
+    color: #181715;
+    font-size: .74rem;
+    font-weight: 900;
+}
+
+.farzin-results-toolbar small {
+    max-width: 32ch;
+    overflow: hidden;
+    color: #a79f93;
+    font-size: .58rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.farzin-results-toolbar select {
+    min-height: 2.45rem;
+    min-width: 9rem;
+    border: 1px solid #d6d0c7;
+    border-radius: .8rem;
+    padding-inline: .75rem;
+    outline: 0;
+    background: #faf9f6;
+    color: #181715;
+    font-size: .62rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.farzin-results-toolbar select:focus {
+    border-color: #9a7658;
+    box-shadow: 0 0 0 4px rgb(154 118 88 / .1);
+}
+
+.farzin-active-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .8rem;
+    color: #a79f93;
+    font-size: .6rem;
+}
+
+.farzin-active-filter b {
+    padding: .35rem .6rem;
+    border: 1px solid #d6d0c7;
+    border-radius: 999px;
+    background: #faf9f6;
+    color: #181715;
+}
+
+.farzin-active-filter a {
+    padding: .35rem .55rem;
+    border-radius: 999px;
+    background: #eee8df;
+    color: #76583f;
+}
+
+.farzin-product-grid--shop {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 1.1rem 1rem;
+    margin-top: 1.15rem;
+    min-width: 0;
+}
+
+.farzin-pagination {
+    margin-top: 2.5rem;
+}
+
+.farzin-pagination > nav {
+    display: flex;
+    justify-content: center;
+}
+
+.farzin-empty-state--large {
+    margin-top: 1rem;
+}
+
+.farzin-mobile-filter {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+    .farzin-shop-layout {
+        grid-template-columns: 220px minmax(0,1fr);
+    }
+
+    .farzin-product-grid--shop {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .farzin-shop-header__row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .farzin-shop-header__count {
+        text-align: right;
+    }
+
+    .farzin-shop-body {
+        padding-top: 1rem;
+    }
+
+    .farzin-shop-layout {
+        display: block;
+        margin-top: .9rem;
+    }
+
+    .farzin-shop-filters {
+        display: none;
+    }
+
+    .farzin-mobile-filter {
+        display: block;
+        margin-bottom: .75rem;
+        overflow: hidden;
+        border: 1px solid #d6d0c7;
+        border-radius: 1.25rem;
+        background: #faf9f6;
+    }
+
+    .farzin-mobile-filter summary {
+        display: flex;
+        min-height: 3.25rem;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 1rem;
+        color: #181715;
+        font-size: .68rem;
+        font-weight: 900;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .farzin-mobile-filter summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .farzin-mobile-filter[open] summary {
+        border-bottom: 1px solid #d6d0c7;
+    }
+
+    .farzin-results-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .farzin-results-toolbar form {
+        width: 100%;
+    }
+
+    .farzin-results-toolbar select {
+        width: 100%;
+    }
+
+    .farzin-product-grid--shop {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 2rem .65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .farzin-shop-header h1 {
+        font-size: 2.15rem;
+    }
+
+    .farzin-shop-search {
+        min-height: 3.35rem;
+    }
+
+    .farzin-shop-search button {
+        min-width: 5.4rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shop-category-chip,
+    .farzin-shop-search button,
+    .farzin-filter-form button {
+        transition: none !important;
+    }
+}

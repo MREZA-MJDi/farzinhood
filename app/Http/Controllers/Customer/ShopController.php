@@ -14,16 +14,6 @@ class ShopController extends Controller
     {
         $filters = $request->validated();
 
-        $shopHeroProduct = Product::query()
-            ->with(['primaryImage', 'category'])
-            ->where('is_active', true)
-            ->whereHas('category', fn ($query) => $query->where('is_active', true))
-            ->whereHas('primaryImage')
-            ->orderByDesc('is_featured')
-            ->latest('created_at')
-            ->latest('id')
-            ->first();
-
         $products = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
@@ -86,10 +76,12 @@ class ShopController extends Controller
 
         $priceMin = (int) Product::query()
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->min('price');
 
         $priceMax = (int) Product::query()
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->max('price');
 
         return view('shop.index', compact(
@@ -97,8 +89,7 @@ class ShopController extends Controller
             'categories',
             'priceMin',
             'priceMax',
-            'filters',
-            'shopHeroProduct'
+            'filters'
         ));
     }
 }

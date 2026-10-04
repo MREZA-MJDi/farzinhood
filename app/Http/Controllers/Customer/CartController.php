@@ -23,7 +23,7 @@ class CartController extends Controller
         $subtotal = $this->cartService->subtotal(auth()->user());
         $itemCount = $this->cartService->itemCount(auth()->user());
 
-        return view('customer.cart.index', compact(
+        return view('cart.index', compact(
             'items',
             'subtotal',
             'itemCount',
@@ -36,13 +36,21 @@ class CartController extends Controller
 
         $product = Product::query()
             ->where('is_active', true)
+            ->whereHas(
+                'category',
+                fn ($query) => $query->where('is_active', true)
+            )
             ->findOrFail($validated['product_id']);
 
-        $this->cartService->add(
-            $product,
-            $validated['quantity'],
-            auth()->user()
-        );
+        try {
+            $this->cartService->add(
+                $product,
+                $validated['quantity'],
+                auth()->user()
+            );
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -58,15 +66,23 @@ class CartController extends Controller
 
     public function update(CartRequest $request, Product $product): RedirectResponse|JsonResponse
     {
-        abort_unless($product->is_active, 404);
+        abort_unless(
+            $product->is_active
+            && $product->category?->is_active,
+            404
+        );
 
         $validated = $request->validated();
 
-        $this->cartService->update(
-            $product,
-            $validated['quantity'],
-            auth()->user()
-        );
+        try {
+            $this->cartService->update(
+                $product,
+                $validated['quantity'],
+                auth()->user()
+            );
+        } catch (\RuntimeException $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([

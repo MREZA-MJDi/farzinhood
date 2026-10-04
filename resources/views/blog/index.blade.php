@@ -14,7 +14,7 @@
         {{-- =========================================================
             HERO
         ========================================================== --}}
-        <div class="relative overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-950)] px-7 py-12 text-white shadow-[0_24px_70px_rgba(13,27,61,0.16)] sm:px-10 lg:px-14 lg:py-16">
+        <div class="relative overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-950)] px-7 py-12 text-white shadow-[var(--shadow-lg)] sm:px-10 lg:px-14 lg:py-16">
 
             {{-- Decorative elements --}}
             <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[var(--color-brand-900)] opacity-80 blur-3xl"></div>
@@ -25,8 +25,8 @@
                 class="absolute inset-0 opacity-[0.045]"
                 style="
                     background-image:
-                        linear-gradient(var(--color-neutral-0) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--color-neutral-0) 1px, transparent 1px);
+                        linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px);
                     background-size: 42px 42px;
                 "
             ></div>

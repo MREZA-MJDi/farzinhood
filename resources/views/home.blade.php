@@ -9,10 +9,10 @@
     {{-- =========================================================
         HERO
         Premium product rail. Backend intentionally supplies only the
-        latest 10 active products with a primary image.
+        latest 6 active products with a primary image.
     ========================================================== --}}
 
-    @php($heroSlides = ($heroProducts ?? collect())->values())
+    @php($heroSlides = ($heroProducts ?? collect())->values()->take(6))
 
     <section
         class="farzin-hero-rail"
@@ -39,6 +39,24 @@
                     تازه‌ترین محصولات فروشگاه را در یک نگاه ببین،
                     انتخاب کن و مستقیم وارد جزئیات محصول شو.
                 </p>
+
+                <form action="{{ route('shop.index') }}" method="GET" class="home-hero-search" role="search">
+                    <label class="sr-only" for="home-product-search">جستجوی محصول</label>
+                    <input
+                        id="home-product-search"
+                        type="search"
+                        name="search"
+                        placeholder="محصول، برند یا SKU را جستجو کن..."
+                        autocomplete="off"
+                    >
+                    <button type="submit" aria-label="جستجوی محصولات">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <circle cx="11" cy="11" r="6.5"/>
+                            <path d="m16 16 4.5 4.5"/>
+                        </svg>
+                        <span>جستجو</span>
+                    </button>
+                </form>
 
                 <div class="farzin-hero-rail__actions">
                     <a
@@ -209,7 +227,7 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="home-section home-section--categories mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
@@ -250,7 +268,7 @@
         </div>
 
 
-        <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div class="home-category-grid mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
 
             @forelse($categories ?? [] as $category)
 
@@ -354,7 +372,7 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="bg-[var(--color-neutral-50)] py-20">
+    <section class="home-section home-section--featured bg-[var(--color-neutral-50)] py-20">
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -397,7 +415,7 @@
             </div>
 
 
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            <div class="home-product-grid mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
 
                 @forelse($featuredProducts ?? [] as $product)
 
@@ -426,7 +444,7 @@
         EDITORIAL
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="home-section home-section--editorial mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div
             class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"

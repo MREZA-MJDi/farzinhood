@@ -13,16 +13,27 @@ class WishlistController extends Controller
     {
         $wishlist = auth()->user()
             ->wishlists()
+            ->whereHas('product', function ($query) {
+                $query
+                    ->where('is_active', true)
+                    ->whereHas(
+                        'category',
+                        fn ($category) => $category->where('is_active', true)
+                    );
+            })
             ->with(['product.primaryImage', 'product.category'])
             ->latest()
             ->get();
 
-        return view('customer.wishlist.index', compact('wishlist'));
+        return view('wishlist.index', compact('wishlist'));
     }
 
     public function toggle(Product $product): RedirectResponse
     {
-        abort_unless($product->is_active, 404);
+        abort_unless(
+            $product->is_active && $product->category?->is_active,
+            404
+        );
 
         $wishlist = auth()->user()
             ->wishlists()

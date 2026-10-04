@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'payment' => [
+        'gateway' => env(
+            'PAYMENT_GATEWAY_CLASS',
+            \App\Services\Payment\UnavailablePaymentGateway::class
+        ),
+        'default' => env('PAYMENT_GATEWAY_NAME', 'gateway'),
+    ],
+
 ];

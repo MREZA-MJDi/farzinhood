@@ -20,6 +20,10 @@ class ReviewController extends Controller
 
         $product = Product::query()
             ->where('is_active', true)
+            ->whereHas(
+                'category',
+                fn ($query) => $query->where('is_active', true)
+            )
             ->findOrFail($validated['product_id']);
 
         $orderQuery = Order::query()
