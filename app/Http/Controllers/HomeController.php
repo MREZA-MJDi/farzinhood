@@ -24,6 +24,7 @@ class HomeController extends Controller
         $featuredProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->where('is_featured', true)
             ->latest('created_at')
             ->latest('id')
@@ -33,6 +34,7 @@ class HomeController extends Controller
         $latestProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->latest()
             ->take(8)
             ->get();
