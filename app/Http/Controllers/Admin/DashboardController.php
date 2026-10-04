@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -501,10 +502,19 @@ class DashboardController extends Controller
     {
         $year = now()->year;
 
+        $driver = DB::connection()->getDriverName();
+
+        $monthExpression = $driver === 'sqlite'
+            ? "CAST(strftime('%m', created_at) AS INTEGER)"
+            : 'MONTH(created_at)';
+
         $rows = $this->paidOrders()
-            ->selectRaw('MONTH(created_at) as month_number, SUM(total) as total')
-            ->whereYear('created_at', $year)
-            ->groupByRaw('MONTH(created_at)')
+            ->selectRaw("{$monthExpression} as month_number, SUM(total) as total")
+            ->whereBetween('created_at', [
+                Carbon::create($year, 1, 1)->startOfYear(),
+                Carbon::create($year, 12, 31)->endOfYear(),
+            ])
+            ->groupByRaw($monthExpression)
             ->orderBy('month_number')
             ->get()
             ->keyBy('month_number');
@@ -544,13 +554,19 @@ class DashboardController extends Controller
         $currentYear = now()->year;
         $startYear = $currentYear - 4;
 
+        $driver = DB::connection()->getDriverName();
+
+        $yearExpression = $driver === 'sqlite'
+            ? "CAST(strftime('%Y', created_at) AS INTEGER)"
+            : 'YEAR(created_at)';
+
         $rows = $this->paidOrders()
-            ->selectRaw('YEAR(created_at) as sale_year, SUM(total) as total')
+            ->selectRaw("{$yearExpression} as sale_year, SUM(total) as total")
             ->whereBetween('created_at', [
                 Carbon::create($startYear, 1, 1)->startOfYear(),
                 Carbon::create($currentYear, 12, 31)->endOfYear(),
             ])
-            ->groupByRaw('YEAR(created_at)')
+            ->groupByRaw($yearExpression)
             ->orderBy('sale_year')
             ->get()
             ->keyBy('sale_year');
