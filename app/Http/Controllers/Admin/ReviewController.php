@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ReviewIndexRequest;
 use App\Http\Requests\Admin\ReviewStatusRequest;
 use App\Models\Review;
 use Illuminate\Http\RedirectResponse;
