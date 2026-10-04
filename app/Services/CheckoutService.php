@@ -161,6 +161,10 @@ class CheckoutService
 
             $products = Product::query()
                 ->whereIn('id', $productIds)
+                ->whereHas(
+                    'category',
+                    fn ($query) => $query->where('is_active', true)
+                )
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
