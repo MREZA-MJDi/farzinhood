@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 lg:pt-8">
+    <section class="shop-page__hero-shell mx-auto max-w-7xl px-3 pt-3 sm:px-6 lg:px-8 lg:pt-6">
         <div class="shop-hero">
             <div class="shop-hero__frame">
                 <div class="shop-hero__media" aria-hidden="true">
@@ -75,10 +75,10 @@
         </div>
     </section>
 
-    <section id="shop-products" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <section id="shop-products" class="shop-page__catalog-shell mx-auto max-w-7xl px-3 py-8 sm:px-6 lg:px-8 lg:py-14">
 
         {{-- Header --}}
-        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <header class="shop-page__catalog-head flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 
             <div>
                 <div class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
@@ -150,10 +150,16 @@
 
 
         {{-- Main catalog --}}
-        <div class="shop-catalog mt-10 grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <div class="shop-catalog mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
 
             {{-- Filters --}}
-            <aside class="lg:sticky lg:top-28 lg:self-start">
+            <aside class="shop-filter-panel lg:sticky lg:top-28 lg:self-start">
+                <details class="shop-filter-mobile">
+                    <summary>
+                        <span>فیلتر و مرتب‌سازی</span>
+                        <span aria-hidden="true">⌄</span>
+                    </summary>
+                </details>
                 <form
                     action="{{ route('shop.index') }}"
                     method="GET"
@@ -281,7 +287,7 @@
 
             {{-- Products --}}
             <div class="min-w-0">
-                <div class="shop-results-toolbar">
+                <div class="shop-results-toolbar" aria-label="ابزارهای کاتالوگ">
                     <div>
                         <span class="shop-results-toolbar__eyebrow">CATALOG</span>
                         <strong>{{ number_format($products->total()) }} محصول</strong>
@@ -312,7 +318,7 @@
 
                 @if($products->count())
 
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
+                    <div class="shop-product-grid grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 sm:gap-y-10 md:grid-cols-3 xl:grid-cols-4">
 
                         @foreach($products as $product)
 
