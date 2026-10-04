@@ -4,7 +4,78 @@
 
 @section('content')
 
-    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <section class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8 lg:pt-8">
+        <div class="shop-hero">
+            <div class="shop-hero__frame">
+                <div class="shop-hero__media" aria-hidden="true">
+                    @if($shopHeroProduct?->primaryImage)
+                        <img
+                            src="{{ asset('storage/' . $shopHeroProduct->primaryImage->image) }}"
+                            alt=""
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
+                        >
+                    @else
+                        <div class="shop-hero__fallback"></div>
+                    @endif
+                </div>
+
+                <div class="shop-hero__veil"></div>
+
+                <div class="shop-hero__content">
+                    <div class="shop-hero__eyebrow">
+                        <span>FARZIN / SHOP</span>
+                        <span class="shop-hero__line"></span>
+                        <span>COLLECTION</span>
+                    </div>
+
+                    <div class="shop-hero__copy">
+                        <p>انتخابی دقیق‌تر برای خرید بهتر</p>
+
+                        <h1>
+                            چیزهای خوب،
+                            <br>
+                            <span>همین‌جا شروع می‌شوند.</span>
+                        </h1>
+
+                        <div class="shop-hero__description">
+                            <span>
+                                {{ $shopHeroProduct?->short_description ?: 'محصولات منتخب را با فیلتر، مقایسه و انتخابی ساده پیدا کن.' }}
+                            </span>
+                        </div>
+
+                        <a
+                            href="#shop-products"
+                            class="shop-hero__cta"
+                        >
+                            <span>مشاهده محصولات</span>
+                            <span aria-hidden="true">←</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="shop-hero__meta" aria-label="اطلاعات فروشگاه">
+                    <div>
+                        <strong>{{ number_format($products->total()) }}</strong>
+                        <span>محصول</span>
+                    </div>
+
+                    <div>
+                        <strong>{{ number_format($categories->count()) }}</strong>
+                        <span>دسته فعال</span>
+                    </div>
+
+                    <div>
+                        <strong>24/7</strong>
+                        <span>دسترسی آنلاین</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="shop-products" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
 
         {{-- Header --}}
         <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
