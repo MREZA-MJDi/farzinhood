@@ -10,6 +10,9 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->index(['is_active', 'created_at'], 'products_active_created_at_index');
+            $table->index(['is_active', 'price'], 'products_active_price_index');
+            $table->index(['is_active', 'review_count'], 'products_active_review_count_index');
+            $table->index(['is_active', 'rating'], 'products_active_rating_index');
         });
 
         Schema::table('product_images', function (Blueprint $table) {
@@ -24,6 +27,9 @@ return new class extends Migration
         });
 
         Schema::table('products', function (Blueprint $table) {
+            $table->dropIndex('products_active_rating_index');
+            $table->dropIndex('products_active_review_count_index');
+            $table->dropIndex('products_active_price_index');
             $table->dropIndex('products_active_created_at_index');
         });
     }
