@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function show(Order $order): View
     {
-        abort_unless($order->user_id === auth()->id(), 403);
+        abort_unless($order->user_id === auth()->id(), 404);
 
         $order->load([
             'items.product:id,name,slug',
