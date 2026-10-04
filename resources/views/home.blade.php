@@ -9,10 +9,10 @@
     {{-- =========================================================
         HERO
         Premium product rail. Backend intentionally supplies only the
-        latest 10 active products with a primary image.
+        latest 6 active products with a primary image.
     ========================================================== --}}
 
-    @php($heroSlides = ($heroProducts ?? collect())->values())
+    @php($heroSlides = ($heroProducts ?? collect())->values()->take(6))
 
     <section
         class="farzin-hero-rail"
