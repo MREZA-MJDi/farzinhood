@@ -2454,8 +2454,10 @@ body {
 |--------------------------------------------------------------------------
 */
 
+:root,
 .farzin-livora,
-.storefront-content {
+.storefront-content,
+.product-v2 {
     --store-cream: #f3efe8;
     --store-white: #faf9f6;
     --store-surface: #eee8df;
