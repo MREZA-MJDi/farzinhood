@@ -25,7 +25,7 @@
                 '@type' => 'Offer',
                 'url' => url()->current(),
                 'priceCurrency' => 'IRR',
-                'price' => (string) $product->price,
+                'price' => (string) ($product->price * 10),
                 'availability' => $product->stock > 0
                     ? 'https://schema.org/InStock'
                     : 'https://schema.org/OutOfStock',
