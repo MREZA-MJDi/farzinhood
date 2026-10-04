@@ -102,8 +102,18 @@ class HomeHeroTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Valid Hero Product');
-        $response->assertDontSee('Inactive Hero Product');
-        $response->assertDontSee('No Image Hero Product');
+
+        $html = $response->getContent();
+        $heroStart = strpos($html, 'data-home-hero');
+        $trustStart = strpos($html, 'TRUST STRIP', $heroStart);
+
+        $this->assertNotFalse($heroStart);
+        $this->assertNotFalse($trustStart);
+
+        $heroHtml = substr($html, $heroStart, $trustStart - $heroStart);
+
+        $this->assertStringContainsString('Valid Hero Product', $heroHtml);
+        $this->assertStringNotContainsString('Inactive Hero Product', $heroHtml);
+        $this->assertStringNotContainsString('No Image Hero Product', $heroHtml);
     }
 }
