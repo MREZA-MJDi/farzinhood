@@ -39,7 +39,7 @@ class CheckoutController extends Controller
 
         $summary = $this->checkoutService->summary($user);
 
-        return view('customer.checkout.index', compact(
+        return view('checkout.index', compact(
             'items',
             'itemCount',
             'addresses',
