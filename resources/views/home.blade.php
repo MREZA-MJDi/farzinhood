@@ -116,6 +116,16 @@
                 @endforelse
 
                 @if($heroSlides->count() > 1)
+                    <div class="farzin-hero-rail__counter" aria-label="موقعیت اسلاید">
+                        <b data-hero-current>01</b>
+                        <span>/</span>
+                        <span>{{ str_pad((string) $heroSlides->count(), 2, '0', STR_PAD_LEFT) }}</span>
+                    </div>
+
+                    <div class="farzin-hero-rail__progress" aria-hidden="true">
+                        <span data-hero-progress></span>
+                    </div>
+
                     <button
                         type="button"
                         class="farzin-hero-rail__nav farzin-hero-rail__nav--prev"
