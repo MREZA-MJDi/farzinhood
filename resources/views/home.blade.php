@@ -140,7 +140,7 @@
         TRUST STRIP
     ========================================================== --}}
 
-    <section class="border-b border-[var(--color-border)] bg-white">
+    <section class="border-b border-[var(--color-border)] bg-white" data-home-trust-strip>
 
         <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-[var(--color-neutral-100)] px-4 sm:px-6 lg:grid-cols-4 lg:px-8">
 
