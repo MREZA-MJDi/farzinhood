@@ -17,12 +17,12 @@ class PaymentController extends Controller
 
     public function start(Request $request, Order $order): RedirectResponse
     {
-        abort_unless($order->user_id === $request->user()->id, 403);
+        abort_unless($order->user_id === $request->user()->id, 404);
 
         if ($order->payment_status === 'paid') {
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', 'This order has already been paid.');
+                ->with('success', 'این سفارش قبلاً پرداخت شده است.');
         }
 
         try {
@@ -48,7 +48,7 @@ class PaymentController extends Controller
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Unable to start payment.');
+                ->with('error', 'شروع پرداخت ممکن نشد.');
         }
     }
 
@@ -61,7 +61,7 @@ class PaymentController extends Controller
         if ($authority === '') {
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Payment authority is missing.');
+                ->with('error', 'شناسه پرداخت دریافت نشد.');
         }
 
         try {
@@ -85,7 +85,7 @@ class PaymentController extends Controller
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', 'Payment verification failed.');
+                ->with('error', 'تأیید پرداخت ناموفق بود.');
         }
     }
 }
