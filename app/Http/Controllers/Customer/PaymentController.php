@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\PaymentService;
+use App\Services\Payment\PaymentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
