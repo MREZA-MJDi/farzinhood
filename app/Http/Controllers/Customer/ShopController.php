@@ -17,6 +17,7 @@ class ShopController extends Controller
         $shopHeroProduct = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->whereHas('primaryImage')
             ->orderByDesc('is_featured')
             ->latest('created_at')
@@ -26,6 +27,7 @@ class ShopController extends Controller
         $products = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
 
             ->when(
                 !empty($filters['search']),
