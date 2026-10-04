@@ -20,6 +20,17 @@ class AdminMiddleware
             abort(403, 'Unauthorized.');
         }
 
+        if (! $request->user()->is_active) {
+            auth()->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('login')
+                ->with('error', 'این حساب کاربری غیرفعال شده است.');
+        }
+
         return $next($request);
     }
 }
