@@ -10,20 +10,20 @@
         <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 
             <div>
-                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
+                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                     Shop
                 </div>
 
-                <h1 class="mt-3 text-4xl font-black tracking-tight text-gray-950">
+                <h1 class="mt-3 text-4xl font-black tracking-tight text-[var(--color-text-primary)]">
                     فروشگاه
                 </h1>
 
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-gray-500">
+                <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
                     از بین محصولات موجود، چیزی که واقعاً به کارت می‌آید را پیدا کن.
                 </p>
             </div>
 
-            <div class="text-sm text-gray-500">
+            <div class="text-sm text-[var(--color-text-secondary)]">
                 {{ $products->total() }} محصول
             </div>
 
@@ -34,7 +34,7 @@
         <form
             action="{{ route('shop.index') }}"
             method="GET"
-            class="mt-8 rounded-[1.75rem] border border-gray-200 bg-white p-3 shadow-sm"
+            class="mt-8 rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm"
         >
             <div class="grid gap-3 md:grid-cols-[1fr_auto]">
 
@@ -44,13 +44,13 @@
                         name="search"
                         value="{{ request('search') }}"
                         placeholder="نام محصول، برند یا SKU..."
-                        class="w-full rounded-2xl bg-gray-50 px-5 py-4 text-sm outline-none ring-0 transition placeholder:text-gray-400 focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                        class="w-full rounded-2xl bg-[var(--color-neutral-50)] px-5 py-4 text-sm outline-none ring-0 transition placeholder:text-[var(--color-text-muted)] focus:bg-[var(--color-surface)] focus:ring-4 focus:ring-[var(--color-accent-600)]/10"
                     >
                 </div>
 
                 <button
                     type="submit"
-                    class="rounded-2xl bg-[#3f207e] px-7 py-4 text-sm font-bold text-white transition hover:bg-[#321866]"
+                    class="rounded-2xl bg-[var(--color-brand-900)] px-7 py-4 text-sm font-bold text-white transition hover:bg-[var(--color-brand-800)]"
                 >
                     جستجو
                 </button>
@@ -67,7 +67,7 @@
                 <form
                     action="{{ route('shop.index') }}"
                     method="GET"
-                    class="rounded-[1.75rem] border border-gray-200 bg-white p-5"
+                    class="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
                 >
 
                     @if(request('search'))
@@ -75,13 +75,13 @@
                     @endif
 
                     <div class="flex items-center justify-between">
-                        <h2 class="text-sm font-black text-gray-950">
+                        <h2 class="text-sm font-black text-[var(--color-text-primary)]">
                             فیلترها
                         </h2>
 
                         <a
                             href="{{ route('shop.index') }}"
-                            class="text-xs font-bold text-gray-400 transition hover:text-[#7b20df]"
+                            class="text-xs font-bold text-[var(--color-text-muted)] transition hover:text-[var(--color-accent-600)]"
                         >
                             حذف همه
                         </a>
@@ -89,13 +89,13 @@
 
 
                     <div class="mt-7">
-                        <label class="text-xs font-bold text-gray-700">
+                        <label class="text-xs font-bold text-[var(--color-text-secondary)]">
                             دسته‌بندی
                         </label>
 
                         <select
                             name="category"
-                            class="mt-3 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#7b20df]"
+                            class="mt-3 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm outline-none focus:border-[var(--color-accent-600)]"
                         >
                             <option value="">همه دسته‌ها</option>
 
@@ -112,13 +112,13 @@
 
 
                     <div class="mt-7">
-                        <label class="text-xs font-bold text-gray-700">
+                        <label class="text-xs font-bold text-[var(--color-text-secondary)]">
                             مرتب‌سازی
                         </label>
 
                         <select
                             name="sort"
-                            class="mt-3 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#7b20df]"
+                            class="mt-3 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm outline-none focus:border-[var(--color-accent-600)]"
                         >
                             <option value="latest" @selected(request('sort', 'latest') === 'latest')>
                             جدیدترین
@@ -146,7 +146,7 @@
                     <div class="mt-7 grid grid-cols-2 gap-3">
 
                         <div>
-                            <label class="text-xs font-bold text-gray-700">
+                            <label class="text-xs font-bold text-[var(--color-text-secondary)]">
                                 حداقل قیمت
                             </label>
 
@@ -156,12 +156,12 @@
                                 min="0"
                                 value="{{ request('min_price') }}"
                                 placeholder="{{ number_format($priceMin) }}"
-                                class="mt-3 w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-[#7b20df]"
+                                class="mt-3 w-full rounded-xl border border-[var(--color-border)] px-3 py-3 text-sm outline-none focus:border-[var(--color-accent-600)]"
                             >
                         </div>
 
                         <div>
-                            <label class="text-xs font-bold text-gray-700">
+                            <label class="text-xs font-bold text-[var(--color-text-secondary)]">
                                 حداکثر قیمت
                             </label>
 
@@ -171,7 +171,7 @@
                                 min="0"
                                 value="{{ request('max_price') }}"
                                 placeholder="{{ number_format($priceMax) }}"
-                                class="mt-3 w-full rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-[#7b20df]"
+                                class="mt-3 w-full rounded-xl border border-[var(--color-border)] px-3 py-3 text-sm outline-none focus:border-[var(--color-accent-600)]"
                             >
                         </div>
 
@@ -180,7 +180,7 @@
 
                     <button
                         type="submit"
-                        class="mt-7 w-full rounded-xl bg-[#3f207e] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[#321866]"
+                        class="mt-7 w-full rounded-xl bg-[var(--color-brand-900)] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[var(--color-brand-800)]"
                     >
                         اعمال فیلتر
                     </button>
@@ -210,23 +210,23 @@
 
                 @else
 
-                    <div class="rounded-[2rem] border border-dashed border-gray-300 bg-white px-6 py-24 text-center">
+                    <div class="rounded-[2rem] border border-dashed border-gray-300 bg-[var(--color-surface)] px-6 py-24 text-center">
 
-                        <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#f3edfb] text-2xl text-[#3f207e]">
+                        <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[var(--color-accent-50)] text-2xl text-[var(--color-brand-900)]">
                             ×
                         </div>
 
-                        <h2 class="mt-5 text-xl font-black text-gray-950">
+                        <h2 class="mt-5 text-xl font-black text-[var(--color-text-primary)]">
                             محصولی پیدا نشد
                         </h2>
 
-                        <p class="mx-auto mt-2 max-w-md text-sm leading-7 text-gray-500">
+                        <p class="mx-auto mt-2 max-w-md text-sm leading-7 text-[var(--color-text-secondary)]">
                             فیلترها یا عبارت جستجو را کمی تغییر بده.
                         </p>
 
                         <a
                             href="{{ route('shop.index') }}"
-                            class="mt-6 inline-flex rounded-xl bg-[#3f207e] px-5 py-3 text-sm font-bold text-white"
+                            class="mt-6 inline-flex rounded-xl bg-[var(--color-brand-900)] px-5 py-3 text-sm font-bold text-white"
                         >
                             بازنشانی
                         </a>
