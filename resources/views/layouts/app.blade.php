@@ -137,10 +137,11 @@
         ])
     @endif
 
+    @stack('head')
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased">
+<body class="min-h-screen bg-[var(--color-surface-muted)] text-[var(--color-text-primary)] antialiased">
 
 {{-- =========================================================
     Navbar
