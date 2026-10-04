@@ -47,7 +47,7 @@
 @endpush
 
 @section('content')
-<div class="product-v2">
+<div class="farzin-product storefront-content product-v2">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -396,6 +396,24 @@
                 </div>
             </section>
         @endif
+    </div>
+
+    <div class="farzin-product-mobile-cta" aria-label="خرید سریع محصول">
+        <div class="farzin-livora__container">
+            <div>
+                <span>{{ $product->name }}</span>
+                <strong>
+                    {{ number_format($product->price) }}
+                    <small>تومان</small>
+                </strong>
+            </div>
+
+            @if($product->is_active && $product->stock > 0)
+                <a href="#product-purchase">خرید</a>
+            @else
+                <span class="is-disabled">ناموجود</span>
+            @endif
+        </div>
     </div>
 </div>
 
