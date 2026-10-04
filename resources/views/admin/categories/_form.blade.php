@@ -140,6 +140,7 @@
             </div>
         @endif
 
+        <div data-media-picker>
         <label for="image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -162,8 +163,9 @@
         <p class="mt-2 text-xs font-medium text-red-600">
             {{ $message }}
         </p>
-        @enderror
+    @enderror
 
+        </div>
         </div>
 
 
