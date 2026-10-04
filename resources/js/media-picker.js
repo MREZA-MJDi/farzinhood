@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const modal = document.createElement("div");
             modal.className = "media-cropper";
 
-            modal.innerHTML = \`
+            modal.innerHTML = `
                 <div class="media-cropper__backdrop"></div>
                 <div class="media-cropper__dialog" role="dialog" aria-modal="true" aria-label="برش تصویر">
                     <div class="media-cropper__header">
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <button type="button" data-crop-save>اعمال برش</button>
                     </div>
                 </div>
-            \`;
+            `;
 
             document.body.append(modal);
 
