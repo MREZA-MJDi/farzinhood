@@ -10,12 +10,17 @@
     <meta name="description" content="ساخت حساب کاربری در فرزین برای مدیریت سفارش‌ها، آدرس‌ها و خرید آسان‌تر.">
     <meta name="robots" content="noindex,nofollow">
 
-    <meta name="theme-color" content="#0d1b3d">
+    <meta name="theme-color" content="#32261f">
 
     <link rel="icon" type="image/png" href="{{ asset('images/brand/logo.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/brand/logo.png') }}">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (!app()->environment('testing'))
+        @vite([
+            'resources/css/app.css',
+            'resources/js/app.js'
+        ])
+    @endif
 </head>
 
 <body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)]">
