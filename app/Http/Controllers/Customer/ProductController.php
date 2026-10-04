@@ -17,7 +17,8 @@ class ProductController extends Controller
             'reviews' => fn ($query) => $query
                 ->with('user:id,name')
                 ->where('status', 'approved')
-                ->latest(),
+                ->latest()
+                ->limit(6),
         ]);
 
         abort_unless(
@@ -25,7 +26,9 @@ class ProductController extends Controller
             404
         );
 
-                $relatedProducts = Product::query()
+        $relatedProducts = Product::query()
+
+        $relatedProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
@@ -35,9 +38,27 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
+        $reviewCount = (int) $product->review_count;
+
+        $canReview = false;
+        if (auth()->check()) {
+            $userId = auth()->id();
+            $canReview = ! \App\Models\Review::query()
+                ->where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->exists()
+                && \App\Models\Order::query()
+                    ->where('user_id', $userId)
+                    ->where('payment_status', 'paid')
+                    ->whereHas('items', fn ($query) => $query->where('product_id', $product->id))
+                    ->exists();
+        }
+
         return view('products.show', compact(
             'product',
-            'relatedProducts'
+            'relatedProducts',
+            'reviewCount',
+            'canReview',
         ));
     }
 }
