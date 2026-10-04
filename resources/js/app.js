@@ -3,49 +3,224 @@ import "../css/components.css";
 import "./bootstrap";
 import "./media-picker";
 
-
-/* =========================================================
-   PRODUCT CARD REVEAL
-========================================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
-    const productCards = document.querySelectorAll(
-        "[data-product-card]"
-    );
+    initRevealObserver();
+    initFlashMessages();
+    initQuantityControls();
+    initProductGallery();
+    initHomeHero();
+});
 
-    if (!productCards.length) {
+function initRevealObserver() {
+    const items = document.querySelectorAll("[data-product-card], .reveal-up");
+
+    if (!items.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+        items.forEach((item) => item.classList.add("is-visible"));
         return;
     }
 
     const observer = new IntersectionObserver(
-        (entries, obs) => {
+        (entries, current) => {
             entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                    return;
-                }
+                if (!entry.isIntersecting) return;
 
                 entry.target.classList.add("is-visible");
-
-                obs.unobserve(entry.target);
+                current.unobserve(entry.target);
             });
         },
         {
-            threshold: 0.12,
-            rootMargin: "0px 0px -40px 0px",
-        }
+            threshold: 0.08,
+            rootMargin: "0px 0px -32px 0px",
+        },
     );
 
-    productCards.forEach((card) => {
-        observer.observe(card);
+    items.forEach((item) => observer.observe(item));
+}
+
+function initFlashMessages() {
+    document.querySelectorAll("[data-flash]").forEach((flash) => {
+        const close = () => {
+            flash.style.opacity = "0";
+            flash.style.transform = "translateY(-6px)";
+            window.setTimeout(() => flash.remove(), 180);
+        };
+
+        flash.querySelector("[data-flash-close]")?.addEventListener("click", close);
+        window.setTimeout(close, 5200);
     });
-});
+}
 
+function clampNumber(value, min, max) {
+    const parsed = Number(value);
 
+    if (!Number.isFinite(parsed)) {
+        return min;
+    }
 
-/* =========================================================
-   HOME HERO — premium product rail
-========================================================= */
-document.addEventListener("DOMContentLoaded", () => {
+    return Math.min(Math.max(parsed, min), max);
+}
+
+function syncQuantityInput(input, control) {
+    const min = Number(input.min || 1);
+    const max = Number(input.max || control.dataset.max || 99);
+    input.value = String(clampNumber(input.value, min, max));
+    input.dispatchEvent(new Event("quantity:changed", { bubbles: true }));
+}
+
+function initQuantityControls() {
+    document.querySelectorAll("[data-quantity-control], .store-qty").forEach((control) => {
+        const input = control.querySelector("[data-quantity-input]");
+        if (!input) return;
+
+        control.querySelectorAll("[data-quantity-action]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const current = Number(input.value || 1);
+                const min = Number(input.min || 1);
+                const max = Number(input.max || control.dataset.max || 99);
+                const delta = button.dataset.quantityAction === "increase" ? 1 : -1;
+
+                input.value = String(clampNumber(current + delta, min, max));
+
+                const form = control.closest("form[data-auto-submit-quantity]");
+                if (form) {
+                    window.clearTimeout(form._quantitySubmitTimer);
+                    form._quantitySubmitTimer = window.setTimeout(() => {
+                        form.requestSubmit();
+                    }, 220);
+                }
+            });
+        });
+
+        input.addEventListener("change", () => {
+            syncQuantityInput(input, control);
+            const form = control.closest("form[data-auto-submit-quantity]");
+            if (form) {
+                form.requestSubmit();
+            }
+        });
+
+        input.addEventListener("blur", () => {
+            syncQuantityInput(input, control);
+        });
+
+        syncQuantityInput(input, control);
+    });
+}
+
+function initProductGallery() {
+    document.querySelectorAll("[data-product-gallery]").forEach((gallery) => {
+        const main = gallery.querySelector("[data-gallery-main]");
+        const thumbs = [...gallery.querySelectorAll("[data-gallery-thumb]")];
+        const openButton = gallery.querySelector("[data-gallery-open]");
+        const dialog = document.querySelector("[data-gallery-dialog]");
+
+        if (!main || !openButton || !dialog) return;
+
+        const images = thumbs.length
+            ? thumbs.map((thumb) => ({
+                  src: thumb.dataset.gallerySrc,
+                  alt: thumb.dataset.galleryAlt || main.alt,
+                  index: thumb.dataset.galleryIndex || "1",
+              }))
+            : [
+                  {
+                      src: main.currentSrc || main.src,
+                      alt: main.alt,
+                      index: "1",
+                  },
+              ];
+
+        let activeIndex = Math.max(
+            0,
+            thumbs.findIndex((thumb) => thumb.classList.contains("is-active")),
+        );
+
+        if (activeIndex < 0) activeIndex = 0;
+
+        const lightboxImage = dialog.querySelector("[data-gallery-lightbox-image]");
+        const counter = dialog.querySelector("[data-gallery-counter]");
+
+        const render = (index) => {
+            activeIndex = (index + images.length) % images.length;
+            const image = images[activeIndex];
+
+            main.src = image.src;
+            main.alt = image.alt;
+
+            thumbs.forEach((thumb, thumbIndex) => {
+                const active = thumbIndex === activeIndex;
+                thumb.classList.toggle("is-active", active);
+                thumb.setAttribute("aria-pressed", active ? "true" : "false");
+            });
+
+            gallery
+                .querySelector("[data-gallery-current]")
+                ?.replaceChildren(document.createTextNode(String(activeIndex + 1).padStart(2, "0")));
+
+            if (lightboxImage) {
+                lightboxImage.src = image.src;
+                lightboxImage.alt = image.alt;
+            }
+
+            if (counter) {
+                counter.textContent = `${activeIndex + 1} / ${images.length}`;
+            }
+        };
+
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener("click", () => render(index));
+        });
+
+        openButton.addEventListener("click", () => {
+            render(activeIndex);
+
+            if (typeof dialog.showModal === "function") {
+                dialog.showModal();
+            } else {
+                dialog.setAttribute("open", "");
+            }
+
+            document.documentElement.classList.add("overflow-hidden");
+        });
+
+        dialog.querySelector("[data-gallery-close]")?.addEventListener("click", () => {
+            if (typeof dialog.close === "function") {
+                dialog.close();
+            } else {
+                dialog.removeAttribute("open");
+            }
+        });
+
+        dialog.querySelector("[data-gallery-prev]")?.addEventListener("click", () => {
+            render(activeIndex - 1);
+        });
+
+        dialog.querySelector("[data-gallery-next]")?.addEventListener("click", () => {
+            render(activeIndex + 1);
+        });
+
+        dialog.addEventListener("click", (event) => {
+            if (event.target === dialog) {
+                dialog.close?.();
+            }
+        });
+
+        dialog.addEventListener("close", () => {
+            document.documentElement.classList.remove("overflow-hidden");
+        });
+
+        dialog.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") render(activeIndex + 1);
+            if (event.key === "ArrowRight") render(activeIndex - 1);
+        });
+
+        render(activeIndex);
+    });
+}
+
+function initHomeHero() {
     const hero = document.querySelector("[data-home-hero]");
     if (!hero) return;
 
@@ -83,7 +258,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const isActive = relative === 0;
 
             if (!visible) {
-                slide.style.setProperty("--hero-x", relative > 0 ? stageWidth + "px" : -stageWidth + "px");
+                slide.style.setProperty(
+                    "--hero-x",
+                    relative > 0 ? stageWidth + "px" : -stageWidth + "px",
+                );
                 slide.style.setProperty("--hero-scale", "0.42");
                 slide.style.setProperty("--hero-opacity", "0");
                 slide.style.setProperty("--hero-blur", "4px");
@@ -97,18 +275,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const spread = Math.min(cardWidth * 0.76, stageWidth * 0.27);
 
-            slide.style.setProperty("--hero-x", (relative * spread) + "px");
+            slide.style.setProperty("--hero-x", relative * spread + "px");
             slide.style.setProperty(
                 "--hero-scale",
-                isActive ? "1" : relative === -1 || relative === 1 ? "0.82" : "0.67"
+                isActive ? "1" : Math.abs(relative) === 1 ? "0.82" : "0.67",
             );
             slide.style.setProperty(
                 "--hero-opacity",
-                isActive ? "1" : relative === -1 || relative === 1 ? "0.68" : "0.34"
+                isActive ? "1" : Math.abs(relative) === 1 ? "0.68" : "0.34",
             );
             slide.style.setProperty(
                 "--hero-blur",
-                isActive ? "0px" : relative === -1 || relative === 1 ? "0.5px" : "1.5px"
+                isActive ? "0px" : Math.abs(relative) === 1 ? "0.5px" : "1.5px",
             );
             slide.style.setProperty("--hero-z", isActive ? "60px" : "0px");
             slide.style.setProperty("--hero-z-index", String(5 - Math.abs(relative)));
@@ -144,11 +322,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    prev?.addEventListener("click", () => { render(index - 1); start(); });
-    next?.addEventListener("click", () => { render(index + 1); start(); });
+    prev?.addEventListener("click", () => {
+        render(index - 1);
+        start();
+    });
+
+    next?.addEventListener("click", () => {
+        render(index + 1);
+        start();
+    });
 
     dots.forEach((dot, dotIndex) => {
-        dot.addEventListener("click", () => { render(dotIndex); start(); });
+        dot.addEventListener("click", () => {
+            render(dotIndex);
+            start();
+        });
     });
 
     hero.addEventListener("mouseenter", stop);
@@ -158,23 +346,32 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!hero.contains(event.relatedTarget)) start();
     });
 
-    stage.addEventListener("touchstart", (event) => {
-        startX = event.changedTouches[0]?.clientX ?? null;
-        stop();
-    }, { passive: true });
+    stage.addEventListener(
+        "touchstart",
+        (event) => {
+            startX = event.changedTouches[0]?.clientX ?? null;
+            stop();
+        },
+        { passive: true },
+    );
 
-    stage.addEventListener("touchend", (event) => {
-        if (startX === null) return;
-        const endX = event.changedTouches[0]?.clientX ?? startX;
-        const distance = endX - startX;
-        startX = null;
+    stage.addEventListener(
+        "touchend",
+        (event) => {
+            if (startX === null) return;
 
-        if (Math.abs(distance) >= 45) {
-            render(distance < 0 ? index + 1 : index - 1);
-        }
+            const endX = event.changedTouches[0]?.clientX ?? startX;
+            const distance = endX - startX;
+            startX = null;
 
-        start();
-    }, { passive: true });
+            if (Math.abs(distance) >= 45) {
+                render(distance < 0 ? index + 1 : index - 1);
+            }
+
+            start();
+        },
+        { passive: true },
+    );
 
     hero.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") {
@@ -200,4 +397,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     render(0);
     start();
-});
+}
