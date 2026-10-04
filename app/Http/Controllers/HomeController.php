@@ -11,11 +11,21 @@ class HomeController extends Controller
 {
     public function index(): View
     {
+        $heroProducts = Product::query()
+            ->with(['primaryImage', 'category'])
+            ->where('is_active', true)
+            ->whereHas('primaryImage')
+            ->latest('created_at')
+            ->latest('id')
+            ->take(10)
+            ->get();
+
         $featuredProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->latest()
+            ->latest('created_at')
+            ->latest('id')
             ->take(8)
             ->get();
 
@@ -43,6 +53,7 @@ class HomeController extends Controller
             ->get();
 
         return view('home', compact(
+            'heroProducts',
             'featuredProducts',
             'latestProducts',
             'categories',
