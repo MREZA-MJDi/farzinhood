@@ -346,7 +346,7 @@
             </p>
         </div>
 
-        <div>
+        <div data-media-picker>
             <label for="images"
                    class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
                 تصاویر جدید
@@ -355,6 +355,7 @@
             <input type="file"
                    id="images"
                    name="images[]"
+                   data-media-input
                    multiple
                    accept=".jpg,.jpeg,.png,.webp"
                    class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)] hover:file:bg-[var(--color-neutral-200)] @error('images') border-red-400 @enderror">
@@ -362,6 +363,7 @@
             <p class="mt-2 text-xs text-[var(--color-text-muted)]">
                 فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت برای هر تصویر
             </p>
+            <div data-media-preview aria-live="polite"></div>
 
             @error('images')
             <p class="mt-2 text-xs font-medium text-red-600">

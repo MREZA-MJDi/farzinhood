@@ -11,6 +11,7 @@ use App\Services\SeoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -119,13 +120,13 @@ class ProductController extends Controller
         ]);
 
         $categories = Category::query()
-            ->where('is_active', true)
-            ->when(
-                $product->category_id,
-                fn ($query) => $query->orWhereKey(
-                    $product->category_id
-                )
-            )
+            ->where(function ($query) use ($product) {
+                $query->where('is_active', true);
+
+                if ($product->category_id) {
+                    $query->orWhere('id', $product->category_id);
+                }
+            })
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();

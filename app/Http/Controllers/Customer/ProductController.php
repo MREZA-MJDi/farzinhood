@@ -10,8 +10,6 @@ class ProductController extends Controller
 {
     public function show(Product $product): View
     {
-        abort_unless($product->is_active, 404);
-
         $product->load([
             'category',
             'images',
@@ -22,9 +20,15 @@ class ProductController extends Controller
                 ->latest(),
         ]);
 
-        $relatedProducts = Product::query()
+        abort_unless(
+            $product->is_active && $product->category?->is_active,
+            404
+        );
+
+                $relatedProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->where('category_id', $product->category_id)
             ->whereKeyNot($product->id)
             ->latest()

@@ -221,7 +221,7 @@
                                             class="block"
                                         >
 
-                                            <div class="relative aspect-[0.96] overflow-hidden bg-[#eef0f3]">
+                                            <div class="relative aspect-[0.96] overflow-hidden bg-[var(--color-neutral-100)]">
 
                                                 {{-- Material background --}}
                                                 <div class="pointer-events-none absolute -right-10 -top-10 z-[1] h-32 w-32 rounded-full bg-white/60 blur-2xl"></div>

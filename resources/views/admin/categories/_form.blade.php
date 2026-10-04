@@ -140,6 +140,7 @@
             </div>
         @endif
 
+        <div data-media-picker>
         <label for="image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -148,6 +149,7 @@
         <input type="file"
                id="image"
                name="image"
+               data-media-input
                accept=".jpg,.jpeg,.png,.webp"
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
@@ -155,13 +157,16 @@
             فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت
         </p>
 
-        @error('image')
+            <div data-media-preview aria-live="polite"></div>
+
+    @error('image')
         <p class="mt-2 text-xs font-medium text-red-600">
             {{ $message }}
         </p>
-        @enderror
+    @enderror
 
-    </div>
+        </div>
+        </div>
 
 
     {{-- SEO --}}

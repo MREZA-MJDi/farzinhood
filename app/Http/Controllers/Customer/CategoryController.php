@@ -23,7 +23,7 @@ class CategoryController extends Controller
             ->withQueryString();
 
         return view(
-            'customer.categories.show',
+            'categories.show',
             compact('category', 'products')
         );
     }

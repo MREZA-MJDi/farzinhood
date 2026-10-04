@@ -30,7 +30,7 @@
         ========================================================== --}}
         <div class="mb-10">
 
-            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
+            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                 Checkout
             </div>
 
@@ -52,9 +52,9 @@
 
             <div class="grid grid-cols-3 gap-3">
 
-                <div class="flex items-center gap-3 rounded-2xl bg-[#f3edfb] px-4 py-3">
+                <div class="flex items-center gap-3 rounded-2xl bg-[var(--color-accent-50)] px-4 py-3">
 
-                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#3f207e] text-xs font-black text-white">
+                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-brand-900)] text-xs font-black text-white">
                         01
                     </div>
 
@@ -141,7 +141,7 @@
 
                                 <div>
 
-                                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                         Delivery
                                     </div>
 
@@ -157,7 +157,7 @@
 
                                 <a
                                     href="{{ route('customer.addresses.index') }}"
-                                    class="inline-flex items-center justify-center rounded-xl border border-gray-200 px-4 py-2.5 text-xs font-bold text-gray-700 transition hover:border-[#7b20df] hover:text-[#7b20df]"
+                                    class="inline-flex items-center justify-center rounded-xl border border-gray-200 px-4 py-2.5 text-xs font-bold text-gray-700 transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
                                 >
                                     مدیریت آدرس‌ها
                                 </a>
@@ -186,14 +186,14 @@
                                             >
 
                                             <div
-                                                class="relative h-full rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[#3f207e] peer-checked:bg-[#f8f4fc] peer-checked:shadow-lg peer-checked:shadow-[#3f207e]/5 group-hover:border-gray-300"
+                                                class="relative h-full rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)] peer-checked:shadow-lg peer-checked:shadow-[var(--color-brand-900)]/5 group-hover:border-gray-300"
                                             >
 
                                                 {{-- Selected Indicator --}}
                                                 <div
                                                     class="absolute left-4 top-4 flex size-6 items-center justify-center rounded-full border border-gray-300 bg-white text-white transition"
                                                     :class="selectedAddress == {{ $address->id }}
-                                                        ? 'border-[#3f207e] bg-[#3f207e]'
+                                                        ? 'border-[var(--color-brand-900)] bg-[var(--color-brand-900)]'
                                                         : 'border-gray-300 bg-white'"
                                                 >
                                                 <span
@@ -274,7 +274,7 @@
 
                                 <div class="rounded-[1.5rem] border border-dashed border-gray-300 bg-gray-50 px-6 py-12 text-center">
 
-                                    <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#f3edfb] text-2xl font-black text-[#3f207e]">
+                                    <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[var(--color-accent-50)] text-2xl font-black text-[var(--color-brand-900)]">
                                         +
                                     </div>
 
@@ -288,7 +288,7 @@
 
                                     <a
                                         href="{{ route('customer.addresses.index') }}"
-                                        class="mt-5 inline-flex rounded-xl bg-[#3f207e] px-5 py-3 text-xs font-bold text-white transition hover:bg-[#321866]"
+                                        class="mt-5 inline-flex rounded-xl bg-[var(--color-brand-900)] px-5 py-3 text-xs font-bold text-white transition hover:bg-[var(--color-brand-950)]"
                                     >
                                         افزودن آدرس
                                     </a>
@@ -318,7 +318,7 @@
 
                         <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
 
-                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Payment
                             </div>
 
@@ -342,10 +342,10 @@
                                 >
 
                                 <div
-                                    class="flex items-center gap-4 rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[#3f207e] peer-checked:bg-[#f8f4fc]"
+                                    class="flex items-center gap-4 rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)]"
                                 >
 
-                                    <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-[#3f207e] shadow-sm">
+                                    <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-[var(--color-brand-900)] shadow-sm">
 
                                         <svg
                                             class="h-5 w-5"
@@ -390,7 +390,7 @@
                                             <div
                                                 class="flex size-6 items-center justify-center rounded-full border bg-white text-white transition"
                                                 :class="paymentMethod === 'gateway'
-                                                ? 'border-[#3f207e] bg-[#3f207e]'
+                                                ? 'border-[var(--color-brand-900)] bg-[var(--color-brand-900)]'
                                                 : 'border-gray-300'"
                                             >
 
@@ -432,7 +432,7 @@
 
                         <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
 
-                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Optional
                             </div>
 
@@ -458,7 +458,7 @@
                                 rows="5"
                                 maxlength="2000"
                                 placeholder="مثلاً زمان مناسب برای تحویل یا توضیحی برای سفارش..."
-                                class="mt-3 w-full resize-none rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                                class="mt-3 w-full resize-none rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[var(--color-accent-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-accent-600)]/10"
                             >{{ old('notes') }}</textarea>
 
                             @error('notes')
@@ -487,7 +487,7 @@
                         {{-- Header --}}
                         <div class="border-b border-gray-100 px-6 py-6">
 
-                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                            <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Order Summary
                             </div>
 
@@ -511,7 +511,7 @@
 
                                 <div class="flex gap-4 py-5">
 
-                                    <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#f5f2f8]">
+                                    <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[var(--color-neutral-50)]">
 
                                         @if($image)
 
@@ -692,7 +692,7 @@
                             <button
                                 type="submit"
                                 @disabled($addresses->isEmpty())
-                                class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-[#3f207e] px-5 py-4 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
+                                class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-[var(--color-brand-900)] px-5 py-4 text-sm font-bold text-white shadow-lg shadow-[var(--color-brand-900)]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-brand-950)] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0"
                                 >
 
                                 ثبت سفارش و ادامه پرداخت
@@ -707,7 +707,7 @@
                             {{-- Back --}}
                             <a
                                 href="{{ route('customer.cart.index') }}"
-                                class="flex w-full items-center justify-center rounded-2xl border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 transition hover:border-[#7b20df] hover:text-[#7b20df]"
+                                class="flex w-full items-center justify-center rounded-2xl border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
                             >
                                 بازگشت به سبد خرید
                             </a>
@@ -724,7 +724,7 @@
 
                                 <div class="flex items-start gap-3">
 
-                                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white text-[#3f207e] shadow-sm">
+                                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--color-brand-900)] shadow-sm">
                                         ✓
                                     </div>
 
@@ -745,7 +745,7 @@
 
                                 <div class="flex items-start gap-3">
 
-                                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white text-[#3f207e] shadow-sm">
+                                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--color-brand-900)] shadow-sm">
                                         ✓
                                     </div>
 

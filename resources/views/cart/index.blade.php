@@ -179,7 +179,7 @@
                                             class="block shrink-0"
                                         >
 
-                                            <div class="relative h-28 w-28 overflow-hidden rounded-2xl bg-[#eef0f3] sm:h-32 sm:w-32">
+                                            <div class="relative h-28 w-28 overflow-hidden rounded-2xl bg-[var(--color-neutral-100)] sm:h-32 sm:w-32">
 
                                                 {{-- subtle surface --}}
                                                 <div class="pointer-events-none absolute -right-5 -top-5 z-[1] h-20 w-20 rounded-full bg-white/60 blur-2xl"></div>

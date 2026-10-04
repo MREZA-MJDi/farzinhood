@@ -204,7 +204,7 @@
 
                         @else
 
-                            <div class="absolute inset-0 bg-gradient-to-br from-[#25365b] to-[#101a31]">
+                            <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-800)] to-[var(--color-brand-950)]">
 
                                 <div class="absolute inset-0 flex items-center justify-center">
 

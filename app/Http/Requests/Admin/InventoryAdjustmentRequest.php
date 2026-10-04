@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class InventoryAdjustmentRequest extends FormRequest
 {
@@ -16,14 +17,22 @@ class InventoryAdjustmentRequest extends FormRequest
         return [
             'type' => [
                 'required',
-                'in:restock,adjustment,return',
+                Rule::in(['restock', 'adjustment', 'return']),
             ],
 
             'quantity' => [
                 'required',
                 'integer',
-                'not_in:0',
                 'between:-100000,100000',
+                'not_in:0',
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    if (
+                        in_array($this->input('type'), ['restock', 'return'], true)
+                        && (int) $value < 1
+                    ) {
+                        $fail('برای افزایش موجودی، مقدار باید مثبت باشد.');
+                    }
+                },
             ],
 
             'note' => [

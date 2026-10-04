@@ -96,7 +96,7 @@
                 PRODUCT GRID
             ====================================================== --}}
 
-            <div class="mt-8 grid gap-8 lg:grid-cols-[1.02fr_.98fr] lg:gap-12">
+            <div class="mt-6 grid gap-7 lg:grid-cols-[0.94fr_1.06fr] lg:items-start lg:gap-9">
 
 
                 {{-- =================================================
@@ -128,7 +128,7 @@
                         class="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]"
                     >
 
-                        <div class="relative aspect-square overflow-hidden bg-[#eef0f3]">
+                        <div class="relative aspect-[4/4.7] overflow-hidden bg-[var(--color-neutral-100)] sm:aspect-[4/4.35]">
 
                             {{-- Decorative surface --}}
                             <div
@@ -136,7 +136,7 @@
                             ></div>
 
                             <div
-                                class="pointer-events-none absolute -bottom-20 -left-16 z-[1] h-60 w-60 rounded-full bg-[#d8dde5]/50 blur-3xl"
+                                class="pointer-events-none absolute -bottom-20 -left-16 z-[1] h-60 w-60 rounded-full bg-[var(--color-neutral-200)]/50 blur-3xl"
                             ></div>
 
 

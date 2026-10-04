@@ -8,318 +8,139 @@
 
     {{-- =========================================================
         HERO
+        Premium product rail. Backend intentionally supplies only the
+        latest 10 active products with a primary image.
     ========================================================== --}}
 
-    <section class="relative isolate overflow-hidden bg-[var(--color-brand-950)] text-white">
+    @php($heroSlides = ($heroProducts ?? collect())->values())
 
-        {{-- Decorative background --}}
-        <div class="pointer-events-none absolute inset-0">
+    <section
+        class="farzin-hero-rail"
+        data-home-hero
+        aria-label="جدیدترین محصولات فرزین"
+    >
+        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--one" aria-hidden="true"></div>
+        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--two" aria-hidden="true"></div>
+        <div class="farzin-hero-rail__grid" aria-hidden="true"></div>
 
-            <div
-                class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[var(--color-accent-600)]/20 blur-3xl"
-            ></div>
+        <div class="farzin-hero-rail__inner">
+            <div class="farzin-hero-rail__copy">
+                <span class="farzin-hero-rail__eyebrow">
+                    <span></span>
+                    جدیدترین محصولات فرزین
+                </span>
 
-            <div
-                class="absolute -bottom-40 -left-24 h-[28rem] w-[28rem] rounded-full bg-[var(--color-brand-700)]/30 blur-3xl"
-            ></div>
+                <h1 class="farzin-hero-rail__title">
+                    انتخاب تازه،
+                    <strong>با نگاه حرفه‌ای.</strong>
+                </h1>
 
-            <div
-                class="absolute right-1/2 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-white/[0.025] blur-3xl"
-            ></div>
+                <p class="farzin-hero-rail__description">
+                    تازه‌ترین محصولات فروشگاه را در یک نگاه ببین،
+                    انتخاب کن و مستقیم وارد جزئیات محصول شو.
+                </p>
 
-            {{-- Grid texture --}}
-            <div
-                class="absolute inset-0 opacity-[0.04]"
-                style="background-image: linear-gradient(rgba(255,255,255,.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.7) 1px, transparent 1px); background-size: 56px 56px;"
-            ></div>
-
-        </div>
-
-
-        <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8 lg:py-24">
-
-            <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
-
-                {{-- Hero Content --}}
-                <div class="lg:col-span-6">
-
-                    <div
-                        class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-bold text-white/75 backdrop-blur"
+                <div class="farzin-hero-rail__actions">
+                    <a
+                        href="{{ route('shop.index', ['sort' => 'latest']) }}"
+                        class="farzin-hero-rail__primary"
                     >
-                        <span class="h-2 w-2 rounded-full bg-[var(--color-accent-600)]"></span>
-
-                        تجربه‌ای متفاوت برای خرید
-                    </div>
-
-
-                    <h1
-                        class="mt-6 max-w-3xl text-4xl font-black leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl"
-                    >
-                        انتخاب حرفه‌ای،
-                        <span class="text-[var(--color-accent-600)]">
-                            خرید مطمئن.
-                        </span>
-                    </h1>
-
-
-                    <p
-                        class="mt-6 max-w-xl text-base leading-8 text-white/65 sm:text-lg"
-                    >
-                        محصولاتی باکیفیت را راحت‌تر پیدا کن، ویژگی‌ها را مقایسه کن
-                        و با اطمینان خریدت را انجام بده.
-                    </p>
-
-
-                    {{-- Actions --}}
-                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-
-                        <a
-                            href="{{ route('shop.index') }}"
-                            class="group inline-flex items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 py-4 text-sm font-black text-white shadow-xl shadow-[var(--color-accent-600)]/20 transition duration-300 hover:-translate-y-1 hover:bg-[var(--color-accent-700)]"
-                        >
-                            شروع خرید
-
-                            <svg
-                                class="h-4 w-4 transition duration-300 group-hover:-translate-x-1"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
-                                <path d="M15 18 9 12l6-6"/>
-                            </svg>
-                        </a>
-
-
-                        <a
-                            href="{{ route('blog.index') }}"
-                            class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-6 py-4 text-sm font-black text-white transition duration-300 hover:bg-white/10"
-                        >
-                            راهنمای خرید
-
-                            <svg
-                                class="h-4 w-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
-                                <path d="m9 18 6-6-6-6"/>
-                            </svg>
-                        </a>
-
-                    </div>
-
-
-                    {{-- Benefits --}}
-                    <div class="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
-
-                        <div class="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                            <div class="text-xs font-black text-white">
-                                انتخاب بهتر
-                            </div>
-
-                            <p class="mt-1 text-[11px] leading-5 text-white/45">
-                                اطلاعات شفاف برای تصمیم بهتر
-                            </p>
-                        </div>
-
-                        <div class="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                            <div class="text-xs font-black text-white">
-                                پرداخت امن
-                            </div>
-
-                            <p class="mt-1 text-[11px] leading-5 text-white/45">
-                                فرآیند ساده و مطمئن
-                            </p>
-                        </div>
-
-                        <div class="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                            <div class="text-xs font-black text-white">
-                                پشتیبانی
-                            </div>
-
-                            <p class="mt-1 text-[11px] leading-5 text-white/45">
-                                پاسخگویی در مسیر خرید
-                            </p>
-                        </div>
-
-                    </div>
-
+                        مشاهده تازه‌ها
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                    </a>
+                    <span class="farzin-hero-rail__meta">
+                        حداکثر ۱۰ محصول تازه
+                    </span>
                 </div>
-
-
-                {{-- =====================================================
-                    Hero Visual
-                ====================================================== --}}
-
-                <div class="relative lg:col-span-6">
-
-                    <div class="relative mx-auto aspect-square max-w-[560px]">
-
-                        {{-- Main glow --}}
-                        <div
-                            class="absolute inset-[10%] rounded-[3rem] bg-[var(--color-accent-600)]/10 blur-3xl"
-                        ></div>
-
-
-                        {{-- Main frame --}}
-                        <div
-                            class="absolute inset-5 overflow-hidden rounded-[2.75rem] border border-white/10 bg-white/[0.045] p-4 shadow-2xl backdrop-blur"
-                        >
-
-                            <div
-                                class="relative h-full overflow-hidden rounded-[2.1rem] border border-white/10 bg-gradient-to-br from-[#1b2b52] to-[#101d38]"
-                            >
-
-                                {{-- Top bar --}}
-                                <div
-                                    class="flex items-center justify-between border-b border-white/10 px-5 py-4"
-                                >
-                                    <div>
-                                        <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
-                                            FARZIN STORE
-                                        </p>
-
-                                        <p class="mt-1 text-sm font-black text-white">
-                                            انتخاب‌های امروز
-                                        </p>
-                                    </div>
-
-                                    <span
-                                        class="rounded-full bg-[var(--color-accent-600)]/15 px-3 py-1 text-[9px] font-black text-[var(--color-accent-300)]"
-                                    >
-                                        NEW
-                                    </span>
-                                </div>
-
-
-                                {{-- Product area --}}
-                                <div class="grid h-[calc(100%-76px)] grid-cols-2 gap-3 p-4">
-
-                                    {{-- Card 1 --}}
-                                    <div
-                                        class="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3"
-                                    >
-
-                                        <div
-                                            class="aspect-square overflow-hidden rounded-[1.2rem] bg-gradient-to-br from-[#e7e9ec] to-[#bdc3cb]"
-                                        >
-                                            <div
-                                                class="h-full w-full bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,.85),rgba(255,255,255,.05)_65%)]"
-                                            ></div>
-                                        </div>
-
-                                        <div class="mt-3 h-2.5 w-24 rounded-full bg-white/10"></div>
-                                        <div class="mt-2 h-2 w-16 rounded-full bg-white/5"></div>
-
-                                    </div>
-
-
-                                    {{-- Card 2 --}}
-                                    <div
-                                        class="translate-y-8 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3"
-                                    >
-
-                                        <div
-                                            class="aspect-square overflow-hidden rounded-[1.2rem] bg-gradient-to-br from-[#d8dce1] to-[#9ea6b2]"
-                                        >
-                                            <div
-                                                class="h-full w-full bg-[radial-gradient(circle_at_55%_35%,rgba(255,255,255,.7),rgba(255,255,255,.05)_60%)]"
-                                            ></div>
-                                        </div>
-
-                                        <div class="mt-3 h-2.5 w-20 rounded-full bg-white/10"></div>
-                                        <div class="mt-2 h-2 w-14 rounded-full bg-white/5"></div>
-
-                                    </div>
-
-
-                                    {{-- Product stats --}}
-                                    <div
-                                        class="col-span-2 mt-1 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4"
-                                    >
-
-                                        <div class="flex items-center justify-between">
-
-                                            <div>
-                                                <p class="text-[10px] text-white/35">
-                                                    تجربه خرید
-                                                </p>
-
-                                                <p class="mt-1 text-sm font-black text-white">
-                                                    ساده‌تر از همیشه
-                                                </p>
-                                            </div>
-
-                                            <div
-                                                class="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-600)]/15 text-[var(--color-accent-300)]"
-                                            >
-                                                <svg
-                                                    class="h-5 w-5"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="1.8"
-                                                >
-                                                    <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>
-                                                </svg>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        {{-- Floating left --}}
-                        <div
-                            class="absolute -bottom-1 left-0 rounded-2xl border border-white/10 bg-white/[0.09] px-4 py-3 text-white shadow-xl backdrop-blur-xl sm:-left-5"
-                        >
-                            <p class="text-[10px] text-white/45">
-                                سفارش و ارسال
-                            </p>
-
-                            <p class="mt-1 text-sm font-black">
-                                شفاف و قابل پیگیری
-                            </p>
-                        </div>
-
-
-                        {{-- Floating right --}}
-                        <div
-                            class="absolute right-0 top-8 rounded-2xl border border-white/10 bg-[var(--color-accent-600)]/15 px-4 py-3 text-white shadow-xl backdrop-blur-xl sm:-right-5"
-                        >
-                            <p class="text-[10px] text-white/50">
-                                پیشنهادهای منتخب
-                            </p>
-
-                            <p class="mt-1 text-sm font-black">
-                                هر هفته تازه
-                            </p>
-                        </div>
-
-                    </div>
-
-                </div>
-
             </div>
 
+            <div class="farzin-hero-rail__stage">
+                @forelse($heroSlides as $index => $product)
+                    <article
+                        class="farzin-hero-rail__slide {{ $index === 0 ? 'is-active' : '' }}"
+                        data-hero-slide="{{ $index }}"
+                        style="--hero-index: {{ $index }};"
+                        aria-hidden="{{ $index === 0 ? 'false' : 'true' }}"
+                    >
+                        <a
+                            href="{{ route('products.show', $product) }}"
+                            class="farzin-hero-rail__product"
+                            tabindex="{{ $index === 0 ? '0' : '-1' }}"
+                        >
+                            <div class="farzin-hero-rail__image-wrap">
+                                <img
+                                    src="{{ asset('storage/' . $product->primaryImage->image) }}"
+                                    alt="{{ $product->primaryImage->alt ?: $product->name }}"
+                                    class="farzin-hero-rail__image"
+                                    {{ $index === 0 ? 'loading=eager' : 'loading=lazy' }}
+                                    decoding="async"
+                                >
+                            </div>
+
+                            <div class="farzin-hero-rail__product-info">
+                                <div>
+                                    <span class="farzin-hero-rail__category">
+                                        {{ $product->category?->name ?? 'محصول جدید' }}
+                                    </span>
+                                    <h2>{{ $product->name }}</h2>
+                                </div>
+
+                                <strong>{{ number_format($product->price) }} <small>تومان</small></strong>
+                            </div>
+                        </a>
+                    </article>
+                @empty
+                    <div class="farzin-hero-rail__empty">
+                        هنوز محصول فعالی برای نمایش در Hero ثبت نشده است.
+                    </div>
+                @endforelse
+
+                @if($heroSlides->count() > 1)
+                    <button
+                        type="button"
+                        class="farzin-hero-rail__nav farzin-hero-rail__nav--prev"
+                        data-hero-prev
+                        aria-label="محصول قبلی"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m14 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="farzin-hero-rail__nav farzin-hero-rail__nav--next"
+                        data-hero-next
+                        aria-label="محصول بعدی"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m10 18 6-6-6-6"/>
+                        </svg>
+                    </button>
+
+                    <div class="farzin-hero-rail__dots" role="tablist" aria-label="محصولات Hero">
+                        @foreach($heroSlides as $index => $product)
+                            <button
+                                type="button"
+                                data-hero-dot="{{ $index }}"
+                                aria-label="محصول {{ $index + 1 }}"
+                                aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
+                                class="{{ $index === 0 ? 'is-active' : '' }}"
+                            ></button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         </div>
-
     </section>
-
 
     {{-- =========================================================
         TRUST STRIP
     ========================================================== --}}
 
-    <section class="border-b border-[var(--color-border)] bg-white">
+    <section class="border-b border-[var(--color-border)] bg-white" data-home-trust-strip>
 
         <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-[var(--color-neutral-100)] px-4 sm:px-6 lg:grid-cols-4 lg:px-8">
 
@@ -439,7 +260,7 @@
                 >
 
                     <div
-                        class="relative aspect-[1.05] overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-[#eef0f3] to-[#d9dde3]"
+                        class="relative aspect-[1.05] overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-[var(--color-neutral-100)] to-[var(--color-neutral-200)]"
                     >
 
                         @if($category->image)
