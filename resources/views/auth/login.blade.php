@@ -30,7 +30,7 @@
 
     <meta
         name="theme-color"
-        content="#0d1b3d"
+        content="#32261f"
     >
 
     <link
@@ -44,10 +44,12 @@
         href="{{ asset('images/brand/logo.png') }}"
     >
 
-    @vite([
-    'resources/css/app.css',
-    'resources/js/app.js'
-    ])
+    @if (!app()->environment('testing'))
+        @vite([
+            'resources/css/app.css',
+            'resources/js/app.js'
+        ])
+    @endif
 </head>
 
 <body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)] antialiased">
