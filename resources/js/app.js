@@ -223,88 +223,23 @@ function initHomeHero() {
     const hero = document.querySelector("[data-home-hero]");
     if (!hero) return;
 
-    const stage = hero.querySelector(".farzin-hero-rail__stage");
     const slides = [...hero.querySelectorAll("[data-hero-slide]")];
-    const dots = [...hero.querySelectorAll("[data-hero-dot]")];
     const prev = hero.querySelector("[data-hero-prev]");
     const next = hero.querySelector("[data-hero-next]");
-
-    if (!stage || slides.length < 2) return;
+    const dots = [...hero.querySelectorAll("[data-hero-dot]")];
+    const current = hero.querySelector("[data-hero-current]");
+    if (slides.length < 2) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const visibleRadius = 2;
-    let index = 0;
+    let index = slides.findIndex((slide) => slide.classList.contains("is-active"));
+    if (index < 0) index = 0;
     let timer = null;
-    let startX = null;
-    let resizeFrame = null;
+    let progressAnimation = null;
+    let touchStartX = null;
 
-    const wrap = (value) => (value + slides.length) % slides.length;
-
-    const getRelativeIndex = (slideIndex) => {
-        let relative = slideIndex - index;
-        if (relative > slides.length / 2) relative -= slides.length;
-        if (relative < -slides.length / 2) relative += slides.length;
-        return relative;
-    };
-
-    const layout = () => {
-        const stageWidth = stage.clientWidth;
-        const cardWidth = Math.min(330, Math.max(205, stageWidth * 0.24));
-
-        slides.forEach((slide, slideIndex) => {
-            const relative = getRelativeIndex(slideIndex);
-            const visible = Math.abs(relative) <= visibleRadius;
-            const isActive = relative === 0;
-
-            if (!visible) {
-                slide.style.setProperty(
-                    "--hero-x",
-                    relative > 0 ? stageWidth + "px" : -stageWidth + "px",
-                );
-                slide.style.setProperty("--hero-scale", "0.42");
-                slide.style.setProperty("--hero-opacity", "0");
-                slide.style.setProperty("--hero-blur", "4px");
-                slide.style.setProperty("--hero-z-index", "0");
-                slide.style.setProperty("--hero-z", "0px");
-                slide.classList.remove("is-active");
-                slide.setAttribute("aria-hidden", "true");
-                slide.querySelector("a")?.setAttribute("tabindex", "-1");
-                return;
-            }
-
-            const spread = Math.min(cardWidth * 0.76, stageWidth * 0.27);
-
-            slide.style.setProperty("--hero-x", relative * spread + "px");
-            slide.style.setProperty(
-                "--hero-scale",
-                isActive ? "1" : Math.abs(relative) === 1 ? "0.82" : "0.67",
-            );
-            slide.style.setProperty(
-                "--hero-opacity",
-                isActive ? "1" : Math.abs(relative) === 1 ? "0.68" : "0.34",
-            );
-            slide.style.setProperty(
-                "--hero-blur",
-                isActive ? "0px" : Math.abs(relative) === 1 ? "0.5px" : "1.5px",
-            );
-            slide.style.setProperty("--hero-z", isActive ? "60px" : "0px");
-            slide.style.setProperty("--hero-z-index", String(5 - Math.abs(relative)));
-
-            slide.classList.toggle("is-active", isActive);
-            slide.setAttribute("aria-hidden", isActive ? "false" : "true");
-            slide.querySelector("a")?.setAttribute("tabindex", isActive ? "0" : "-1");
-        });
-    };
-
-    const render = (nextIndex) => {
-        index = wrap(nextIndex);
-        layout();
-
-        dots.forEach((dot, dotIndex) => {
-            const active = dotIndex === index;
-            dot.classList.toggle("is-active", active);
-            dot.setAttribute("aria-selected", active ? "true" : "false");
-        });
+    const setProgress = () => {
+        const progress = hero.querySelector(".farzin-hero-rail__dots");
+        void progress;
     };
 
     const stop = () => {
@@ -312,30 +247,58 @@ function initHomeHero() {
             window.clearInterval(timer);
             timer = null;
         }
+        window.clearTimeout(progressAnimation);
+    };
+
+    const render = (nextIndex, restart = true) => {
+        index = (nextIndex + slides.length) % slides.length;
+
+        slides.forEach((slide, i) => {
+            const active = i === index;
+            slide.classList.toggle("is-active", active);
+            slide.setAttribute("aria-hidden", active ? "false" : "true");
+
+            const link = slide.querySelector("a");
+            if (link) link.tabIndex = active ? 0 : -1;
+        });
+
+        dots.forEach((dot, i) => {
+            const active = i === index;
+            dot.classList.toggle("is-active", active);
+            dot.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        if (current) {
+            current.textContent = String(index + 1).padStart(2, "0");
+        }
+
+        const imageProgress = hero.querySelector(".farzin-home-hero__progress span");
+        if (imageProgress) {
+            imageProgress.style.transition = "none";
+            imageProgress.style.transform = "scaleX(0)";
+            requestAnimationFrame(() => {
+                imageProgress.style.transition = "transform 5.2s linear";
+                imageProgress.style.transform = "scaleX(1)";
+            });
+        }
+
+        if (restart) start();
     };
 
     const start = () => {
         stop();
-        if (!reduceMotion.matches) {
-            timer = window.setInterval(() => render(index + 1), 5200);
-        }
+        if (reduceMotion.matches) return;
+
+        timer = window.setInterval(() => {
+            render(index + 1, false);
+        }, 5200);
     };
 
-    prev?.addEventListener("click", () => {
-        render(index - 1);
-        start();
-    });
-
-    next?.addEventListener("click", () => {
-        render(index + 1);
-        start();
-    });
+    prev?.addEventListener("click", () => render(index - 1));
+    next?.addEventListener("click", () => render(index + 1));
 
     dots.forEach((dot, dotIndex) => {
-        dot.addEventListener("click", () => {
-            render(dotIndex);
-            start();
-        });
+        dot.addEventListener("click", () => render(dotIndex));
     });
 
     hero.addEventListener("mouseenter", stop);
@@ -345,55 +308,36 @@ function initHomeHero() {
         if (!hero.contains(event.relatedTarget)) start();
     });
 
-    stage.addEventListener(
-        "touchstart",
-        (event) => {
-            startX = event.changedTouches[0]?.clientX ?? null;
-            stop();
-        },
-        { passive: true },
-    );
+    hero.addEventListener("touchstart", (event) => {
+        touchStartX = event.changedTouches[0]?.clientX ?? null;
+        stop();
+    }, { passive: true });
 
-    stage.addEventListener(
-        "touchend",
-        (event) => {
-            if (startX === null) return;
+    hero.addEventListener("touchend", (event) => {
+        if (touchStartX === null) return;
+        const endX = event.changedTouches[0]?.clientX ?? touchStartX;
+        const distance = endX - touchStartX;
+        touchStartX = null;
 
-            const endX = event.changedTouches[0]?.clientX ?? startX;
-            const distance = endX - startX;
-            startX = null;
-
-            if (Math.abs(distance) >= 45) {
-                render(distance < 0 ? index + 1 : index - 1);
-            }
-
+        if (Math.abs(distance) >= 45) {
+            render(distance < 0 ? index + 1 : index - 1);
+        } else {
             start();
-        },
-        { passive: true },
-    );
+        }
+    }, { passive: true });
 
     hero.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") {
             event.preventDefault();
             render(index + 1);
-            start();
         }
-
         if (event.key === "ArrowRight") {
             event.preventDefault();
             render(index - 1);
-            start();
         }
     });
 
-    const resizeObserver = new ResizeObserver(() => {
-        if (resizeFrame) cancelAnimationFrame(resizeFrame);
-        resizeFrame = requestAnimationFrame(layout);
-    });
-
-    resizeObserver.observe(stage);
     reduceMotion.addEventListener?.("change", start);
-
-    render(0);
+    render(index, false);
     start();
 }
