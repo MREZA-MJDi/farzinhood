@@ -209,7 +209,7 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="home-section home-section--categories mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
@@ -250,7 +250,7 @@
         </div>
 
 
-        <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div class="home-category-grid mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
 
             @forelse($categories ?? [] as $category)
 
@@ -354,7 +354,7 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="bg-[var(--color-neutral-50)] py-20">
+    <section class="home-section home-section--featured bg-[var(--color-neutral-50)] py-20">
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -397,7 +397,7 @@
             </div>
 
 
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            <div class="home-product-grid mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
 
                 @forelse($featuredProducts ?? [] as $product)
 
@@ -426,7 +426,7 @@
         EDITORIAL
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="home-section home-section--editorial mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div
             class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"
