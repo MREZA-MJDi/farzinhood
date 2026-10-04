@@ -260,7 +260,7 @@
                 >
 
                     <div
-                        class="relative aspect-[1.05] overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-[#eef0f3] to-[#d9dde3]"
+                        class="relative aspect-[1.05] overflow-hidden rounded-[1.4rem] bg-gradient-to-br from-[var(--color-neutral-100)] to-[var(--color-neutral-200)]"
                     >
 
                         @if($category->image)
