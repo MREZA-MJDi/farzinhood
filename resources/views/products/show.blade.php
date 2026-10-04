@@ -1,1033 +1,411 @@
 @extends('layouts.app')
 
-@section('title', $product->meta_title ?: $product->name . ' | فرزین')
-
+@section('title', ($product->meta_title ?: $product->name) . ' | فرزین')
 @section('meta_description', $product->meta_description ?: ($product->short_description ?: $product->name))
-
 @section('canonical_url', $product->canonical_url ?: url()->current())
+@section('og_type', 'product')
+@section('og_image', $product->primaryImage ? asset('storage/' . $product->primaryImage->image) : asset('images/brand/logo.png'))
+@section('meta_robots', 'index, follow')
+
+@push('head')
+    @php
+        $productImage = $product->primaryImage
+            ? asset('storage/' . $product->primaryImage->image)
+            : asset('images/brand/logo.png');
+
+        $productSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Product',
+            'name' => $product->name,
+            'description' => $product->meta_description ?: ($product->short_description ?: $product->name),
+            'sku' => $product->sku,
+            'image' => $productImage,
+            'brand' => $product->brand ? ['@type' => 'Brand', 'name' => $product->brand] : null,
+            'offers' => [
+                '@type' => 'Offer',
+                'url' => url()->current(),
+                'priceCurrency' => 'IRR',
+                'price' => (string) $product->price,
+                'availability' => $product->stock > 0
+                    ? 'https://schema.org/InStock'
+                    : 'https://schema.org/OutOfStock',
+            ],
+        ];
+
+        if ($reviewCount > 0) {
+            $productSchema['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => (string) $reviewAverage,
+                'reviewCount' => $reviewCount,
+            ];
+        }
+    @endphp
+
+    <script type="application/ld+json">
+        @json($productSchema)
+    </script>
+@endpush
 
 @section('content')
+<div class="product-v2">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-    <div class="bg-[var(--color-neutral-50)]">
-
-        {{-- =========================================================
-            MAIN PRODUCT
-        ========================================================== --}}
-
-        <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-
-            {{-- =====================================================
-                Breadcrumb
-            ====================================================== --}}
-
-            <nav
-                class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--color-text-muted)]"
-                aria-label="مسیر صفحه"
-            >
-
-                <a
-                    href="{{ route('home') }}"
-                    class="transition hover:text-[var(--color-accent-600)]"
-                >
-                    خانه
-                </a>
-
-                <svg
-                    class="h-3.5 w-3.5 text-[var(--color-neutral-400)]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    aria-hidden="true"
-                >
-                    <path d="m9 18 6-6-6-6"/>
-                </svg>
-
-                <a
-                    href="{{ route('shop.index') }}"
-                    class="transition hover:text-[var(--color-accent-600)]"
-                >
-                    فروشگاه
-                </a>
-
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <nav class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-[var(--color-text-muted)]" aria-label="مسیر صفحه">
+                <a class="transition hover:text-[var(--color-accent-600)]" href="{{ route('home') }}">خانه</a>
+                <span aria-hidden="true">/</span>
+                <a class="transition hover:text-[var(--color-accent-600)]" href="{{ route('shop.index') }}">فروشگاه</a>
                 @if($product->category)
-
-                    <svg
-                        class="h-3.5 w-3.5 text-[var(--color-neutral-400)]"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        aria-hidden="true"
-                    >
-                        <path d="m9 18 6-6-6-6"/>
-                    </svg>
-
-                    <a
-                        href="{{ route('categories.show', $product->category) }}"
-                        class="transition hover:text-[var(--color-accent-600)]"
-                    >
+                    <span aria-hidden="true">/</span>
+                    <a class="transition hover:text-[var(--color-accent-600)]" href="{{ route('categories.show', $product->category) }}">
                         {{ $product->category->name }}
                     </a>
-
                 @endif
-
-                <svg
-                    class="h-3.5 w-3.5 text-[var(--color-neutral-400)]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    aria-hidden="true"
-                >
-                    <path d="m9 18 6-6-6-6"/>
-                </svg>
-
-                <span
-                    class="max-w-[220px] truncate font-bold text-[var(--color-text-secondary)]"
-                >
-                    {{ $product->name }}
-                </span>
-
+                <span aria-hidden="true">/</span>
+                <span class="max-w-[220px] truncate text-[var(--color-text-primary)]" aria-current="page">{{ $product->name }}</span>
             </nav>
 
+            @include('partials.back-link', [
+                'href' => route('shop.index'),
+                'label' => 'بازگشت به فروشگاه',
+            ])
+        </div>
 
-            {{-- =====================================================
-                PRODUCT GRID
-            ====================================================== --}}
-
-            <div class="mt-6 grid gap-7 lg:grid-cols-[0.94fr_1.06fr] lg:items-start lg:gap-9">
-
-
-                {{-- =================================================
-                    GALLERY
-                ================================================== --}}
-
-                <div
-                    x-data="{
-                        active: @js(
-                            $product->primaryImage?->id
-                            ?? $product->images->first()?->id
-                        ),
-
-                        images: @js(
-                            $product->images
-                                ->map(fn($image) => [
-                                    'id' => $image->id,
-                                    'url' => asset('storage/' . $image->image),
-                                    'alt' => $image->alt ?: $product->name,
-                                ])
-                                ->values()
-                        )
-                    }"
-                    class="lg:sticky lg:top-28 lg:self-start"
-                >
-
-                    {{-- Main image --}}
-                    <div
-                        class="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]"
-                    >
-
-                        <div class="relative aspect-[4/4.7] overflow-hidden bg-[var(--color-neutral-100)] sm:aspect-[4/4.35]">
-
-                            {{-- Decorative surface --}}
-                            <div
-                                class="pointer-events-none absolute -right-16 -top-16 z-[1] h-52 w-52 rounded-full bg-white/60 blur-3xl"
-                            ></div>
-
-                            <div
-                                class="pointer-events-none absolute -bottom-20 -left-16 z-[1] h-60 w-60 rounded-full bg-[var(--color-neutral-200)]/50 blur-3xl"
-                            ></div>
-
-
-                            {{-- Images --}}
-                            <template
-                                x-for="image in images"
-                                :key="image.id"
-                            >
-
-                                <div
-                                    x-show="active === image.id"
-                                    x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 scale-[1.015]"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    class="absolute inset-0"
-                                >
-
-                                    <img
-                                        :src="image.url"
-                                        :alt="image.alt"
-                                        class="h-full w-full object-cover"
-                                    >
-
-                                </div>
-
-                            </template>
-
-
-                            {{-- Empty gallery --}}
-                            <div
-                                x-show="images.length === 0"
-                                class="absolute inset-0 flex items-center justify-center text-[var(--color-neutral-400)]"
-                            >
-                                <svg
-                                    class="h-20 w-20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1"
-                                    aria-hidden="true"
-                                >
-                                    <rect x="3" y="4" width="18" height="16" rx="2"/>
-                                    <circle cx="8.5" cy="9" r="1.4"/>
-                                    <path d="m21 15-5-5-4.5 4.5-2.5-2.5L3 18"/>
-                                </svg>
-                            </div>
-
-
-                            {{-- Discount badge --}}
-                            @if($product->discount > 0)
-
-                                <div
-                                    class="absolute right-4 top-4 z-20 rounded-full bg-[var(--color-accent-600)] px-3.5 py-2 text-[11px] font-black text-white shadow-lg shadow-[var(--color-accent-600)]/20"
-                                >
-                                    {{ $product->discount }}٪ تخفیف
-                                </div>
-
-                            @elseif($product->is_featured)
-
-                                <div
-                                    class="absolute right-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full bg-[var(--color-brand-900)] px-3.5 py-2 text-[11px] font-black text-white shadow-lg"
-                                >
-                                    <svg
-                                        class="h-3.5 w-3.5"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="m12 2 2.7 6.3L21 11l-6.3 2.7L12 20l-2.7-6.3L3 11l6.3-2.7L12 2Z"/>
-                                    </svg>
-
-                                    انتخاب ویژه
-                                </div>
-
-                            @endif
-
-
-                            {{-- Stock --}}
-                            @if(!$product->is_active || $product->stock <= 0)
-
-                                <div
-                                    class="absolute left-4 top-4 z-20 rounded-full bg-[var(--color-brand-950)]/90 px-3.5 py-2 text-[11px] font-black text-white shadow-lg backdrop-blur"
-                                >
-                                    ناموجود
-                                </div>
-
-                            @elseif($product->stock <= 5)
-
-                                <div
-                                    class="absolute left-4 top-4 z-20 rounded-full border border-white/80 bg-white/90 px-3.5 py-2 text-[11px] font-black text-[var(--color-text-secondary)] shadow-sm backdrop-blur"
-                                >
-                                    فقط {{ $product->stock }} عدد
-                                </div>
-
-                            @endif
-
-                        </div>
-
+        <section class="product-v2__layout mt-4">
+            <section class="product-v2__visual" aria-label="گالری محصول" data-product-gallery>
+                <div class="product-gallery-v2__stage">
+                    <div class="product-gallery-v2__meta">
+                        <span>FARZIN / VISUAL</span>
+                        <span><b data-gallery-current>01</b> / {{ str_pad((string) max(1, $product->images->count()), 2, '0', STR_PAD_LEFT) }}</span>
                     </div>
 
-
-                    {{-- =================================================
-                        Thumbnails
-                    ================================================== --}}
-
-                    <div
-                        x-show="images.length > 1"
-                        class="mt-4 grid grid-cols-5 gap-3"
+                    <button
+                        type="button"
+                        class="product-gallery-v2__main-button"
+                        data-gallery-open
+                        aria-label="بزرگ‌نمایی تصویر محصول"
+                        @if(!$product->primaryImage && $product->images->isEmpty()) disabled @endif
                     >
+                        @if($product->primaryImage)
+                            <img
+                                src="{{ asset('storage/' . $product->primaryImage->image) }}"
+                                alt="{{ $product->primaryImage->alt ?: $product->name }}"
+                                data-gallery-main
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="async"
+                            >
+                        @elseif($product->images->first())
+                            <img
+                                src="{{ asset('storage/' . $product->images->first()->image) }}"
+                                alt="{{ $product->images->first()->alt ?: $product->name }}"
+                                data-gallery-main
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="async"
+                            >
+                        @else
+                            <div class="absolute inset-0 grid place-items-center text-[var(--color-text-soft)]">
+                                تصویر محصول ثبت نشده است
+                            </div>
+                        @endif
+                    </button>
 
-                        <template
-                            x-for="image in images"
-                            :key="`thumb-${image.id}`"
-                        >
+                    @if($product->discount > 0)
+                        <span class="product-gallery-v2__sale">{{ $product->discount }}٪ تخفیف</span>
+                    @elseif($product->is_featured)
+                        <span class="product-gallery-v2__sale">انتخاب ویژه</span>
+                    @endif
+                </div>
 
+                @if($product->images->count() > 1)
+                    <div class="product-gallery-v2__thumbs" role="list" aria-label="تصاویر محصول">
+                        @foreach($product->images as $image)
                             <button
                                 type="button"
-                                @click="active = image.id"
-                                :aria-label="`نمایش تصویر ${image.id}`"
-                                :class="
-                                    active === image.id
-                                    ? 'border-[var(--color-brand-900)] ring-2 ring-[var(--color-brand-900)]/10'
-                                    : 'border-[var(--color-border)] hover:border-[var(--color-border-strong)]'
-                                "
-                                class="overflow-hidden rounded-2xl border-2 bg-white transition duration-200"
+                                class="product-gallery-v2__thumb {{ $loop->first || ($product->primaryImage?->id === $image->id) ? 'is-active' : '' }}"
+                                data-gallery-thumb
+                                data-gallery-src="{{ asset('storage/' . $image->image) }}"
+                                data-gallery-alt="{{ $image->alt ?: $product->name }}"
+                                data-gallery-index="{{ $loop->iteration }}"
+                                aria-label="تصویر {{ $loop->iteration }}"
+                                aria-pressed="{{ $loop->first || ($product->primaryImage?->id === $image->id) ? 'true' : 'false' }}"
                             >
-
                                 <img
-                                    :src="image.url"
-                                    :alt="image.alt"
-                                    class="aspect-square w-full object-cover transition duration-300 hover:scale-105"
-                                    loading="lazy"
+                                    src="{{ asset('storage/' . $image->image) }}"
+                                    alt=""
+                                    loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                                    decoding="async"
                                 >
-
                             </button>
-
-                        </template>
-
+                        @endforeach
                     </div>
-
-                </div>
-
-
-                {{-- =================================================
-                    PRODUCT DETAILS
-                ================================================== --}}
-
-                <div>
-
-                    {{-- Brand / category --}}
-                    <div class="flex flex-wrap items-center gap-2">
-
-                        @if($product->brand)
-
-                            <span
-                                class="text-xs font-black text-[var(--color-brand-700)]"
-                            >
-                                {{ $product->brand }}
-                            </span>
-
-                        @endif
-
-                        @if($product->category)
-
-                            <span
-                                class="text-xs text-[var(--color-neutral-400)]"
-                            >
-                                /
-                            </span>
-
-                            <a
-                                href="{{ route('categories.show', $product->category) }}"
-                                class="text-xs font-bold text-[var(--color-text-muted)] transition hover:text-[var(--color-accent-600)]"
-                            >
-                                {{ $product->category->name }}
-                            </a>
-
-                        @endif
-
-                    </div>
-
-
-                    {{-- Product title --}}
-                    <h1
-                        class="mt-4 max-w-3xl text-3xl font-black leading-[1.35] tracking-tight text-[var(--color-text-primary)] sm:text-4xl xl:text-5xl"
-                    >
-                        {{ $product->name }}
-                    </h1>
-
-
-                    {{-- Reviews --}}
-                    @if($product->review_count > 0)
-
-                        <div class="mt-5 flex flex-wrap items-center gap-3">
-
-                            <div class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-700">
-
-                                <svg
-                                    class="h-3.5 w-3.5 text-amber-500"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path d="m12 2.8 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.4l6.2-.9L12 2.8Z"/>
-                                </svg>
-
-                                {{ number_format($product->rating, 1) }}
-
-                            </div>
-
-                            <span class="text-xs text-[var(--color-text-muted)]">
-                                بر اساس {{ number_format($product->review_count) }} نظر
-                            </span>
-
-                        </div>
-
-                    @endif
-
-
-                    {{-- Short description --}}
-                    @if($product->short_description)
-
-                        <p class="mt-7 max-w-2xl text-sm leading-8 text-[var(--color-text-secondary)] sm:text-base">
-                            {{ $product->short_description }}
-                        </p>
-
-                    @endif
-
-
-                    {{-- =================================================
-                        Price Card
-                    ================================================== --}}
-
-                    <div
-                        class="mt-8 rounded-[1.75rem] border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-xs)] sm:p-6"
-                    >
-
-                        <div class="flex flex-wrap items-end justify-between gap-5">
-
-                            <div>
-
-                                <p class="text-xs font-bold text-[var(--color-text-muted)]">
-                                    قیمت نهایی
-                                </p>
-
-                                <div class="mt-2 flex items-baseline gap-2">
-
-                                    <span
-                                        class="text-3xl font-black tracking-tight text-[var(--color-brand-950)] sm:text-4xl"
-                                    >
-                                        {{ number_format($product->price) }}
-                                    </span>
-
-                                    <span
-                                        class="text-xs font-bold text-[var(--color-text-muted)]"
-                                    >
-                                        تومان
-                                    </span>
-
-                                </div>
-
-                                @if($product->old_price && $product->old_price > $product->price)
-
-                                    <div class="mt-2 flex items-center gap-2">
-
-                                        <span
-                                            class="text-sm font-medium text-[var(--color-text-soft)] line-through"
-                                        >
-                                            {{ number_format($product->old_price) }}
-                                        </span>
-
-                                        @if($product->discount > 0)
-
-                                            <span
-                                                class="rounded-md bg-[var(--color-accent-50)] px-2 py-1 text-[10px] font-black text-[var(--color-accent-700)]"
-                                            >
-                                                {{ $product->discount }}٪
-                                            </span>
-
-                                        @endif
-
-                                    </div>
-
-                                @endif
-
-                            </div>
-
-
-                            {{-- Availability --}}
-                            <div>
-
-                                @if($product->is_active && $product->stock > 0)
-
-                                    <div
-                                        class="inline-flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-700"
-                                    >
-                                        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                                        موجود در انبار
-                                    </div>
-
-                                @else
-
-                                    <div
-                                        class="inline-flex items-center gap-2 rounded-xl bg-[var(--color-neutral-100)] px-3 py-2 text-xs font-black text-[var(--color-text-muted)]"
-                                    >
-                                        فعلاً ناموجود
-                                    </div>
-
-                                @endif
-
-                            </div>
-
-                        </div>
-
-
-                        {{-- Savings --}}
-                        @if($product->old_price && $product->old_price > $product->price)
-
-                            <div class="mt-5 rounded-xl bg-[var(--color-accent-50)] px-4 py-3 text-xs font-bold text-[var(--color-accent-700)]">
-
-                                با این خرید حدود
-                                <span class="font-black">
-                                    {{ number_format($product->old_price - $product->price) }}
-                                </span>
-                                تومان صرفه‌جویی می‌کنید.
-
-                            </div>
-
-                        @endif
-
-                    </div>
-
-
-                    {{-- =================================================
-                        ADD TO CART
-                    ================================================== --}}
-
-                    @if($product->is_active && $product->stock > 0)
-
-                        <form
-                            action="{{ route('customer.cart.add') }}"
-                            method="POST"
-                            class="mt-5"
-                        >
-                            @csrf
-
-                            <input
-                                type="hidden"
-                                name="product_id"
-                                value="{{ $product->id }}"
-                            >
-
-                            <div class="flex flex-col gap-3 sm:flex-row">
-
-                                {{-- Quantity --}}
-                                <div
-                                    class="flex h-14 shrink-0 items-center rounded-2xl border border-[var(--color-border)] bg-white px-3"
-                                >
-
-                                    <label
-                                        for="quantity"
-                                        class="ml-3 text-xs font-bold text-[var(--color-text-muted)]"
-                                    >
-                                        تعداد
-                                    </label>
-
-                                    <input
-                                        id="quantity"
-                                        type="number"
-                                        name="quantity"
-                                        min="1"
-                                        max="{{ min($product->stock, 99) }}"
-                                        value="1"
-                                        inputmode="numeric"
-                                        class="w-16 bg-transparent text-center text-sm font-black text-[var(--color-text-primary)] outline-none"
-                                    >
-
-                                </div>
-
-
-                                {{-- Submit --}}
-                                <button
-                                    type="submit"
-                                    class="group flex h-14 flex-1 items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-600)]/15"
-                                >
-
-                                    <svg
-                                        class="h-5 w-5"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"/>
-                                        <circle cx="10" cy="20" r="1"/>
-                                        <circle cx="18" cy="20" r="1"/>
-                                    </svg>
-
-                                    افزودن به سبد خرید
-
-                                    <svg
-                                        class="h-4 w-4 transition duration-300 group-hover:-translate-x-1"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="m9 18 6-6-6-6"/>
-                                    </svg>
-
-                                </button>
-
-                            </div>
-
-                        </form>
-
-                    @else
-
-                        <div
-                            class="mt-5 flex items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700"
-                        >
-
-                            <svg
-                                class="h-5 w-5 shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                aria-hidden="true"
-                            >
-                                <circle cx="12" cy="12" r="9"/>
-                                <path d="M12 8v5"/>
-                                <path d="M12 16h.01"/>
-                            </svg>
-
-                            این محصول در حال حاضر قابل سفارش نیست.
-
-                        </div>
-
-                    @endif
-
-
-                    {{-- =================================================
-                        Trust Features
-                    ================================================== --}}
-
-                    <div class="mt-6 grid gap-3 sm:grid-cols-3">
-
-                        <div
-                            class="rounded-2xl border border-[var(--color-border)] bg-white p-4"
-                        >
-                            <div
-                                class="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-900)]"
-                            >
-                                <svg
-                                    class="h-4.5 w-4.5"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M3 7h11v10H3z"/>
-                                    <path d="M14 10h3l4 4v3h-7z"/>
-                                    <circle cx="7" cy="19" r="1.5"/>
-                                    <circle cx="18" cy="19" r="1.5"/>
-                                </svg>
-                            </div>
-
-                            <p class="mt-3 text-xs font-black text-[var(--color-text-primary)]">
-                                ارسال مطمئن
-                            </p>
-
-                            <p class="mt-1 text-[11px] leading-5 text-[var(--color-text-muted)]">
-                                سفارش شما در مسیر ارسال قابل پیگیری است.
-                            </p>
-                        </div>
-
-
-                        <div
-                            class="rounded-2xl border border-[var(--color-border)] bg-white p-4"
-                        >
-                            <div
-                                class="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-900)]"
-                            >
-                                <svg
-                                    class="h-4.5 w-4.5"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M12 3 5 6v5c0 5 3 8.5 7 10 4-1.5 7-5 7-10V6l-7-3Z"/>
-                                    <path d="m9 12 2 2 4-4"/>
-                                </svg>
-                            </div>
-
-                            <p class="mt-3 text-xs font-black text-[var(--color-text-primary)]">
-                                پرداخت امن
-                            </p>
-
-                            <p class="mt-1 text-[11px] leading-5 text-[var(--color-text-muted)]">
-                                پرداخت آنلاین در مسیر امن انجام می‌شود.
-                            </p>
-                        </div>
-
-
-                        <a
-                            href="{{ route('contact.index') }}"
-                            class="group rounded-2xl border border-[var(--color-border)] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[var(--color-brand-300)] hover:shadow-sm"
-                        >
-                            <div
-                                class="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-accent-50)] text-[var(--color-accent-600)]"
-                            >
-                                <svg
-                                    class="h-4.5 w-4.5"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/>
-                                </svg>
-                            </div>
-
-                            <p class="mt-3 text-xs font-black text-[var(--color-text-primary)]">
-                                نیاز به مشاوره؟
-                            </p>
-
-                            <p class="mt-1 text-[11px] leading-5 text-[var(--color-text-muted)]">
-                                قبل از خرید با ما در ارتباط باشید.
-                            </p>
-                        </a>
-
-                    </div>
-
-
-                    {{-- SKU --}}
-                    @if($product->sku)
-
-                        <div class="mt-7 flex items-center justify-between border-t border-[var(--color-border)] pt-5">
-
-                            <span class="text-xs text-[var(--color-text-muted)]">
-                                کد محصول
-                            </span>
-
-                            <span
-                                class="font-mono text-xs font-bold text-[var(--color-text-secondary)]"
-                                dir="ltr"
-                            >
-                                {{ $product->sku }}
-                            </span>
-
-                        </div>
-
-                    @endif
-
-                </div>
-
-            </div>
-
-
-            {{-- =====================================================
-                DESCRIPTION
-            ====================================================== --}}
-
-            @if($product->description)
-
-                <section class="mt-16 border-t border-[var(--color-border)] pt-14">
-
-                    <div class="grid gap-8 lg:grid-cols-[220px_1fr] lg:gap-12">
-
-                        <div>
-
-                            <div class="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent-600)]">
-                                Details
-                            </div>
-
-                            <h2 class="mt-3 text-2xl font-black text-[var(--color-text-primary)]">
-                                درباره محصول
-                            </h2>
-
-                        </div>
-
-                        <div
-                            class="prose-farzin max-w-4xl rounded-[1.75rem] border border-[var(--color-border)] bg-white p-6 sm:p-8"
-                        >
-                            {!! nl2br(e($product->description)) !!}
-                        </div>
-
-                    </div>
-
-                </section>
-
-            @endif
-
-
-            {{-- =====================================================
-                REVIEWS
-            ====================================================== --}}
-
-            <section class="mt-16 border-t border-[var(--color-border)] pt-14">
-
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-
-                    <div>
-
-                        <div class="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent-600)]">
-                            Reviews
-                        </div>
-
-                        <h2 class="mt-3 text-2xl font-black text-[var(--color-text-primary)]">
-                            تجربه خریداران
-                        </h2>
-
-                    </div>
-
-
-                    @if($product->review_count > 0)
-
-                        <div
-                            class="inline-flex items-center gap-2 rounded-2xl bg-amber-50 px-4 py-3"
-                        >
-
-                            <svg
-                                class="h-5 w-5 text-amber-500"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path d="m12 2.8 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.4l6.2-.9L12 2.8Z"/>
-                            </svg>
-
-                            <span class="text-xl font-black text-amber-700">
-                                {{ number_format($product->rating, 1) }}
-                            </span>
-
-                            <span class="text-xs font-medium text-amber-600">
-                                / ۵
-                            </span>
-
-                        </div>
-
-                    @endif
-
-                </div>
-
-
-                <div class="mt-8 grid gap-4 md:grid-cols-2">
-
-                    @forelse($product->reviews as $review)
-
-                        <article
-                            class="rounded-[1.75rem] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-xs)]"
-                        >
-
-                            <div class="flex items-start justify-between gap-4">
-
-                                <div class="min-w-0">
-
-                                    <div class="flex items-center gap-2">
-
-                                        <div
-                                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-xs font-black text-[var(--color-brand-900)]"
-                                        >
-                                            {{ mb_substr($review->user?->name ?? 'ک', 0, 1) }}
-                                        </div>
-
-                                        <div class="min-w-0">
-
-                                            <div class="truncate text-sm font-black text-[var(--color-text-primary)]">
-                                                {{ $review->user?->name ?? 'کاربر' }}
-                                            </div>
-
-                                            <div class="mt-0.5 text-[10px] text-[var(--color-text-muted)]">
-                                                {{ $review->created_at?->format('Y/m/d') }}
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="flex shrink-0 items-center gap-1 rounded-lg bg-amber-50 px-2.5 py-1.5 text-[11px] font-black text-amber-700">
-
-                                    <svg
-                                        class="h-3 w-3 text-amber-500"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="m12 2.8 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.4l6.2-.9L12 2.8Z"/>
-                                    </svg>
-
-                                    {{ $review->rating }}
-
-                                </div>
-
-                            </div>
-
-
-                            @if($review->title)
-
-                                <h3 class="mt-5 text-sm font-black text-[var(--color-text-primary)]">
-                                    {{ $review->title }}
-                                </h3>
-
-                            @endif
-
-
-                            <p class="mt-3 text-sm leading-8 text-[var(--color-text-secondary)]">
-                                {{ $review->body }}
-                            </p>
-
-                        </article>
-
-                    @empty
-
-                        <div
-                            class="md:col-span-2 rounded-[1.75rem] border border-dashed border-[var(--color-border-strong)] bg-white px-6 py-14 text-center"
-                        >
-
-                            <div
-                                class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-brand-50)] text-[var(--color-brand-900)]"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.7"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8l-4 3V5Z"/>
-                                    <path d="M8 9h8M8 13h5"/>
-                                </svg>
-                            </div>
-
-                            <p class="mt-4 text-sm font-black text-[var(--color-text-primary)]">
-                                هنوز نظری برای این محصول ثبت نشده است.
-                            </p>
-
-                            <p class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
-                                تجربه اولین خریداران می‌تواند به انتخاب بهتر دیگران کمک کند.
-                            </p>
-
-                        </div>
-
-                    @endforelse
-
-                </div>
-
+                @endif
             </section>
 
+            <aside class="product-v2__purchase" aria-labelledby="product-title">
+                <div class="product-v2__purchase-inner">
+                    <div class="product-v2__identity">
+                        <span class="product-v2__eyebrow">FARZIN / PRODUCT</span>
+                        @if($product->brand)
+                            <span>{{ $product->brand }}</span>
+                        @endif
+                        @if($product->category)
+                            <a href="{{ route('categories.show', $product->category) }}">{{ $product->category->name }}</a>
+                        @endif
+                        @if($product->sku)
+                            <span dir="ltr">SKU / {{ $product->sku }}</span>
+                        @endif
+                    </div>
 
-            {{-- =====================================================
-                RELATED PRODUCTS
-            ====================================================== --}}
+                    <div class="product-v2__title">
+                        <h1 id="product-title">{{ $product->name }}</h1>
+                        <p>{{ $product->short_description ?: 'جزئیات محصول را بررسی کن و انتخابت را با خیال راحت کامل کن.' }}</p>
+                    </div>
 
-            @if($relatedProducts->count())
+                    @if($reviewCount > 0)
+                        <div class="product-v2__rating" aria-label="امتیاز {{ number_format($reviewAverage, 1) }} از ۵">
+                            <strong>★ {{ number_format($reviewAverage, 1) }}</strong>
+                            <span>{{ number_format($reviewCount) }} نظر تاییدشده</span>
+                        </div>
+                    @endif
 
-                <section class="mt-16 border-t border-[var(--color-border)] pt-14">
-
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-
-                        <div>
-
-                            <div class="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent-600)]">
-                                You may also like
+                    <div class="product-v2__pricebox">
+                        <div class="product-v2__price-row">
+                            <div class="product-v2__price">
+                                <strong>{{ number_format($product->price) }}</strong>
+                                <span>تومان</span>
+                                @if($product->old_price && $product->old_price > $product->price)
+                                    <span class="product-v2__old">{{ number_format($product->old_price) }} تومان</span>
+                                @endif
                             </div>
 
-                            <h2 class="mt-3 text-2xl font-black text-[var(--color-text-primary)] sm:text-3xl">
-                                شاید این محصولات هم مناسب شما باشند
-                            </h2>
-
+                            <span class="product-v2__stock {{ $product->stock < 1 ? 'is-out' : '' }}">
+                                <i aria-hidden="true"></i>
+                                {{ $product->stock > 0 ? 'موجود و آماده سفارش' : 'فعلاً ناموجود' }}
+                            </span>
                         </div>
+                    </div>
 
+                    @if($product->stock > 0 && $product->is_active)
+                        @if(auth()->check() && auth()->user()->isCustomer())
+                            <form action="{{ route('customer.cart.add') }}" method="POST" class="mt-3">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                        @if($product->category)
+                                <div class="product-v2__buy">
+                                    <div class="product-v2__quantity" data-quantity-control data-max="{{ min($product->stock, 99) }}">
+                                        <button type="button" data-quantity-action="decrease" aria-label="کاهش تعداد">−</button>
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            value="1"
+                                            min="1"
+                                            max="{{ min($product->stock, 99) }}"
+                                            inputmode="numeric"
+                                            aria-label="تعداد"
+                                            data-quantity-input
+                                        >
+                                        <button type="button" data-quantity-action="increase" aria-label="افزایش تعداد">+</button>
+                                    </div>
 
+                                    <button class="product-v2__add" type="submit">
+                                        افزودن به سبد خرید
+                                    </button>
+                                </div>
+                                <p class="product-v2__buy-note">قیمت نهایی در زمان ثبت سفارش دوباره از محصول خوانده می‌شود.</p>
+                            </form>
+                        @else
                             <a
-                                href="{{ route('categories.show', $product->category) }}"
-                                class="inline-flex items-center gap-2 text-sm font-black text-[var(--color-brand-900)] transition hover:text-[var(--color-accent-600)]"
+                                class="product-v2__add flex items-center justify-center"
+                                href="{{ route('login') }}"
                             >
-                                مشاهده دسته‌بندی
-
-                                <svg
-                                    class="h-4 w-4"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.8"
-                                >
-                                    <path d="m9 18 6-6-6-6"/>
-                                </svg>
+                                ورود برای خرید
                             </a>
-
+                            <p class="product-v2__buy-note">بعد از ورود، به همین مسیر برمی‌گردی و خرید را ادامه می‌دهی.</p>
                         @endif
+                    @else
+                        <div class="mt-3 rounded-xl border border-[#eed0c8] bg-[var(--color-danger-surface)] p-3 text-xs font-bold text-[var(--color-danger-ink)]">
+                            این محصول در حال حاضر قابل سفارش نیست.
+                        </div>
+                    @endif
 
+                    @if(auth()->check() && auth()->user()->isCustomer())
+                        <form action="{{ route('customer.wishlist.toggle', $product) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="product-v2__wish">
+                                {{ $isWishlisted ? '♥ حذف از علاقه‌مندی‌ها' : '♡ ذخیره در علاقه‌مندی‌ها' }}
+                            </button>
+                        </form>
+                    @endif
+
+                    <div class="product-v2__benefits">
+                        <div class="product-v2__benefit">
+                            <strong>قیمت شفاف</strong>
+                            <span>قیمت فعلی محصول مبنای خرید است.</span>
+                        </div>
+                        <div class="product-v2__benefit">
+                            <strong>موجودی واقعی</strong>
+                            <span>موجودی هنگام ثبت سفارش دوباره بررسی می‌شود.</span>
+                        </div>
+                        <div class="product-v2__benefit">
+                            <strong>پشتیبانی</strong>
+                            <span>برای انتخاب بهتر می‌توانی با ما تماس بگیری.</span>
+                        </div>
                     </div>
-
-
-                    <div class="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-
-                        @foreach($relatedProducts as $relatedProduct)
-
-                            @include('partials.product_card', [
-                                'product' => $relatedProduct
-                            ])
-
-                        @endforeach
-
-                    </div>
-
-                </section>
-
-            @endif
-
+                </div>
+            </aside>
         </section>
 
-
-        {{-- =========================================================
-            BOTTOM CTA
-        ========================================================== --}}
-
-        <section class="border-t border-[var(--color-border)] bg-white">
-
-            <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-
-                <div
-                    class="relative overflow-hidden rounded-[2rem] bg-[var(--color-brand-950)] p-7 text-white sm:p-10"
-                >
-
-                    <div
-                        class="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-[var(--color-accent-600)]/15 blur-3xl"
-                    ></div>
-
-                    <div
-                        class="pointer-events-none absolute -bottom-20 -right-10 h-52 w-52 rounded-full bg-white/[0.04] blur-3xl"
-                    ></div>
-
-                    <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-
-                        <div class="max-w-2xl">
-
-                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-                                FARZIN
-                            </span>
-
-                            <h2 class="mt-2 text-2xl font-black sm:text-3xl">
-                                درباره انتخاب این محصول سوالی دارید؟
-                            </h2>
-
-                            <p class="mt-3 text-sm leading-7 text-white/55">
-                                تیم فرزین برای مشاوره خرید و پاسخ به سوالات شما آماده است.
-                            </p>
-
-                        </div>
-
-
-                        <a
-                            href="{{ route('contact.index') }}"
-                            class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-6 py-3.5 text-sm font-black text-white transition hover:bg-[var(--color-accent-700)]"
-                        >
-                            تماس با ما
-
-                            <svg
-                                class="h-4 w-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                            >
-                                <path d="m9 18 6-6-6-6"/>
-                            </svg>
-                        </a>
-
-                    </div>
-
-                </div>
-
+        <section class="product-v2__information">
+            <div class="product-v2__information-head">
+                <span class="product-v2__eyebrow">FARZIN / DETAILS</span>
+                <h2>قبل از خرید، محصول را کامل بشناس.</h2>
             </div>
 
+            <div class="product-v2__details">
+                @if($product->description)
+                    <details open>
+                        <summary>
+                            <span>توضیحات محصول</span>
+                            <span aria-hidden="true">+</span>
+                        </summary>
+                        <div class="product-v2__details-content">
+                            {!! nl2br(e($product->description)) !!}
+                        </div>
+                    </details>
+                @endif
+
+                <details {{ !$product->description ? 'open' : '' }}>
+                    <summary>
+                        <span>مشخصات محصول</span>
+                        <span aria-hidden="true">+</span>
+                    </summary>
+                    <div class="product-v2__details-content">
+                        <dl class="grid gap-2 sm:grid-cols-2">
+                            @if($product->brand)
+                                <div><dt class="text-[10px] text-[var(--color-text-muted)]">برند</dt><dd class="font-bold">{{ $product->brand }}</dd></div>
+                            @endif
+                            @if($product->category)
+                                <div><dt class="text-[10px] text-[var(--color-text-muted)]">دسته</dt><dd class="font-bold">{{ $product->category->name }}</dd></div>
+                            @endif
+                            @if($product->sku)
+                                <div><dt class="text-[10px] text-[var(--color-text-muted)]">کد کالا</dt><dd class="font-mono font-bold" dir="ltr">{{ $product->sku }}</dd></div>
+                            @endif
+                            <div><dt class="text-[10px] text-[var(--color-text-muted)]">وضعیت</dt><dd class="font-bold">{{ $product->stock > 0 ? 'موجود' : 'ناموجود' }}</dd></div>
+                        </dl>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>
+                        <span>راهنمای سفارش</span>
+                        <span aria-hidden="true">+</span>
+                    </summary>
+                    <div class="product-v2__details-content">
+                        محصول را بررسی کن، تعداد را انتخاب کن و به سبد خرید اضافه کن. موجودی و قیمت در مرحله ثبت سفارش دوباره کنترل می‌شوند.
+                    </div>
+                </details>
+            </div>
         </section>
 
-    </div>
+        <section class="product-v2__reviews">
+            <div class="product-v2__reviews-head">
+                <div>
+                    <span class="product-v2__eyebrow">FARZIN / REVIEWS</span>
+                    <h2 class="mt-1 text-xl font-black text-[var(--color-text-primary)] sm:text-2xl">تجربه خریداران</h2>
+                </div>
+                @if($reviewCount > 0)
+                    <span class="rounded-full bg-[var(--color-warning-surface)] px-3 py-2 text-xs font-black text-[var(--color-warning-ink)]">
+                        {{ number_format($reviewAverage, 1) }} / ۵
+                    </span>
+                @endif
+            </div>
 
+            @if($canReview)
+                <div class="product-v2__review-form">
+                    <strong class="text-sm font-black text-[var(--color-text-primary)]">نظر خودت را ثبت کن</strong>
+                    <form action="{{ route('customer.reviews.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <label>
+                            <span class="sr-only">امتیاز</span>
+                            <select name="rating" required aria-label="امتیاز">
+                                <option value="">امتیاز</option>
+                                @for($rating = 5; $rating >= 1; $rating--)
+                                    <option value="{{ $rating }}">{{ $rating }} از ۵</option>
+                                @endfor
+                            </select>
+                        </label>
+                        <label>
+                            <span class="sr-only">عنوان</span>
+                            <input type="text" name="title" maxlength="255" placeholder="عنوان نظر (اختیاری)">
+                        </label>
+                        <label>
+                            <span class="sr-only">متن نظر</span>
+                            <textarea name="body" rows="4" maxlength="5000" minlength="5" required placeholder="تجربه‌ات از محصول..."></textarea>
+                        </label>
+                        <button type="submit" class="product-v2__review-submit">ارسال برای بررسی</button>
+                    </form>
+                </div>
+            @elseif(auth()->check() && auth()->user()->isCustomer())
+                <p class="mt-3 text-xs text-[var(--color-text-muted)]">برای ثبت نظر، باید این محصول را در یک سفارش پرداخت‌شده خریداری کرده باشی.</p>
+            @endif
+
+            <div class="product-v2__reviews-grid">
+                @forelse($product->reviews as $review)
+                    <article class="product-v2__review">
+                        <div class="product-v2__review-meta">
+                            <div>
+                                <div class="product-v2__review-user">{{ $review->user?->name ?: 'خریدار' }}</div>
+                                <span class="product-v2__review-date">{{ $review->created_at?->format('Y/m/d') }}</span>
+                            </div>
+                            <span class="product-v2__review-rating">★ {{ $review->rating }}</span>
+                        </div>
+                        @if($review->title)
+                            <h3>{{ $review->title }}</h3>
+                        @endif
+                        <p>{{ $review->body }}</p>
+                    </article>
+                @empty
+                    <div class="store-empty md:col-span-2">
+                        <div class="store-empty__icon">◎</div>
+                        <h2>هنوز نظری ثبت نشده است.</h2>
+                        <p>اولین خریدارانی که تجربه‌شان را ثبت کنند، به انتخاب بهتر بقیه کمک می‌کنند.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
+
+        @if($relatedProducts->isNotEmpty())
+            <section class="product-v2__related">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <span class="product-v2__eyebrow">FARZIN / RELATED</span>
+                        <h2 class="mt-1 text-xl font-black text-[var(--color-text-primary)] sm:text-2xl">انتخاب‌های نزدیک</h2>
+                    </div>
+                    @if($product->category)
+                        <a class="store-page-back" href="{{ route('categories.show', $product->category) }}">مشاهده دسته‌بندی ←</a>
+                    @endif
+                </div>
+
+                <div class="product-v2__related-grid">
+                    @foreach($relatedProducts as $relatedProduct)
+                        @include('partials.product_card', ['product' => $relatedProduct])
+                    @endforeach
+                </div>
+            </section>
+        @endif
+    </div>
+</div>
+
+<dialog class="store-lightbox" data-gallery-dialog aria-label="نمایش بزرگ تصویر محصول">
+    <div class="store-lightbox__panel">
+        <button type="button" class="store-lightbox__close" data-gallery-close aria-label="بستن">×</button>
+        <button type="button" class="store-lightbox__prev" data-gallery-prev aria-label="تصویر قبلی">‹</button>
+        <img src="" alt="" data-gallery-lightbox-image>
+        <button type="button" class="store-lightbox__next" data-gallery-next aria-label="تصویر بعدی">›</button>
+        <span class="store-lightbox__counter" data-gallery-counter></span>
+    </div>
+</dialog>
 @endsection
