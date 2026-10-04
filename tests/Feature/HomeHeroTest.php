@@ -58,8 +58,8 @@ class HomeHeroTest extends TestCase
             $this->assertStringContainsString('Hero Product '.$number, $heroHtml);
         }
 
-        $this->assertStringNotContainsString('Hero Product 1', $heroHtml);
-        $this->assertStringNotContainsString('Hero Product 2', $heroHtml);
+        $this->assertStringNotContainsString('>Hero Product 1</h2>', $heroHtml);
+        $this->assertStringNotContainsString('>Hero Product 2</h2>', $heroHtml);
     }
 
     public function test_inactive_or_missing_primary_image_products_do_not_enter_the_home_hero(): void
