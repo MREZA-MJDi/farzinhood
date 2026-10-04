@@ -50,12 +50,12 @@ class AuthController extends Controller
 
         if ($user->isAdmin()) {
             return redirect()
-                ->route('admin.dashboard')
+                ->intended(route('admin.dashboard'))
                 ->with('success', 'خوش آمدید.');
         }
 
         return redirect()
-            ->route('home')
+            ->intended(route('home'))
             ->with('success', 'خوش آمدید.');
     }
     public function register(
