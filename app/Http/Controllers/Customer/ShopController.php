@@ -36,7 +36,9 @@ class ShopController extends Controller
                 function ($query) use ($filters) {
                     $query->whereHas(
                         'category',
-                        fn ($q) => $q->where('slug', $filters['category'])
+                        fn ($q) => $q
+                            ->where('slug', $filters['category'])
+                            ->where('is_active', true)
                     );
                 }
             )
