@@ -8,121 +8,130 @@
 
     {{-- =========================================================
         HERO
-        Only the latest 10 active products with a primary image are
-        loaded by HomeController. The browser never receives the catalog.
+        Premium product rail. Backend intentionally supplies only the
+        latest 10 active products with a primary image.
     ========================================================== --}}
 
     @php($heroSlides = ($heroProducts ?? collect())->values())
 
     <section
-        class="relative isolate overflow-hidden bg-[var(--color-brand-950)] text-white"
+        class="farzin-hero-rail"
         data-home-hero
-        aria-label="محصولات تازه فرزین"
+        aria-label="جدیدترین محصولات فرزین"
     >
-        <div class="pointer-events-none absolute inset-0">
-            <div class="absolute -right-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-[var(--color-accent-600)]/15 blur-3xl"></div>
-            <div class="absolute -bottom-48 -left-32 h-[32rem] w-[32rem] rounded-full bg-[var(--color-brand-700)]/25 blur-3xl"></div>
-            <div class="absolute inset-0 opacity-[0.035]" style="background-image:linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px);background-size:56px 56px;"></div>
-        </div>
+        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--one" aria-hidden="true"></div>
+        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--two" aria-hidden="true"></div>
+        <div class="farzin-hero-rail__grid" aria-hidden="true"></div>
 
-        <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8 lg:py-20">
-            <div class="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
-                <div class="max-w-2xl">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.06] px-4 py-2 text-xs font-bold text-white/75 backdrop-blur">
-                        <span class="h-2 w-2 rounded-full bg-[var(--color-accent-500)]"></span>
-                        جدیدترین محصولات فرزین
+        <div class="farzin-hero-rail__inner">
+            <div class="farzin-hero-rail__copy">
+                <span class="farzin-hero-rail__eyebrow">
+                    <span></span>
+                    جدیدترین محصولات فرزین
+                </span>
+
+                <h1 class="farzin-hero-rail__title">
+                    انتخاب تازه،
+                    <strong>با نگاه حرفه‌ای.</strong>
+                </h1>
+
+                <p class="farzin-hero-rail__description">
+                    تازه‌ترین محصولات فروشگاه را در یک نگاه ببین،
+                    انتخاب کن و مستقیم وارد جزئیات محصول شو.
+                </p>
+
+                <div class="farzin-hero-rail__actions">
+                    <a
+                        href="{{ route('shop.index', ['sort' => 'latest']) }}"
+                        class="farzin-hero-rail__primary"
+                    >
+                        مشاهده تازه‌ها
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                    </a>
+                    <span class="farzin-hero-rail__meta">
+                        حداکثر ۱۰ محصول تازه
                     </span>
-
-                    <h1 class="mt-6 text-4xl font-black leading-[1.12] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
-                        تازه‌ترین انتخاب‌ها،
-                        <span class="text-[var(--color-accent-400)]">همین حالا.</span>
-                    </h1>
-
-                    <p class="mt-6 max-w-xl text-base leading-8 text-white/65 sm:text-lg">
-                        فقط ۱۰ محصول تازه و فعال فروشگاه در این بخش نمایش داده می‌شود؛
-                        سریع، سبک و مستقیم برای کشف محصول بعدی.
-                    </p>
-
-                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                        <a href="{{ route('shop.index', ['sort' => 'latest']) }}"
-                           class="inline-flex min-h-12 items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 py-3 text-sm font-black text-white shadow-xl shadow-[var(--color-accent-600)]/20 transition hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)]">
-                            مشاهده تازه‌ها
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 18 6-6-6-6"/></svg>
-                        </a>
-                        <a href="{{ route('shop.index') }}"
-                           class="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[.05] px-6 py-3 text-sm font-black text-white transition hover:bg-white/10">
-                            ورود به فروشگاه
-                        </a>
-                    </div>
-
-                    <div class="mt-8 flex flex-wrap gap-2 text-xs text-white/55">
-                        <span class="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">تازه‌ترین محصولات</span>
-                        <span class="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">اطلاعات شفاف</span>
-                        <span class="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">خرید مطمئن</span>
-                    </div>
                 </div>
+            </div>
 
-                <div class="relative min-w-0">
-                    <div class="relative mx-auto max-w-[620px]">
-                        <div class="absolute inset-8 rounded-[3rem] bg-[var(--color-accent-600)]/10 blur-3xl"></div>
-
-                        <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[.055] p-3 shadow-2xl backdrop-blur-xl sm:p-4">
-                            <div class="relative aspect-[4/4.5] overflow-hidden rounded-[1.5rem] bg-white/[.045]">
-                                @forelse($heroSlides as $index => $product)
-                                    <article
-                                        class="absolute inset-0 transition duration-500 ease-out {{ $index === 0 ? 'opacity-100 translate-x-0' : 'pointer-events-none opacity-0 translate-x-3' }}"
-                                        data-hero-slide="{{ $index }}"
-                                        aria-hidden="{{ $index === 0 ? 'false' : 'true' }}"
-                                    >
-                                        <a href="{{ route('products.show', $product) }}" class="block h-full">
-                                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent"></div>
-                                            <img
-                                                src="{{ asset('storage/' . $product->primaryImage->image) }}"
-                                                alt="{{ $product->primaryImage->alt ?: $product->name }}"
-                                                class="h-full w-full object-cover"
-                                                {{ $index === 0 ? 'loading=eager' : 'loading=lazy' }}
-                                                decoding="async"
-                                            >
-                                            <div class="absolute inset-x-0 bottom-0 p-5 sm:p-7">
-                                                <div class="flex items-center justify-between gap-3">
-                                                    <span class="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-bold text-white/75 backdrop-blur">
-                                                        {{ $product->category?->name ?? 'محصول جدید' }}
-                                                    </span>
-                                                    <span class="text-xs font-bold text-white/70">{{ $index + 1 }} / {{ $heroSlides->count() }}</span>
-                                                </div>
-                                                <h2 class="mt-3 line-clamp-2 text-xl font-black leading-8 sm:text-2xl">{{ $product->name }}</h2>
-                                                <div class="mt-2 text-sm font-bold text-white/75">{{ number_format($product->price) }} تومان</div>
-                                            </div>
-                                        </a>
-                                    </article>
-                                @empty
-                                    <div class="flex h-full items-center justify-center p-8 text-center text-sm text-white/55">
-                                        هنوز محصول فعالی برای نمایش در این بخش ثبت نشده است.
-                                    </div>
-                                @endforelse
+            <div class="farzin-hero-rail__stage">
+                @forelse($heroSlides as $index => $product)
+                    <article
+                        class="farzin-hero-rail__slide {{ $index === 0 ? 'is-active' : '' }}"
+                        data-hero-slide="{{ $index }}"
+                        style="--hero-index: {{ $index }};"
+                        aria-hidden="{{ $index === 0 ? 'false' : 'true' }}"
+                    >
+                        <a
+                            href="{{ route('products.show', $product) }}"
+                            class="farzin-hero-rail__product"
+                            tabindex="{{ $index === 0 ? '0' : '-1' }}"
+                        >
+                            <div class="farzin-hero-rail__image-wrap">
+                                <img
+                                    src="{{ asset('storage/' . $product->primaryImage->image) }}"
+                                    alt="{{ $product->primaryImage->alt ?: $product->name }}"
+                                    class="farzin-hero-rail__image"
+                                    {{ $index === 0 ? 'loading=eager' : 'loading=lazy' }}
+                                    decoding="async"
+                                >
                             </div>
 
-                            @if($heroSlides->count() > 1)
-                                <div class="mt-3 flex items-center gap-3">
-                                    <button type="button" data-hero-prev aria-label="محصول قبلی"
-                                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] text-white transition hover:bg-white/10 focus-visible:outline-white">
-                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 18-6-6 6-6"/></svg>
-                                    </button>
-                                    <div class="flex min-w-0 flex-1 gap-1.5" role="tablist" aria-label="اسلایدهای محصولات">
-                                        @foreach($heroSlides as $index => $product)
-                                            <button type="button" data-hero-dot="{{ $index }}" aria-label="نمایش محصول {{ $index + 1 }}" aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
-                                                    class="h-1.5 flex-1 rounded-full bg-white/15 transition {{ $index === 0 ? 'bg-white' : '' }}"></button>
-                                        @endforeach
-                                    </div>
-                                    <button type="button" data-hero-next aria-label="محصول بعدی"
-                                            class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] text-white transition hover:bg-white/10 focus-visible:outline-white">
-                                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m10 18 6-6-6-6"/></svg>
-                                    </button>
+                            <div class="farzin-hero-rail__product-info">
+                                <div>
+                                    <span class="farzin-hero-rail__category">
+                                        {{ $product->category?->name ?? 'محصول جدید' }}
+                                    </span>
+                                    <h2>{{ $product->name }}</h2>
                                 </div>
-                            @endif
-                        </div>
+
+                                <strong>{{ number_format($product->price) }} <small>تومان</small></strong>
+                            </div>
+                        </a>
+                    </article>
+                @empty
+                    <div class="farzin-hero-rail__empty">
+                        هنوز محصول فعالی برای نمایش در Hero ثبت نشده است.
                     </div>
-                </div>
+                @endforelse
+
+                @if($heroSlides->count() > 1)
+                    <button
+                        type="button"
+                        class="farzin-hero-rail__nav farzin-hero-rail__nav--prev"
+                        data-hero-prev
+                        aria-label="محصول قبلی"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m14 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="farzin-hero-rail__nav farzin-hero-rail__nav--next"
+                        data-hero-next
+                        aria-label="محصول بعدی"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path d="m10 18 6-6-6-6"/>
+                        </svg>
+                    </button>
+
+                    <div class="farzin-hero-rail__dots" role="tablist" aria-label="محصولات Hero">
+                        @foreach($heroSlides as $index => $product)
+                            <button
+                                type="button"
+                                data-hero-dot="{{ $index }}"
+                                aria-label="محصول {{ $index + 1 }}"
+                                aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
+                                class="{{ $index === 0 ? 'is-active' : '' }}"
+                            ></button>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </section>
