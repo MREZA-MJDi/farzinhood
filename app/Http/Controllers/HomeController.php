@@ -14,6 +14,7 @@ class HomeController extends Controller
         $heroProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->whereHas('primaryImage')
             ->latest('created_at')
             ->latest('id')
