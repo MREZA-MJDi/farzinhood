@@ -66,7 +66,11 @@ class CartController extends Controller
 
     public function update(CartRequest $request, Product $product): RedirectResponse|JsonResponse
     {
-        abort_unless($product->is_active, 404);
+        abort_unless(
+            $product->is_active
+            && $product->category?->is_active,
+            404
+        );
 
         $validated = $request->validated();
 
