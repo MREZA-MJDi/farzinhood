@@ -45,12 +45,21 @@ class HomeHeroTest extends TestCase
 
         $response->assertOk();
 
+        $html = $response->getContent();
+        $heroStart = strpos($html, 'data-home-hero');
+        $trustStart = strpos($html, 'data-home-trust-strip', $heroStart);
+
+        $this->assertNotFalse($heroStart);
+        $this->assertNotFalse($trustStart);
+
+        $heroHtml = substr($html, $heroStart, $trustStart - $heroStart);
+
         for ($number = 3; $number <= 12; $number++) {
-            $response->assertSee('Hero Product '.$number);
+            $this->assertStringContainsString('Hero Product '.$number, $heroHtml);
         }
 
-        $response->assertDontSee('Hero Product 1');
-        $response->assertDontSee('Hero Product 2');
+        $this->assertStringNotContainsString('Hero Product 1', $heroHtml);
+        $this->assertStringNotContainsString('Hero Product 2', $heroHtml);
     }
 
     public function test_inactive_or_missing_primary_image_products_do_not_enter_the_home_hero(): void
@@ -105,7 +114,7 @@ class HomeHeroTest extends TestCase
 
         $html = $response->getContent();
         $heroStart = strpos($html, 'data-home-hero');
-        $trustStart = strpos($html, 'TRUST STRIP', $heroStart);
+        $trustStart = strpos($html, 'data-home-trust-strip', $heroStart);
 
         $this->assertNotFalse($heroStart);
         $this->assertNotFalse($trustStart);
