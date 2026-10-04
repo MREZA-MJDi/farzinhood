@@ -10,9 +10,22 @@ class ProductController extends Controller
 {
     public function show(Product $product): View
     {
-        abort_unless($product->is_active, 404);
-
         $product->load([
+            'category',
+            'images',
+            'primaryImage',
+            'reviews' => fn ($query) => $query
+                ->with('user:id,name')
+                ->where('status', 'approved')
+                ->latest(),
+        ]);
+
+        abort_unless(
+            $product->is_active && $product->category?->is_active,
+            404
+        );
+
+        $product->unsetRelation('images');
             'category',
             'images',
             'primaryImage',
