@@ -20,7 +20,7 @@
     height: 2px;
     margin-top: .45rem;
     border-radius: 999px;
-    background: linear-gradient(90deg, #9a7658, transparent);
+    background: linear-gradient(90deg, #b65736, transparent);
 }
 
 .farzin-shop-header {
@@ -54,7 +54,7 @@
 }
 
 .farzin-shop-header__row > div > span {
-    color: #9a7658;
+    color: #b65736;
     font-size: .62rem;
     font-weight: 850;
     letter-spacing: .2em;
@@ -177,7 +177,7 @@
 }
 
 .farzin-shop-search button:hover {
-    background: #9a7658;
+    background: #b65736;
     transform: translateY(-1px);
 }
 
@@ -208,7 +208,7 @@
     content: "";
     display: block;
     height: 3px;
-    background: linear-gradient(90deg, #181715, #9a7658);
+    background: linear-gradient(90deg, #181715, #b65736);
 }
 
 .farzin-filter-card__head {
@@ -221,7 +221,7 @@
 
 .farzin-filter-card__head > div > span,
 .farzin-filter-note > span {
-    color: #9a7658;
+    color: #b65736;
     font-size: .56rem;
     font-weight: 850;
     letter-spacing: .18em;
@@ -250,7 +250,7 @@
 }
 
 .farzin-filter-form label {
-    color: #5f584f;
+    color: #665a50;
     font-size: .6rem;
     font-weight: 800;
 }
@@ -270,7 +270,7 @@
 
 .farzin-filter-form select:focus,
 .farzin-filter-form input:focus {
-    border-color: #9a7658;
+    border-color: #b65736;
     box-shadow: 0 0 0 4px rgb(154 118 88 / .1);
 }
 
@@ -287,7 +287,7 @@
 }
 
 .farzin-filter-form button:hover {
-    background: #9a7658;
+    background: #b65736;
     transform: translateY(-1px);
 }
 
@@ -347,7 +347,7 @@
 }
 
 .farzin-results-toolbar > div > span {
-    color: #9a7658;
+    color: #b65736;
     font-size: .56rem;
     font-weight: 850;
     letter-spacing: .18em;
@@ -383,7 +383,7 @@
 }
 
 .farzin-results-toolbar select:focus {
-    border-color: #9a7658;
+    border-color: #b65736;
     box-shadow: 0 0 0 4px rgb(154 118 88 / .1);
 }
 
@@ -409,7 +409,7 @@
     padding: .35rem .55rem;
     border-radius: 999px;
     background: #eee8df;
-    color: #76583f;
+    color: #783823;
 }
 
 .farzin-product-grid--shop {
