@@ -2393,3 +2393,52 @@ body {
     .product-v2__add,
     .store-flash { transition:none !important; animation:none !important; }
 }
+
+
+/* Shared form and lightbox primitives */
+.store-account-content input:not([type="checkbox"]):not([type="radio"]),
+.store-account-content textarea,
+.store-account-content select {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--color-border);
+    border-radius: .9rem;
+    padding: .7rem .8rem;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: .72rem;
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+.store-account-content textarea { min-height: 110px; resize: vertical; line-height: 1.9; }
+.store-account-content input:not([type="checkbox"]):not([type="radio"]):focus,
+.store-account-content textarea:focus,
+.store-account-content select:focus {
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 4px rgb(129 102 80 / .10);
+    background: var(--color-surface);
+}
+.store-account-content input[type="checkbox"],
+.store-account-content input[type="radio"] {
+    accent-color: var(--color-accent-600);
+}
+
+.store-lightbox {
+    border: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 1rem;
+}
+.store-lightbox::backdrop {
+    background: transparent;
+}
+.store-lightbox__panel {
+    width: min(1100px, 100%);
+}
+.product-v2__stock i {
+    display: block;
+    flex: 0 0 7px;
+}
