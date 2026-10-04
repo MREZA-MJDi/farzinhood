@@ -17,12 +17,15 @@ class WishlistController extends Controller
             ->latest()
             ->get();
 
-        return view('customer.wishlist.index', compact('wishlist'));
+        return view('wishlist.index', compact('wishlist'));
     }
 
     public function toggle(Product $product): RedirectResponse
     {
-        abort_unless($product->is_active, 404);
+        abort_unless(
+            $product->is_active && $product->category?->is_active,
+            404
+        );
 
         $wishlist = auth()->user()
             ->wishlists()
