@@ -40,6 +40,24 @@
                     انتخاب کن و مستقیم وارد جزئیات محصول شو.
                 </p>
 
+                <form action="{{ route('shop.index') }}" method="GET" class="home-hero-search" role="search">
+                    <label class="sr-only" for="home-product-search">جستجوی محصول</label>
+                    <input
+                        id="home-product-search"
+                        type="search"
+                        name="search"
+                        placeholder="محصول، برند یا SKU را جستجو کن..."
+                        autocomplete="off"
+                    >
+                    <button type="submit" aria-label="جستجوی محصولات">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <circle cx="11" cy="11" r="6.5"/>
+                            <path d="m16 16 4.5 4.5"/>
+                        </svg>
+                        <span>جستجو</span>
+                    </button>
+                </form>
+
                 <div class="farzin-hero-rail__actions">
                     <a
                         href="{{ route('shop.index', ['sort' => 'latest']) }}"
