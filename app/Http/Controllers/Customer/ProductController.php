@@ -19,15 +19,16 @@ class ProductController extends Controller
                 fn ($query) => $query->where('is_active', true)
             )
             ->with([
-            'category',
-            'images',
-            'primaryImage',
-            'reviews' => fn ($query) => $query
-                ->approved()
-                ->with('user:id,name')
-                ->latest()
-                ->limit(6),
-        ]);
+                'category',
+                'images',
+                'primaryImage',
+                'reviews' => fn ($query) => $query
+                    ->approved()
+                    ->with('user:id,name')
+                    ->latest()
+                    ->limit(6),
+            ])
+            ->findOrFail($product->id);
 
         $relatedProducts = Product::query()
             ->with(['primaryImage', 'category'])
