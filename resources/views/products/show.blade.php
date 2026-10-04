@@ -123,7 +123,7 @@
                         @foreach($product->images as $image)
                             <button
                                 type="button"
-                                class="product-gallery-v2__thumb {{ $loop->first || ($product->primaryImage?->id === $image->id) ? 'is-active' : '' }}"
+                                class="product-gallery-v2__thumb {{ ($product->primaryImage?->id !== null ? $product->primaryImage->id === $image->id : $loop->first) ? 'is-active' : '' }}"
                                 data-gallery-thumb
                                 data-gallery-src="{{ asset('storage/' . $image->image) }}"
                                 data-gallery-alt="{{ $image->alt ?: $product->name }}"
@@ -143,7 +143,7 @@
                 @endif
             </section>
 
-            <aside class="product-v2__purchase" aria-labelledby="product-title">
+            <aside id="product-purchase" class="product-v2__purchase" aria-labelledby="product-title">
                 <div class="product-v2__purchase-inner">
                     <div class="product-v2__identity">
                         <span class="product-v2__eyebrow">FARZIN / PRODUCT</span>
