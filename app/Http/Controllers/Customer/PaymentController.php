@@ -26,15 +26,22 @@ class PaymentController extends Controller
         }
 
         try {
-            $result = $this->paymentService->start($order);
+            $payment = $this->paymentService->start($order);
+            $redirectUrl = data_get(
+                $payment->gateway_response,
+                'redirect_url'
+            );
 
-            if (!empty($result['redirect_url'])) {
-                return redirect()->away($result['redirect_url']);
+            if (is_string($redirectUrl) && $redirectUrl !== '') {
+                return redirect()->away($redirectUrl);
             }
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('success', 'Payment request created successfully.');
+                ->with(
+                    'success',
+                    'درخواست پرداخت ایجاد شد. ادامه پرداخت از همین مسیر انجام می‌شود.'
+                );
 
         } catch (\Throwable $e) {
             report($e);
@@ -58,20 +65,20 @@ class PaymentController extends Controller
         }
 
         try {
-            $result = $this->paymentService->verify(
+            $payment = $this->paymentService->verify(
                 $order,
                 $authority
             );
 
-            if (!empty($result['success'])) {
+            if ($payment->isSuccessful()) {
                 return redirect()
                     ->route('customer.orders.show', $order)
-                    ->with('success', 'Payment completed successfully.');
+                    ->with('success', 'پرداخت با موفقیت تایید شد.');
             }
 
             return redirect()
                 ->route('customer.orders.show', $order)
-                ->with('error', $result['message'] ?? 'Payment verification failed.');
+                ->with('error', 'تایید پرداخت ناموفق بود.');
 
         } catch (\Throwable $e) {
             report($e);
