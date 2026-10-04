@@ -13,6 +13,14 @@ class WishlistController extends Controller
     {
         $wishlist = auth()->user()
             ->wishlists()
+            ->whereHas('product', function ($query) {
+                $query
+                    ->where('is_active', true)
+                    ->whereHas(
+                        'category',
+                        fn ($category) => $category->where('is_active', true)
+                    );
+            })
             ->with(['product.primaryImage', 'product.category'])
             ->latest()
             ->get();
