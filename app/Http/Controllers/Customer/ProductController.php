@@ -25,19 +25,10 @@ class ProductController extends Controller
             404
         );
 
-        $product->unsetRelation('images');
-            'category',
-            'images',
-            'primaryImage',
-            'reviews' => fn ($query) => $query
-                ->with('user:id,name')
-                ->where('status', 'approved')
-                ->latest(),
-        ]);
-
-        $relatedProducts = Product::query()
+                $relatedProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->where('category_id', $product->category_id)
             ->whereKeyNot($product->id)
             ->latest()
