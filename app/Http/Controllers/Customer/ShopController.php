@@ -14,6 +14,15 @@ class ShopController extends Controller
     {
         $filters = $request->validated();
 
+        $shopHeroProduct = Product::query()
+            ->with(['primaryImage', 'category'])
+            ->where('is_active', true)
+            ->whereHas('primaryImage')
+            ->orderByDesc('is_featured')
+            ->latest('created_at')
+            ->latest('id')
+            ->first();
+
         $products = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
@@ -86,7 +95,8 @@ class ShopController extends Controller
             'categories',
             'priceMin',
             'priceMax',
-            'filters'
+            'filters',
+            'shopHeroProduct'
         ));
     }
 }
