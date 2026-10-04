@@ -61,9 +61,11 @@ class StorefrontFlowTest extends TestCase
 
     public function test_product_page_renders_gallery_purchase_and_structured_data_for_active_catalog_items(): void
     {
+        $customer = $this->customer();
         $product = $this->product();
 
-        $this->get(route('products.show', $product))
+        $this->actingAs($customer)
+            ->get(route('products.show', $product))
             ->assertOk()
             ->assertSee('محصول تست فروشگاه')
             ->assertSee('FARZIN / PRODUCT')
