@@ -31,17 +31,17 @@
                     </div>
 
                     <div class="shop-hero__copy">
-                        <p>انتخابی دقیق‌تر برای خرید بهتر</p>
+                        <p>FARZIN KITCHEN / HOOD & SINK</p>
 
                         <h1>
-                            چیزهای خوب،
+                            هود و سینک،
                             <br>
-                            <span>همین‌جا شروع می‌شوند.</span>
+                            <span>با انتخابی دقیق‌تر.</span>
                         </h1>
 
                         <div class="shop-hero__description">
                             <span>
-                                {{ $shopHeroProduct?->short_description ?: 'محصولات منتخب را با فیلتر، مقایسه و انتخابی ساده پیدا کن.' }}
+                                {{ $shopHeroProduct?->short_description ?: 'مجموعه‌ای از هود و سینک‌های منتخب، با طراحی تمیز و انتخابی مطمئن برای آشپزخانه.' }}
                             </span>
                         </div>
 
@@ -101,6 +101,25 @@
         </div>
 
 
+        {{-- Catalog navigation --}}
+        <div class="shop-category-rail" aria-label="دسته‌بندی‌ها">
+            <a
+                href="{{ route('shop.index') }}"
+                class="shop-category-chip @unless(request('category')) is-active @endunless"
+            >
+                همه محصولات
+            </a>
+
+            @foreach($categories as $category)
+                <a
+                    href="{{ route('shop.index', ['category' => $category->slug]) }}"
+                    class="shop-category-chip @if(request('category') === $category->slug) is-active @endif"
+                >
+                    {{ $category->name }}
+                </a>
+            @endforeach
+        </div>
+
         {{-- Search --}}
         <form
             action="{{ route('shop.index') }}"
@@ -130,8 +149,8 @@
         </form>
 
 
-        {{-- Main --}}
-        <div class="mt-10 grid gap-8 lg:grid-cols-[240px_1fr]">
+        {{-- Main catalog --}}
+        <div class="shop-catalog mt-10 grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)]">
 
             {{-- Filters --}}
             <aside class="lg:sticky lg:top-28 lg:self-start">
@@ -261,7 +280,35 @@
 
 
             {{-- Products --}}
-            <div>
+            <div class="min-w-0">
+                <div class="shop-results-toolbar">
+                    <div>
+                        <span class="shop-results-toolbar__eyebrow">CATALOG</span>
+                        <strong>{{ number_format($products->total()) }} محصول</strong>
+                    </div>
+
+                    <div class="shop-results-toolbar__sort">
+                        <label for="mobile-sort">مرتب‌سازی</label>
+                        <form action="{{ route('shop.index') }}" method="GET">
+                            @foreach(request()->except('sort', 'page') as $key => $value)
+                                @if(is_array($value))
+                                    @foreach($value as $item)
+                                        <input type="hidden" name="{{ $key }}[]" value="{{ $item }}">
+                                    @endforeach
+                                @else
+                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                @endif
+                            @endforeach
+                            <select id="mobile-sort" name="sort" onchange="this.form.submit()">
+                                <option value="latest" @selected(request('sort', 'latest') === 'latest')>جدیدترین</option>
+                                <option value="price_asc" @selected(request('sort') === 'price_asc')>ارزان‌ترین</option>
+                                <option value="price_desc" @selected(request('sort') === 'price_desc')>گران‌ترین</option>
+                                <option value="popular" @selected(request('sort') === 'popular')>محبوب‌ترین</option>
+                                <option value="rating" @selected(request('sort') === 'rating')>بالاترین امتیاز</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
 
                 @if($products->count())
 
