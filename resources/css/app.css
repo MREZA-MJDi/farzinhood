@@ -1255,3 +1255,209 @@ input[type="radio"] {
             110px;
     }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Shared Media Picker
+|--------------------------------------------------------------------------
+*/
+
+.media-picker__preview-grid,
+[data-media-preview] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.9rem;
+}
+
+.media-picker__item {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    background: var(--color-neutral-50);
+}
+
+.media-picker__preview {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--color-neutral-100);
+}
+
+.media-picker__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem;
+}
+
+.media-picker__meta span {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    color: var(--color-text-muted);
+    font-size: 0.62rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.media-picker__crop,
+.media-picker__remove {
+    min-height: 1.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.55rem;
+    padding-inline: 0.55rem;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: 0.6rem;
+    font-weight: 800;
+}
+
+.media-picker__crop:hover {
+    border-color: var(--color-brand-300);
+    color: var(--color-brand-900);
+}
+
+.media-picker__remove:hover {
+    border-color: var(--color-danger-100);
+    background: var(--color-danger-50);
+    color: var(--color-danger-700);
+}
+
+.media-cropper {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.media-cropper__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(3 6 12 / 0.72);
+    backdrop-filter: blur(10px);
+}
+
+.media-cropper__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 46rem);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 1.25rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xl);
+}
+
+.media-cropper__header,
+.media-cropper__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+}
+
+.media-cropper__header {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.media-cropper__header div {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.media-cropper__header strong {
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+}
+
+.media-cropper__header span {
+    color: var(--color-text-muted);
+    font-size: 0.68rem;
+}
+
+.media-cropper__header button {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: 1.2rem;
+}
+
+.media-cropper__stage {
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: #080b12;
+}
+
+.media-cropper__stage canvas {
+    width: min(100%, 34rem);
+    aspect-ratio: 1;
+    max-height: 62vh;
+    touch-action: none;
+    cursor: grab;
+}
+
+.media-cropper__stage canvas:active {
+    cursor: grabbing;
+}
+
+.media-cropper__controls {
+    padding: 0.9rem 1.15rem;
+}
+
+.media-cropper__controls label {
+    display: grid;
+    gap: 0.45rem;
+    color: var(--color-text-secondary);
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.media-cropper__controls input {
+    width: 100%;
+}
+
+.media-cropper__actions {
+    justify-content: flex-start;
+    border-top: 1px solid var(--color-border);
+}
+
+.media-cropper__actions button {
+    min-height: 2.6rem;
+    border-radius: 0.7rem;
+    padding-inline: 1rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.media-cropper__actions [data-crop-cancel] {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+}
+
+.media-cropper__actions [data-crop-save] {
+    background: var(--color-brand-900);
+    color: #fff;
+}
+
+@media (max-width: 640px) {
+    .media-picker__preview-grid,
+    [data-media-preview] {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .media-cropper__dialog {
+        border-radius: 1rem;
+    }
+}
