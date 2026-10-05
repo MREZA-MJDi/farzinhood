@@ -217,6 +217,7 @@ class CartService
                         'unit_price' => $product->price,
                     ]);
                 }
+            }
 
             $guestCart->items()->delete();
             $guestCart->delete();
