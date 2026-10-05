@@ -96,30 +96,16 @@ class DashboardController extends Controller
 
         $ordersCount = Order::query()->count();
 
-        $todayOrders = Order::query()
-            ->where('created_at', '>=', $today)
-            ->where('created_at', '<', $tomorrow)
-            ->count();
+        $orderStatusCounts = Order::query()
+            ->selectRaw('status, COUNT(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
-        $pendingOrders = Order::query()
-            ->where('status', 'pending')
-            ->count();
-
-        $processingOrders = Order::query()
-            ->where('status', 'processing')
-            ->count();
-
-        $shippedOrders = Order::query()
-            ->where('status', 'shipped')
-            ->count();
-
-        $deliveredOrders = Order::query()
-            ->where('status', 'delivered')
-            ->count();
-
-        $cancelledOrders = Order::query()
-            ->where('status', 'cancelled')
-            ->count();
+        $pendingOrders = (int) ($orderStatusCounts['pending'] ?? 0);
+        $processingOrders = (int) ($orderStatusCounts['processing'] ?? 0);
+        $shippedOrders = (int) ($orderStatusCounts['shipped'] ?? 0);
+        $deliveredOrders = (int) ($orderStatusCounts['delivered'] ?? 0);
+        $cancelledOrders = (int) ($orderStatusCounts['cancelled'] ?? 0);
 
 
         /*
@@ -169,7 +155,7 @@ class DashboardController extends Controller
             ->count();
 
         $lowStockProducts = Product::query()
-            ->with(['category', 'primaryImage'])
+            ->with('category')
             ->where('is_active', true)
             ->where('stock', '<=', 5)
             ->orderBy('stock')
@@ -188,10 +174,6 @@ class DashboardController extends Controller
 
         $pendingReviews = Review::query()
             ->where('status', 'pending')
-            ->count();
-
-        $approvedReviews = Review::query()
-            ->where('status', 'approved')
             ->count();
 
         $recentReviews = Review::query()
@@ -227,9 +209,6 @@ class DashboardController extends Controller
 
         $newsletterSubscribers = NewsletterSubscriber::query()
             ->where('is_active', true)
-            ->count();
-
-        $newsletterTotal = NewsletterSubscriber::query()
             ->count();
 
 
@@ -317,15 +296,6 @@ class DashboardController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | 7 Day Sales Overview
-        |--------------------------------------------------------------------------
-        */
-
-        $salesOverview = $this->dailySalesData(7);
-
-
-        /*
-        |--------------------------------------------------------------------------
         | Order Status Overview
         |--------------------------------------------------------------------------
         */
@@ -356,7 +326,6 @@ class DashboardController extends Controller
             'monthGrowth',
 
             'ordersCount',
-            'todayOrders',
             'pendingOrders',
             'processingOrders',
             'shippedOrders',
@@ -375,7 +344,6 @@ class DashboardController extends Controller
 
             'reviewsCount',
             'pendingReviews',
-            'approvedReviews',
             'recentReviews',
 
             'unreadMessages',
@@ -383,7 +351,6 @@ class DashboardController extends Controller
             'recentMessages',
 
             'newsletterSubscribers',
-            'newsletterTotal',
 
             'recentOrders',
             'recentInventoryMovements',
@@ -394,7 +361,6 @@ class DashboardController extends Controller
             'monthOrderCount',
             'monthAverageOrderValue',
 
-            'salesOverview',
             'orderStatusOverview'
         ));
     }
