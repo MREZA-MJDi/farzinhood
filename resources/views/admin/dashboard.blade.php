@@ -91,7 +91,7 @@
                         'code' => '02',
                         'label' => 'فروش این ماه',
                         'value' => number_format($monthSales),
-                        'meta' => '%'.number_format($monthGrowth, 1).' نسبت به ماه قبل',
+                        'meta' => number_format($monthGrowth, 1).'٪ نسبت به ماه قبل',
                         'tone' => 'earth',
                     ],
                     [
