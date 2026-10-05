@@ -114,7 +114,7 @@
                             $product->images
                                 ->map(fn($image) => [
                                     'id' => $image->id,
-                                    'url' => asset('storage/' . $image->image),
+                                    'url' => $image->url,
                                     'alt' => $image->alt ?: $product->name,
                                 ])
                                 ->values()
