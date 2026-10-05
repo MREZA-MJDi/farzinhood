@@ -471,114 +471,116 @@
 
 
                     {{-- =================================================
-                        ADD TO CART
+                        BUY / ACCOUNT ACTION
                     ================================================== --}}
 
-                    @if($product->is_active && $product->stock > 0)
+                    @auth
 
-                        <form
-                            action="{{ route('customer.cart.add') }}"
-                            method="POST"
-                            class="mt-5"
-                        >
-                            @csrf
+                        @if(auth()->user()->isCustomer())
 
-                            <input
-                                type="hidden"
-                                name="product_id"
-                                value="{{ $product->id }}"
-                            >
+                            @if($product->is_active && $product->stock > 0)
 
-                            <div class="flex flex-col gap-3 sm:flex-row">
-
-                                {{-- Quantity --}}
-                                <div
-                                    class="flex h-14 shrink-0 items-center rounded-2xl border border-[var(--color-border)] bg-white px-3"
+                                <form
+                                    action="{{ route('customer.cart.add') }}"
+                                    method="POST"
+                                    class="mt-5"
                                 >
-
-                                    <label
-                                        for="quantity"
-                                        class="ml-3 text-xs font-bold text-[var(--color-text-muted)]"
-                                    >
-                                        تعداد
-                                    </label>
+                                    @csrf
 
                                     <input
-                                        id="quantity"
-                                        type="number"
-                                        name="quantity"
-                                        min="1"
-                                        max="{{ min($product->stock, 99) }}"
-                                        value="1"
-                                        inputmode="numeric"
-                                        class="w-16 bg-transparent text-center text-sm font-black text-[var(--color-text-primary)] outline-none"
+                                        type="hidden"
+                                        name="product_id"
+                                        value="{{ $product->id }}"
                                     >
 
+                                    <div class="flex flex-col gap-3 sm:flex-row">
+
+                                        <div
+                                            class="flex h-14 shrink-0 items-center rounded-2xl border border-[var(--color-border)] bg-white px-3"
+                                        >
+                                            <label
+                                                for="quantity"
+                                                class="ml-3 text-xs font-bold text-[var(--color-text-muted)]"
+                                            >
+                                                تعداد
+                                            </label>
+
+                                            <input
+                                                id="quantity"
+                                                type="number"
+                                                name="quantity"
+                                                min="1"
+                                                max="{{ min($product->stock, 99) }}"
+                                                value="1"
+                                                inputmode="numeric"
+                                                class="w-16 bg-transparent text-center text-sm font-black text-[var(--color-text-primary)] outline-none"
+                                            >
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            class="group flex h-14 flex-1 items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-600)]/15"
+                                        >
+                                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                                <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"/>
+                                                <circle cx="10" cy="20" r="1"/>
+                                                <circle cx="18" cy="20" r="1"/>
+                                            </svg>
+
+                                            افزودن به سبد خرید
+
+                                            <svg class="h-4 w-4 transition duration-300 group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                                <path d="m9 18 6-6-6-6"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+
+                            @else
+
+                                <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-100)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
+                                    این محصول در حال حاضر قابل سفارش نیست.
                                 </div>
 
+                            @endif
 
-                                {{-- Submit --}}
-                                <button
-                                    type="submit"
-                                    class="group flex h-14 flex-1 items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-600)]/15"
-                                >
+                        @elseif(auth()->user()->isAdmin())
 
-                                    <svg
-                                        class="h-5 w-5"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"/>
-                                        <circle cx="10" cy="20" r="1"/>
-                                        <circle cx="18" cy="20" r="1"/>
-                                    </svg>
+                            <a
+                                href="{{ route('admin.products.edit', $product) }}"
+                                class="mt-5 inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl border border-[var(--color-brand-200)] bg-[var(--color-brand-50)] px-6 text-sm font-black text-[var(--color-brand-900)] transition duration-300 hover:-translate-y-0.5 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-100)]"
+                            >
+                                مدیریت این محصول
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                    <path d="m9 18 6-6-6-6"/>
+                                </svg>
+                            </a>
 
-                                    افزودن به سبد خرید
-
-                                    <svg
-                                        class="h-4 w-4 transition duration-300 group-hover:-translate-x-1"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.8"
-                                        aria-hidden="true"
-                                    >
-                                        <path d="m9 18 6-6-6-6"/>
-                                    </svg>
-
-                                </button>
-
-                            </div>
-
-                        </form>
+                        @endif
 
                     @else
 
-                        <div
-                            class="mt-5 flex items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700"
-                        >
+                        @if($product->is_active && $product->stock > 0)
 
-                            <svg
-                                class="h-5 w-5 shrink-0"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                aria-hidden="true"
+                            <a
+                                href="{{ route('login') }}"
+                                class="mt-5 inline-flex h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-6 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)]"
                             >
-                                <circle cx="12" cy="12" r="9"/>
-                                <path d="M12 8v5"/>
-                                <path d="M12 16h.01"/>
-                            </svg>
+                                برای خرید وارد شوید
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                    <path d="m9 18 6-6-6-6"/>
+                                </svg>
+                            </a>
 
-                            این محصول در حال حاضر قابل سفارش نیست.
+                        @else
 
-                        </div>
+                            <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-100)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
+                                این محصول در حال حاضر قابل سفارش نیست.
+                            </div>
 
-                    @endif
+                        @endif
+
+                    @endauth
 
 
                     {{-- =================================================

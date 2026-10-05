@@ -1,18 +1,18 @@
-<footer class="mt-20 border-t border-[var(--color-border)] bg-white">
+<footer class="farzin-site-footer border-t border-[var(--color-border)] bg-white">
 
     {{-- =========================================================
         Main Footer
     ========================================================== --}}
 
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+    <div class="farzin-container py-14 lg:py-16">
 
-        <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="farzin-site-footer__grid grid gap-10 lg:grid-cols-12 lg:gap-12">
 
             {{-- =====================================================
                 Brand
             ====================================================== --}}
 
-            <div class="lg:col-span-4">
+            <div class="farzin-site-footer__column lg:col-span-4">
 
                 <a
                     href="{{ route('home') }}"
@@ -93,7 +93,7 @@
                 Quick Links
             ====================================================== --}}
 
-            <div class="lg:col-span-2">
+            <div class="farzin-site-footer__column lg:col-span-2">
 
                 <h3 class="text-sm font-black text-[var(--color-text-primary)]">
                     دسترسی سریع
@@ -142,7 +142,7 @@
                 Customer
             ====================================================== --}}
 
-            <div class="lg:col-span-2">
+            <div class="farzin-site-footer__column lg:col-span-2">
 
                 <h3 class="text-sm font-black text-[var(--color-text-primary)]">
                     حساب کاربری
@@ -152,29 +152,43 @@
 
                     @auth
 
-                        <a
-                            href="{{ route('customer.dashboard') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            داشبورد من
-                        </a>
+                        @if(auth()->user()->isAdmin())
 
-                        <a
-                            href="{{ route('customer.orders.index') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            سفارش‌های من
-                        </a>
+                            <a
+                                href="{{ route('admin.dashboard') }}"
+                                class="group flex items-center gap-2 text-sm font-bold text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                پنل مدیریت
+                            </a>
 
-                        <a
-                            href="{{ route('customer.wishlist.index') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            علاقه‌مندی‌ها
-                        </a>
+                        @elseif(auth()->user()->isCustomer())
+
+                            <a
+                                href="{{ route('customer.dashboard') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                داشبورد من
+                            </a>
+
+                            <a
+                                href="{{ route('customer.orders.index') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                سفارش‌های من
+                            </a>
+
+                            <a
+                                href="{{ route('customer.wishlist.index') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                علاقه‌مندی‌ها
+                            </a>
+
+                        @endif
 
                     @else
 
@@ -205,7 +219,7 @@
                 Newsletter
             ====================================================== --}}
 
-            <div class="lg:col-span-4">
+            <div class="farzin-site-footer__column lg:col-span-4">
 
                 <div class="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-neutral-50)] p-5 sm:p-6">
 
@@ -311,7 +325,7 @@
             Lower Footer
         ========================================================== --}}
 
-        <div class="mt-12 border-t border-[var(--color-border)] pt-6">
+        <div class="farzin-site-footer__bottom mt-12 border-t border-[var(--color-border)] pt-6">
 
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
@@ -400,6 +414,6 @@
         Footer Accent Line
     ========================================================== --}}
 
-    <div class="h-1 bg-gradient-to-l from-[var(--color-brand-950)] via-[var(--color-brand-900)] to-[var(--color-accent-600)]"></div>
+    <div class="farzin-site-footer__accent h-1 bg-gradient-to-l from-[var(--color-brand-950)] via-[var(--color-brand-900)] to-[var(--color-accent-600)]"></div>
 
 </footer>

@@ -9,7 +9,7 @@
     {{-- =========================================================
         HERO
         Premium product rail. Backend intentionally supplies only the
-        latest 10 active products with a primary image.
+        latest 10 image-ready active products.
     ========================================================== --}}
 
     @php($heroSlides = ($heroProducts ?? collect())->values())
@@ -51,7 +51,7 @@
                         </svg>
                     </a>
                     <span class="farzin-hero-rail__meta">
-                        حداکثر ۱۰ محصول تازه
+                        {{ $heroSlides->count() }} محصول تازه
                     </span>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                                     <h2>{{ $product->name }}</h2>
                                 </div>
 
-                                <strong>{{ number_format($product->price) }} <small>تومان</small></strong>
+                                <strong class="farzin-hero-rail__price">{{ number_format($product->price) }} <small>تومان</small></strong>
                             </div>
                         </a>
                     </article>
@@ -140,11 +140,11 @@
         TRUST STRIP
     ========================================================== --}}
 
-    <section class="border-b border-[var(--color-border)] bg-white" data-home-trust-strip>
+    <section class="farzin-home-trust border-y border-[var(--color-border)] bg-white" data-home-section data-home-trust-strip>
 
-        <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-[var(--color-neutral-100)] px-4 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div class="farzin-container farzin-home-trust__grid">
 
-            <div class="bg-white px-5 py-7">
+            <div class="farzin-home-trust__item bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     01
                 </div>
@@ -158,7 +158,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="farzin-home-trust__item bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     02
                 </div>
@@ -172,7 +172,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="farzin-home-trust__item bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     03
                 </div>
@@ -186,7 +186,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="farzin-home-trust__item bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     04
                 </div>
@@ -209,21 +209,23 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="farzin-section farzin-home-section farzin-home-section--categories" data-home-section>
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div class="farzin-container">
+
+            <div class="farzin-home-section__head flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between" data-home-reveal>
 
             <div>
 
-                <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                     Explore
                 </div>
 
-                <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                     دسته‌بندی‌ها
                 </h2>
 
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+                <p class="mt-3 max-w-2xl farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                     مسیرت را سریع‌تر پیدا کن و مستقیماً وارد دسته مورد نظرت شو.
                 </p>
 
@@ -247,10 +249,9 @@
                 </svg>
             </a>
 
-        </div>
+            </div>
 
-
-        <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div class="farzin-home-grid mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5" data-home-reveal>
 
             @forelse($categories ?? [] as $category)
 
@@ -345,6 +346,8 @@
 
             @endforelse
 
+            </div>
+
         </div>
 
     </section>
@@ -354,23 +357,23 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="bg-[var(--color-neutral-50)] py-20">
+    <section class="farzin-section farzin-section--muted farzin-home-section farzin-home-section--featured" data-home-section>
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="farzin-container">
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div class="farzin-home-section__head flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between" data-home-reveal>
 
                 <div>
 
-                    <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                    <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                         Farzin Selection
                     </div>
 
-                    <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                    <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                         انتخاب‌های ویژه
                     </h2>
 
-                    <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+                    <p class="mt-3 max-w-2xl farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                         محصولاتی که برای کیفیت، کاربرد و ارزش خرید بیشتر انتخاب شده‌اند.
                     </p>
 
@@ -397,7 +400,7 @@
             </div>
 
 
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            <div class="farzin-home-grid mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4" data-home-reveal>
 
                 @forelse($featuredProducts ?? [] as $product)
 
@@ -423,87 +426,110 @@
 
 
     {{-- =========================================================
-        EDITORIAL
+        JOURNAL / KNOWLEDGE HUB
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-
-        <div
-            class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"
-        >
-
-            <div class="grid items-center lg:grid-cols-[1fr_360px]">
-
-                <div class="p-8 sm:p-12 lg:p-14">
-
-                    <div class="text-[11px] font-black uppercase tracking-[0.24em] text-white/40">
-                        Farzin Journal
+    <section
+        class="farzin-section farzin-home-section farzin-home-section--editorial"
+        data-home-section
+    >
+        <div class="farzin-container">
+            <div class="farzin-journal" data-home-reveal>
+                <div class="farzin-journal__main">
+                    <div class="farzin-journal__eyebrow">
+                        <span class="farzin-journal__eyebrow-line"></span>
+                        FARZIN / JOURNAL
                     </div>
 
-                    <h2 class="mt-4 max-w-2xl text-3xl font-black leading-tight sm:text-5xl">
-                        قبل از خرید،
-                        <span class="text-[var(--color-accent-400)]">
-                            بهتر انتخاب کن.
-                        </span>
-                    </h2>
+                    <div class="farzin-journal__heading">
+                        <span class="farzin-journal__index">03 / KNOWLEDGE</span>
 
-                    <p class="mt-5 max-w-xl text-sm leading-8 text-white/60 sm:text-base">
-                        راهنماهای خرید، مقایسه‌ها و محتوای تخصصی که کمک می‌کنند
-                        انتخاب دقیق‌تر و مطمئن‌تری داشته باشی.
-                    </p>
+                        <h2>
+                            قبل از خرید،
+                            <strong>هوشمندانه‌تر انتخاب کن.</strong>
+                        </h2>
+
+                        <p>
+                            راهنما، مقایسه و نکات تخصصی برای اینکه قبل از تصمیم نهایی،
+                            محصول را بهتر بشناسی و انتخابت دقیق‌تر باشد.
+                        </p>
+                    </div>
 
                     <a
                         href="{{ route('blog.index') }}"
-                        class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-6 py-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)]"
+                        class="farzin-journal__cta"
                     >
-                        ورود به مجله
+                        <span>ورود به مجله فرزین</span>
 
                         <svg
-                            class="h-4 w-4"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
                             stroke-width="1.8"
+                            aria-hidden="true"
                         >
                             <path d="m9 18 6-6-6-6"/>
                         </svg>
                     </a>
-
                 </div>
 
-
-                <div class="hidden p-8 lg:block">
-
-                    <div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-5">
-
-                        <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-white/35">
-                                    FARZIN JOURNAL
-                                </span>
-
-                                <span class="h-2 w-2 rounded-full bg-[var(--color-accent-600)]"></span>
-                            </div>
-
-                            <div class="mt-6 space-y-3">
-
-                                <div class="h-20 rounded-2xl bg-white/[0.05]"></div>
-                                <div class="h-16 rounded-2xl bg-white/[0.035]"></div>
-                                <div class="h-20 rounded-2xl bg-white/[0.05]"></div>
-
-                            </div>
-
+                <div class="farzin-journal__side">
+                    <div class="farzin-journal__signal">
+                        <div class="farzin-journal__signal-head">
+                            <span>KNOWLEDGE SYSTEM</span>
+                            <span class="farzin-journal__status">
+                                <i aria-hidden="true"></i>
+                                ACTIVE
+                            </span>
                         </div>
 
+                        <div class="farzin-journal__signal-core">
+                            <span class="farzin-journal__signal-number">03</span>
+                            <span class="farzin-journal__signal-label">WAYS TO CHOOSE BETTER</span>
+                        </div>
+
+                        <div class="farzin-journal__scan" aria-hidden="true">
+                            <span></span>
+                        </div>
                     </div>
 
+                    <div class="farzin-journal__tracks">
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">01</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>راهنمای خرید</strong>
+                                <small>از مشخصات تا انتخاب نهایی</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">02</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>مقایسه محصولات</strong>
+                                <small>تفاوت‌ها را سریع‌تر ببین</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">03</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>نکات تخصصی</strong>
+                                <small>برای تصمیمی مطمئن‌تر</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
 
@@ -511,71 +537,66 @@
         LATEST PRODUCTS
     ========================================================== --}}
 
-    <section class="pb-20">
+    <section
+        class="farzin-section farzin-section--compact farzin-home-section farzin-home-section--latest farzin-latest"
+        data-home-section
+    >
+        <div class="farzin-container">
+            <div class="farzin-latest__head" data-home-reveal>
+                <div class="farzin-latest__heading">
+                    <span class="farzin-eyebrow">FARZIN / NEW ARRIVALS</span>
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="farzin-latest__title-row">
+                        <div>
+                            <span class="farzin-latest__index">04</span>
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                            <h2 class="farzin-section-title">
+                                تازه‌های فرزین
+                            </h2>
+                        </div>
 
-                <div>
-
-                    <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
-                        New In
+                        <span class="farzin-latest__signal" aria-hidden="true">
+                            <i></i>
+                            NEW
+                        </span>
                     </div>
 
-                    <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
-                        تازه‌های فرزین
-                    </h2>
-
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
-                        جدیدترین محصولاتی که به فروشگاه اضافه شده‌اند.
+                    <p class="farzin-section-description">
+                        آخرین محصولاتی که وارد فروشگاه شده‌اند؛
+                        برای وقتی که می‌خواهی سریع از تازه‌ترین انتخاب‌ها باخبر شوی.
                     </p>
-
                 </div>
-
 
                 <a
                     href="{{ route('shop.index', ['sort' => 'latest']) }}"
-                    class="inline-flex items-center gap-2 text-sm font-black text-[var(--color-brand-900)] transition hover:text-[var(--color-accent-600)]"
+                    class="farzin-latest__link"
                 >
-                    تازه‌ترین محصولات
-
-                    <svg
-                        class="h-4 w-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                    >
+                    <span>مشاهده همه تازه‌ها</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                         <path d="m9 18 6-6-6-6"/>
                     </svg>
                 </a>
-
             </div>
 
-
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-
+            <div
+                class="farzin-latest__grid farzin-home-grid grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 md:grid-cols-3 lg:grid-cols-4"
+                data-home-reveal
+            >
                 @forelse($latestProducts ?? [] as $product)
-
                     @include('partials.product_card', [
                         'product' => $product
                     ])
-
                 @empty
-
-                    <div
-                        class="col-span-full rounded-3xl border border-dashed border-[var(--color-border-strong)] bg-white px-6 py-16 text-center text-sm text-[var(--color-text-muted)]"
-                    >
-                        هنوز محصولی ثبت نشده است.
+                    <div class="farzin-latest__empty col-span-full">
+                        <span aria-hidden="true">◎</span>
+                        <div>
+                            <strong>هنوز محصول تازه‌ای ثبت نشده است.</strong>
+                            <p>محصولات جدید که اضافه شوند، اینجا نمایش داده می‌شوند.</p>
+                        </div>
                     </div>
-
                 @endforelse
-
             </div>
-
         </div>
-
     </section>
 
 
@@ -583,60 +604,74 @@
         FINAL CTA
     ========================================================== --}}
 
-    <section class="border-t border-[var(--color-border)] bg-white">
+    <section
+        class="farzin-section farzin-section--compact farzin-section--bordered farzin-home-section farzin-home-section--cta farzin-final-cta"
+        data-home-section
+    >
+        <div class="farzin-container">
+            <div class="farzin-final-cta__shell" data-home-reveal>
+                <div class="farzin-final-cta__glow" aria-hidden="true"></div>
 
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-
-            <div
-                class="relative overflow-hidden rounded-[2rem] bg-[var(--color-neutral-100)] p-7 sm:p-10 lg:p-12"
-            >
-
-                <div
-                    class="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[var(--color-accent-600)]/10 blur-3xl"
-                ></div>
-
-                <div class="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-
-                    <div class="max-w-2xl">
-
-                        <span class="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
-                            FARZIN
-                        </span>
-
-                        <h2 class="mt-3 text-3xl font-black text-[var(--color-text-primary)] sm:text-4xl">
-                            آماده‌ای انتخاب بهتری داشته باشی؟
-                        </h2>
-
-                        <p class="mt-4 text-sm leading-7 text-[var(--color-text-secondary)]">
-                            محصولات را ببین، مقایسه کن و خریدت را با اطمینان انجام بده.
-                        </p>
-
+                <div class="farzin-final-cta__main">
+                    <div class="farzin-final-cta__eyebrow">
+                        <span class="farzin-final-cta__line"></span>
+                        FARZIN / NEXT STEP
                     </div>
 
+                    <span class="farzin-final-cta__index">05</span>
 
-                    <a
-                        href="{{ route('shop.index') }}"
-                        class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-7 py-4 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)]"
-                    >
-                        مشاهده فروشگاه
+                    <h2>
+                        انتخابت را
+                        <strong>کامل کن.</strong>
+                    </h2>
 
-                        <svg
-                            class="h-4 w-4"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
+                    <p>
+                        محصول مناسب را پیدا کردی؟ وارد فروشگاه شو، جزئیات را بررسی کن
+                        و مسیر خرید را از همین‌جا ادامه بده.
+                    </p>
+
+                    <div class="farzin-final-cta__actions">
+                        <a
+                            href="{{ route('shop.index') }}"
+                            class="farzin-final-cta__primary"
                         >
-                            <path d="m9 18 6-6-6-6"/>
-                        </svg>
-                    </a>
+                            <span>رفتن به فروشگاه</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </a>
 
+                        <a
+                            href="{{ route('blog.index') }}"
+                            class="farzin-final-cta__secondary"
+                        >
+                            دانش خرید
+                            <span aria-hidden="true">↗</span>
+                        </a>
+                    </div>
                 </div>
 
+                <div class="farzin-final-cta__system" aria-hidden="true">
+                    <div class="farzin-final-cta__system-top">
+                        <span>SHOP / JOURNAL</span>
+                        <span>05—02</span>
+                    </div>
+
+                    <div class="farzin-final-cta__rings">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <i></i>
+                    </div>
+
+                    <div class="farzin-final-cta__system-bottom">
+                        <span>DISCOVER</span>
+                        <span>CHOOSE</span>
+                        <span>BUY</span>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </section>
 
 @endsection

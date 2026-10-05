@@ -6,12 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        protected CartService $cartService
+    ) {
+    }
+
     public function showLogin(): View
     {
         return view('auth.login');
@@ -44,20 +50,37 @@ class AuthController extends Controller
                 ]);
         }
 
-        $request->session()->regenerate();
-
         $user = $request->user();
+
+        if ($user->isCustomer()) {
+            $this->cartService->mergeGuestCart($user);
+        }
+
+        $request->session()->regenerate();
 
         if ($user->isAdmin()) {
             return redirect()
-                ->route('admin.dashboard')
+                ->intended(route('admin.dashboard'))
                 ->with('success', 'خوش آمدید.');
         }
 
+        if ($user->isCustomer()) {
+            return redirect()
+                ->intended(route('home'))
+                ->with('success', 'خوش آمدید.');
+        }
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()
-            ->route('home')
-            ->with('success', 'خوش آمدید.');
+            ->route('login')
+            ->withErrors([
+                'email' => 'نقش حساب کاربری معتبر نیست.',
+            ]);
     }
+
     public function register(
         RegisterRequest $request
     ): RedirectResponse {
@@ -72,6 +95,8 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+
+        $this->cartService->mergeGuestCart($user);
 
         $request->session()->regenerate();
 

@@ -114,8 +114,8 @@
 }
 
 .btn--danger:hover {
-    background: #c92f3f;
-    border-color: #c92f3f;
+    background: var(--color-accent-700);
+    border-color: var(--color-accent-700);
 }
 
 .btn--sm {
@@ -321,7 +321,7 @@
     border-color: var(--accent);
 
     box-shadow:
-        0 0 0 3px rgba(179, 138, 90, .10);
+        0 0 0 3px rgb(226 31 47 / .10);
 }
 
 .form-input:disabled,
@@ -1489,7 +1489,7 @@
     border-color: var(--accent);
 
     box-shadow:
-        0 0 0 2px rgba(179, 138, 90, .08);
+        0 0 0 2px rgb(226 31 47 / .08);
 }
 
 .product-gallery__thumb img {
@@ -2592,7 +2592,7 @@
     background: var(--accent-soft);
 
     box-shadow:
-        0 0 0 2px rgba(179, 138, 90, .06);
+        0 0 0 2px rgb(226 31 47 / .06);
 }
 
 .payment-method__info {
@@ -3534,10 +3534,10 @@
     display: inline-flex;
     align-items: center;
 
-    border: 1px solid rgba(179, 138, 90, .28);
+    border: 1px solid rgb(226 31 47 / .28);
     border-radius: var(--radius-full);
 
-    background: rgba(245, 238, 230, .72);
+    background: rgb(247 248 250 / .72);
     color: var(--accent);
 
     font-size: var(--font-sm);
@@ -3667,9 +3667,9 @@
     background:
         linear-gradient(
             90deg,
-            rgba(247, 246, 243, 0) 45%,
-            rgba(247, 246, 243, .16) 72%,
-            rgba(247, 246, 243, .90) 100%
+            rgb(247 248 250 / 0) 45%,
+            rgb(247 248 250 / .16) 72%,
+            rgb(247 248 250 / .90) 100%
         );
 
     pointer-events: none;
@@ -3971,42 +3971,27 @@
 
 .page-header {
     width: 100%;
-
-    padding-block:
-        var(--space-8)
-        var(--space-7);
+    padding-block: var(--space-8) var(--space-7);
 }
 
 .page-header__eyebrow {
     color: var(--accent);
-
     font-size: var(--font-sm);
     font-weight: var(--weight-semibold);
 }
 
 .page-header__title {
     margin-top: var(--space-3);
-
     color: var(--text);
-
-    font-size:
-        clamp(
-            32px,
-            4vw,
-            52px
-        );
+    font-size: clamp(32px, 4vw, 52px);
 }
 
 .page-header__description {
     max-width: 760px;
-
     margin-top: var(--space-4);
-
     color: var(--text-muted);
-
     line-height: 1.9;
 }
-
 
 /* =========================================================
    46. ARTICLE
@@ -4630,8 +4615,8 @@
         background:
             linear-gradient(
                 180deg,
-                rgba(247, 246, 243, 0) 48%,
-                rgba(247, 246, 243, .18) 100%
+                rgb(247 248 250 / 0) 48%,
+                rgb(247 248 250 / .18) 100%
             );
     }
 

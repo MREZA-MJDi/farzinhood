@@ -10,6 +10,52 @@ use Illuminate\Contracts\View\View;
 
 class ShopController extends Controller
 {
+
+    public function suggestions(ShopIndexRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $search = trim((string) $request->validated('search'));
+
+        if ($search === '' || mb_strlen($search) < 2) {
+            return response()->json([
+                'items' => [],
+            ]);
+        }
+
+        $products = Product::query()
+            ->with(['primaryImage', 'category'])
+            ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
+            ->where(function ($query) use ($search) {
+                $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhereHas('category', fn ($category) =>
+                        $category->where('name', 'like', "%{$search}%")
+                    );
+            })
+            ->orderByDesc('is_featured')
+            ->latest('created_at')
+            ->latest('id')
+            ->limit(6)
+            ->get();
+
+        return response()->json([
+            'items' => $products->map(
+                fn (Product $product): array => [
+                    'name' => $product->name,
+                    'url' => route('products.show', $product),
+                    'price' => (int) $product->price,
+                    'brand' => $product->brand,
+                    'category' => $product->category?->name,
+                    'image' => $product->primaryImage?->image
+                        ? asset('storage/' . $product->primaryImage->image)
+                        : null,
+                ]
+            )->values(),
+        ]);
+    }
+
     public function index(ShopIndexRequest $request): View
     {
         $filters = $request->validated();
@@ -84,13 +130,18 @@ class ShopController extends Controller
             ->orderBy('name')
             ->get();
 
-        $priceMin = (int) Product::query()
+        $priceBounds = Product::query()
             ->where('is_active', true)
-            ->min('price');
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
+            ->selectRaw('MIN(price) as min_price, MAX(price) as max_price')
+            ->first();
 
-        $priceMax = (int) Product::query()
-            ->where('is_active', true)
-            ->max('price');
+        $priceMin = (int) ($priceBounds?->min_price ?? 0);
+        $priceMax = (int) ($priceBounds?->max_price ?? 0);
+
+        $wishlistedProductIds = auth()->check() && auth()->user()->isCustomer()
+            ? auth()->user()->wishlists()->pluck('product_id')
+            : collect();
 
         return view('shop.index', compact(
             'products',
@@ -98,7 +149,8 @@ class ShopController extends Controller
             'priceMin',
             'priceMax',
             'filters',
-            'shopHeroProduct'
+            'shopHeroProduct',
+            'wishlistedProductIds',
         ));
     }
 }

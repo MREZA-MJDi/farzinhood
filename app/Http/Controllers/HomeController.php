@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        $heroProducts = Product::query()
+        $latestProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
@@ -20,6 +20,15 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
+        $heroProducts = $latestProducts->values();
+        $latestProducts = $latestProducts
+            ->take(8)
+            ->values();
+
+        $wishlistedProductIds = auth()->check() && auth()->user()->isCustomer()
+            ? auth()->user()->wishlists()->pluck('product_id')
+            : collect();
+
         $featuredProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
@@ -27,14 +36,6 @@ class HomeController extends Controller
             ->where('is_featured', true)
             ->latest('created_at')
             ->latest('id')
-            ->take(8)
-            ->get();
-
-        $latestProducts = Product::query()
-            ->with(['primaryImage', 'category'])
-            ->where('is_active', true)
-            ->whereHas('category', fn ($query) => $query->where('is_active', true))
-            ->latest()
             ->take(8)
             ->get();
 
@@ -49,7 +50,8 @@ class HomeController extends Controller
             'heroProducts',
             'featuredProducts',
             'latestProducts',
-            'categories'
+            'categories',
+            'wishlistedProductIds',
         ));
     }
 }

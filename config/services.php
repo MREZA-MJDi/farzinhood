@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'payment' => [
+        'default' => env('PAYMENT_GATEWAY', 'unavailable'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

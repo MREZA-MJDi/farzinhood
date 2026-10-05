@@ -1,6 +1,7 @@
 <aside
-    class="fixed inset-y-0 right-0 z-50 flex w-[280px] -translate-x-full flex-col border-l border-[var(--color-border)] bg-white transition-transform duration-300 lg:translate-x-0"
-    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    id="admin-sidebar"
+    class="fixed inset-y-0 right-0 z-50 flex w-[280px] translate-x-full flex-col border-l border-[var(--color-border)] bg-white transition-transform duration-300 lg:translate-x-0"
+    :class="sidebarOpen ? 'translate-x-0' : 'translate-x-full'"
 >
     {{-- Brand --}}
     <div

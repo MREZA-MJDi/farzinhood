@@ -201,3 +201,222 @@ document.addEventListener("DOMContentLoaded", () => {
     render(0);
     start();
 });
+
+
+/* =========================================================
+   HOME SECTION REVEALS
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const revealItems = document.querySelectorAll("[data-home-reveal]");
+
+    if (!revealItems.length) {
+        return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+        revealItems.forEach((item) => item.classList.add("is-revealed"));
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        (entries, obs) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                entry.target.classList.add("is-revealed");
+                obs.unobserve(entry.target);
+            });
+        },
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -50px 0px",
+        },
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+});
+
+
+/* =========================================================
+   SHOP FILTER URL CLEANUP
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const filterForms = document.querySelectorAll("[data-shop-filter]");
+
+    filterForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            form.querySelectorAll("input, select").forEach((field) => {
+                if (!field.name || field.disabled) return;
+                if (field.value === "") field.disabled = true;
+            });
+        });
+    });
+});
+
+
+/* =========================================================
+   SERVER-DRIVEN LIVE SEARCH
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const forms = [...document.querySelectorAll("[data-live-search]")];
+
+    forms.forEach((form) => {
+        const input = form.querySelector("[data-live-search-input]");
+        const results = form.querySelector("[data-live-search-results]");
+        const endpoint = form.dataset.suggestionsUrl;
+
+        if (!input || !results || !endpoint) {
+            return;
+        }
+
+        let timer = null;
+        let controller = null;
+
+        const close = () => {
+            results.hidden = true;
+            results.innerHTML = "";
+        };
+
+        const loading = () => {
+            results.hidden = false;
+            results.innerHTML = `
+                <div class="farzin-live-search__state">
+                    <span class="farzin-live-search__pulse"></span>
+                    <strong>در حال جستجو…</strong>
+                </div>
+            `;
+        };
+
+        const render = (items, query) => {
+            if (!items.length) {
+                results.hidden = false;
+                results.innerHTML = `
+                    <div class="farzin-live-search__state">
+                        <strong>نتیجه‌ای برای «${query}» پیدا نشد.</strong>
+                        <span>Enter را بزن تا جستجوی کامل فروشگاه اجرا شود.</span>
+                    </div>
+                `;
+                return;
+            }
+
+            results.innerHTML = "";
+
+            items.forEach((item) => {
+                const link = document.createElement("a");
+                link.href = item.url;
+                link.className = "farzin-live-search__item";
+
+                const media = document.createElement("span");
+                media.className = "farzin-live-search__media";
+
+                if (item.image) {
+                    const image = document.createElement("img");
+                    image.src = item.image;
+                    image.alt = "";
+                    image.loading = "lazy";
+                    image.decoding = "async";
+                    media.appendChild(image);
+                } else {
+                    media.textContent = "F";
+                }
+
+                const copy = document.createElement("span");
+                copy.className = "farzin-live-search__copy";
+
+                const title = document.createElement("strong");
+                title.textContent = item.name;
+
+                const meta = document.createElement("span");
+                meta.textContent = [item.brand, item.category]
+                    .filter(Boolean)
+                    .join(" · ") || "فرزین";
+
+                copy.append(title, meta);
+
+                const price = document.createElement("span");
+                price.className = "farzin-live-search__price";
+                price.textContent = `${new Intl.NumberFormat("fa-IR").format(Number(item.price || 0))} تومان`;
+
+                link.append(media, copy, price);
+                results.appendChild(link);
+            });
+
+            results.hidden = false;
+        };
+
+        const search = async () => {
+            const query = input.value.trim();
+
+            if (query.length < 2) {
+                close();
+                return;
+            }
+
+            controller?.abort();
+            controller = new AbortController();
+
+            loading();
+
+            try {
+                const url = new URL(endpoint, window.location.origin);
+                url.searchParams.set("search", query);
+
+                const response = await fetch(url, {
+                    headers: {
+                        Accept: "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                    signal: controller.signal,
+                });
+
+                const payload = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(payload.message || "جستجو ناموفق بود.");
+                }
+
+                render(
+                    Array.isArray(payload.items) ? payload.items : [],
+                    query
+                );
+            } catch (error) {
+                if (error.name === "AbortError") {
+                    return;
+                }
+
+                results.hidden = false;
+                results.innerHTML = `
+                    <div class="farzin-live-search__state">
+                        <strong>جستجوی سریع در دسترس نیست.</strong>
+                        <span>Enter را بزن تا جستجوی کامل اجرا شود.</span>
+                    </div>
+                `;
+            }
+        };
+
+        input.addEventListener("input", () => {
+            window.clearTimeout(timer);
+            timer = window.setTimeout(search, 220);
+        });
+
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                close();
+            }
+        });
+
+        form.addEventListener("submit", () => {
+            window.clearTimeout(timer);
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!form.contains(event.target)) {
+                close();
+            }
+        });
+    });
+});

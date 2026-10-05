@@ -1,396 +1,106 @@
 @extends('layouts.app')
 
 @section('title', 'تنظیمات حساب | Farzin')
-
-@section('meta_description', 'مدیریت اطلاعات حساب کاربری در Farzin')
+@section('meta_description', 'مدیریت اطلاعات حساب کاربری فرزین')
 
 @section('content')
+<section class="farzin-container py-8 sm:py-10 lg:py-12">
+    <header class="max-w-2xl">
+        <span class="farzin-eyebrow">FARZIN / ACCOUNT SETTINGS</span>
+        <h1 class="farzin-page-title mt-3">تنظیمات حساب</h1>
+        <p class="farzin-section-description mt-3">
+            اطلاعات پایه حساب را به‌روز نگه دار تا خرید و پیگیری سفارش‌ها بدون اصطکاک انجام شود.
+        </p>
+    </header>
 
-    <section class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-
-        {{-- =========================================================
-            HEADER
-        ========================================================== --}}
-        <div class="mb-10">
-
-            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
-                Account Settings
-            </div>
-
-            <h1 class="mt-3 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
-                تنظیمات حساب
-            </h1>
-
-            <p class="mt-2 max-w-2xl text-sm leading-7 text-gray-500">
-                اطلاعات حساب و تنظیمات شخصی خودت را مدیریت کن.
-            </p>
-
+    @if(session('success'))
+        <div class="mt-6 rounded-2xl border border-[var(--color-success-100)] bg-[var(--color-success-50)] px-4 py-3 text-sm font-bold text-[var(--color-success-700)]">
+            {{ session('success') }}
         </div>
+    @endif
 
+    <div class="mt-8 grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)]">
+        <aside class="h-fit rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-earth-50)] p-3 lg:sticky lg:top-28">
+            @foreach([
+                ['label' => 'داشبورد', 'href' => route('customer.dashboard')],
+                ['label' => 'سفارش‌ها', 'href' => route('customer.orders.index')],
+                ['label' => 'علاقه‌مندی‌ها', 'href' => route('customer.wishlist.index')],
+                ['label' => 'آدرس‌ها', 'href' => route('customer.addresses.index')],
+                ['label' => 'تنظیمات', 'href' => route('customer.settings.index')],
+            ] as $item)
+                <a href="{{ $item['href'] }}" class="mt-1 flex items-center justify-between rounded-xl px-4 py-3.5 text-xs font-black transition first:mt-0 {{ request()->url() === $item['href'] ? 'bg-[var(--color-brand-900)] text-white' : 'text-[var(--color-text-secondary)] hover:bg-white hover:text-[var(--color-brand-900)]' }}">
+                    <span>{{ $item['label'] }}</span>
+                    <span aria-hidden="true">←</span>
+                </a>
+            @endforeach
+        </aside>
 
-        <div class="grid gap-8 lg:grid-cols-[220px_minmax(0,1fr)]">
-
-            {{-- =====================================================
-                SIDE MENU
-            ====================================================== --}}
-            <aside class="lg:sticky lg:top-28 lg:self-start">
-
-                <div class="rounded-[2rem] border border-gray-200 bg-white p-3">
-
-                    <a
-                        href="{{ route('customer.dashboard') }}"
-                        class="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
-                    >
-                        <span>⌂</span>
-                        داشبورد
-                    </a>
-
-                    <a
-                        href="{{ route('customer.orders.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
-                    >
-                        <span>▣</span>
-                        سفارش‌ها
-                    </a>
-
-                    <a
-                        href="{{ route('customer.wishlist.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
-                    >
-                        <span>♡</span>
-                        علاقه‌مندی‌ها
-                    </a>
-
-                    <a
-                        href="{{ route('customer.addresses.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
-                    >
-                        <span>⌖</span>
-                        آدرس‌ها
-                    </a>
-
-                    <div class="mt-2 border-t border-gray-100 pt-2">
-
-                        <a
-                            href="{{ route('customer.settings.index') }}"
-                            class="flex items-center gap-3 rounded-2xl bg-[#f3edfb] px-4 py-3.5 text-sm font-black text-[#3f207e]"
-                        >
-                            <span>⚙</span>
-                            تنظیمات
-                        </a>
-
+        <div class="space-y-6">
+            <section class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="border-b border-[var(--color-border)] bg-[var(--color-earth-50)] px-6 py-6 sm:px-8">
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-earth-700)]">PROFILE</span>
+                    <div class="mt-2 flex items-center gap-3">
+                        <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-brand-900)] text-lg font-black text-white">
+                            {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black">اطلاعات شخصی</h2>
+                            <p class="mt-1 text-[10px] text-[var(--color-text-muted)]">حساب فعال مشتری</p>
+                        </div>
                     </div>
+                </header>
 
-                </div>
+                <form action="{{ route('customer.settings.update') }}" method="POST" class="p-6 sm:p-8">
+                    @csrf
+                    @method('PUT')
 
-            </aside>
-
-
-            {{-- =====================================================
-                CONTENT
-            ====================================================== --}}
-            <div class="space-y-8">
-
-
-                {{-- =================================================
-                    PROFILE
-                ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
-
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
-
-                        <div class="flex items-center gap-4">
-
-                            <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#f3edfb] text-lg font-black text-[#3f207e]">
-                                {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
-                            </div>
-
-                            <div>
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
-                                    Profile
-                                </div>
-
-                                <h2 class="mt-1 text-xl font-black text-gray-950">
-                                    اطلاعات شخصی
-                                </h2>
-                            </div>
-
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div class="sm:col-span-2">
+                            <label for="name" class="text-xs font-black text-[var(--color-text-secondary)]">نام و نام خانوادگی</label>
+                            <input id="name" name="name" type="text" value="{{ old('name', auth()->user()->name) }}" maxlength="255" required class="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-earth-50)] px-4 py-3.5 text-sm outline-none transition focus:border-[var(--color-earth-400)] focus:bg-white focus:ring-4 focus:ring-[var(--color-earth-200)]/40">
+                            @error('name')<p class="mt-2 text-xs font-bold text-[var(--color-danger-700)]">{{ $message }}</p>@enderror
                         </div>
-
-                    </div>
-
-
-                    <form
-                        action="{{ route('customer.settings.update') }}"
-                        method="POST"
-                        class="p-6 sm:p-8"
-                    >
-                        @csrf
-                        @method('PUT')
-
-                        <div class="grid gap-5 sm:grid-cols-2">
-
-                            {{-- Name --}}
-                            <div class="sm:col-span-2">
-
-                                <label
-                                    for="name"
-                                    class="text-xs font-bold text-gray-700"
-                                >
-                                    نام و نام خانوادگی
-                                </label>
-
-                                <input
-                                    id="name"
-                                    type="text"
-                                    name="name"
-                                    value="{{ old('name', auth()->user()->name) }}"
-                                    maxlength="255"
-                                    required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
-                                >
-
-                                @error('name')
-                                <div class="mt-2 text-xs font-bold text-red-600">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-
-                            </div>
-
-
-                            {{-- Email --}}
-                            <div>
-
-                                <label
-                                    for="email"
-                                    class="text-xs font-bold text-gray-700"
-                                >
-                                    ایمیل
-                                </label>
-
-                                <input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('email', auth()->user()->email) }}"
-                                    maxlength="255"
-                                    required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
-                                >
-
-                                @error('email')
-                                <div class="mt-2 text-xs font-bold text-red-600">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-
-                            </div>
-
-
-                            {{-- Account Role --}}
-                            <div>
-
-                                <label
-                                    for="role"
-                                    class="text-xs font-bold text-gray-700"
-                                >
-                                    نوع حساب
-                                </label>
-
-                                <div
-                                    id="role"
-                                    class="mt-2 flex min-h-[52px] items-center rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-bold text-gray-600"
-                                >
-                                    مشتری
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="mt-7 flex justify-end">
-
-                            <button
-                                type="submit"
-                                class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
-                            >
-                                ذخیره تغییرات
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </section>
-
-
-                {{-- =================================================
-                    PASSWORD
-                ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
-
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
-
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
-                            Security
-                        </div>
-
-                        <h2 class="mt-2 text-xl font-black text-gray-950">
-                            امنیت حساب
-                        </h2>
-
-                        <p class="mt-1 text-xs leading-6 text-gray-400">
-                            برای امنیت بیشتر، رمز عبور قوی انتخاب کن.
-                        </p>
-
-                    </div>
-
-
-                    <div class="p-6 sm:p-8">
-
-                        <div class="rounded-[1.5rem] border border-amber-100 bg-amber-50/70 p-5">
-
-                            <div class="flex items-start gap-3">
-
-                                <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white font-bold text-amber-600 shadow-sm">
-                                    !
-                                </div>
-
-                                <div>
-
-                                    <div class="text-sm font-bold text-amber-900">
-                                        مدیریت رمز عبور
-                                    </div>
-
-                                    <p class="mt-1 text-xs leading-6 text-amber-700/70">
-                                        تغییر رمز عبور باید از مسیر امن احراز هویت انجام شود.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        @if(Route::has('password.request'))
-
-                            <div class="mt-5">
-
-                                <a
-                                    href="{{ route('password.request') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#7b20df] hover:bg-[#f8f4fc] hover:text-[#3f207e]"
-                                >
-                                    بازیابی / تغییر رمز عبور
-                                    <span>←</span>
-                                </a>
-
-                            </div>
-
-                        @endif
-
-                    </div>
-
-                </section>
-
-
-                {{-- =================================================
-                    ACCOUNT STATUS
-                ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
-
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
-
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
-                            Account Status
-                        </div>
-
-                        <h2 class="mt-2 text-xl font-black text-gray-950">
-                            وضعیت حساب
-                        </h2>
-
-                    </div>
-
-
-                    <div class="p-6 sm:p-8">
-
-                        <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
-                            <div class="flex items-center gap-4">
-
-                                <div class="flex size-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
-                                    ✓
-                                </div>
-
-                                <div>
-
-                                    <div class="text-sm font-black text-gray-900">
-                                        حساب فعال است
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-gray-400">
-                                        امکان خرید و مدیریت سفارش‌ها فعال است.
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-700">
-                                Active
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                {{-- =================================================
-                    DANGER ZONE
-                ================================================== --}}
-                <section class="rounded-[2rem] border border-red-100 bg-red-50/50 p-6 sm:p-8">
-
-                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
                         <div>
-
-                            <div class="text-sm font-black text-red-900">
-                                خروج از حساب
-                            </div>
-
-                            <p class="mt-1 text-xs leading-6 text-red-700/70">
-                                برای حفظ امنیت، می‌توانی از حساب کاربری خود خارج شوی.
-                            </p>
-
+                            <label for="email" class="text-xs font-black text-[var(--color-text-secondary)]">ایمیل</label>
+                            <input id="email" name="email" type="email" value="{{ old('email', auth()->user()->email) }}" maxlength="255" required class="mt-2 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-earth-50)] px-4 py-3.5 text-sm outline-none transition focus:border-[var(--color-earth-400)] focus:bg-white focus:ring-4 focus:ring-[var(--color-earth-200)]/40">
+                            @error('email')<p class="mt-2 text-xs font-bold text-[var(--color-danger-700)]">{{ $message }}</p>@enderror
                         </div>
 
-                        <form
-                            action="{{ route('logout') }}"
-                            method="POST"
-                        >
-                            @csrf
-
-                            <button
-                                type="submit"
-                                class="rounded-xl border border-red-200 bg-white px-5 py-3 text-xs font-bold text-red-700 transition hover:bg-red-100"
-                            >
-                                خروج از حساب
-                            </button>
-
-                        </form>
-
+                        <div>
+                            <span class="text-xs font-black text-[var(--color-text-secondary)]">نوع حساب</span>
+                            <div class="mt-2 flex min-h-[52px] items-center justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 text-sm font-black text-[var(--color-text-secondary)]">
+                                <span>مشتری</span>
+                                <span class="rounded-full bg-[var(--color-success-50)] px-2.5 py-1 text-[9px] text-[var(--color-success-700)]">فعال</span>
+                            </div>
+                        </div>
                     </div>
 
-                </section>
+                    <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                        <a href="{{ route('customer.dashboard') }}" class="inline-flex items-center justify-center rounded-xl border border-[var(--color-border)] px-5 py-3.5 text-xs font-black text-[var(--color-text-secondary)] transition hover:bg-[var(--color-earth-50)]">
+                            انصراف
+                        </a>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-[var(--color-brand-900)] px-6 py-3.5 text-sm font-black text-white transition hover:bg-[var(--color-brand-950)]">
+                            ذخیره تغییرات
+                        </button>
+                    </div>
+                </form>
+            </section>
 
-            </div>
-
+            <section class="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-earth-50)] p-6 sm:p-8">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-earth-700)]">SECURITY</span>
+                <h2 class="mt-2 text-lg font-black">امنیت حساب</h2>
+                <p class="mt-2 max-w-2xl text-xs leading-7 text-[var(--color-text-secondary)]">
+                    ورود، خروج و مدیریت نشست از مسیر رسمی احراز هویت فرزین انجام می‌شود. این بخش فقط اطلاعات پروفایل را مدیریت می‌کند.
+                </p>
+                <form action="{{ route('logout') }}" method="POST" class="mt-5">
+                    @csrf
+                    <button type="submit" class="rounded-xl border border-[var(--color-danger-100)] bg-white px-5 py-3 text-xs font-black text-[var(--color-danger-700)] transition hover:bg-[var(--color-danger-50)]">
+                        خروج از حساب
+                    </button>
+                </form>
+            </section>
         </div>
-
-    </section>
-
+    </div>
+</section>
 @endsection

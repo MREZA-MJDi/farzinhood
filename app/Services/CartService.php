@@ -167,34 +167,56 @@ class CartService
                     ->where('product_id', $guestItem->product_id)
                     ->first();
 
+                $product = Product::query()
+                    ->find($guestItem->product_id);
+
+                if (! $product || ! $product->is_active) {
+                    continue;
+                }
+
+                $availableQuantity = (int) $product->stock;
+
+                if ($availableQuantity < 1) {
+                    $existingItem = $userCart->items()
+                        ->where('product_id', $guestItem->product_id)
+                        ->first();
+
+                    $existingItem?->delete();
+
+                    continue;
+                }
+
+                $existingItem = $userCart->items()
+                    ->where('product_id', $guestItem->product_id)
+                    ->first();
+
                 if ($existingItem) {
-                    $product = Product::query()
-                        ->find($guestItem->product_id);
-
-                    if (! $product) {
-                        continue;
-                    }
-
-                    $mergedQuantity = $existingItem->quantity
-                        + $guestItem->quantity;
+                    $mergedQuantity = min(
+                        (int) $existingItem->quantity
+                        + (int) $guestItem->quantity,
+                        $availableQuantity
+                    );
 
                     $existingItem->update([
-                        'quantity' => min(
-                            $mergedQuantity,
-                            $product->stock
-                        ),
+                        'quantity' => $mergedQuantity,
                         'unit_price' => $product->price,
                     ]);
 
                     continue;
                 }
 
-                $userCart->items()->create([
-                    'product_id' => $guestItem->product_id,
-                    'quantity' => $guestItem->quantity,
-                    'unit_price' => $guestItem->unit_price,
-                ]);
-            }
+                $quantity = min(
+                    (int) $guestItem->quantity,
+                    $availableQuantity
+                );
+
+                if ($quantity > 0) {
+                    $userCart->items()->create([
+                        'product_id' => $guestItem->product_id,
+                        'quantity' => $quantity,
+                        'unit_price' => $product->price,
+                    ]);
+                }
 
             $guestCart->items()->delete();
             $guestCart->delete();
