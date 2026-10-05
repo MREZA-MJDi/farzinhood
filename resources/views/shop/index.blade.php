@@ -77,7 +77,7 @@
 
         <div class="farzin-container pt-5 lg:pt-7">
             <x-layout.breadcrumb
-                :items="[['label' => 'فروشگاه']]]"
+                :items="[['label' => 'فروشگاه']]"
             />
         </div>
 
