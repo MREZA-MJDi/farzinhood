@@ -86,10 +86,12 @@ class ShopController extends Controller
 
         $priceMin = (int) Product::query()
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->min('price');
 
         $priceMax = (int) Product::query()
             ->where('is_active', true)
+            ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->max('price');
 
         return view('shop.index', compact(
