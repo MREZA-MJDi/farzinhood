@@ -75,6 +75,12 @@
         </div>
     </section>
 
+        <div class="farzin-container pt-5 lg:pt-7">
+            <x-layout.breadcrumb
+                :items="[['label' => 'فروشگاه']]]"
+            />
+        </div>
+
     <section id="shop-products" class="shop-page__catalog-shell farzin-section farzin-section--compact">
 
         <div class="farzin-container">
@@ -150,6 +156,53 @@
             </div>
         </form>
 
+
+        @php
+            $hasShopFilters = filled(request('search'))
+                || filled(request('category'))
+                || filled(request('min_price'))
+                || filled(request('max_price'))
+                || request('sort', 'latest') !== 'latest';
+        @endphp
+
+        @if($hasShopFilters)
+            <div class="shop-active-filters" aria-label="فیلترهای فعال">
+                <div class="shop-active-filters__label">فیلترهای فعال</div>
+
+                <div class="shop-active-filters__items">
+                    @if(filled(request('search')))
+                        <span class="shop-filter-chip">جستجو: {{ request('search') }}</span>
+                    @endif
+
+                    @if(filled(request('category')))
+                        @php($activeCategory = $categories->firstWhere('slug', request('category')))
+                        <span class="shop-filter-chip">دسته: {{ $activeCategory?->name ?? request('category') }}</span>
+                    @endif
+
+                    @if(filled(request('min_price')))
+                        <span class="shop-filter-chip">از {{ number_format((int) request('min_price')) }} تومان</span>
+                    @endif
+
+                    @if(filled(request('max_price')))
+                        <span class="shop-filter-chip">تا {{ number_format((int) request('max_price')) }} تومان</span>
+                    @endif
+
+                    @if(request('sort', 'latest') !== 'latest')
+                        <span class="shop-filter-chip">
+                            مرتب‌سازی:
+                            @switch(request('sort'))
+                                @case('price_asc') ارزان‌ترین @break
+                                @case('price_desc') گران‌ترین @break
+                                @case('popular') محبوب‌ترین @break
+                                @case('rating') بالاترین امتیاز @break
+                            @endswitch
+                        </span>
+                    @endif
+                </div>
+
+                <a class="shop-active-filters__reset" href="{{ route('shop.index') }}">پاک‌کردن همه</a>
+            </div>
+        @endif
 
         {{-- Main catalog --}}
         <div class="shop-catalog mt-8 grid gap-5 lg:mt-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
@@ -331,7 +384,7 @@
                     </div>
 
                     <div class="mt-12">
-                        {{ $products->onEachSide(1)->links() }}
+                        @include('shop.pagination', ['paginator' => $products])
                     </div>
 
                 @else
