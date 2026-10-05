@@ -50,13 +50,25 @@ class AuthController extends Controller
 
         if ($user->isAdmin()) {
             return redirect()
-                ->route('admin.dashboard')
+                ->intended(route('admin.dashboard'))
                 ->with('success', 'خوش آمدید.');
         }
 
+        if ($user->isCustomer()) {
+            return redirect()
+                ->intended(route('home'))
+                ->with('success', 'خوش آمدید.');
+        }
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()
-            ->route('home')
-            ->with('success', 'خوش آمدید.');
+            ->route('login')
+            ->withErrors([
+                'email' => 'نقش حساب کاربری معتبر نیست.',
+            ]);
     }
     public function register(
         RegisterRequest $request
