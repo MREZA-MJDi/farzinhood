@@ -370,10 +370,10 @@
                         <form action="{{ route('shop.index') }}" method="GET">
                             @foreach(request()->except('sort', 'page') as $key => $value)
                                 @if(is_array($value))
-                                    @foreach($value as $item)
+                                    @foreach(array_filter($value, fn ($item) => filled($item)) as $item)
                                         <input type="hidden" name="{{ $key }}[]" value="{{ $item }}">
                                     @endforeach
-                                @else
+                                @elseif(filled($value))
                                     <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                                 @endif
                             @endforeach
