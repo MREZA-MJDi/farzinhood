@@ -252,7 +252,7 @@
     backdrop-filter: blur(10px);
 }
 
-.farzin-hero-rail__product-info > strong {
+.farzin-hero-rail__price {
     flex: 0 0 auto;
     color: white;
     font-size: .85rem;
