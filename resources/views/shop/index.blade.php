@@ -75,7 +75,9 @@
         </div>
     </section>
 
-    <section id="shop-products" class="shop-page__catalog-shell mx-auto max-w-7xl px-3 py-8 sm:px-6 lg:px-8 lg:py-14">
+    <section id="shop-products" class="shop-page__catalog-shell farzin-section farzin-section--compact">
+
+        <div class="farzin-container">
 
         {{-- Header --}}
         <header class="shop-page__catalog-head flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
