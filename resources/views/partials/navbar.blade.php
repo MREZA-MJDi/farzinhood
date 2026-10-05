@@ -82,7 +82,9 @@
             <form
                 action="{{ route('shop.index') }}"
                 method="GET"
-                class="hidden min-w-0 max-w-md flex-1 xl:block"
+                class="relative hidden min-w-0 max-w-md flex-1 xl:block"
+                data-live-search
+                data-suggestions-url="{{ route('shop.suggestions') }}"
             >
 
                 <label
@@ -101,6 +103,7 @@
                         value="{{ request('search') }}"
                         placeholder="جستجوی محصول، برند یا دسته‌بندی..."
                         autocomplete="off"
+                        data-live-search-input
                         class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] py-3 pr-4 pl-12 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-brand-900)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-900)]/10"
                     >
 
@@ -123,6 +126,13 @@
                     </button>
 
                 </div>
+
+                <div
+                    class="farzin-live-search"
+                    data-live-search-results
+                    hidden
+                    aria-live="polite"
+                ></div>
 
             </form>
 
@@ -285,7 +295,9 @@
                 <form
                     action="{{ route('shop.index') }}"
                     method="GET"
-                    class="pb-3"
+                    class="relative pb-3"
+                    data-live-search
+                    data-suggestions-url="{{ route('shop.suggestions') }}"
                 >
 
                     <label
@@ -303,6 +315,8 @@
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="جستجوی محصول یا برند..."
+                            autocomplete="off"
+                            data-live-search-input
                             class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3 pr-4 pl-12 text-sm outline-none transition focus:border-[var(--color-brand-900)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-900)]/10"
                         >
 
@@ -325,6 +339,13 @@
                         </button>
 
                     </div>
+
+                    <div
+                        class="farzin-live-search"
+                        data-live-search-results
+                        hidden
+                        aria-live="polite"
+                    ></div>
 
                 </form>
 
