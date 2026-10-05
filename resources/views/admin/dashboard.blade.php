@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'داشبورد')
+@section('title', 'داشبورد | فرزین')
 
 @section('content')
     @php
@@ -12,12 +12,12 @@
             'cancelled' => 'لغو شده',
         ];
 
-        $statusClasses = [
-            'pending' => 'bg-amber-50 text-amber-700',
-            'processing' => 'bg-blue-50 text-blue-700',
-            'shipped' => 'bg-indigo-50 text-indigo-700',
-            'delivered' => 'bg-emerald-50 text-emerald-700',
-            'cancelled' => 'bg-red-50 text-red-700',
+        $statusTone = [
+            'pending' => 'warning',
+            'processing' => 'info',
+            'shipped' => 'brand',
+            'delivered' => 'success',
+            'cancelled' => 'danger',
         ];
 
         $movementLabels = [
@@ -27,1184 +27,667 @@
             'adjustment' => 'اصلاح موجودی',
         ];
 
-        $movementClasses = [
-            'sale' => 'bg-red-50 text-red-700',
-            'restock' => 'bg-emerald-50 text-emerald-700',
-            'return' => 'bg-blue-50 text-blue-700',
-            'adjustment' => 'bg-amber-50 text-amber-700',
-        ];
+        $chartData = $salesChart['data'] ?? [];
+        $chartLabels = $salesChart['labels'] ?? [];
+        $chartMax = max(1, ...array_map('intval', $chartData));
+        $processingOrders = (int) $pendingOrders + (int) $processingOrders;
     @endphp
 
-    <div class="space-y-6">
+    <div class="space-y-6 pb-4">
 
-        {{-- Header --}}
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-                <h1 class="text-2xl font-black text-[var(--color-text-primary)]">
-                    داشبورد
-                </h1>
+        {{-- Control center header --}}
+        <section class="overflow-hidden rounded-[2rem] border border-[var(--color-brand-800)] bg-[var(--color-brand-950)] text-white shadow-[var(--shadow-lg)]">
+            <div class="relative grid gap-8 p-7 sm:p-9 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+                <div class="absolute -top-28 left-1/4 size-72 rounded-full bg-[var(--color-accent-600)]/10 blur-3xl"></div>
+                <div class="absolute -bottom-32 right-0 size-80 rounded-full bg-[var(--color-earth-400)]/10 blur-3xl"></div>
 
-                <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                    نمای کلی عملکرد فروشگاه و وضعیت سیستم
-                </p>
-            </div>
-
-            <div class="rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--color-text-secondary)] shadow-sm">
-                {{ now()->locale('fa')->translatedFormat('l، j F Y') }}
-            </div>
-        </div>
-
-
-        {{-- Sales KPIs --}}
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
-            {{-- Today Sales --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-
-                <div class="flex items-start justify-between gap-3">
-
-                    <div>
-                        <p class="text-sm text-[var(--color-text-secondary)]">
-                            فروش امروز
-                        </p>
-
-                        <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($todaySales) }}
-                        </p>
-
-                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">
-                            تومان
-                        </p>
-                    </div>
-
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-700)]">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2-.448 2-1s-.89-1-2-1-2 .448-2 1 .89 1 2 1zm0 0V5m0 14v-2m8-5a8 8 0 11-16 0 8 8 0 0116 0z"/>
-                        </svg>
-                    </div>
-
-                </div>
-
-                <div class="mt-4 flex items-center justify-between text-xs">
-                    <span class="text-[var(--color-text-muted)]">
-                        {{ number_format($todayOrderCount) }} سفارش پرداخت‌شده
+                <div class="relative">
+                    <span class="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-earth-200)]">
+                        FARZIN / CONTROL CENTER
                     </span>
 
-                    <span class="font-bold text-[var(--color-brand-700)]">
-                        میانگین {{ number_format($todayAverageOrderValue) }} تومان
-                    </span>
-                </div>
+                    <h1 class="mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+                        فروشگاه را،
+                        <span class="text-[var(--color-earth-200)]">در یک نگاه.</span>
+                    </h1>
 
-            </div>
-
-
-            {{-- Month Sales --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-
-                <div class="flex items-start justify-between gap-3">
-
-                    <div>
-                        <p class="text-sm text-[var(--color-text-secondary)]">
-                            فروش این ماه
-                        </p>
-
-                        <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($monthSales) }}
-                        </p>
-
-                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">
-                            تومان
-                        </p>
-                    </div>
-
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M3 3v18h18M7 15l4-4 3 3 6-7"/>
-                        </svg>
-                    </div>
-
-                </div>
-
-                <div class="mt-4 flex items-center justify-between text-xs">
-
-                    <span class="text-[var(--color-text-muted)]">
-                        {{ number_format($monthOrderCount) }} سفارش پرداخت‌شده
-                    </span>
-
-                    <span class="{{ $monthGrowth >= 0 ? 'text-emerald-700' : 'text-red-700' }} font-bold">
-                        {{ $monthGrowth >= 0 ? '+' : '' }}{{ number_format($monthGrowth, 1) }}٪
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            {{-- Year Sales --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-
-                <div class="flex items-start justify-between gap-3">
-
-                    <div>
-                        <p class="text-sm text-[var(--color-text-secondary)]">
-                            فروش امسال
-                        </p>
-
-                        <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($yearSales) }}
-                        </p>
-
-                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">
-                            تومان
-                        </p>
-                    </div>
-
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M4 19V5m0 14h16M8 16l3-4 3 2 4-6"/>
-                        </svg>
-                    </div>
-
-                </div>
-
-                <div class="mt-4 text-xs text-[var(--color-text-muted)]">
-                    کل فروش ثبت‌شده سال جاری
-                </div>
-
-            </div>
-
-
-            {{-- Customers --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-
-                <div class="flex items-start justify-between gap-3">
-
-                    <div>
-                        <p class="text-sm text-[var(--color-text-secondary)]">
-                            مشتریان
-                        </p>
-
-                        <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($customersCount) }}
-                        </p>
-
-                        <p class="mt-1 text-xs text-[var(--color-text-muted)]">
-                            مشتری ثبت‌نام‌شده
-                        </p>
-                    </div>
-
-                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-50 text-purple-700">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 w-6"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor"
-                             stroke-width="1.8">
-                            <path stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21a8 8 0 0116 0"/>
-                        </svg>
-                    </div>
-
-                </div>
-
-                <div class="mt-4 flex items-center justify-between text-xs">
-
-                    <span class="text-[var(--color-text-muted)]">
-                        فعال: {{ number_format($activeCustomersCount) }}
-                    </span>
-
-                    <span class="font-bold text-[var(--color-brand-700)]">
-                        +{{ number_format($newCustomersThisMonth) }} این ماه
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Sales Chart --}}
-        <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-                <div>
-                    <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                        نمودار فروش
-                    </h2>
-
-                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                        روند فروش پرداخت‌شده فروشگاه
+                    <p class="mt-4 max-w-2xl text-sm leading-8 text-white/65">
+                        فروش، سفارش، مشتری، موجودی و کارهای نیازمند اقدام را از همین‌جا کنترل کن.
+                        تمام شاخص‌های این صفحه از داده‌های واقعی فرزین می‌آیند.
                     </p>
                 </div>
 
-                <div class="flex rounded-xl bg-[var(--color-neutral-100)] p-1">
+                <div class="relative flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
+                    <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div class="text-[10px] font-bold text-white/45">امروز</div>
+                        <div class="mt-1 text-sm font-black">
+                            {{ now()->locale('fa')->translatedFormat('l، j F Y') }}
+                        </div>
+                    </div>
 
-                    <button type="button"
-                            data-range="daily"
-                            class="dashboard-chart-tab rounded-lg px-4 py-2 text-xs font-bold transition">
-                        روزانه
-                    </button>
+                    <a
+                        href="{{ route('shop.index') }}"
+                        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--color-earth-100)] px-5 py-3.5 text-sm font-black text-[var(--color-earth-900)] transition hover:-translate-y-0.5 hover:bg-white"
+                    >
+                        مشاهده فروشگاه
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                    <button type="button"
-                            data-range="monthly"
-                            class="dashboard-chart-tab rounded-lg px-4 py-2 text-xs font-bold transition">
-                        ماهانه
-                    </button>
+        {{-- Primary KPI grid --}}
+        <section aria-label="شاخص‌های اصلی" class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            @php
+                $kpis = [
+                    [
+                        'code' => '01',
+                        'label' => 'فروش امروز',
+                        'value' => number_format($todaySales),
+                        'meta' => number_format($todayOrderCount).' سفارش پرداخت‌شده',
+                        'tone' => 'dark',
+                    ],
+                    [
+                        'code' => '02',
+                        'label' => 'فروش این ماه',
+                        'value' => number_format($monthSales),
+                        'meta' => '%'.number_format($monthGrowth, 1).' نسبت به ماه قبل',
+                        'tone' => 'earth',
+                    ],
+                    [
+                        'code' => '03',
+                        'label' => 'سفارش‌های جاری',
+                        'value' => number_format($processingOrders),
+                        'meta' => number_format($ordersCount).' سفارش ثبت‌شده',
+                        'tone' => 'accent',
+                    ],
+                    [
+                        'code' => '04',
+                        'label' => 'مشتری فعال',
+                        'value' => number_format($activeCustomersCount),
+                        'meta' => number_format($newCustomersThisMonth).' مشتری جدید این ماه',
+                        'tone' => 'light',
+                    ],
+                ];
 
-                    <button type="button"
-                            data-range="yearly"
-                            class="dashboard-chart-tab rounded-lg px-4 py-2 text-xs font-bold transition">
-                        سالانه
-                    </button>
+                $toneClasses = [
+                    'dark' => 'bg-[var(--color-brand-950)] text-white border-[var(--color-brand-900)]',
+                    'earth' => 'bg-[var(--color-earth-50)] text-[var(--color-earth-900)] border-[var(--color-earth-200)]',
+                    'accent' => 'bg-[var(--color-accent-600)] text-white border-[var(--color-accent-600)]',
+                    'light' => 'bg-white text-[var(--color-text-primary)] border-[var(--color-border)]',
+                ];
+            @endphp
 
+            @foreach($kpis as $kpi)
+                <article class="relative overflow-hidden rounded-[1.5rem] border p-5 shadow-[var(--shadow-xs)] {{ $toneClasses[$kpi['tone']] }}">
+                    <span class="text-[9px] font-black uppercase tracking-[0.2em] opacity-55">
+                        {{ $kpi['label'] }}
+                    </span>
+                    <strong class="mt-3 block text-2xl font-black tracking-tight sm:text-3xl">
+                        {{ $kpi['value'] }}
+                    </strong>
+                    <span class="mt-2 block text-[10px] font-bold opacity-60">
+                        {{ $kpi['meta'] }}
+                    </span>
+                    <i class="pointer-events-none absolute -bottom-4 left-4 text-5xl font-black opacity-[0.06] not-italic">
+                        {{ $kpi['code'] }}
+                    </i>
+                </article>
+            @endforeach
+        </section>
+
+        {{-- Action center --}}
+        <section class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+            <header class="flex flex-col gap-4 border-b border-[var(--color-border)] px-6 py-6 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--color-accent-600)]">
+                        ACTION CENTER
+                    </span>
+                    <h2 class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
+                        کارهایی که الان نیاز به توجه دارند
+                    </h2>
+                    <p class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
+                        فقط وضعیت‌هایی که واقعاً می‌توانند روی فروشگاه اثر بگذارند.
+                    </p>
                 </div>
 
+                <a
+                    href="{{ route('admin.orders.index') }}"
+                    class="text-xs font-black text-[var(--color-brand-900)] transition hover:text-[var(--color-accent-600)]"
+                >
+                    مدیریت سفارش‌ها ↗
+                </a>
+            </header>
+
+            <div class="grid gap-px bg-[var(--color-border)] sm:grid-cols-2 xl:grid-cols-4">
+                @php
+                    $actions = [
+                        [
+                            'label' => 'سفارش‌های در حال رسیدگی',
+                            'value' => $processingOrders,
+                            'meta' => 'pending / processing / shipped',
+                            'href' => route('admin.orders.index'),
+                            'attention' => $processingOrders > 0,
+                        ],
+                        [
+                            'label' => 'موجودی رو به پایان',
+                            'value' => $lowStockCount,
+                            'meta' => 'محصول با موجودی ۱ تا ۵',
+                            'href' => route('admin.inventory.index'),
+                            'attention' => $lowStockCount > 0,
+                        ],
+                        [
+                            'label' => 'نظرات در انتظار',
+                            'value' => $pendingReviews,
+                            'meta' => 'نیازمند بررسی و انتشار',
+                            'href' => route('admin.reviews.index'),
+                            'attention' => $pendingReviews > 0,
+                        ],
+                        [
+                            'label' => 'پیام خوانده‌نشده',
+                            'value' => $unreadMessages,
+                            'meta' => number_format($totalMessages).' پیام در صندوق',
+                            'href' => route('admin.contact-messages.index'),
+                            'attention' => $unreadMessages > 0,
+                        ],
+                    ];
+                @endphp
+
+                @foreach($actions as $action)
+                    <a
+                        href="{{ $action['href'] }}"
+                        class="group bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-earth-50)]"
+                    >
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-black text-[var(--color-text-primary)]">
+                                    {{ $action['label'] }}
+                                </span>
+
+                                <div class="mt-2 flex items-end gap-2">
+                                    <strong class="text-2xl font-black text-[var(--color-brand-950)]">
+                                        {{ number_format($action['value']) }}
+                                    </strong>
+                                    @if($action['attention'])
+                                        <span class="mb-1 size-2 rounded-full bg-[var(--color-accent-600)]"></span>
+                                    @endif
+                                </div>
+
+                                <span class="mt-1 block text-[10px] leading-5 text-[var(--color-text-muted)]">
+                                    {{ $action['meta'] }}
+                                </span>
+                            </div>
+
+                            <span class="flex size-9 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] text-[var(--color-brand-900)] transition group-hover:-translate-x-1 group-hover:border-[var(--color-brand-300)] group-hover:bg-white">
+                                ←
+                            </span>
+                        </div>
+                    </a>
+                @endforeach
             </div>
+        </section>
 
+        {{-- Sales + order flow --}}
+        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,.75fr)]">
 
-            <div class="relative mt-6 h-[360px]">
-                <canvas id="salesChart"></canvas>
-            </div>
+            <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="flex flex-col gap-4 border-b border-[var(--color-border)] px-6 py-6 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            SALES SIGNAL
+                        </span>
+                        <h2 class="mt-2 text-xl font-black">
+                            روند فروش
+                        </h2>
+                        <p class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
+                            فروش پرداخت‌شده در بازه انتخابی.
+                        </p>
+                    </div>
 
-        </div>
+                    <label class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-earth-50)] px-3 py-2 text-xs font-bold text-[var(--color-text-secondary)]">
+                        <span>بازه</span>
+                        <select
+                            id="admin-sales-range"
+                            class="border-0 bg-transparent p-0 text-xs font-black outline-none"
+                        >
+                            <option value="daily">روزانه</option>
+                            <option value="monthly">ماهانه</option>
+                            <option value="yearly">سالانه</option>
+                        </select>
+                    </label>
+                </header>
 
+                <div
+                    id="admin-sales-chart"
+                    class="grid h-72 items-end gap-2 overflow-hidden px-5 py-6 sm:px-7"
+                    style="grid-template-columns: repeat({{ max(1, count($chartData)) }}, minmax(0, 1fr));"
+                >
+                    @foreach($chartData as $index => $value)
+                        @php
+                            $height = $value > 0
+                                ? max(4, min(100, ((int) $value / $chartMax) * 100))
+                                : 2;
+                        @endphp
 
-        {{-- Orders + Inventory --}}
-        <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                        <div
+                            class="group flex min-w-0 flex-col items-center justify-end gap-2"
+                            data-chart-column
+                            title="{{ number_format($value) }} تومان"
+                        >
+                            <div class="relative flex h-56 w-full items-end justify-center">
+                                <span
+                                    data-chart-bar
+                                    class="block w-full max-w-[18px] rounded-t-lg bg-[var(--color-brand-900)] transition-all duration-300 group-hover:bg-[var(--color-accent-600)]"
+                                    style="height: {{ $height }}%;"
+                                ></span>
+                            </div>
 
-            {{-- Order Status --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+                            <span
+                                data-chart-label
+                                class="block max-w-full truncate text-[8px] font-bold text-[var(--color-text-soft)]"
+                            >
+                                {{ $chartLabels[$index] ?? '—' }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
 
-                <div>
-                    <h2 class="text-lg font-black text-[var(--color-text-primary)]">
+                <footer class="flex items-center justify-between gap-4 border-t border-[var(--color-border)] bg-[var(--color-earth-50)] px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)]">
+                    <span>مبالغ به تومان</span>
+                    <span>فقط سفارش‌های پرداخت‌شده</span>
+                </footer>
+            </article>
+
+            <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="border-b border-[var(--color-border)] px-6 py-6">
+                    <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                        ORDER FLOW
+                    </span>
+                    <h2 class="mt-2 text-xl font-black">
                         وضعیت سفارش‌ها
                     </h2>
+                </header>
 
-                    <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                        توزیع سفارش‌ها بر اساس وضعیت
-                    </p>
-                </div>
+                <div class="space-y-4 p-6">
+                    @foreach($statusLabels as $status => $label)
+                        @php
+                            $count = (int) ($orderStatusOverview[$status] ?? 0);
+                            $totalStatus = max(1, array_sum($orderStatusOverview));
+                            $percent = round(($count / $totalStatus) * 100);
+                            $barTone = match($statusTone[$status]) {
+                                'warning' => 'bg-amber-500',
+                                'info' => 'bg-blue-500',
+                                'brand' => 'bg-[var(--color-brand-700)]',
+                                'success' => 'bg-emerald-500',
+                                'danger' => 'bg-[var(--color-accent-600)]',
+                            };
+                        @endphp
 
-                <div class="relative mx-auto mt-6 h-64 max-w-xs">
-                    <canvas id="orderStatusChart"></canvas>
-                </div>
-
-                <div class="mt-6 space-y-3">
-
-                    @foreach($orderStatusOverview as $status => $count)
-
-                        <div class="flex items-center justify-between">
-
-                            <div class="flex items-center gap-2">
-
-                                <span class="h-2.5 w-2.5 rounded-full
-                                    @switch($status)
-                                @case('pending') bg-amber-500 @break
-                                @case('processing') bg-blue-500 @break
-                                @case('shipped') bg-indigo-500 @break
-                                @case('delivered') bg-emerald-500 @break
-                                @default bg-red-500
-                                    @endswitch
-                                    "></span>
-
-                                <span class="text-sm text-[var(--color-text-secondary)]">
-                                    {{ $statusLabels[$status] ?? $status }}
-                                </span>
-
+                        <div>
+                            <div class="flex items-center justify-between gap-3 text-xs">
+                                <span class="font-bold text-[var(--color-text-secondary)]">{{ $label }}</span>
+                                <strong class="font-black text-[var(--color-text-primary)]">{{ number_format($count) }}</strong>
                             </div>
 
-                            <span class="font-black text-[var(--color-text-primary)]">
-                                {{ number_format($count) }}
-                            </span>
-
+                            <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--color-neutral-100)]">
+                                <span
+                                    class="block h-full rounded-full {{ $barTone }}"
+                                    style="width: {{ $percent }}%;"
+                                ></span>
+                            </div>
                         </div>
-
                     @endforeach
-
                 </div>
 
-            </div>
+                <footer class="border-t border-[var(--color-border)] bg-[var(--color-earth-50)] px-6 py-5">
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="rounded-xl bg-white px-3 py-3">
+                            <span class="block text-[9px] font-bold text-[var(--color-text-muted)]">میانگین امروز</span>
+                            <strong class="mt-1 block text-sm font-black">{{ number_format($todayAverageOrderValue) }} تومان</strong>
+                        </div>
+                        <div class="rounded-xl bg-white px-3 py-3">
+                            <span class="block text-[9px] font-bold text-[var(--color-text-muted)]">میانگین ماه</span>
+                            <strong class="mt-1 block text-sm font-black">{{ number_format($monthAverageOrderValue) }} تومان</strong>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </section>
 
+        {{-- Catalog + best sellers --}}
+        <section class="grid gap-6 xl:grid-cols-2">
 
-            {{-- Inventory --}}
-            <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm xl:col-span-2">
-
-                <div class="flex items-center justify-between gap-3">
-
+            <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="flex items-end justify-between gap-4 border-b border-[var(--color-border)] px-6 py-6">
                     <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            وضعیت موجودی
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            محصولات نیازمند توجه
-                        </p>
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            INVENTORY
+                        </span>
+                        <h2 class="mt-2 text-xl font-black">هشدار موجودی</h2>
                     </div>
-
-                    <a href="{{ route('admin.inventory.index') }}"
-                       class="text-xs font-bold text-[var(--color-brand-700)] hover:underline">
-                        مدیریت انبار
+                    <a href="{{ route('admin.inventory.index') }}" class="text-xs font-black text-[var(--color-brand-900)] hover:text-[var(--color-accent-600)]">
+                        مشاهده انبار ↗
                     </a>
+                </header>
 
-                </div>
-
-
-                <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-
-                    <div class="rounded-xl border border-red-100 bg-red-50 p-4">
-                        <div class="text-xs text-red-600">
-                            ناموجود
-                        </div>
-
-                        <div class="mt-2 text-2xl font-black text-red-700">
-                            {{ number_format($outOfStockCount) }}
-                        </div>
-                    </div>
-
-                    <div class="rounded-xl border border-amber-100 bg-amber-50 p-4">
-                        <div class="text-xs text-amber-600">
-                            موجودی کم
-                        </div>
-
-                        <div class="mt-2 text-2xl font-black text-amber-700">
-                            {{ number_format($lowStockCount) }}
-                        </div>
-                    </div>
-
-                    <div class="rounded-xl border border-emerald-100 bg-emerald-50 p-4">
-                        <div class="text-xs text-emerald-600">
-                            محصولات فعال
-                        </div>
-
-                        <div class="mt-2 text-2xl font-black text-emerald-700">
-                            {{ number_format($activeProductsCount) }}
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="mt-6 overflow-hidden rounded-xl border border-[var(--color-border)]">
-
-                    <div class="border-b border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3">
-                        <div class="text-sm font-black text-[var(--color-text-primary)]">
-                            کمبود موجودی
-                        </div>
-                    </div>
-
+                @if($lowStockProducts->isNotEmpty())
                     <div class="divide-y divide-[var(--color-border)]">
-
-                        @forelse($lowStockProducts as $product)
-
-                            <div class="flex items-center justify-between gap-4 px-4 py-3">
-
-                                <div class="min-w-0">
-
-                                    <div class="truncate text-sm font-bold text-[var(--color-text-primary)]">
-                                        {{ $product->name }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ $product->category?->name ?? 'بدون دسته‌بندی' }}
-                                    </div>
-
-                                </div>
-
-                                <div class="flex-shrink-0">
-
-                                    @if($product->stock <= 0)
-                                        <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-black text-red-700">
-                                            ناموجود
-                                        </span>
+                        @foreach($lowStockProducts as $product)
+                            <a
+                                href="{{ route('admin.products.edit', $product) }}"
+                                class="flex items-center gap-4 px-6 py-4 transition hover:bg-[var(--color-earth-50)]"
+                            >
+                                <div class="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--color-neutral-100)]">
+                                    @if($product->primaryImage?->image)
+                                        <img
+                                            src="{{ asset('storage/'.$product->primaryImage->image) }}"
+                                            alt=""
+                                            class="h-full w-full object-cover"
+                                            loading="lazy"
+                                        >
                                     @else
-                                        <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
-                                            {{ number_format($product->stock) }} عدد
-                                        </span>
+                                        <span class="text-[10px] font-black text-[var(--color-text-soft)]">F</span>
                                     @endif
-
                                 </div>
 
-                            </div>
-
-                        @empty
-
-                            <div class="px-4 py-8 text-center text-sm text-[var(--color-text-secondary)]">
-                                محصولی با موجودی بحرانی وجود ندارد.
-                            </div>
-
-                        @endforelse
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Recent Orders + Best Selling --}}
-        <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
-
-            {{-- Recent Orders --}}
-            <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-
-                <div class="flex items-center justify-between border-b border-[var(--color-border)] p-5">
-
-                    <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            سفارش‌های اخیر
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            آخرین سفارش‌های ثبت شده
-                        </p>
-                    </div>
-
-                    <a href="{{ route('admin.orders.index') }}"
-                       class="text-xs font-bold text-[var(--color-brand-700)] hover:underline">
-                        مشاهده همه
-                    </a>
-
-                </div>
-
-
-                <div class="divide-y divide-[var(--color-border)]">
-
-                    @forelse($recentOrders as $order)
-
-                        <a href="{{ route('admin.orders.show', $order) }}"
-                           class="block p-4 transition hover:bg-[var(--color-neutral-50)]">
-
-                            <div class="flex items-start justify-between gap-4">
-
-                                <div class="min-w-0">
-
-                                    <div class="font-black text-[var(--color-text-primary)]">
-                                        #{{ $order->order_number }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-secondary)]">
-                                        {{ $order->user?->name ?? $order->shipping_full_name }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ number_format($order->items_count ?? 0) }}
-                                        آیتم
-                                    </div>
-
-                                </div>
-
-                                <div class="text-left">
-
-                                    <div class="font-black text-[var(--color-text-primary)]">
-                                        {{ number_format($order->total) }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        تومان
-                                    </div>
-
-                                    <span class="mt-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold {{ $statusClasses[$order->status] ?? 'bg-gray-100 text-gray-700' }}">
-                                        {{ $statusLabels[$order->status] ?? $order->status }}
+                                <div class="min-w-0 flex-1">
+                                    <strong class="block truncate text-xs font-black">{{ $product->name }}</strong>
+                                    <span class="mt-1 block truncate text-[9px] text-[var(--color-text-muted)]">
+                                        {{ $product->category?->name ?? 'بدون دسته' }}
                                     </span>
-
                                 </div>
 
-                            </div>
+                                <span class="rounded-full px-2.5 py-1 text-[9px] font-black {{ $product->stock === 0 ? 'bg-[var(--color-accent-50)] text-[var(--color-accent-700)]' : 'bg-amber-50 text-amber-700' }}">
+                                    {{ $product->stock === 0 ? 'ناموجود' : $product->stock.' عدد' }}
+                                </span>
 
-                        </a>
-
-                    @empty
-
-                        <div class="px-5 py-12 text-center text-sm text-[var(--color-text-secondary)]">
-                            هنوز سفارشی ثبت نشده است.
-                        </div>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-
-            {{-- Best Selling Products --}}
-            <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-
-                <div class="flex items-center justify-between border-b border-[var(--color-border)] p-5">
-
-                    <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            پرفروش‌ترین محصولات
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            بر اساس تعداد فروش پرداخت‌شده
-                        </p>
+                                <span class="text-[var(--color-text-soft)]">←</span>
+                            </a>
+                        @endforeach
                     </div>
+                @else
+                    <div class="px-6 py-14 text-center">
+                        <div class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-[var(--color-success-50)] text-[var(--color-success-700)]">✓</div>
+                        <p class="mt-3 text-xs font-bold text-[var(--color-text-secondary)]">هشدار موجودی فعالی وجود ندارد.</p>
+                    </div>
+                @endif
+            </article>
 
-                    <a href="{{ route('admin.products.index') }}"
-                       class="text-xs font-bold text-[var(--color-brand-700)] hover:underline">
-                        محصولات
+            <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="flex items-end justify-between gap-4 border-b border-[var(--color-border)] px-6 py-6">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            BEST SELLERS
+                        </span>
+                        <h2 class="mt-2 text-xl font-black">پرفروش‌ترین محصولات</h2>
+                    </div>
+                    <a href="{{ route('admin.products.index') }}" class="text-xs font-black text-[var(--color-brand-900)] hover:text-[var(--color-accent-600)]">
+                        محصولات ↗
                     </a>
+                </header>
 
-                </div>
+                @if($bestSellingProducts->isNotEmpty())
+                    <div class="divide-y divide-[var(--color-border)]">
+                        @foreach($bestSellingProducts as $index => $product)
+                            <div class="flex items-center gap-4 px-6 py-4">
+                                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-earth-100)] text-[10px] font-black text-[var(--color-earth-800)]">
+                                    {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                </span>
 
-
-                <div class="divide-y divide-[var(--color-border)]">
-
-                    @forelse($bestSellingProducts as $product)
-
-                        <div class="flex items-center justify-between gap-4 p-4">
-
-                            <div class="flex min-w-0 items-center gap-3">
-
-                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-sm font-black text-[var(--color-brand-700)]">
-                                    {{ $loop->iteration }}
-                                </div>
-
-                                <div class="min-w-0">
-
-                                    <div class="truncate text-sm font-bold text-[var(--color-text-primary)]">
+                                <div class="min-w-0 flex-1">
+                                    <strong class="block truncate text-xs font-black">
                                         {{ $product->product_name }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ number_format($product->total_quantity) }}
-                                        عدد فروخته شده
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="flex-shrink-0 text-left">
-
-                                <div class="font-black text-[var(--color-text-primary)]">
-                                    {{ number_format($product->total_sales) }}
-                                </div>
-
-                                <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                    تومان
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    @empty
-
-                        <div class="px-5 py-12 text-center text-sm text-[var(--color-text-secondary)]">
-                            هنوز فروش موفقی ثبت نشده است.
-                        </div>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Inventory Movements + Reviews + Messages --}}
-        <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
-
-            {{-- Inventory Movements --}}
-            <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-
-                <div class="border-b border-[var(--color-border)] p-5">
-
-                    <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            آخرین تغییرات انبار
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            آخرین ورود و خروج کالا
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="divide-y divide-[var(--color-border)]">
-
-                    @forelse($recentInventoryMovements as $movement)
-
-                        <div class="p-4">
-
-                            <div class="flex items-start justify-between gap-3">
-
-                                <div class="min-w-0">
-
-                                    <div class="truncate text-sm font-bold text-[var(--color-text-primary)]">
-                                        {{ $movement->product?->name ?? 'محصول حذف شده' }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ $movement->user?->name ?? 'سیستم' }}
-                                    </div>
-
-                                </div>
-
-                                <div class="flex-shrink-0 text-left">
-
-                                    <div class="font-black {{ $movement->quantity >= 0 ? 'text-emerald-700' : 'text-red-700' }}">
-                                        {{ $movement->quantity >= 0 ? '+' : '' }}{{ number_format($movement->quantity) }}
-                                    </div>
-
-                                    <div class="mt-1">
-                                        <span class="rounded-full px-2.5 py-1 text-[10px] font-bold {{ $movementClasses[$movement->type] ?? 'bg-gray-100 text-gray-700' }}">
-                                            {{ $movementLabels[$movement->type] ?? $movement->type }}
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="mt-2 text-xs text-[var(--color-text-muted)]">
-                                موجودی:
-                                {{ number_format($movement->stock_before) }}
-                                →
-                                {{ number_format($movement->stock_after) }}
-                            </div>
-
-                        </div>
-
-                    @empty
-
-                        <div class="px-5 py-12 text-center text-sm text-[var(--color-text-secondary)]">
-                            هنوز تغییر موجودی ثبت نشده است.
-                        </div>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-
-            {{-- Reviews --}}
-            <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-
-                <div class="flex items-center justify-between border-b border-[var(--color-border)] p-5">
-
-                    <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            آخرین نظرات
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            بررسی و مدیریت نظرات
-                        </p>
-                    </div>
-
-                    <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
-                        {{ number_format($pendingReviews) }} در انتظار
-                    </span>
-
-                </div>
-
-
-                <div class="divide-y divide-[var(--color-border)]">
-
-                    @forelse($recentReviews as $review)
-
-                        <div class="p-4">
-
-                            <div class="flex items-start justify-between gap-3">
-
-                                <div class="min-w-0">
-
-                                    <div class="truncate text-sm font-bold text-[var(--color-text-primary)]">
-                                        {{ $review->product?->name ?? 'محصول حذف شده' }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ $review->user?->name ?? 'کاربر حذف شده' }}
-                                    </div>
-
-                                </div>
-
-                                <span class="flex-shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold {{ match($review->status) {
-                                    'approved' => 'bg-emerald-50 text-emerald-700',
-                                    'rejected' => 'bg-red-50 text-red-700',
-                                    default => 'bg-amber-50 text-amber-700',
-                                } }}">
-                                    {{ match($review->status) {
-                                        'approved' => 'تأیید',
-                                        'rejected' => 'رد',
-                                        default => 'در انتظار',
-                                    } }}
-                                </span>
-
-                            </div>
-
-                            <div class="mt-2 flex items-center gap-1">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <span class="{{ $i <= $review->rating ? 'text-amber-500' : 'text-[var(--color-neutral-300)]' }}">
-                                        ★
+                                    </strong>
+                                    <span class="mt-1 block text-[9px] text-[var(--color-text-muted)]">
+                                        {{ number_format($product->total_quantity) }} عدد فروخته‌شده
                                     </span>
-                                @endfor
-                            </div>
-
-                            @if($review->body)
-                                <p class="mt-2 line-clamp-2 text-xs leading-6 text-[var(--color-text-secondary)]">
-                                    {{ $review->body }}
-                                </p>
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div class="px-5 py-12 text-center text-sm text-[var(--color-text-secondary)]">
-                            هنوز نظری ثبت نشده است.
-                        </div>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-
-            {{-- Messages --}}
-            <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
-
-                <div class="flex items-center justify-between border-b border-[var(--color-border)] p-5">
-
-                    <div>
-                        <h2 class="text-lg font-black text-[var(--color-text-primary)]">
-                            آخرین پیام‌ها
-                        </h2>
-
-                        <p class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                            پیام‌های فرم تماس
-                        </p>
-                    </div>
-
-                    <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">
-                        {{ number_format($unreadMessages) }} جدید
-                    </span>
-
-                </div>
-
-
-                <div class="divide-y divide-[var(--color-border)]">
-
-                    @forelse($recentMessages as $message)
-
-                        <a href="{{ route('admin.contact-messages.show', $message) }}"
-                           class="block p-4 transition hover:bg-[var(--color-neutral-50)]">
-
-                            <div class="flex items-start justify-between gap-3">
-
-                                <div class="min-w-0">
-
-                                    <div class="truncate text-sm font-bold text-[var(--color-text-primary)]">
-                                        {{ $message->subject }}
-                                    </div>
-
-                                    <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ $message->name }}
-                                    </div>
-
                                 </div>
 
-                                <span class="flex-shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold {{ match($message->status) {
-                                    'new' => 'bg-red-50 text-red-700',
-                                    'read' => 'bg-blue-50 text-blue-700',
-                                    'replied' => 'bg-emerald-50 text-emerald-700',
-                                    default => 'bg-gray-100 text-gray-700',
-                                } }}">
-                                    {{ match($message->status) {
-                                        'new' => 'جدید',
-                                        'read' => 'خوانده',
-                                        'replied' => 'پاسخ داده',
-                                        default => 'بسته',
-                                    } }}
-                                </span>
-
+                                <strong class="shrink-0 text-[10px] font-black text-[var(--color-text-primary)]">
+                                    {{ number_format($product->total_sales) }}
+                                    <span class="font-bold text-[var(--color-text-soft)]">تومان</span>
+                                </strong>
                             </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="px-6 py-14 text-center text-xs font-bold text-[var(--color-text-muted)]">
+                        هنوز داده‌ای برای رتبه‌بندی فروش ثبت نشده است.
+                    </div>
+                @endif
+            </article>
+        </section>
 
-                            <p class="mt-2 line-clamp-2 text-xs leading-6 text-[var(--color-text-secondary)]">
-                                {{ $message->message }}
-                            </p>
+        {{-- Recent orders + reviews/messages --}}
+        <section class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,.8fr)]">
 
-                            <div class="mt-2 text-[11px] text-[var(--color-text-muted)]">
-                                {{ $message->created_at->locale('fa')->translatedFormat('Y/m/d H:i') }}
-                            </div>
+            <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <header class="flex items-end justify-between gap-4 border-b border-[var(--color-border)] px-6 py-6">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            RECENT ORDERS
+                        </span>
+                        <h2 class="mt-2 text-xl font-black">آخرین سفارش‌ها</h2>
+                    </div>
+                    <a href="{{ route('admin.orders.index') }}" class="text-xs font-black text-[var(--color-brand-900)] hover:text-[var(--color-accent-600)]">
+                        همه سفارش‌ها ↗
+                    </a>
+                </header>
 
-                        </a>
+                @if($recentOrders->isNotEmpty())
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-right">
+                            <thead class="bg-[var(--color-earth-50)] text-[9px] font-black text-[var(--color-text-muted)]">
+                                <tr>
+                                    <th class="px-6 py-3">سفارش</th>
+                                    <th class="px-6 py-3">مشتری</th>
+                                    <th class="px-6 py-3">وضعیت</th>
+                                    <th class="px-6 py-3">مبلغ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[var(--color-border)]">
+                                @foreach($recentOrders as $order)
+                                    @php
+                                        $status = $order->status;
+                                        $tone = $statusTone[$status] ?? 'brand';
+                                        $statusClass = match($tone) {
+                                            'warning' => 'bg-amber-50 text-amber-700',
+                                            'info' => 'bg-blue-50 text-blue-700',
+                                            'brand' => 'bg-[var(--color-brand-50)] text-[var(--color-brand-800)]',
+                                            'success' => 'bg-[var(--color-success-50)] text-[var(--color-success-700)]',
+                                            'danger' => 'bg-[var(--color-accent-50)] text-[var(--color-accent-700)]',
+                                        };
+                                    @endphp
+                                    <tr class="group transition hover:bg-[var(--color-earth-50)]">
+                                        <td class="px-6 py-4">
+                                            <a href="{{ route('admin.orders.show', $order) }}" class="font-black text-xs text-[var(--color-brand-900)] hover:text-[var(--color-accent-600)]">
+                                                {{ $order->order_number }}
+                                            </a>
+                                            <span class="mt-1 block text-[9px] text-[var(--color-text-muted)]">
+                                                {{ $order->created_at?->format('Y/m/d H:i') }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="block max-w-32 truncate text-xs font-bold">{{ $order->user?->name ?? 'مشتری حذف‌شده' }}</span>
+                                            <span class="mt-1 block text-[9px] text-[var(--color-text-muted)]">{{ number_format($order->items_count) }} قلم</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex rounded-full px-2.5 py-1 text-[9px] font-black {{ $statusClass }}">
+                                                {{ $statusLabels[$status] ?? $status }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-xs font-black">
+                                            {{ number_format($order->total) }}
+                                            <span class="text-[8px] font-bold text-[var(--color-text-soft)]">تومان</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="px-6 py-14 text-center text-xs font-bold text-[var(--color-text-muted)]">
+                        هنوز سفارشی ثبت نشده است.
+                    </div>
+                @endif
+            </article>
 
-                    @empty
+            <div class="space-y-6">
+                <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                    <header class="border-b border-[var(--color-border)] px-6 py-5">
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            REVIEWS
+                        </span>
+                        <h2 class="mt-2 text-lg font-black">آخرین نظرها</h2>
+                    </header>
 
-                        <div class="px-5 py-12 text-center text-sm text-[var(--color-text-secondary)]">
-                            هنوز پیامی دریافت نشده است.
+                    @if($recentReviews->isNotEmpty())
+                        <div class="divide-y divide-[var(--color-border)]">
+                            @foreach($recentReviews->take(4) as $review)
+                                <div class="px-6 py-4">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <span class="text-[10px] font-black">{{ $review->user?->name ?? 'کاربر' }}</span>
+                                        <span class="text-[9px] text-[var(--color-text-muted)]">{{ $review->status === 'pending' ? 'در انتظار' : 'تأیید شده' }}</span>
+                                    </div>
+                                    <p class="mt-2 line-clamp-2 text-[10px] leading-6 text-[var(--color-text-secondary)]">
+                                        {{ $review->comment }}
+                                    </p>
+                                    <span class="mt-2 block truncate text-[9px] font-bold text-[var(--color-brand-700)]">
+                                        {{ $review->product?->name ?? 'محصول حذف‌شده' }}
+                                    </span>
+                                </div>
+                            @endforeach
                         </div>
+                    @else
+                        <div class="px-6 py-10 text-center text-xs font-bold text-[var(--color-text-muted)]">نظری ثبت نشده است.</div>
+                    @endif
+                </article>
 
-                    @endforelse
+                <article class="overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                    <header class="border-b border-[var(--color-border)] px-6 py-5">
+                        <span class="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent-600)]">
+                            INBOX
+                        </span>
+                        <h2 class="mt-2 text-lg font-black">آخرین پیام‌ها</h2>
+                    </header>
 
-                </div>
-
+                    @if($recentMessages->isNotEmpty())
+                        <div class="divide-y divide-[var(--color-border)]">
+                            @foreach($recentMessages->take(4) as $message)
+                                <a href="{{ route('admin.contact-messages.show', $message) }}" class="block px-6 py-4 transition hover:bg-[var(--color-earth-50)]">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <strong class="truncate text-[10px] font-black">{{ $message->name }}</strong>
+                                        <span class="shrink-0 text-[8px] text-[var(--color-text-soft)]">{{ $message->created_at?->format('m/d') }}</span>
+                                    </div>
+                                    <p class="mt-1 line-clamp-1 text-[9px] text-[var(--color-text-muted)]">{{ $message->subject ?: 'پیام جدید' }}</p>
+                                </a>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="px-6 py-10 text-center text-xs font-bold text-[var(--color-text-muted)]">پیامی در صندوق نیست.</div>
+                    @endif
+                </article>
             </div>
+        </section>
 
-        </div>
-
-
-        {{-- Quick Stats --}}
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-
-            <a href="{{ route('admin.orders.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    کل سفارش‌ها
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($ordersCount) }}
-                </div>
-
+        {{-- Operational footer --}}
+        <section class="grid gap-4 sm:grid-cols-3">
+            <a href="{{ route('admin.products.index') }}" class="rounded-[1.5rem] border border-[var(--color-border)] bg-[var(--color-earth-50)] p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-brand-300)]">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)]">CATALOG</span>
+                <strong class="mt-2 block text-sm font-black">محصولات و کاتالوگ</strong>
+                <span class="mt-1 block text-[10px] text-[var(--color-text-muted)]">{{ number_format($productsCount) }} محصول · {{ number_format($activeProductsCount) }} فعال</span>
             </a>
 
-
-            <a href="{{ route('admin.products.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    محصولات
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($productsCount) }}
-                </div>
-
+            <a href="{{ route('admin.customers.index') }}" class="rounded-[1.5rem] border border-[var(--color-border)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-brand-300)]">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)]">CUSTOMERS</span>
+                <strong class="mt-2 block text-sm font-black">مشتریان</strong>
+                <span class="mt-1 block text-[10px] text-[var(--color-text-muted)]">{{ number_format($customersCount) }} حساب · {{ number_format($activeCustomersCount) }} فعال</span>
             </a>
 
-
-            <a href="{{ route('admin.reviews.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    نظرات
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($reviewsCount) }}
-                </div>
-
+            <a href="{{ route('admin.newsletter.index') }}" class="rounded-[1.5rem] border border-[var(--color-border)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[var(--color-brand-300)]">
+                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--color-text-muted)]">NEWSLETTER</span>
+                <strong class="mt-2 block text-sm font-black">خبرنامه</strong>
+                <span class="mt-1 block text-[10px] text-[var(--color-text-muted)]">{{ number_format($newsletterSubscribers) }} مشترک فعال</span>
             </a>
-
-
-            <a href="{{ route('admin.contact-messages.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    پیام‌ها
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($totalMessages) }}
-                </div>
-
-            </a>
-
-
-            <a href="{{ route('admin.newsletter.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    خبرنامه
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($newsletterSubscribers) }}
-                </div>
-
-            </a>
-
-
-            <a href="{{ route('admin.inventory.index') }}"
-               class="rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-
-                <div class="text-xs text-[var(--color-text-muted)]">
-                    کمبود موجودی
-                </div>
-
-                <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($lowStockCount) }}
-                </div>
-
-            </a>
-
-        </div>
-
+        </section>
     </div>
+@endsection
 
+@push('scripts')
+<script>
+(() => {
+    const select = document.getElementById('admin-sales-range');
+    const chart = document.getElementById('admin-sales-chart');
 
-    {{-- Chart.js --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    if (!select || !chart) {
+        return;
+    }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    const renderChart = (payload) => {
+        const labels = Array.isArray(payload.labels) ? payload.labels : [];
+        const values = Array.isArray(payload.data) ? payload.data.map(Number) : [];
+        const max = Math.max(1, ...values);
 
-            const chartUrl = @json(route('admin.dashboard.chart'));
+        if (!values.length) {
+            chart.innerHTML = '<div class="col-span-full flex items-center justify-center text-xs font-bold text-[var(--color-text-muted)]">داده‌ای برای این بازه وجود ندارد.</div>';
+            chart.style.gridTemplateColumns = '1fr';
+            return;
+        }
 
-            const chartTabs = document.querySelectorAll('.dashboard-chart-tab');
+        chart.style.gridTemplateColumns = `repeat(${values.length}, minmax(0, 1fr))`;
+        chart.innerHTML = values.map((value, index) => {
+            const height = value > 0 ? Math.max(4, Math.min(100, (value / max) * 100)) : 2;
+            const label = labels[index] ?? '—';
 
-            const salesCanvas = document.getElementById('salesChart');
+            return `
+                <div class="group flex min-w-0 flex-col items-center justify-end gap-2" title="${new Intl.NumberFormat('fa-IR').format(value)} تومان">
+                    <div class="relative flex h-56 w-full items-end justify-center">
+                        <span class="block w-full max-w-[18px] rounded-t-lg bg-[var(--color-brand-900)] transition-all duration-300 group-hover:bg-[var(--color-accent-600)]" style="height:${height}%"></span>
+                    </div>
+                    <span class="block max-w-full truncate text-[8px] font-bold text-[var(--color-text-soft)]">${label}</span>
+                </div>
+            `;
+        }).join('');
+    };
 
-            const orderStatusCanvas = document.getElementById('orderStatusChart');
+    let controller = null;
 
-            let salesChart = null;
+    select.addEventListener('change', async () => {
+        controller?.abort();
+        controller = new AbortController();
 
+        chart.classList.add('opacity-60');
 
-            /*
-            |--------------------------------------------------------------------------
-            | Sales Chart
-            |--------------------------------------------------------------------------
-            */
+        try {
+            const url = new URL('{{ route('admin.dashboard.chart') }}', window.location.origin);
+            url.searchParams.set('range', select.value);
 
-            async function loadSalesChart(range) {
-
-                chartTabs.forEach(tab => {
-
-                    const active = tab.dataset.range === range;
-
-                    tab.classList.toggle(
-                        'bg-white',
-                        active
-                    );
-
-                    tab.classList.toggle(
-                        'text-[var(--color-text-primary)]',
-                        active
-                    );
-
-                    tab.classList.toggle(
-                        'shadow-sm',
-                        active
-                    );
-
-                    tab.classList.toggle(
-                        'text-[var(--color-text-muted)]',
-                        !active
-                    );
-
-                });
-
-
-                try {
-
-                    const response = await fetch(
-                        `${chartUrl}?range=${encodeURIComponent(range)}`,
-                        {
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        }
-                    );
-
-                    if (!response.ok) {
-                        throw new Error('Chart request failed.');
-                    }
-
-                    const result = await response.json();
-
-
-                    if (salesChart) {
-                        salesChart.destroy();
-                    }
-
-
-                    salesChart = new Chart(
-                        salesCanvas,
-                        {
-                            type: 'line',
-
-                            data: {
-                                labels: result.labels,
-
-                                datasets: [
-                                    {
-                                        label: 'فروش',
-
-                                        data: result.data,
-
-                                        borderWidth: 2,
-
-                                        tension: 0.35,
-
-                                        fill: true,
-
-                                        pointRadius: 3,
-
-                                        pointHoverRadius: 5
-                                    }
-                                ]
-                            },
-
-                            options: {
-
-                                responsive: true,
-
-                                maintainAspectRatio: false,
-
-                                interaction: {
-                                    intersect: false,
-                                    mode: 'index'
-                                },
-
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    },
-
-                                    tooltip: {
-                                        callbacks: {
-                                            label: function (context) {
-                                                return Number(
-                                                    context.raw
-                                                ).toLocaleString('fa-IR') + ' تومان';
-                                            }
-                                        }
-                                    }
-                                },
-
-                                scales: {
-
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    },
-
-                                    y: {
-                                        beginAtZero: true,
-
-                                        ticks: {
-                                            callback: function (value) {
-                                                return Number(value).toLocaleString('fa-IR');
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                            }
-
-                        }
-                    );
-
-                } catch (error) {
-
-                    console.error(error);
-
-                }
-
-            }
-
-
-            chartTabs.forEach(tab => {
-
-                tab.addEventListener('click', function () {
-                    loadSalesChart(this.dataset.range);
-                });
-
+            const response = await fetch(url, {
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                signal: controller.signal,
             });
 
+            const payload = await response.json();
 
-            /*
-            |--------------------------------------------------------------------------
-            | Initial Sales Chart
-            |--------------------------------------------------------------------------
-            */
+            if (!response.ok) {
+                throw new Error(payload.message || 'دریافت نمودار ناموفق بود.');
+            }
 
-            loadSalesChart('daily');
+            renderChart(payload);
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                return;
+            }
 
-
-            /*
-            |--------------------------------------------------------------------------
-            | Order Status Chart
-            |--------------------------------------------------------------------------
-            */
-
-            const orderStatusData = @json(array_values($orderStatusOverview));
-
-            new Chart(
-                orderStatusCanvas,
-                {
-                    type: 'doughnut',
-
-                    data: {
-                        labels: @json(array_values($statusLabels)),
-
-                        datasets: [
-                            {
-                                data: orderStatusData,
-
-                                borderWidth: 0
-                            }
-                        ]
-                    },
-
-                    options: {
-
-                        responsive: true,
-
-                        maintainAspectRatio: false,
-
-                        cutout: '68%',
-
-                        plugins: {
-
-                            legend: {
-                                display: false
-                            },
-
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        return `${context.label}: ${Number(context.raw).toLocaleString('fa-IR')}`;
-                                    }
-                                }
-                            }
-
-                        }
-
-                    }
-
-                }
-            );
-
-        });
-    </script>
-@endsection
+            chart.innerHTML = '<div class="col-span-full flex items-center justify-center text-xs font-bold text-[var(--color-danger-700)]">دریافت داده نمودار ناموفق بود.</div>';
+            chart.style.gridTemplateColumns = '1fr';
+        } finally {
+            chart.classList.remove('opacity-60');
+        }
+    });
+})();
+</script>
+@endpush
