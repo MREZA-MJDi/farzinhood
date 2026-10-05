@@ -140,9 +140,9 @@
         TRUST STRIP
     ========================================================== --}}
 
-    <section class="border-b border-[var(--color-border)] bg-white" data-home-trust-strip>
+    <section class="farzin-home-trust border-y border-[var(--color-border)] bg-white" data-home-section data-home-trust-strip>
 
-        <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-[var(--color-neutral-100)] px-4 sm:px-6 lg:grid-cols-4 lg:px-8">
+        <div class="farzin-container farzin-home-trust__grid">
 
             <div class="bg-white px-5 py-7">
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
@@ -209,11 +209,11 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="farzin-section">
+    <section class="farzin-section farzin-home-section farzin-home-section--categories" data-home-section>
 
         <div class="farzin-container">
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div class="farzin-home-section__head flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between" data-home-reveal>
 
             <div>
 
@@ -251,7 +251,7 @@
 
             </div>
 
-            <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div class="farzin-home-grid mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5" data-home-reveal>
 
             @forelse($categories ?? [] as $category)
 
@@ -357,11 +357,11 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="farzin-section farzin-section--muted">
+    <section class="farzin-section farzin-section--muted farzin-home-section farzin-home-section--featured" data-home-section>
 
         <div class="farzin-container">
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div class="farzin-home-section__head flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between" data-home-reveal>
 
                 <div>
 
@@ -400,7 +400,7 @@
             </div>
 
 
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            <div class="farzin-home-grid mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4" data-home-reveal>
 
                 @forelse($featuredProducts ?? [] as $product)
 
@@ -429,12 +429,12 @@
         EDITORIAL
     ========================================================== --}}
 
-    <section class="farzin-section">
+    <section class="farzin-section farzin-home-section farzin-home-section--editorial" data-home-section>
 
         <div class="farzin-container">
 
             <div
-            class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"
+            class="farzin-editorial-card overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white" data-home-reveal
         >
 
             <div class="grid items-center lg:grid-cols-[1fr_360px]">
@@ -518,11 +518,11 @@
         LATEST PRODUCTS
     ========================================================== --}}
 
-    <section class="farzin-section farzin-section--compact">
+    <section class="farzin-section farzin-section--compact farzin-home-section farzin-home-section--latest" data-home-section>
 
         <div class="farzin-container">
 
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div class="farzin-home-section__head flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between" data-home-reveal>
 
                 <div>
 
@@ -561,7 +561,7 @@
             </div>
 
 
-            <div class="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+            <div class="farzin-home-grid mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4" data-home-reveal>
 
                 @forelse($latestProducts ?? [] as $product)
 
@@ -590,7 +590,7 @@
         FINAL CTA
     ========================================================== --}}
 
-    <section class="farzin-section farzin-section--compact farzin-section--bordered">
+    <section class="farzin-section farzin-section--compact farzin-section--bordered farzin-home-section farzin-home-section--cta" data-home-section>
 
         <div class="farzin-container">
 
@@ -602,7 +602,7 @@
                     class="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[var(--color-accent-600)]/10 blur-3xl"
                 ></div>
 
-                <div class="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                <div class="farzin-home-cta__inner relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between" data-home-reveal>
 
                     <div class="max-w-2xl">
 
