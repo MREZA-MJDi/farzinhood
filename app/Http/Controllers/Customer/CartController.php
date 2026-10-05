@@ -9,6 +9,7 @@ use App\Services\CartService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use RuntimeException;
 
 class CartController extends Controller
 {
@@ -19,9 +20,11 @@ class CartController extends Controller
 
     public function index(): View
     {
-        $items = $this->cartService->contents(auth()->user());
-        $subtotal = $this->cartService->subtotal(auth()->user());
-        $itemCount = $this->cartService->itemCount(auth()->user());
+        $user = auth()->user();
+
+        $items = $this->cartService->contents($user);
+        $subtotal = $this->cartService->subtotal($user);
+        $itemCount = $this->cartService->itemCount($user);
 
         return view('customer.cart.index', compact(
             'items',
@@ -38,46 +41,74 @@ class CartController extends Controller
             ->where('is_active', true)
             ->findOrFail($validated['product_id']);
 
-        $this->cartService->add(
-            $product,
-            $validated['quantity'],
-            auth()->user()
-        );
+        try {
+            $this->cartService->add(
+                $product,
+                $validated['quantity'],
+                auth()->user()
+            );
+        } catch (RuntimeException $exception) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $exception->getMessage(),
+                ], 422);
+            }
+
+            return back()
+                ->withInput()
+                ->with('error', $exception->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Product added to cart.',
+                'message' => 'محصول به سبد خرید اضافه شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
         }
 
-        return back()->with('success', 'Product added to cart.');
+        return back()->with('success', 'محصول به سبد خرید اضافه شد.');
     }
 
-    public function update(CartRequest $request, Product $product): RedirectResponse|JsonResponse
-    {
+    public function update(
+        CartRequest $request,
+        Product $product
+    ): RedirectResponse|JsonResponse {
         abort_unless($product->is_active, 404);
 
         $validated = $request->validated();
 
-        $this->cartService->update(
-            $product,
-            $validated['quantity'],
-            auth()->user()
-        );
+        try {
+            $this->cartService->update(
+                $product,
+                $validated['quantity'],
+                auth()->user()
+            );
+        } catch (RuntimeException $exception) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $exception->getMessage(),
+                ], 422);
+            }
+
+            return back()
+                ->withInput()
+                ->with('error', $exception->getMessage());
+        }
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Cart updated successfully.',
+                'message' => 'سبد خرید بروزرسانی شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
         }
 
-        return back()->with('success', 'Cart updated successfully.');
+        return back()->with('success', 'سبد خرید بروزرسانی شد.');
     }
 
     public function remove(Product $product): RedirectResponse|JsonResponse
@@ -90,13 +121,13 @@ class CartController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Product removed from cart.',
+                'message' => 'محصول از سبد خرید حذف شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
         }
 
-        return back()->with('success', 'Product removed from cart.');
+        return back()->with('success', 'محصول از سبد خرید حذف شد.');
     }
 
     public function clear(): RedirectResponse|JsonResponse
@@ -106,12 +137,12 @@ class CartController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Cart cleared successfully.',
+                'message' => 'سبد خرید خالی شد.',
                 'item_count' => 0,
                 'subtotal' => 0,
             ]);
         }
 
-        return back()->with('success', 'Cart cleared successfully.');
+        return back()->with('success', 'سبد خرید خالی شد.');
     }
 }
