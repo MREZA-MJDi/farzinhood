@@ -23,7 +23,7 @@
                     </div>
 
                     <h1 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-                        سلام، {{ auth()->user()->name }} 👋
+                        سلام، {{ $user->name }} 👋
                     </h1>
 
                     <p class="mt-3 max-w-xl text-sm leading-7 text-white/60">
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="mt-3 text-3xl font-black text-gray-950">
-                    {{ auth()->user()->orders()->count() }}
+                    {{ $stats['orders'] }}
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="mt-3 text-3xl font-black text-gray-950">
-                    {{ auth()->user()->wishlists()->count() }}
+                    {{ $stats['wishlists'] }}
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="mt-3 text-3xl font-black text-gray-950">
-                    {{ auth()->user()->addresses()->count() }}
+                    {{ $stats['addresses'] }}
                 </div>
             </div>
 
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="mt-3 truncate text-sm font-black text-gray-950">
-                    {{ auth()->user()->email }}
+                    {{ $user->email }}
                 </div>
             </div>
 
@@ -119,12 +119,7 @@
 
 
                 @php
-                    $recentOrders = auth()->user()
-                        ->orders()
-                        ->withCount('items')
-                        ->latest()
-                        ->take(5)
-                        ->get();
+                    // Recent orders are supplied by the dashboard controller.
                 @endphp
 
 
