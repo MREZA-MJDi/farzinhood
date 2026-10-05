@@ -65,6 +65,9 @@ Route::get('/', [HomeController::class, 'index'])
 Route::get('/shop', [ShopController::class, 'index'])
     ->name('shop.index');
 
+Route::get('/shop/suggestions', [ShopController::class, 'suggestions'])
+    ->name('shop.suggestions');
+
 
 /*
 |--------------------------------------------------------------------------
