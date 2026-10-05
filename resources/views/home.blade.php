@@ -9,7 +9,7 @@
     {{-- =========================================================
         HERO
         Premium product rail. Backend intentionally supplies only the
-        latest 6 image-ready active products.
+        latest 10 image-ready active products.
     ========================================================== --}}
 
     @php($heroSlides = ($heroProducts ?? collect())->values())
@@ -51,7 +51,7 @@
                         </svg>
                     </a>
                     <span class="farzin-hero-rail__meta">
-                        ۶ محصول تازه
+                        {{ $heroSlides->count() }} محصول تازه
                     </span>
                 </div>
             </div>
