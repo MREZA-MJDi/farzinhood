@@ -217,15 +217,15 @@
 
             <div>
 
-                <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                <div class="farzin-eyebrow farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                     Explore
                 </div>
 
-                <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                <h2 class="mt-3 farzin-section-title farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                     دسته‌بندی‌ها
                 </h2>
 
-                <p class="mt-3 max-w-2xl farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
+                <p class="mt-3 max-w-2xl farzin-section-description farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                     مسیرت را سریع‌تر پیدا کن و مستقیماً وارد دسته مورد نظرت شو.
                 </p>
 
@@ -363,15 +363,15 @@
 
                 <div>
 
-                    <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                    <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                         Farzin Selection
                     </div>
 
-                    <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                    <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                         انتخاب‌های ویژه
                     </h2>
 
-                    <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+                    <p class="mt-3 max-w-2xl farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                         محصولاتی که برای کیفیت، کاربرد و ارزش خرید بیشتر انتخاب شده‌اند.
                     </p>
 
@@ -524,15 +524,15 @@
 
                 <div>
 
-                    <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                    <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                         New In
                     </div>
 
-                    <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                    <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                         تازه‌های فرزین
                     </h2>
 
-                    <p class="mt-3 text-sm leading-7 text-[var(--color-text-secondary)]">
+                    <p class="mt-3 farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                         جدیدترین محصولاتی که به فروشگاه اضافه شده‌اند.
                     </p>
 
@@ -612,7 +612,7 @@
                             آماده‌ای انتخاب بهتری داشته باشی؟
                         </h2>
 
-                        <p class="mt-4 text-sm leading-7 text-[var(--color-text-secondary)]">
+                        <p class="mt-4 farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                             محصولات را ببین، مقایسه کن و خریدت را با اطمینان انجام بده.
                         </p>
 
