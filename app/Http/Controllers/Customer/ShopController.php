@@ -139,13 +139,18 @@ class ShopController extends Controller
         $priceMin = (int) ($priceBounds?->min_price ?? 0);
         $priceMax = (int) ($priceBounds?->max_price ?? 0);
 
+        $wishlistedProductIds = auth()->check() && auth()->user()->isCustomer()
+            ? auth()->user()->wishlists()->pluck('product_id')
+            : collect();
+
         return view('shop.index', compact(
             'products',
             'categories',
             'priceMin',
             'priceMax',
             'filters',
-            'shopHeroProduct'
+            'shopHeroProduct',
+            'wishlistedProductIds',
         ));
     }
 }
