@@ -12,7 +12,7 @@
                 <div class="shop-hero__media" aria-hidden="true">
                     @if($shopHeroProduct?->primaryImage)
                         <img
-                            src="{{ asset('storage/' . $shopHeroProduct->primaryImage->image) }}"
+                            src="{{ $shopHeroProduct->primaryImage->url }}"
                             alt=""
                             loading="eager"
                             fetchpriority="high"
