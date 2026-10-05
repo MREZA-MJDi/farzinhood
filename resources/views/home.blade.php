@@ -209,21 +209,23 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="farzin-section">
 
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div class="farzin-container">
+
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
             <div>
 
-                <div class="text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
+                <div class="farzin-eyebrow text-[11px] font-black uppercase tracking-[0.25em] text-[var(--color-accent-600)]">
                     Explore
                 </div>
 
-                <h2 class="mt-3 text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
+                <h2 class="mt-3 farzin-section-title text-3xl font-black tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
                     دسته‌بندی‌ها
                 </h2>
 
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+                <p class="mt-3 max-w-2xl farzin-section-description text-sm leading-7 text-[var(--color-text-secondary)]">
                     مسیرت را سریع‌تر پیدا کن و مستقیماً وارد دسته مورد نظرت شو.
                 </p>
 
@@ -247,10 +249,9 @@
                 </svg>
             </a>
 
-        </div>
+            </div>
 
-
-        <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
 
             @forelse($categories ?? [] as $category)
 
@@ -354,9 +355,9 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="bg-[var(--color-neutral-50)] py-20">
+    <section class="farzin-section farzin-section--muted">
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="farzin-container">
 
             <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
@@ -426,9 +427,11 @@
         EDITORIAL
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section class="farzin-section">
 
-        <div
+        <div class="farzin-container">
+
+            <div
             class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"
         >
 
@@ -502,6 +505,8 @@
 
             </div>
 
+            </div>
+
         </div>
 
     </section>
@@ -511,9 +516,9 @@
         LATEST PRODUCTS
     ========================================================== --}}
 
-    <section class="pb-20">
+    <section class="farzin-section farzin-section--compact">
 
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="farzin-container">
 
             <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
@@ -583,9 +588,9 @@
         FINAL CTA
     ========================================================== --}}
 
-    <section class="border-t border-[var(--color-border)] bg-white">
+    <section class="farzin-section farzin-section--compact farzin-section--bordered">
 
-        <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="farzin-container">
 
             <div
                 class="relative overflow-hidden rounded-[2rem] bg-[var(--color-neutral-100)] p-7 sm:p-10 lg:p-12"
