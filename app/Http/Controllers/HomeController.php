@@ -17,11 +17,12 @@ class HomeController extends Controller
             ->whereHas('primaryImage')
             ->latest('created_at')
             ->latest('id')
-            ->take(8)
+            ->take(10)
             ->get();
 
-        $heroProducts = $latestProducts
-            ->take(6)
+        $heroProducts = $latestProducts->values();
+        $latestProducts = $latestProducts
+            ->take(8)
             ->values();
 
         $featuredProducts = Product::query()
