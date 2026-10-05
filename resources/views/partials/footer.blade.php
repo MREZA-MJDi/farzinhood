@@ -1,10 +1,10 @@
-<footer class="mt-20 border-t border-[var(--color-border)] bg-white">
+<footer class="border-t border-[var(--color-border)] bg-white">
 
     {{-- =========================================================
         Main Footer
     ========================================================== --}}
 
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+    <div class="farzin-container py-14 lg:py-16">
 
         <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
 
