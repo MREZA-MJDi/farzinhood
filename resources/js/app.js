@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!stage || slides.length < 2) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const visibleRadius = 2;
+    let visibleRadius = 2;
     let index = 0;
     let timer = null;
     let startX = null;
@@ -75,7 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const layout = () => {
         const stageWidth = stage.clientWidth;
-        const cardWidth = Math.min(330, Math.max(205, stageWidth * 0.24));
+        visibleRadius = stageWidth < 640 ? 1 : 2;
+        const cardWidth = Math.min(330, Math.max(205, stageWidth * 0.22));
 
         slides.forEach((slide, slideIndex) => {
             const relative = getRelativeIndex(slideIndex);
@@ -95,7 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const spread = Math.min(cardWidth * 0.76, stageWidth * 0.27);
+            const maxSpread = Math.max(0, (stageWidth - cardWidth) / (visibleRadius === 1 ? 2 : 4));
+            const spread = Math.min(cardWidth * 0.58, maxSpread);
 
             slide.style.setProperty("--hero-x", (relative * spread) + "px");
             slide.style.setProperty(
