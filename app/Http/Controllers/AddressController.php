@@ -27,12 +27,11 @@ class AddressController extends Controller
 
         $isFirstAddress = ! $user->addresses()->exists();
 
-        $address = $user->addresses()->create(
-            $data + [
-                'country' => $data['country'] ?? 'ایران',
-                'is_default' => $isFirstAddress || (bool) ($data['is_default'] ?? false),
-            ]
-        );
+        $data['country'] = $data['country'] ?? 'ایران';
+        $data['is_default'] = $isFirstAddress
+            || (bool) ($data['is_default'] ?? false);
+
+        $address = $user->addresses()->create($data);
 
         if ($address->is_default) {
             $address->makeDefault();
