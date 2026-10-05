@@ -35,7 +35,7 @@
             @foreach($items as $index => $item)
 
                 <li
-                    class="breadcrumb__item"
+                    class="farzin-breadcrumb__item"
                     aria-hidden="true"
                 >
                     <span class="farzin-breadcrumb__separator">
@@ -54,7 +54,7 @@
 
                         <a
                             href="{{ $item['href'] }}"
-                            class="breadcrumb__link"
+                            class="farzin-breadcrumb__link"
                         >
                             {{ $item['label'] ?? '' }}
                         </a>
