@@ -144,7 +144,7 @@
 
         <div class="farzin-container farzin-home-trust__grid">
 
-            <div class="bg-white px-5 py-7">
+            <div class="bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     01
                 </div>
@@ -158,7 +158,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     02
                 </div>
@@ -172,7 +172,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     03
                 </div>
@@ -186,7 +186,7 @@
                 </div>
             </div>
 
-            <div class="bg-white px-5 py-7">
+            <div class="bg-white px-5 py-7" data-home-reveal>
                 <div class="text-xl font-black text-[var(--color-accent-600)]">
                     04
                 </div>
