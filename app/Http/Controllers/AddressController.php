@@ -1,11 +1,12 @@
 <?php
 
-namespace AppHttpControllers;
+namespace App\Http\Controllers;
 
-use AppHttpRequestsCustomerAddressRequest;
-use AppModelsAddress;
-use IlluminateHttpRedirectResponse;
-use IlluminateViewView;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\AddressRequest;
+use App\Models\Address;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class AddressController extends Controller
 {
