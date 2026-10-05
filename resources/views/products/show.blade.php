@@ -538,7 +538,7 @@
 
                             @else
 
-                                <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-200)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
+                                <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-100)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
                                     این محصول در حال حاضر قابل سفارش نیست.
                                 </div>
 
@@ -574,7 +574,7 @@
 
                         @else
 
-                            <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-200)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
+                            <div class="mt-5 flex items-center gap-3 rounded-2xl border border-[var(--color-danger-100)] bg-[var(--color-danger-50)] p-4 text-sm font-bold text-[var(--color-danger-700)]">
                                 این محصول در حال حاضر قابل سفارش نیست.
                             </div>
 
