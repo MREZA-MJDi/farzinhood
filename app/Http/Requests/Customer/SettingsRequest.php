@@ -1,9 +1,9 @@
 <?php
 
-namespace AppHttpRequestsCustomer;
+namespace App\Http\Requests\Customer;
 
-use IlluminateFoundationHttpFormRequest;
-use IlluminateValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SettingsRequest extends FormRequest
 {
