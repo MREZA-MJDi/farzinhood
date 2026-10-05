@@ -347,7 +347,7 @@
                 <a
                     href="{{ route('shop.index') }}"
                     class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold transition
-                    {{ request()->routeIs('shop.*')
+                    {{ request()->routeIs('shop.*') || request()->routeIs('categories.show') || request()->routeIs('products.show')
                         ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)]' }}"
                 >
