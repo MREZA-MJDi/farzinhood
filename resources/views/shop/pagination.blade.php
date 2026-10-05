@@ -14,7 +14,7 @@
             @else
                 <a
                     class="shop-pagination__arrow"
-                    href="{{ $paginator->previousPageUrl() }}"
+                    href="{{ $paginator->previousPageUrl() }}#shop-products"
                     rel="prev"
                     aria-label="صفحه قبلی"
                 >←</a>
@@ -34,7 +34,7 @@
                     @if($page === $currentPage)
                         <span class="shop-pagination__page is-active" aria-current="page">{{ $page }}</span>
                     @else
-                        <a class="shop-pagination__page" href="{{ $paginator->url($page) }}">{{ $page }}</a>
+                        <a class="shop-pagination__page" href="{{ $paginator->url($page) }}#shop-products">{{ $page }}</a>
                     @endif
                 @elseif(
                     $page === 2 && $currentPage > 3
@@ -47,7 +47,7 @@
             @if($paginator->hasMorePages())
                 <a
                     class="shop-pagination__arrow"
-                    href="{{ $paginator->nextPageUrl() }}"
+                    href="{{ $paginator->nextPageUrl() }}#shop-products"
                     rel="next"
                     aria-label="صفحه بعدی"
                 >→</a>
