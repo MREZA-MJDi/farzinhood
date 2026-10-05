@@ -152,29 +152,43 @@
 
                     @auth
 
-                        <a
-                            href="{{ route('customer.dashboard') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            داشبورد من
-                        </a>
+                        @if(auth()->user()->isAdmin())
 
-                        <a
-                            href="{{ route('customer.orders.index') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            سفارش‌های من
-                        </a>
+                            <a
+                                href="{{ route('admin.dashboard') }}"
+                                class="group flex items-center gap-2 text-sm font-bold text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                پنل مدیریت
+                            </a>
 
-                        <a
-                            href="{{ route('customer.wishlist.index') }}"
-                            class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
-                        >
-                            <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
-                            علاقه‌مندی‌ها
-                        </a>
+                        @elseif(auth()->user()->isCustomer())
+
+                            <a
+                                href="{{ route('customer.dashboard') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                داشبورد من
+                            </a>
+
+                            <a
+                                href="{{ route('customer.orders.index') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                سفارش‌های من
+                            </a>
+
+                            <a
+                                href="{{ route('customer.wishlist.index') }}"
+                                class="group flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
+                            >
+                                <span class="h-1.5 w-1.5 rounded-full bg-transparent transition group-hover:bg-[var(--color-accent-600)]"></span>
+                                علاقه‌مندی‌ها
+                            </a>
+
+                        @endif
 
                     @else
 
