@@ -100,7 +100,7 @@
                 {{ $products->total() }} محصول
             </div>
 
-        </div>
+        </header>
 
 
         {{-- Catalog navigation --}}
