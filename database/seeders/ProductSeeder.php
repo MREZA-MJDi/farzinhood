@@ -1,169 +1,89 @@
 <?php
 
-namespace Database\Seeders;
+namespace DatabaseSeeders;
 
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Database\Seeder;
+use AppModelsCategory;
+use AppModelsProduct;
+use IlluminateDatabaseSeeder;
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $digital = Category::where('slug', 'digital')->firstOrFail();
-        $home = Category::where('slug', 'home-appliances')->firstOrFail();
-        $fashion = Category::where('slug', 'fashion')->firstOrFail();
-        $beauty = Category::where('slug', 'beauty-health')->firstOrFail();
-        $accessories = Category::where('slug', 'accessories')->firstOrFail();
+        $hood = Category::query()
+            ->where('slug', 'hood')
+            ->firstOrFail();
+
+        $sink = Category::query()
+            ->where('slug', 'sink')
+            ->firstOrFail();
 
         $products = [
             [
-                'category_id' => $digital->id,
-                'name' => 'هدفون بی‌سیم پرو',
-                'slug' => 'wireless-headphone-pro',
-                'sku' => 'DIG-1001',
+                'category_id' => $hood->id,
+                'name' => 'هود مورب فرزین مدل آریا',
+                'slug' => 'hood-arya',
+                'sku' => 'HD-1001',
                 'brand' => 'Farzin',
-                'short_description' => 'هدفون بی‌سیم با کیفیت صدای بالا',
-                'description' => 'هدفون بی‌سیم مناسب استفاده روزمره، ورزش و تماس.',
-                'price' => 2890000,
-                'old_price' => 3290000,
-                'discount' => 12,
+                'short_description' => 'هود مورب با طراحی مینیمال و مکش مناسب آشپزخانه.',
+                'description' => 'هود مورب فرزین مدل آریا با ظاهر ساده و مدرن، مناسب آشپزخانه‌های امروزی.',
+                'price' => 12800000,
+                'old_price' => 14200000,
+                'discount' => 10,
                 'stock' => 8,
+                'rating' => 4.7,
+                'review_count' => 18,
                 'is_active' => true,
                 'is_featured' => true,
             ],
             [
-                'category_id' => $digital->id,
-                'name' => 'ماوس بی‌سیم ارگونومیک',
-                'slug' => 'ergonomic-wireless-mouse',
-                'sku' => 'DIG-1002',
-                'brand' => 'Logitech',
-                'short_description' => 'ماوس راحت برای استفاده طولانی',
-                'description' => 'ماوس بی‌سیم ارگونومیک با دقت بالا.',
-                'price' => 1450000,
-                'old_price' => 1650000,
-                'discount' => 12,
-                'stock' => 3,
-                'is_active' => true,
-                'is_featured' => false,
-            ],
-            [
-                'category_id' => $digital->id,
-                'name' => 'کیبورد مکانیکی RGB',
-                'slug' => 'mechanical-rgb-keyboard',
-                'sku' => 'DIG-1003',
-                'brand' => 'Redragon',
-                'short_description' => 'کیبورد مکانیکی مخصوص گیمینگ',
-                'description' => 'کیبورد مکانیکی RGB با کلیدهای نرم و سریع.',
-                'price' => 3190000,
+                'category_id' => $hood->id,
+                'name' => 'هود مخفی فرزین مدل نیکا',
+                'slug' => 'hood-nika',
+                'sku' => 'HD-1002',
+                'brand' => 'Farzin',
+                'short_description' => 'هود مخفی برای طراحی یکپارچه و خلوت کابینت.',
+                'description' => 'هود مخفی فرزین مدل نیکا با فرم یکپارچه و مناسب برای آشپزخانه‌های مینیمال.',
+                'price' => 10900000,
                 'old_price' => null,
                 'discount' => null,
-                'stock' => 0,
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'category_id' => $home->id,
-                'name' => 'جارو شارژی مدل X1',
-                'slug' => 'cordless-vacuum-x1',
-                'sku' => 'HOM-2001',
-                'brand' => 'Farzin',
-                'short_description' => 'جارو شارژی سبک و قدرتمند',
-                'description' => 'جارو شارژی با باتری قدرتمند و طراحی سبک.',
-                'price' => 6490000,
-                'old_price' => 7190000,
-                'discount' => 10,
-                'stock' => 12,
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'category_id' => $home->id,
-                'name' => 'کتری برقی استیل',
-                'slug' => 'steel-electric-kettle',
-                'sku' => 'HOM-2002',
-                'brand' => 'Philips',
-                'short_description' => 'کتری برقی سریع با بدنه استیل',
-                'description' => 'کتری برقی مناسب استفاده روزمره با خاموشی خودکار.',
-                'price' => 2390000,
-                'old_price' => null,
-                'discount' => null,
-                'stock' => 16,
+                'stock' => 4,
+                'rating' => 4.5,
+                'review_count' => 11,
                 'is_active' => true,
                 'is_featured' => false,
             ],
             [
-                'category_id' => $fashion->id,
-                'name' => 'هودی مردانه مشکی',
-                'slug' => 'black-mens-hoodie',
-                'sku' => 'FAS-3001',
+                'category_id' => $sink->id,
+                'name' => 'سینک توکار فرزین مدل کلاسیک',
+                'slug' => 'sink-classic',
+                'sku' => 'SK-2001',
                 'brand' => 'Farzin',
-                'short_description' => 'هودی روزمره با طراحی مینیمال',
-                'description' => 'هودی راحت و مناسب استفاده روزمره.',
-                'price' => 1890000,
-                'old_price' => 2190000,
-                'discount' => 14,
-                'stock' => 22,
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'category_id' => $fashion->id,
-                'name' => 'کتانی اسپرت سفید',
-                'slug' => 'white-sport-sneakers',
-                'sku' => 'FAS-3002',
-                'brand' => 'Nike',
-                'short_description' => 'کتانی اسپرت مناسب استفاده روزانه',
-                'description' => 'کتانی سبک و راحت برای استفاده شهری.',
-                'price' => 4790000,
-                'old_price' => null,
-                'discount' => null,
-                'stock' => 5,
-                'is_active' => true,
-                'is_featured' => false,
-            ],
-            [
-                'category_id' => $beauty->id,
-                'name' => 'کرم مرطوب‌کننده روزانه',
-                'slug' => 'daily-moisturizer',
-                'sku' => 'BEA-4001',
-                'brand' => 'Nivea',
-                'short_description' => 'کرم مرطوب‌کننده مناسب استفاده روزانه',
-                'description' => 'مرطوب‌کننده مناسب پوست خشک و معمولی.',
-                'price' => 790000,
-                'old_price' => 890000,
-                'discount' => 11,
-                'stock' => 14,
-                'is_active' => true,
-                'is_featured' => false,
-            ],
-            [
-                'category_id' => $beauty->id,
-                'name' => 'عطر مردانه Classic',
-                'slug' => 'classic-mens-perfume',
-                'sku' => 'BEA-4002',
-                'brand' => 'Farzin',
-                'short_description' => 'عطر مردانه با رایحه کلاسیک',
-                'description' => 'رایحه ماندگار مناسب استفاده روزانه و رسمی.',
-                'price' => 3590000,
-                'old_price' => 3990000,
-                'discount' => 10,
+                'short_description' => 'سینک توکار با فرم تمیز و مناسب استفاده روزمره.',
+                'description' => 'سینک توکار فرزین مدل کلاسیک با طراحی متعادل و مناسب طیف متنوعی از آشپزخانه‌ها.',
+                'price' => 8900000,
+                'old_price' => 9800000,
+                'discount' => 9,
                 'stock' => 7,
+                'rating' => 4.8,
+                'review_count' => 23,
                 'is_active' => true,
                 'is_featured' => true,
             ],
             [
-                'category_id' => $accessories->id,
-                'name' => 'کیف دوشی چرمی',
-                'slug' => 'leather-crossbody-bag',
-                'sku' => 'ACC-5001',
+                'category_id' => $sink->id,
+                'name' => 'سینک روکار فرزین مدل نوا',
+                'slug' => 'sink-nova',
+                'sku' => 'SK-2002',
                 'brand' => 'Farzin',
-                'short_description' => 'کیف دوشی چرمی با طراحی ساده',
-                'description' => 'کیف دوشی مناسب استفاده روزمره و رسمی.',
-                'price' => 2690000,
+                'short_description' => 'سینک روکار کاربردی با طراحی ساده و مقاوم.',
+                'description' => 'سینک روکار فرزین مدل نوا برای استفاده روزمره با طراحی ساده و نصب آسان.',
+                'price' => 7600000,
                 'old_price' => null,
                 'discount' => null,
-                'stock' => 9,
+                'stock' => 2,
+                'rating' => 4.4,
+                'review_count' => 9,
                 'is_active' => true,
                 'is_featured' => false,
             ],
@@ -171,7 +91,7 @@ class ProductSeeder extends Seeder
 
         foreach ($products as $product) {
             Product::updateOrCreate(
-                ['sku' => $product['sku']],
+                ['slug' => $product['slug']],
                 $product
             );
         }
