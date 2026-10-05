@@ -15,7 +15,9 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    min-height: 760px;
+    width: 100%;
+    max-width: 100%;
+    min-height: clamp(620px, calc(100svh - var(--header-height)), 860px);
     color: var(--hero-text);
     background:
         radial-gradient(circle at 74% 42%, rgb(64 84 119 / .26), transparent 30%),
@@ -29,8 +31,8 @@
     display: grid;
     grid-template-columns: minmax(260px, .72fr) minmax(0, 1.7fr);
     align-items: center;
-    width: min(100% - 2rem, 90rem);
-    min-height: 760px;
+    width: min(calc(100% - (2 * var(--page-gutter))), var(--container-width));
+    min-height: inherit;
     margin-inline: auto;
     gap: clamp(1.5rem, 4vw, 5rem);
     padding-block: clamp(4rem, 7vw, 7rem);
@@ -131,8 +133,8 @@
 
 .farzin-hero-rail__stage {
     position: relative;
-    height: min(640px, 62vw);
-    min-height: 520px;
+    height: clamp(430px, 47vw, 610px);
+    min-height: 0;
     direction: ltr;
     touch-action: pan-y;
     perspective: 1200px;
@@ -404,8 +406,8 @@
     }
 
     .farzin-hero-rail__stage {
-        height: min(600px, 72vw);
-        min-height: 480px;
+        height: min(580px, 68vw);
+        min-height: 430px;
         margin-top: 2rem;
     }
 }
@@ -416,7 +418,7 @@
     }
 
     .farzin-hero-rail__inner {
-        width: min(100% - 1.25rem, 40rem);
+        width: min(calc(100% - (2 * var(--page-gutter))), 40rem);
         padding-block: 2.75rem 2rem;
     }
 
@@ -451,7 +453,7 @@
     }
 
     .farzin-hero-rail__stage {
-        height: 470px;
+        height: clamp(390px, 112vw, 470px);
         min-height: 0;
         margin-inline: -.625rem;
         margin-top: 1.2rem;
