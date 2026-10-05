@@ -25,6 +25,10 @@ class HomeController extends Controller
             ->take(8)
             ->values();
 
+        $wishlistedProductIds = auth()->check() && auth()->user()->isCustomer()
+            ? auth()->user()->wishlists()->pluck('product_id')
+            : collect();
+
         $featuredProducts = Product::query()
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
@@ -46,7 +50,8 @@ class HomeController extends Controller
             'heroProducts',
             'featuredProducts',
             'latestProducts',
-            'categories'
+            'categories',
+            'wishlistedProductIds',
         ));
     }
 }
