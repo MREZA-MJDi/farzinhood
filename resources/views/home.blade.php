@@ -426,91 +426,110 @@
 
 
     {{-- =========================================================
-        EDITORIAL
+        JOURNAL / KNOWLEDGE HUB
     ========================================================== --}}
 
-    <section class="farzin-section farzin-home-section farzin-home-section--editorial" data-home-section>
-
+    <section
+        class="farzin-section farzin-home-section farzin-home-section--editorial"
+        data-home-section
+    >
         <div class="farzin-container">
-
-            <div
-            class="farzin-editorial-card overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white" data-home-reveal
-        >
-
-            <div class="grid items-center lg:grid-cols-[1fr_360px]">
-
-                <div class="p-8 sm:p-12 lg:p-14">
-
-                    <div class="text-[11px] font-black uppercase tracking-[0.24em] text-white/40">
-                        Farzin Journal
+            <div class="farzin-journal" data-home-reveal>
+                <div class="farzin-journal__main">
+                    <div class="farzin-journal__eyebrow">
+                        <span class="farzin-journal__eyebrow-line"></span>
+                        FARZIN / JOURNAL
                     </div>
 
-                    <h2 class="mt-4 max-w-2xl text-3xl font-black leading-tight sm:text-5xl">
-                        قبل از خرید،
-                        <span class="text-[var(--color-accent-400)]">
-                            بهتر انتخاب کن.
-                        </span>
-                    </h2>
+                    <div class="farzin-journal__heading">
+                        <span class="farzin-journal__index">03 / KNOWLEDGE</span>
 
-                    <p class="mt-5 max-w-xl text-sm leading-8 text-white/60 sm:text-base">
-                        راهنماهای خرید، مقایسه‌ها و محتوای تخصصی که کمک می‌کنند
-                        انتخاب دقیق‌تر و مطمئن‌تری داشته باشی.
-                    </p>
+                        <h2>
+                            قبل از خرید،
+                            <strong>هوشمندانه‌تر انتخاب کن.</strong>
+                        </h2>
+
+                        <p>
+                            راهنما، مقایسه و نکات تخصصی برای اینکه قبل از تصمیم نهایی،
+                            محصول را بهتر بشناسی و انتخابت دقیق‌تر باشد.
+                        </p>
+                    </div>
 
                     <a
                         href="{{ route('blog.index') }}"
-                        class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-6 py-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)]"
+                        class="farzin-journal__cta"
                     >
-                        ورود به مجله
+                        <span>ورود به مجله فرزین</span>
 
                         <svg
-                            class="h-4 w-4"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
                             stroke-width="1.8"
+                            aria-hidden="true"
                         >
                             <path d="m9 18 6-6-6-6"/>
                         </svg>
                     </a>
-
                 </div>
 
-
-                <div class="hidden p-8 lg:block">
-
-                    <div class="rounded-[2rem] border border-white/10 bg-white/[0.04] p-5">
-
-                        <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5">
-
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-white/35">
-                                    FARZIN JOURNAL
-                                </span>
-
-                                <span class="h-2 w-2 rounded-full bg-[var(--color-accent-600)]"></span>
-                            </div>
-
-                            <div class="mt-6 space-y-3">
-
-                                <div class="h-20 rounded-2xl bg-white/[0.05]"></div>
-                                <div class="h-16 rounded-2xl bg-white/[0.035]"></div>
-                                <div class="h-20 rounded-2xl bg-white/[0.05]"></div>
-
-                            </div>
-
+                <div class="farzin-journal__side">
+                    <div class="farzin-journal__signal">
+                        <div class="farzin-journal__signal-head">
+                            <span>KNOWLEDGE SYSTEM</span>
+                            <span class="farzin-journal__status">
+                                <i aria-hidden="true"></i>
+                                ACTIVE
+                            </span>
                         </div>
 
+                        <div class="farzin-journal__signal-core">
+                            <span class="farzin-journal__signal-number">03</span>
+                            <span class="farzin-journal__signal-label">WAYS TO CHOOSE BETTER</span>
+                        </div>
+
+                        <div class="farzin-journal__scan" aria-hidden="true">
+                            <span></span>
+                        </div>
                     </div>
 
+                    <div class="farzin-journal__tracks">
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">01</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>راهنمای خرید</strong>
+                                <small>از مشخصات تا انتخاب نهایی</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">02</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>مقایسه محصولات</strong>
+                                <small>تفاوت‌ها را سریع‌تر ببین</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+
+                        <a href="{{ route('blog.index') }}" class="farzin-journal__track">
+                            <span class="farzin-journal__track-number">03</span>
+
+                            <span class="farzin-journal__track-copy">
+                                <strong>نکات تخصصی</strong>
+                                <small>برای تصمیمی مطمئن‌تر</small>
+                            </span>
+
+                            <span class="farzin-journal__track-arrow" aria-hidden="true">↗</span>
+                        </a>
+                    </div>
                 </div>
-
             </div>
-
-            </div>
-
         </div>
-
     </section>
 
 
