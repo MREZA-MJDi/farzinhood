@@ -84,15 +84,14 @@ class ShopController extends Controller
             ->orderBy('name')
             ->get();
 
-        $priceMin = (int) Product::query()
+        $priceBounds = Product::query()
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
-            ->min('price');
+            ->selectRaw('MIN(price) as min_price, MAX(price) as max_price')
+            ->first();
 
-        $priceMax = (int) Product::query()
-            ->where('is_active', true)
-            ->whereHas('category', fn ($query) => $query->where('is_active', true))
-            ->max('price');
+        $priceMin = (int) ($priceBounds?->min_price ?? 0);
+        $priceMax = (int) ($priceBounds?->max_price ?? 0);
 
         return view('shop.index', compact(
             'products',
