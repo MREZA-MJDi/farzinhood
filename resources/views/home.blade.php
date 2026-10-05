@@ -71,7 +71,7 @@
                         >
                             <div class="farzin-hero-rail__image-wrap">
                                 <img
-                                    src="{{ asset('storage/' . $product->primaryImage->image) }}"
+                                    src="{{ $product->primaryImage->url }}"
                                     alt="{{ $product->primaryImage->alt ?: $product->name }}"
                                     class="farzin-hero-rail__image"
                                     {{ $index === 0 ? 'loading=eager' : 'loading=lazy' }}
