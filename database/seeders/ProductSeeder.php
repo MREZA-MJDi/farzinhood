@@ -1,10 +1,10 @@
 <?php
 
-namespace DatabaseSeeders;
+namespace Database\Seeders;
 
-use AppModelsCategory;
-use AppModelsProduct;
-use IlluminateDatabaseSeeder;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
