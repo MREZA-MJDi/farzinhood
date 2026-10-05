@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Services\Payment\PaymentGatewayInterface;
+use App\Services\Payment\UnavailablePaymentGateway;
 use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,9 +14,17 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PaymentGatewayInterface::class,
             function () {
-                return app(
-//                    \App\Services\Payment\DummyPaymentGateway::class
-                );
+                return match (
+                    config('services.payment.default', 'unavailable')
+                ) {
+                    'unavailable' => app(
+                        UnavailablePaymentGateway::class
+                    ),
+
+                    default => throw new InvalidArgumentException(
+                        'درگاه پرداخت انتخاب‌شده پشتیبانی نمی‌شود.'
+                    ),
+                };
             }
         );
     }
