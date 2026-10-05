@@ -77,7 +77,7 @@
                                     <a href="{{ route('products.show', $product) }}" class="shrink-0">
                                         <div class="relative size-28 overflow-hidden rounded-2xl bg-[var(--color-earth-50)] sm:size-32">
                                             @if($product->primaryImage?->image)
-                                                <img src="{{ asset('storage/' . $product->primaryImage->image) }}" alt="{{ $product->name }}" class="size-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
+                                                <img src="{{ $product->primaryImage->url }}" alt="{{ $product->name }}" class="size-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async">
                                             @else
                                                 <div class="flex size-full items-center justify-center text-[var(--color-text-soft)]">
                                                     <svg class="size-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
