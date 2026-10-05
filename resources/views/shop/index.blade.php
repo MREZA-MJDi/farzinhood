@@ -173,7 +173,13 @@
                 </div>
             @endif
 
-            <form action="{{ route('shop.index') }}" method="GET" class="mt-6 rounded-[1.75rem] border border-[var(--color-border)] bg-white p-3 shadow-[var(--shadow-xs)]">
+            <form
+                action="{{ route('shop.index') }}"
+                method="GET"
+                class="relative mt-6 rounded-[1.75rem] border border-[var(--color-border)] bg-white p-3 shadow-[var(--shadow-xs)]"
+                data-live-search
+                data-suggestions-url="{{ route('shop.suggestions') }}"
+            >
                 <div class="grid gap-3 lg:grid-cols-[minmax(0,1fr)_180px_auto]">
                     <label class="relative block">
                         <span class="sr-only">جستجو</span>
@@ -182,8 +188,16 @@
                             name="search"
                             value="{{ request('search') }}"
                             placeholder="نام محصول، برند یا SKU را جستجو کن..."
+                            autocomplete="off"
+                            data-live-search-input
                             class="w-full rounded-2xl border border-transparent bg-[var(--color-earth-50)] px-4 py-3.5 text-sm outline-none transition placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-earth-300)] focus:bg-white focus:ring-4 focus:ring-[var(--color-earth-200)]/40"
                         >
+
+                        <div
+                            class="farzin-live-search"
+                            data-live-search-results
+                            hidden
+                        ></div>
                     </label>
 
                     <select
