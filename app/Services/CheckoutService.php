@@ -385,13 +385,9 @@ class CheckoutService
     public function releaseReservedStock(Order $order): void
     {
         DB::transaction(function () use ($order) {
-
-            $order->load([
-                'items',
-            ]);
+            $order->load('items');
 
             foreach ($order->items as $orderItem) {
-
                 if (! $orderItem->product_id) {
                     continue;
                 }
@@ -411,8 +407,24 @@ class CheckoutService
                     continue;
                 }
 
+                $alreadyReleased = (int) InventoryMovement::query()
+                    ->where('reference_type', Order::class)
+                    ->where('reference_id', $order->id)
+                    ->where('product_id', $product->id)
+                    ->where('type', 'return')
+                    ->sum('quantity');
+
+                $remaining = max(
+                    0,
+                    $quantity - $alreadyReleased
+                );
+
+                if ($remaining === 0) {
+                    continue;
+                }
+
                 $stockBefore = (int) $product->stock;
-                $stockAfter = $stockBefore + $quantity;
+                $stockAfter = $stockBefore + $remaining;
 
                 $product->update([
                     'stock' => $stockAfter,
@@ -421,16 +433,12 @@ class CheckoutService
                 InventoryMovement::create([
                     'product_id' => $product->id,
                     'user_id' => $order->user_id,
-
                     'type' => 'return',
-                    'quantity' => $quantity,
-
+                    'quantity' => $remaining,
                     'stock_before' => $stockBefore,
                     'stock_after' => $stockAfter,
-
                     'reference_type' => Order::class,
                     'reference_id' => $order->id,
-
                     'note' => "Stock released for Order #{$order->order_number}",
                 ]);
             }
