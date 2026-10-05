@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <section class="shop-page__hero-shell mx-auto max-w-7xl px-3 pt-3 sm:px-6 lg:px-8 lg:pt-6">
+    <section class="shop-page__hero-shell farzin-container pt-3 lg:pt-6">
         <div class="shop-hero">
             <div class="shop-hero__frame">
                 <div class="shop-hero__media" aria-hidden="true">
@@ -85,11 +85,11 @@
                     Shop
                 </div>
 
-                <h1 class="mt-3 text-4xl font-black tracking-tight text-[var(--color-text-primary)]">
+                <h2 class="farzin-page-title mt-3 text-4xl font-black tracking-tight text-[var(--color-text-primary)]">
                     فروشگاه
-                </h1>
+                </h2>
 
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+                <p class="farzin-section-description mt-3 max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
                     از بین محصولات موجود، چیزی که واقعاً به کارت می‌آید را پیدا کن.
                 </p>
             </div>
@@ -360,6 +360,8 @@
                 @endif
 
             </div>
+
+        </div>
 
         </div>
 
