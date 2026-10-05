@@ -239,3 +239,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     revealItems.forEach((item) => observer.observe(item));
 });
+
+
+/* =========================================================
+   SHOP FILTER URL CLEANUP
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const filterForms = document.querySelectorAll("[data-shop-filter]");
+
+    filterForms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            form.querySelectorAll("input, select").forEach((field) => {
+                if (!field.name || field.disabled) return;
+                if (field.value === "") field.disabled = true;
+            });
+        });
+    });
+});
