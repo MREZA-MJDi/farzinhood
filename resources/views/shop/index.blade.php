@@ -218,6 +218,7 @@
                 <form
                     action="{{ route('shop.index') }}"
                     method="GET"
+                    data-shop-filter
                     class="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-5"
                 >
 
@@ -293,6 +294,22 @@
                         </select>
                     </div>
 
+
+                    <div class="mt-7">
+                        <label class="text-xs font-bold text-[var(--color-text-secondary)]" for="shop-per-page">
+                            تعداد نمایش
+                        </label>
+
+                        <select
+                            id="shop-per-page"
+                            name="per_page"
+                            class="mt-3 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm outline-none focus:border-[var(--color-accent-600)]"
+                        >
+                            <option value="12" @selected((int) request('per_page', 12) === 12)>۱۲ محصول در صفحه</option>
+                            <option value="24" @selected((int) request('per_page', 12) === 24)>۲۴ محصول در صفحه</option>
+                            <option value="48" @selected((int) request('per_page', 12) === 48)>۴۸ محصول در صفحه</option>
+                        </select>
+                    </div>
 
                     <div class="mt-7 grid grid-cols-2 gap-3">
 
