@@ -4,7 +4,7 @@
 >
     <div class="farzin-container">
 
-        <div class="flex min-h-[72px] items-center justify-between gap-4 lg:min-h-[76px] lg:gap-6">
+        <div class="farzin-site-header__bar flex min-h-[72px] items-center justify-between gap-4 lg:min-h-[76px] lg:gap-6">
 
             {{-- =========================================================
                 Logo
@@ -34,9 +34,9 @@
 
                 <a
                     href="{{ route('home') }}"
-                    class="rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
+                    class="farzin-site-header__nav-link rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
                     {{ request()->routeIs('home')
-                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
+                        ? 'is-active bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-brand-900)]' }}"
                 >
                     خانه
@@ -44,9 +44,9 @@
 
                 <a
                     href="{{ route('shop.index') }}"
-                    class="rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
+                    class="farzin-site-header__nav-link rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
                     {{ request()->routeIs('shop.*')
-                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
+                        ? 'is-active bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-brand-900)]' }}"
                 >
                     فروشگاه
@@ -54,9 +54,9 @@
 
                 <a
                     href="{{ route('blog.index') }}"
-                    class="rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
+                    class="farzin-site-header__nav-link rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
                     {{ request()->routeIs('blog.*')
-                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
+                        ? 'is-active bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-brand-900)]' }}"
                 >
                     مجله
@@ -64,9 +64,9 @@
 
                 <a
                     href="{{ route('contact.index') }}"
-                    class="rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
+                    class="farzin-site-header__nav-link rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
                     {{ request()->routeIs('contact.*')
-                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
+                        ? 'is-active bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-brand-900)]' }}"
                 >
                     تماس با ما
