@@ -1,6 +1,6 @@
 @php
     $image = $product->primaryImage?->image;
-    $imageUrl = $image ? asset('storage/' . $image) : null;
+    $imageUrl = $product->primaryImage?->url ?: null;
 
     $discount = (int) ($product->discount ?? 0);
     $hasOldPrice = $product->old_price !== null && (int) $product->old_price > (int) $product->price;
