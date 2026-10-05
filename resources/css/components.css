@@ -3969,7 +3969,32 @@
    45. PAGE HEADER
 ========================================================= */
 
-.page-header
+.page-header {
+    width: 100%;
+    padding-block: var(--space-8) var(--space-7);
+}
+
+.page-header__eyebrow {
+    color: var(--accent);
+    font-size: var(--font-sm);
+    font-weight: var(--weight-semibold);
+}
+
+.page-header__title {
+    margin-top: var(--space-3);
+    color: var(--text);
+    font-size: clamp(32px, 4vw, 52px);
+}
+
+.page-header__description {
+    max-width: 760px;
+    margin-top: var(--space-4);
+    color: var(--text-muted);
+    line-height: 1.9;
+}
+
+/* =========================================================
+   46. ARTICLE
 ========================================================= */
 
 .article {
