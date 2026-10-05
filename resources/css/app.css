@@ -238,6 +238,17 @@
     */
 
     --container-width: 80rem;
+    --page-gutter: clamp(1rem, 3vw, 2rem);
+    --section-space: clamp(4rem, 6vw, 5.5rem);
+    --section-space-compact: clamp(3.25rem, 4.5vw, 4.5rem);
+    --section-content-gap: clamp(2rem, 3vw, 3rem);
+
+    /* Typography scale */
+    --type-display: clamp(2.7rem, 6vw, 5.4rem);
+    --type-h1: clamp(2.2rem, 4vw, 3.8rem);
+    --type-h2: clamp(1.75rem, 3vw, 2.5rem);
+    --type-body: 0.9375rem;
+    --leading-body: 1.95;
 
 
     /*
@@ -293,6 +304,8 @@ body {
         Tahoma,
         Arial,
         sans-serif;
+    font-size: var(--type-body);
+    line-height: var(--leading-body);
 }
 
 *,
@@ -763,34 +776,79 @@ input[type="radio"] {
 */
 
 .farzin-container {
-    width:
-        min(
-            calc(100% - 2rem),
-            var(--container-width)
-        );
-
-    margin-inline:
-        auto;
+    width: min(
+        calc(100% - (2 * var(--page-gutter))),
+        var(--container-width)
+    );
+    margin-inline: auto;
 }
 
-@media (min-width: 640px) {
-    .farzin-container {
-        width:
-            min(
-                calc(100% - 3rem),
-                var(--container-width)
-            );
-    }
+/*
+|--------------------------------------------------------------------------
+| Public layout primitives
+|--------------------------------------------------------------------------
+*/
+
+.farzin-section {
+    padding-block: var(--section-space);
+    background: var(--color-surface);
 }
 
-@media (min-width: 1024px) {
-    .farzin-container {
-        width:
-            min(
-                calc(100% - 4rem),
-                var(--container-width)
-            );
-    }
+.farzin-section--muted {
+    background: var(--color-neutral-50);
+}
+
+.farzin-section--compact {
+    padding-block: var(--section-space-compact);
+}
+
+.farzin-section--bordered {
+    border-top: 1px solid var(--color-border);
+}
+
+.farzin-section__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--section-content-gap);
+}
+
+.farzin-eyebrow {
+    display: block;
+    color: var(--color-accent-600);
+    font-size: 0.6875rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.farzin-section-title {
+    color: var(--color-text-primary);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+}
+
+.farzin-section-description {
+    color: var(--color-text-secondary);
+    line-height: 1.95;
+}
+
+.farzin-content-measure {
+    max-width: 42rem;
+}
+
+.farzin-display-title {
+    font-size: var(--type-display);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+}
+
+.farzin-page-title {
+    font-size: var(--type-h1);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
 }
 
 
