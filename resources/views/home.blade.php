@@ -6,6 +6,8 @@
 
 @section('content')
 
+<div class="farzin-home-page">
+
     {{-- =========================================================
         HERO
         Premium product rail. Backend intentionally supplies only the
@@ -673,5 +675,7 @@
             </div>
         </div>
     </section>
+
+</div>
 
 @endsection
