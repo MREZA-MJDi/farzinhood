@@ -30,7 +30,9 @@
         $chartData = $salesChart['data'] ?? [];
         $chartLabels = $salesChart['labels'] ?? [];
         $chartMax = max(1, ...array_map('intval', $chartData));
-        $processingOrders = (int) $pendingOrders + (int) $processingOrders;
+        $activePipelineOrders = (int) $pendingOrders
+            + (int) $processingOrders
+            + (int) $shippedOrders;
     @endphp
 
     <div class="space-y-6 pb-4">
@@ -164,10 +166,10 @@
                     $actions = [
                         [
                             'label' => 'سفارش‌های در حال رسیدگی',
-                            'value' => $processingOrders,
-                            'meta' => 'pending / processing / shipped',
+                            'value' => $activePipelineOrders,
+                            'meta' => 'در انتظار، در حال پردازش و آماده ارسال',
                             'href' => route('admin.orders.index'),
-                            'attention' => $processingOrders > 0,
+                            'attention' => $activePipelineOrders > 0,
                         ],
                         [
                             'label' => 'موجودی رو به پایان',
