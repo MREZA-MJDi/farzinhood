@@ -1984,13 +1984,13 @@ input[type="radio"] {
 
 .farzin-site-header{transition:box-shadow var(--transition-base),background-color var(--transition-base)}
 .farzin-site-header__bar{position:relative}
-.farzin-site-header nav[aria-label='ناوبری اصلی'] a{position:relative}
+.farzin-site-header__nav-link{position:relative}
 .farzin-site-header__nav-link::after{content:"";position:absolute;right:.75rem;bottom:.28rem;left:.75rem;height:2px;border-radius:999px;background:var(--color-accent-600);opacity:0;transform:scaleX(.35);transition:opacity var(--transition-fast),transform var(--transition-fast)}
 .farzin-site-header__nav-link:hover::after,.farzin-site-header__nav-link.is-active::after{opacity:1;transform:scaleX(1)}
 .farzin-site-header form input{transition:border-color var(--transition-fast),box-shadow var(--transition-fast),background-color var(--transition-fast)}
 .farzin-site-header form input:focus{box-shadow:0 0 0 4px rgb(13 27 61 / .07)}
 .farzin-site-footer{position:relative}
-.farzin-site-footer>.farzin-container{position:relative}
+.farzin-site-footer .farzin-container{position:relative}
 .farzin-site-footer__column{position:relative}
 .farzin-site-footer__column:not(:last-child)::after{content:"";position:absolute;top:0;bottom:0;inset-inline-end:-1.5rem;width:1px;background:linear-gradient(to bottom,transparent,var(--color-border),transparent);opacity:.7}
 .farzin-site-footer a{transition:color var(--transition-fast),transform var(--transition-fast),border-color var(--transition-fast),background-color var(--transition-fast)}
@@ -1999,7 +1999,7 @@ input[type="radio"] {
 .farzin-site-footer form:focus-within{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 .farzin-site-footer__accent{height:2px!important}
 @media (max-width:1023px){.farzin-site-footer__column:not(:last-child)::after{display:none}}
-@media (max-width:639px){.farzin-site-header__bar{min-height:68px}.farzin-site-header img{max-height:42px}.farzin-site-footer>.farzin-container{padding-block:3rem}.farzin-site-footer>.farzin-container>div:first-child{gap:2rem}.farzin-site-footer__bottom{margin-top:2rem}.farzin-site-footer__accent{height:2px!important}}
+@media (max-width:639px){.farzin-site-header__bar{min-height:68px}.farzin-site-header img{max-height:42px}.farzin-site-footer>.farzin-container{padding-block:3rem}.farzin-site-footer__grid{gap:2rem}.farzin-site-footer__bottom{margin-top:2rem}.farzin-site-footer__accent{height:2px!important}}
 @media (prefers-reduced-motion:reduce){.farzin-site-header,.farzin-site-header__nav-link::after,.farzin-site-footer a,.farzin-site-footer form{transition:none}}
 
 .farzin-latest{position:relative}
