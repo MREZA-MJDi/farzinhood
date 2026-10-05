@@ -1,10 +1,10 @@
-<nav
+<header
     x-data="{ open: false }"
     class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_1px_12px_rgb(16_23_34_/0.04)] backdrop-blur-xl"
 >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="farzin-container">
 
-        <div class="flex min-h-[76px] items-center justify-between gap-4 lg:gap-6">
+        <div class="flex min-h-[72px] items-center justify-between gap-4 lg:min-h-[76px] lg:gap-6">
 
             {{-- =========================================================
                 Logo
@@ -496,4 +496,4 @@
         </div>
 
     </div>
-</nav>
+</header>
