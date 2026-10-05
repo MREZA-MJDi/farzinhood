@@ -1,4 +1,4 @@
-<footer class="border-t border-[var(--color-border)] bg-white">
+<footer class="farzin-site-footer border-t border-[var(--color-border)] bg-white">
 
     {{-- =========================================================
         Main Footer
