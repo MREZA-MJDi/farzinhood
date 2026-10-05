@@ -119,17 +119,17 @@
 
     --color-neutral-0: #ffffff;
 
-    --color-neutral-50: #f7f8fa;
-    --color-neutral-100: #f0f2f5;
-    --color-neutral-200: #e3e6eb;
-    --color-neutral-300: #d2d7df;
-    --color-neutral-400: #aab1bd;
-    --color-neutral-500: #89919d;
-    --color-neutral-600: #697280;
-    --color-neutral-700: #4d5665;
-    --color-neutral-800: #323b4a;
-    --color-neutral-900: #1c2432;
-    --color-neutral-950: #101722;
+    --color-neutral-50: #f7f3eb;
+    --color-neutral-100: #efebe3;
+    --color-neutral-200: #e3ddd2;
+    --color-neutral-300: #d4ccbf;
+    --color-neutral-400: #b0a79b;
+    --color-neutral-500: #8e857a;
+    --color-neutral-600: #6f675e;
+    --color-neutral-700: #534d46;
+    --color-neutral-800: #39342f;
+    --color-neutral-900: #25211e;
+    --color-neutral-950: #171513;
 
 
     /*
@@ -161,14 +161,36 @@
 
     /*
     |--------------------------------------------------------------------------
+    | Earth / Cream
+    |--------------------------------------------------------------------------
+    |
+    | Warm supporting palette for Farzin's premium visual direction.
+    | Used sparingly beside the core navy + red identity.
+    |
+    */
+
+    --color-earth-50: #fbf7ef;
+    --color-earth-100: #f4ead8;
+    --color-earth-200: #e7d7bb;
+    --color-earth-300: #d5bd99;
+    --color-earth-400: #b99a72;
+    --color-earth-500: #937453;
+    --color-earth-600: #76563f;
+    --color-earth-700: #5b4030;
+    --color-earth-800: #453024;
+    --color-earth-900: #33231c;
+    --color-earth-950: #241713;
+
+    /*
+    |--------------------------------------------------------------------------
     | Text
     |--------------------------------------------------------------------------
     */
 
-    --color-text-primary: #101722;
-    --color-text-secondary: #4d5665;
-    --color-text-muted: #697280;
-    --color-text-soft: #aab1bd;
+    --color-text-primary: #171513;
+    --color-text-secondary: #534d46;
+    --color-text-muted: #6f675e;
+    --color-text-soft: #b0a79b;
     --color-text-inverse: #ffffff;
 
 
@@ -179,7 +201,7 @@
     */
 
     --color-surface: #ffffff;
-    --color-surface-soft: #fbfcfd;
+    --color-surface-soft: #fcfaf6;
     --color-surface-muted: #f7f8fa;
     --color-surface-dark: #0d1b3d;
 
@@ -190,8 +212,8 @@
     |--------------------------------------------------------------------------
     */
 
-    --color-border: #e3e6eb;
-    --color-border-strong: #d2d7df;
+    --color-border: #e3ddd2;
+    --color-border-strong: #d4ccbf;
 
 
     /*
