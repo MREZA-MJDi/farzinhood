@@ -1,10 +1,11 @@
 <?php
 
-namespace AppHttpControllers;
+namespace App\Http\Controllers;
 
-use AppHttpRequestsCustomerSettingsRequest;
-use IlluminateHttpRedirectResponse;
-use IlluminateViewView;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\SettingsRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
