@@ -313,6 +313,8 @@ class DashboardController extends Controller
             'delivered' => $deliveredOrders,
             'cancelled' => $cancelledOrders,
         ];
+        $salesChart = $this->dailySalesData(30);
+
         /*
         |--------------------------------------------------------------------------
         | Dashboard View
@@ -361,7 +363,8 @@ class DashboardController extends Controller
             'monthOrderCount',
             'monthAverageOrderValue',
 
-            'orderStatusOverview'
+            'orderStatusOverview',
+            'salesChart',
         ));
     }
 
