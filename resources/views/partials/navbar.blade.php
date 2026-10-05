@@ -199,12 +199,21 @@
 
                 @else
 
-                    <a
-                        href="{{ route('login') }}"
-                        class="hidden h-11 items-center justify-center rounded-xl bg-[var(--color-accent-600)] px-5 text-sm font-black text-white shadow-sm transition duration-200 hover:bg-[var(--color-accent-700)] hover:shadow-md sm:flex"
-                    >
-                        ورود
-                    </a>
+                    <div class="hidden items-center gap-2 sm:flex">
+                        <a
+                            href="{{ route('login') }}"
+                            class="inline-flex h-11 items-center justify-center rounded-xl bg-[var(--color-accent-600)] px-5 text-sm font-black text-white shadow-sm transition duration-200 hover:bg-[var(--color-accent-700)] hover:shadow-md"
+                        >
+                            ورود
+                        </a>
+
+                        <a
+                            href="{{ route('register') }}"
+                            class="inline-flex h-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-black text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)]"
+                        >
+                            ثبت‌نام
+                        </a>
+                    </div>
 
                 @endauth
 
