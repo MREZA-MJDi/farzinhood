@@ -20,13 +20,29 @@
                 >←</a>
             @endif
 
-            @foreach($paginator->getUrlRange(max(1, $paginator->currentPage() - 1), min($paginator->lastPage(), $paginator->currentPage() + 1)) as $page => $url)
-                @if($page === $paginator->currentPage())
-                    <span class="shop-pagination__page is-active" aria-current="page">{{ $page }}</span>
-                @else
-                    <a class="shop-pagination__page" href="{{ $url }}">{{ $page }}</a>
+            @php
+                $lastPage = $paginator->lastPage();
+                $currentPage = $paginator->currentPage();
+            @endphp
+
+            @for($page = 1; $page <= $lastPage; $page++)
+                @if(
+                    $page === 1
+                    || $page === $lastPage
+                    || abs($page - $currentPage) <= 1
+                )
+                    @if($page === $currentPage)
+                        <span class="shop-pagination__page is-active" aria-current="page">{{ $page }}</span>
+                    @else
+                        <a class="shop-pagination__page" href="{{ $paginator->url($page) }}">{{ $page }}</a>
+                    @endif
+                @elseif(
+                    $page === 2 && $currentPage > 3
+                    || $page === $lastPage - 1 && $currentPage < $lastPage - 2
+                )
+                    <span class="shop-pagination__ellipsis" aria-hidden="true">…</span>
                 @endif
-            @endforeach
+            @endfor
 
             @if($paginator->hasMorePages())
                 <a
