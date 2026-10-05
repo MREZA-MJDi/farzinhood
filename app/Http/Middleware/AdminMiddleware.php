@@ -12,11 +12,26 @@ class AdminMiddleware
         Request $request,
         Closure $next
     ): Response {
-        if (! $request->user()) {
-            return redirect()->route('login');
+        $user = $request->user();
+
+        if (! $user) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'برای دسترسی به پنل مدیریت باید وارد شوید.');
         }
 
-        if (! $request->user()->isAdmin()) {
+        if (! $user->is_active) {
+            Auth::logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('login')
+                ->with('error', 'این حساب غیرفعال شده است. دوباره وارد شوید.');
+        }
+
+        if (! $user->isAdmin()) {
             abort(403, 'Unauthorized.');
         }
 
