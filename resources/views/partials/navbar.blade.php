@@ -45,7 +45,7 @@
                 <a
                     href="{{ route('shop.index') }}"
                     class="farzin-site-header__nav-link rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-200
-                    {{ request()->routeIs('shop.*')
+                    {{ request()->routeIs('shop.*') || request()->routeIs('categories.show') || request()->routeIs('products.show')
                         ? 'is-active bg-[var(--color-brand-50)] text-[var(--color-brand-900)]'
                         : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-brand-900)]' }}"
                 >
@@ -133,97 +133,69 @@
 
             <div class="flex shrink-0 items-center gap-2">
 
-                {{-- =====================================================
-                    Wishlist
-                ====================================================== --}}
-
-                <a
-                    href="{{ auth()->check() ? route('customer.wishlist.index') : route('login') }}"
-                    class="hidden h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-accent-200)] hover:bg-[var(--color-accent-50)] hover:text-[var(--color-accent-600)] sm:flex"
-                    aria-label="علاقه‌مندی‌ها"
-                    title="علاقه‌مندی‌ها"
-                >
-                    <svg
-                        class="h-5 w-5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        aria-hidden="true"
-                    >
-                        <path d="M20.8 8.7c0 5.2-8.8 10.3-8.8 10.3S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/>
-                    </svg>
-                </a>
-
-
-                {{-- =====================================================
-                    Cart
-                ====================================================== --}}
-
                 @auth
+                    @if(auth()->user()->isAdmin())
 
-                    <a
-                        href="{{ route('customer.cart.index') }}"
-                        class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)]"
-                        aria-label="سبد خرید"
-                        title="سبد خرید"
-                    >
-
-                        <svg
-                            class="h-5 w-5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.7"
-                            aria-hidden="true"
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            class="hidden h-11 items-center gap-2 rounded-xl bg-[var(--color-brand-900)] px-4 text-sm font-black text-white shadow-sm transition duration-200 hover:bg-[var(--color-brand-950)] hover:shadow-md sm:inline-flex"
                         >
-                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"/>
-                            <circle cx="10" cy="20" r="1"/>
-                            <circle cx="18" cy="20" r="1"/>
-                        </svg>
-
-                        @php
-                            $cartCount = app(\App\Services\CartService::class)
-                                ->itemCount(auth()->user());
-                        @endphp
-
-                        @if($cartCount > 0)
-
                             <span
-                                class="absolute -right-1.5 -top-1.5 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-accent-600)] px-1 text-[9px] font-black leading-none text-white shadow-sm"
+                                class="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-[11px] font-black text-white"
                             >
-                                {{ $cartCount > 99 ? '99+' : $cartCount }}
+                                {{ mb_substr(auth()->user()->name ?? 'A', 0, 1) }}
                             </span>
+                            <span>پنل مدیریت</span>
+                        </a>
 
-                        @endif
+                    @elseif(auth()->user()->isCustomer())
 
-                    </a>
-
-                @endauth
-
-
-                {{-- =====================================================
-                    Account / Login
-                ====================================================== --}}
-
-                @auth
-
-                    <a
-                        href="{{ route('customer.dashboard') }}"
-                        class="hidden h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-bold text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)] sm:flex"
-                    >
-
-                        <span
-                            class="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--color-brand-900)] text-[11px] font-black text-white"
+                        <a
+                            href="{{ route('customer.wishlist.index') }}"
+                            class="hidden h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-accent-200)] hover:bg-[var(--color-accent-50)] hover:text-[var(--color-accent-600)] sm:flex"
+                            aria-label="علاقه‌مندی‌ها"
+                            title="علاقه‌مندی‌ها"
                         >
-                            {{ mb_substr(auth()->user()->name ?? 'U', 0, 1) }}
-                        </span>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path d="M20.8 8.7c0 5.2-8.8 10.3-8.8 10.3S3.2 13.9 3.2 8.7A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.8 2.5Z"/>
+                            </svg>
+                        </a>
 
-                        <span>
-                            حساب من
-                        </span>
+                        <a
+                            href="{{ route('customer.cart.index') }}"
+                            class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)]"
+                            aria-label="سبد خرید"
+                            title="سبد خرید"
+                        >
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                                <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"/>
+                                <circle cx="10" cy="20" r="1"/>
+                                <circle cx="18" cy="20" r="1"/>
+                            </svg>
 
-                    </a>
+                            @php
+                                $cartCount = app(\App\Services\CartService::class)
+                                    ->itemCount(auth()->user());
+                            @endphp
+
+                            @if($cartCount > 0)
+                                <span class="absolute -right-1.5 -top-1.5 flex min-h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-accent-600)] px-1 text-[9px] font-black leading-none text-white shadow-sm">
+                                    {{ $cartCount > 99 ? '99+' : $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+
+                        <a
+                            href="{{ route('customer.dashboard') }}"
+                            class="hidden h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 text-sm font-bold text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)] sm:flex"
+                        >
+                            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--color-brand-900)] text-[11px] font-black text-white">
+                                {{ mb_substr(auth()->user()->name ?? 'U', 0, 1) }}
+                            </span>
+                            <span>حساب من</span>
+                        </a>
+
+                    @endif
 
                 @else
 
