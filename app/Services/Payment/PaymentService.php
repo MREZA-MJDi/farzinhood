@@ -356,7 +356,7 @@ class PaymentService
                 ->findOrFail($payment->order_id);
 
             if (
-                $payment->status === 'paid'
+                $payment->status !== 'pending'
                 || $order->payment_status === 'paid'
             ) {
                 return $payment->fresh();
