@@ -346,6 +346,8 @@
 
             @endforelse
 
+            </div>
+
         </div>
 
     </section>
