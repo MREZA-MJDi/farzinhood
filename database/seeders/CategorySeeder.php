@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders;
+namespace DatabaseSeeders;
 
-use App\Models\Category;
-use Illuminate\Database\Seeder;
+use AppModelsCategory;
+use IlluminateDatabaseSeeder;
 
 class CategorySeeder extends Seeder
 {
@@ -11,46 +11,25 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'لوازم دیجیتال',
-                'slug' => 'digital',
-                'description' => 'انواع محصولات و لوازم دیجیتال',
+                'name' => 'هود',
+                'slug' => 'hood',
+                'description' => 'انواع هود آشپزخانه با طراحی مدرن و کاربردی.',
                 'sort_order' => 1,
+                'is_active' => true,
             ],
             [
-                'name' => 'لوازم خانگی',
-                'slug' => 'home-appliances',
-                'description' => 'محصولات کاربردی برای خانه',
+                'name' => 'سینک',
+                'slug' => 'sink',
+                'description' => 'سینک‌های توکار و روکار برای آشپزخانه‌های امروزی.',
                 'sort_order' => 2,
-            ],
-            [
-                'name' => 'پوشاک',
-                'slug' => 'fashion',
-                'description' => 'انواع لباس و پوشاک',
-                'sort_order' => 3,
-            ],
-            [
-                'name' => 'زیبایی و سلامت',
-                'slug' => 'beauty-health',
-                'description' => 'محصولات زیبایی و مراقبت شخصی',
-                'sort_order' => 4,
-            ],
-            [
-                'name' => 'اکسسوری',
-                'slug' => 'accessories',
-                'description' => 'اکسسوری و لوازم جانبی',
-                'sort_order' => 5,
+                'is_active' => true,
             ],
         ];
 
         foreach ($categories as $category) {
             Category::updateOrCreate(
                 ['slug' => $category['slug']],
-                [
-                    'name' => $category['name'],
-                    'description' => $category['description'],
-                    'sort_order' => $category['sort_order'],
-                    'is_active' => true,
-                ]
+                $category
             );
         }
     }
