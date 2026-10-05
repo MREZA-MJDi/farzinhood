@@ -6,13 +6,13 @@
 
     <div class="farzin-container py-14 lg:py-16">
 
-        <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="farzin-site-footer__grid grid gap-10 lg:grid-cols-12 lg:gap-12">
 
             {{-- =====================================================
                 Brand
             ====================================================== --}}
 
-            <div class="lg:col-span-4">
+            <div class="farzin-site-footer__column lg:col-span-4">
 
                 <a
                     href="{{ route('home') }}"
@@ -93,7 +93,7 @@
                 Quick Links
             ====================================================== --}}
 
-            <div class="lg:col-span-2">
+            <div class="farzin-site-footer__column lg:col-span-2">
 
                 <h3 class="text-sm font-black text-[var(--color-text-primary)]">
                     دسترسی سریع
@@ -142,7 +142,7 @@
                 Customer
             ====================================================== --}}
 
-            <div class="lg:col-span-2">
+            <div class="farzin-site-footer__column lg:col-span-2">
 
                 <h3 class="text-sm font-black text-[var(--color-text-primary)]">
                     حساب کاربری
@@ -205,7 +205,7 @@
                 Newsletter
             ====================================================== --}}
 
-            <div class="lg:col-span-4">
+            <div class="farzin-site-footer__column lg:col-span-4">
 
                 <div class="rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-neutral-50)] p-5 sm:p-6">
 
@@ -311,7 +311,7 @@
             Lower Footer
         ========================================================== --}}
 
-        <div class="mt-12 border-t border-[var(--color-border)] pt-6">
+        <div class="farzin-site-footer__bottom mt-12 border-t border-[var(--color-border)] pt-6">
 
             <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
@@ -400,6 +400,6 @@
         Footer Accent Line
     ========================================================== --}}
 
-    <div class="h-1 bg-gradient-to-l from-[var(--color-brand-950)] via-[var(--color-brand-900)] to-[var(--color-accent-600)]"></div>
+    <div class="farzin-site-footer__accent h-1 bg-gradient-to-l from-[var(--color-brand-950)] via-[var(--color-brand-900)] to-[var(--color-accent-600)]"></div>
 
 </footer>
