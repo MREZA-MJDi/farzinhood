@@ -87,7 +87,7 @@
                                     <h2>{{ $product->name }}</h2>
                                 </div>
 
-                                <strong>{{ number_format($product->price) }} <small>تومان</small></strong>
+                                <strong class="farzin-hero-rail__price">{{ number_format($product->price) }} <small>تومان</small></strong>
                             </div>
                         </a>
                     </article>
