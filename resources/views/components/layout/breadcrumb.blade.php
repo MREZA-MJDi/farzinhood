@@ -12,19 +12,19 @@
 
     <nav
         {{ $attributes->merge([
-            'class' => 'breadcrumb',
+            'class' => 'farzin-breadcrumb',
         ]) }}
         aria-label="مسیر صفحه"
     >
 
-        <ol class="breadcrumb__list">
+        <ol class="farzin-breadcrumb__list">
 
             {{-- Home --}}
-            <li class="breadcrumb__item">
+            <li class="farzin-breadcrumb__item">
 
                 <a
                     href="{{ $homeHref }}"
-                    class="breadcrumb__link"
+                    class="farzin-breadcrumb__link"
                 >
                     {{ $homeLabel }}
                 </a>
@@ -38,7 +38,7 @@
                     class="breadcrumb__item"
                     aria-hidden="true"
                 >
-                    <span class="breadcrumb__separator">
+                    <span class="farzin-breadcrumb__separator">
                         /
                     </span>
                 </li>
@@ -62,7 +62,7 @@
                     @else
 
                         <span
-                            class="breadcrumb__current"
+                            class="farzin-breadcrumb__current"
                             aria-current="page"
                         >
                             {{ is_array($item)
