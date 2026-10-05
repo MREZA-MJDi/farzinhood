@@ -413,56 +413,60 @@
 
 
                 {{-- Mobile Account --}}
-                <div class="mt-3 grid grid-cols-2 gap-2 border-t border-[var(--color-border)] pt-3">
+                <div class="mt-3 grid gap-2 border-t border-[var(--color-border)] pt-3">
 
                     @auth
 
-                        <a
-                            href="{{ route('customer.dashboard') }}"
-                            class="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-brand-900)] px-4 py-3 text-sm font-black text-white"
-                        >
-                            <svg
-                                class="h-4 w-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                aria-hidden="true"
+                        @if(auth()->user()->isAdmin())
+
+                            <a
+                                href="{{ route('admin.dashboard') }}"
+                                class="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-brand-900)] px-4 py-3 text-sm font-black text-white"
                             >
-                                <circle cx="12" cy="8" r="3.5"/>
-                                <path d="M5 20a7 7 0 0 1 14 0"/>
-                            </svg>
+                                پنل مدیریت
+                            </a>
 
-                            حساب من
-                        </a>
+                        @elseif(auth()->user()->isCustomer())
 
-                        <a
-                            href="{{ route('customer.cart.index') }}"
-                            class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-black text-[var(--color-text-secondary)]"
-                        >
-                            سبد خرید
-                        </a>
+                            <div class="grid grid-cols-2 gap-2">
+                                <a
+                                    href="{{ route('customer.dashboard') }}"
+                                    class="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-brand-900)] px-4 py-3 text-sm font-black text-white"
+                                >
+                                    حساب من
+                                </a>
+
+                                <a
+                                    href="{{ route('customer.cart.index') }}"
+                                    class="flex items-center justify-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-black text-[var(--color-text-secondary)]"
+                                >
+                                    سبد خرید
+                                </a>
+                            </div>
+
+                        @endif
 
                     @else
 
-                        <a
-                            href="{{ route('login') }}"
-                            class="flex items-center justify-center rounded-xl bg-[var(--color-accent-600)] px-4 py-3 text-sm font-black text-white"
-                        >
-                            ورود
-                        </a>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a
+                                href="{{ route('login') }}"
+                                class="flex items-center justify-center rounded-xl bg-[var(--color-accent-600)] px-4 py-3 text-sm font-black text-white"
+                            >
+                                ورود
+                            </a>
 
-                        <a
-                            href="{{ route('register') }}"
-                            class="flex items-center justify-center rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-black text-[var(--color-text-secondary)]"
-                        >
-                            ثبت‌نام
-                        </a>
+                            <a
+                                href="{{ route('register') }}"
+                                class="flex items-center justify-center rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-black text-[var(--color-text-secondary)]"
+                            >
+                                ثبت‌نام
+                            </a>
+                        </div>
 
                     @endauth
 
                 </div>
-
             </div>
 
         </div>
