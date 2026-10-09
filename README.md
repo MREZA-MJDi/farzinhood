@@ -2,6 +2,9 @@
 
 Farzinhood is a Laravel e-commerce project for a kitchen hood and sink store. Its routes cover a customer-facing storefront and an admin workspace with products, categories, inventory, orders, customers, reviews, blog content, contact messages, newsletter subscriptions, and site settings. Confirm the current state of checkout and payment integrations in source/tests before using them for live transactions.
 
+## Dedicated admin dashboard
+Farzinhood has its own dedicated administration dashboard for the store's product, inventory, order, customer, and content-management workflows. Verify the exact permissions and production readiness of individual operations in the current code and tests.
+
 ## Stack
 - PHP `^8.2`, Laravel `^12.0`
 - Blade, Vite and Laravel's Eloquent ORM
