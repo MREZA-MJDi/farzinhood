@@ -40,6 +40,7 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertSee('data-media-max-files="10"', false)
             ->assertSee('data-media-max-size="5242880"', false)
             ->assertSee('accept="image/jpeg,image/png,image/webp"', false)
+            ->assertDontSee('accept=".jpg,.jpeg,.png,.webp"', false)
             ->assertSee('data-media-preview', false);
 
         $this->get(route('admin.categories.create'))
@@ -61,6 +62,19 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertSee('data-media-picker', false)
             ->assertSee('data-media-ratio="1"', false)
             ->assertSee('data-media-preview', false);
+    }
+
+    public function test_admin_validation_summary_links_errors_to_the_relevant_fields(): void
+    {
+        $this->actingAs($this->admin())
+            ->from(route('admin.products.create'))
+            ->followingRedirects()
+            ->post(route('admin.products.store'), [])
+            ->assertOk()
+            ->assertSee('id="validation-summary"', false)
+            ->assertSee('data-validation-error-link', false)
+            ->assertSee('data-validation-target="category_id"', false)
+            ->assertSee('data-validation-target="name"', false);
     }
 
     public function test_product_and_category_seo_and_image_uploads_are_persisted(): void
