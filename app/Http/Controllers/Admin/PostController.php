@@ -68,59 +68,55 @@ class PostController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $validated = $request->validated();
-
+        $seoData = $seoService->data($validated);
         $image = $request->file('featured_image');
+        unset(
+            $validated['meta_title'],
+            $validated['meta_description'],
+            $validated['canonical_url'],
+            $validated['noindex'],
+            $validated['featured_image']
+        );
 
-        unset($validated['featured_image']);
+        $imagePath = $image?->store('blog/posts', 'public');
 
-        $post = DB::transaction(function () use (
-            $validated,
-            $image,
-            $request,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
+        if ($imagePath) {
+            $validated['featured_image'] = $imagePath;
+        }
 
-            $postData = $validated;
+        $validated['author_id'] = $request->user()->id;
 
-            unset(
-                $postData['meta_title'],
-                $postData['meta_description'],
-                $postData['canonical_url'],
-                $postData['noindex']
-            );
+        if ($validated['status'] === 'published') {
+            $validated['published_at'] ??= now();
+        } else {
+            $validated['published_at'] = null;
+        }
 
-            $postData['author_id'] = $request->user()->id;
+        try {
+            DB::transaction(function () use ($validated, $seoData, $seoService): void {
+                $postData = $validated;
 
-            if ($postData['status'] === 'published') {
-                $postData['published_at'] ??= now();
-            } else {
-                $postData['published_at'] = null;
-            }
-
-            if ($image) {
-                $postData['featured_image'] = $image->store(
-                    'blog/posts',
-                    'public'
+                unset(
+                    $postData['meta_title'],
+                    $postData['meta_description'],
+                    $postData['canonical_url'],
+                    $postData['noindex']
                 );
+
+                $post = Post::create($postData);
+                $seoService->apply($post, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($imagePath) {
+                Storage::disk('public')->delete($imagePath);
             }
 
-            $post = Post::create($postData);
-
-            $seoService->apply(
-                $post,
-                $seoData
-            );
-
-            return $post;
-        });
+            throw $exception;
+        }
 
         return redirect()
             ->route('admin.posts.index')
-            ->with(
-                'success',
-                'Post created successfully.'
-            );
+            ->with('success', 'Post created successfully.');
     }
 
     public function edit(Post $post): View
@@ -151,82 +147,80 @@ class PostController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $validated = $request->validated();
-
+        $seoData = $seoService->data($validated);
         $image = $request->file('featured_image');
+        unset(
+            $validated['meta_title'],
+            $validated['meta_description'],
+            $validated['canonical_url'],
+            $validated['noindex'],
+            $validated['featured_image']
+        );
 
-        unset($validated['featured_image']);
+        $newImagePath = $image?->store('blog/posts', 'public');
+        $oldImagePath = $post->featured_image;
 
-        DB::transaction(function () use (
-            $validated,
-            $image,
-            $post,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
-
-            $postData = $validated;
-
-            unset(
-                $postData['meta_title'],
-                $postData['meta_description'],
-                $postData['canonical_url'],
-                $postData['noindex']
-            );
-
-            if (
-                $postData['status'] === 'published'
-                && ! $post->published_at
-            ) {
-                $postData['published_at'] = now();
-            }
-
-            if ($postData['status'] === 'draft') {
-                $postData['published_at'] = null;
-            }
-
-            if ($image) {
-                if ($post->featured_image) {
-                    Storage::disk('public')
-                        ->delete($post->featured_image);
-                }
-
-                $postData['featured_image'] = $image->store(
-                    'blog/posts',
-                    'public'
-                );
-            }
-
-            $post->update($postData);
-
-            $seoService->apply(
-                $post,
-                $seoData
-            );
-        });
-
-        return redirect()
-            ->route('admin.posts.index')
-            ->with(
-                'success',
-                'Post updated successfully.'
-            );
-    }
-
-    public function destroy(
-        Post $post
-    ): RedirectResponse {
-        if ($post->featured_image) {
-            Storage::disk('public')
-                ->delete($post->featured_image);
+        if ($newImagePath) {
+            $validated['featured_image'] = $newImagePath;
         }
 
-        $post->delete();
+        try {
+            DB::transaction(function () use ($validated, $seoData, $post, $seoService): void {
+                $lockedPost = Post::query()
+                    ->whereKey($post->getKey())
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                $postData = $validated;
+
+                if ($postData['status'] === 'published' && ! $lockedPost->published_at) {
+                    $postData['published_at'] = now();
+                }
+
+                if ($postData['status'] === 'draft') {
+                    $postData['published_at'] = null;
+                }
+
+                $lockedPost->update($postData);
+                $seoService->apply($lockedPost, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($newImagePath) {
+                Storage::disk('public')->delete($newImagePath);
+            }
+
+            throw $exception;
+        }
+
+        if ($newImagePath && $oldImagePath && $oldImagePath !== $newImagePath) {
+            Storage::disk('public')->delete($oldImagePath);
+        }
 
         return redirect()
             ->route('admin.posts.index')
-            ->with(
-                'success',
-                'Post deleted successfully.'
-            );
+            ->with('success', 'Post updated successfully.');
+    }
+
+    public function destroy(Post $post): RedirectResponse
+    {
+        $imagePath = DB::transaction(function () use ($post): ?string {
+            $lockedPost = Post::query()
+                ->whereKey($post->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $path = $lockedPost->featured_image;
+            $lockedPost->delete();
+
+            return $path;
+        });
+
+        if ($imagePath) {
+            Storage::disk('public')->delete($imagePath);
+        }
+
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', 'Post deleted successfully.');
     }
 }
