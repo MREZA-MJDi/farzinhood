@@ -33,7 +33,10 @@
 
         $seoPageTitle = trim((string) $__env->yieldContent('title', $defaultMetaTitle)) ?: $defaultMetaTitle;
         $seoPageDescription = trim((string) $__env->yieldContent('meta_description', $defaultMetaDescription)) ?: $defaultMetaDescription;
-        $seoRobots = trim((string) $__env->yieldContent('meta_robots', 'index, follow')) ?: 'index, follow';
+        $defaultRobots = request()->routeIs('login', 'register', 'customer.*')
+            ? 'noindex, follow'
+            : 'index, follow';
+        $seoRobots = trim((string) $__env->yieldContent('meta_robots', $defaultRobots)) ?: $defaultRobots;
         $seoCanonical = trim((string) $__env->yieldContent('canonical_url', url()->current())) ?: url()->current();
         $seoOgType = trim((string) $__env->yieldContent('og_type', 'website')) ?: 'website';
         $seoOgTitle = trim((string) $__env->yieldContent('og_title', $seoPageTitle)) ?: $seoPageTitle;
