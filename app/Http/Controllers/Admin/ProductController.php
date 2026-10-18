@@ -277,7 +277,7 @@ class ProductController extends Controller
                 'public'
             );
 
-            $isPrimary = ! $hasPrimaryImage && $index === 0;
+            $isPrimary = ! $hasPrimaryImage;
 
             $image = ProductImage::create([
                 'product_id' => $product->id,
