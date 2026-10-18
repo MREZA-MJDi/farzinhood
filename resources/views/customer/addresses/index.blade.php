@@ -111,7 +111,7 @@
                                 <div class="flex shrink-0 items-center gap-1">
 
                                     <a
-                                        href="#edit-address-{{ $address->id }}"
+                                        href="{{ route('customer.addresses.edit', $address) }}"
                                         class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
                                         title="ویرایش"
                                         aria-label="ویرایش"
