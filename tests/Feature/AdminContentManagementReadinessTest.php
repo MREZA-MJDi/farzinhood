@@ -120,6 +120,45 @@ class AdminContentManagementReadinessTest extends TestCase
         $this->assertTrue($image->is_primary);
         Storage::disk('public')->assertExists($image->image);
 
+        $this->get(route('admin.products.edit', $product))
+            ->assertOk()
+            ->assertSee('تنظیم به‌عنوان تصویر اصلی')
+            ->assertSee('حذف تصویر');
+
+        $secondImagePath = 'products/secondary-test-image.jpg';
+        Storage::disk('public')->put($secondImagePath, 'fake-image-content');
+
+        $secondImage = $product->images()->create([
+            'image' => $secondImagePath,
+            'alt' => $product->name . ' secondary',
+            'sort_order' => 99,
+            'is_primary' => false,
+        ]);
+
+        $this->patch(route('admin.product-images.primary', $secondImage))
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('product_images', [
+            'id' => $secondImage->id,
+            'is_primary' => true,
+        ]);
+        $this->assertDatabaseHas('product_images', [
+            'id' => $image->id,
+            'is_primary' => false,
+        ]);
+
+        $this->delete(route('admin.product-images.destroy', $secondImage))
+            ->assertRedirect();
+
+        Storage::disk('public')->assertMissing($secondImagePath);
+        $this->assertDatabaseMissing('product_images', [
+            'id' => $secondImage->id,
+        ]);
+        $this->assertDatabaseHas('product_images', [
+            'id' => $image->id,
+            'is_primary' => true,
+        ]);
+
         $this->get(route('categories.show', ['category' => $category->slug]))
             ->assertOk()
             ->assertSee('عنوان سئوی دسته‌بندی')
