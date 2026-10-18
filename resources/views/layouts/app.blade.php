@@ -14,17 +14,35 @@
         content="{{ csrf_token() }}"
     >
 
+    @php
+        $seoSettings = \App\Models\SiteSetting::query()
+            ->whereIn('key', [
+                'site_name',
+                'site_description',
+                'default_meta_title',
+                'default_meta_description',
+            ])
+            ->pluck('value', 'key');
+
+        $siteName = trim((string) $seoSettings->get('site_name', 'فرزین')) ?: 'فرزین';
+        $defaultMetaTitle = trim((string) $seoSettings->get('default_meta_title', ''))
+            ?: $siteName . ' | فروشگاه آنلاین';
+        $defaultMetaDescription = trim((string) $seoSettings->get('default_meta_description', ''))
+            ?: trim((string) $seoSettings->get('site_description', ''))
+            ?: $siteName . ' | فروشگاه آنلاین محصولات با کیفیت';
+    @endphp
+
     {{-- =========================================================
         Primary SEO
     ========================================================== --}}
 
     <title>
-        @yield('title', 'فرزین | فروشگاه آنلاین')
+        @yield('title', $defaultMetaTitle)
     </title>
 
     <meta
         name="description"
-        content="@yield('meta_description', 'فرزین | فروشگاه آنلاین محصولات با کیفیت')"
+        content="@yield('meta_description', $defaultMetaDescription)"
     >
 
     <meta
@@ -48,7 +66,7 @@
 
     <meta
         name="application-name"
-        content="فرزین"
+        content="{{ $siteName }}"
     >
 
     {{-- Favicon --}}
@@ -74,22 +92,22 @@
 
     <meta
         property="og:site_name"
-        content="فرزین"
+        content="{{ $siteName }}"
     >
 
     <meta
         property="og:title"
-        content="@yield('og_title', trim($__env->yieldContent('title', 'فرزین | فروشگاه آنلاین')))"
+        content="@yield('og_title', trim($__env->yieldContent('title', $defaultMetaTitle)))"
     >
 
     <meta
         property="og:description"
-        content="@yield('og_description', trim($__env->yieldContent('meta_description', 'فرزین | فروشگاه آنلاین محصولات با کیفیت')))"
+        content="@yield('og_description', trim($__env->yieldContent('meta_description', $defaultMetaDescription)))"
     >
 
     <meta
         property="og:url"
-        content="{{ url()->current() }}"
+        content="@yield('canonical_url', url()->current())"
     >
 
     <meta
