@@ -34,11 +34,11 @@
                 Checkout
             </div>
 
-            <h1 class="mt-3 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
+            <h1 class="mt-3 text-3xl font-black tracking-tight text-[#292b24] sm:text-4xl">
                 تکمیل سفارش
             </h1>
 
-            <p class="mt-2 text-sm leading-7 text-gray-500">
+            <p class="mt-2 text-sm leading-7 text-[#6f7168]">
                 آدرس ارسال و روش پرداخت را انتخاب کن تا سفارشت ثبت شود.
             </p>
 
@@ -48,7 +48,7 @@
         {{-- =========================================================
             PROGRESS
         ========================================================== --}}
-        <div class="mb-10 overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white p-4 sm:p-5">
+        <div class="mb-10 overflow-hidden rounded-[1.75rem] border border-[#e7e7df] bg-white p-4 sm:p-5">
 
             <div class="grid grid-cols-3 gap-3">
 
@@ -59,11 +59,11 @@
                     </div>
 
                     <div class="hidden sm:block">
-                        <div class="text-[10px] font-bold text-gray-400">
+                        <div class="text-[10px] font-bold text-[#929489]">
                             مرحله اول
                         </div>
 
-                        <div class="mt-0.5 text-xs font-black text-gray-900">
+                        <div class="mt-0.5 text-xs font-black text-[#292b24]">
                             آدرس ارسال
                         </div>
                     </div>
@@ -71,18 +71,18 @@
                 </div>
 
 
-                <div class="flex items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3">
+                <div class="flex items-center gap-3 rounded-2xl bg-[#f7f7f3] px-4 py-3">
 
-                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-xs font-black text-gray-500">
+                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full border border-[#e7e7df] bg-white text-xs font-black text-[#6f7168]">
                         02
                     </div>
 
                     <div class="hidden sm:block">
-                        <div class="text-[10px] font-bold text-gray-400">
+                        <div class="text-[10px] font-bold text-[#929489]">
                             مرحله دوم
                         </div>
 
-                        <div class="mt-0.5 text-xs font-black text-gray-900">
+                        <div class="mt-0.5 text-xs font-black text-[#292b24]">
                             پرداخت
                         </div>
                     </div>
@@ -90,18 +90,18 @@
                 </div>
 
 
-                <div class="flex items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3">
+                <div class="flex items-center gap-3 rounded-2xl bg-[#f7f7f3] px-4 py-3">
 
-                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-xs font-black text-gray-500">
+                    <div class="flex size-9 shrink-0 items-center justify-center rounded-full border border-[#e7e7df] bg-white text-xs font-black text-[#6f7168]">
                         03
                     </div>
 
                     <div class="hidden sm:block">
-                        <div class="text-[10px] font-bold text-gray-400">
+                        <div class="text-[10px] font-bold text-[#929489]">
                             مرحله سوم
                         </div>
 
-                        <div class="mt-0.5 text-xs font-black text-gray-900">
+                        <div class="mt-0.5 text-xs font-black text-[#292b24]">
                             تأیید
                         </div>
                     </div>
@@ -133,9 +133,9 @@
                     {{-- =================================================
                         ADDRESSES
                     ================================================== --}}
-                    <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                    <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                        <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                        <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
                             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
@@ -145,11 +145,11 @@
                                         Delivery
                                     </div>
 
-                                    <h2 class="mt-2 text-xl font-black text-gray-950">
+                                    <h2 class="mt-2 text-xl font-black text-[#292b24]">
                                         آدرس ارسال
                                     </h2>
 
-                                    <p class="mt-1 text-xs leading-6 text-gray-400">
+                                    <p class="mt-1 text-xs leading-6 text-[#929489]">
                                         یکی از آدرس‌های ذخیره‌شده را برای ارسال سفارش انتخاب کن.
                                     </p>
 
@@ -157,7 +157,7 @@
 
                                 <a
                                     href="{{ route('customer.addresses.index') }}"
-                                    class="inline-flex items-center justify-center rounded-xl border border-gray-200 px-4 py-2.5 text-xs font-bold text-gray-700 transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
+                                    class="inline-flex items-center justify-center rounded-xl border border-[#e7e7df] px-4 py-2.5 text-xs font-bold text-[#515349] transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
                                 >
                                     مدیریت آدرس‌ها
                                 </a>
@@ -186,7 +186,7 @@
                                             >
 
                                             <div
-                                                class="relative h-full rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)] peer-checked:shadow-lg peer-checked:shadow-[var(--color-brand-900)]/5 group-hover:border-gray-300"
+                                                class="relative h-full rounded-[1.5rem] border-2 border-[#e7e7df] bg-[#f7f7f3] p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)] peer-checked:shadow-lg peer-checked:shadow-[var(--color-brand-900)]/5 group-hover:border-[#d8d9ce]"
                                             >
 
                                                 {{-- Selected Indicator --}}
@@ -222,19 +222,19 @@
 
                                                 <div class="pl-8">
 
-                                                    <div class="text-sm font-black text-gray-950">
+                                                    <div class="text-sm font-black text-[#292b24]">
                                                         {{ $address->title ?: 'آدرس ارسال' }}
                                                     </div>
 
-                                                    <div class="mt-2 text-xs font-bold text-gray-700">
+                                                    <div class="mt-2 text-xs font-bold text-[#515349]">
                                                         {{ $address->full_name }}
                                                     </div>
 
-                                                    <div class="mt-1 text-xs text-gray-400">
+                                                    <div class="mt-1 text-xs text-[#929489]">
                                                         {{ $address->phone }}
                                                     </div>
 
-                                                    <div class="mt-4 text-xs leading-7 text-gray-500">
+                                                    <div class="mt-4 text-xs leading-7 text-[#6f7168]">
 
                                                         {{ $address->province }}
                                                         ،
@@ -248,11 +248,11 @@
 
                                                     @if($address->postal_code)
 
-                                                        <div class="mt-3 text-[11px] text-gray-400">
+                                                        <div class="mt-3 text-[11px] text-[#929489]">
 
                                                             کد پستی:
 
-                                                            <span class="font-mono font-bold text-gray-600">
+                                                            <span class="font-mono font-bold text-[#606258]">
                                                             {{ $address->postal_code }}
                                                         </span>
 
@@ -272,17 +272,17 @@
 
                             @else
 
-                                <div class="rounded-[1.5rem] border border-dashed border-gray-300 bg-gray-50 px-6 py-12 text-center">
+                                <div class="rounded-[1.5rem] border border-dashed border-gray-300 bg-[#f7f7f3] px-6 py-12 text-center">
 
                                     <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[var(--color-accent-50)] text-2xl font-black text-[var(--color-brand-900)]">
                                         +
                                     </div>
 
-                                    <h3 class="mt-4 text-base font-black text-gray-950">
+                                    <h3 class="mt-4 text-base font-black text-[#292b24]">
                                         هنوز آدرسی نداری
                                     </h3>
 
-                                    <p class="mx-auto mt-2 max-w-md text-xs leading-7 text-gray-500">
+                                    <p class="mx-auto mt-2 max-w-md text-xs leading-7 text-[#6f7168]">
                                         برای ادامه ثبت سفارش، ابتدا یک آدرس ارسال اضافه کن.
                                     </p>
 
@@ -314,15 +314,15 @@
                     {{-- =================================================
                         PAYMENT METHOD
                     ================================================== --}}
-                    <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                    <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                        <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                        <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
                             <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Payment
                             </div>
 
-                            <h2 class="mt-2 text-xl font-black text-gray-950">
+                            <h2 class="mt-2 text-xl font-black text-[#292b24]">
                                 روش پرداخت
                             </h2>
 
@@ -342,7 +342,7 @@
                                 >
 
                                 <div
-                                    class="flex items-center gap-4 rounded-[1.5rem] border-2 border-gray-200 bg-gray-50/70 p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)]"
+                                    class="flex items-center gap-4 rounded-[1.5rem] border-2 border-[#e7e7df] bg-[#f7f7f3] p-5 transition duration-300 peer-checked:border-[var(--color-brand-900)] peer-checked:bg-[var(--color-brand-50)]"
                                 >
 
                                     <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-[var(--color-brand-900)] shadow-sm">
@@ -376,11 +376,11 @@
 
                                             <div>
 
-                                                <div class="text-sm font-black text-gray-950">
+                                                <div class="text-sm font-black text-[#292b24]">
                                                     پرداخت آنلاین
                                                 </div>
 
-                                                <div class="mt-1 text-xs leading-6 text-gray-400">
+                                                <div class="mt-1 text-xs leading-6 text-[#929489]">
                                                     پرداخت امن از طریق درگاه آنلاین
                                                 </div>
 
@@ -428,15 +428,15 @@
                     {{-- =================================================
                         ORDER NOTES
                     ================================================== --}}
-                    <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                    <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                        <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                        <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
                             <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Optional
                             </div>
 
-                            <h2 class="mt-2 text-xl font-black text-gray-950">
+                            <h2 class="mt-2 text-xl font-black text-[#292b24]">
                                 توضیحات سفارش
                             </h2>
 
@@ -447,7 +447,7 @@
 
                             <label
                                 for="notes"
-                                class="text-xs font-bold text-gray-700"
+                                class="text-xs font-bold text-[#515349]"
                             >
                                 توضیحات
                             </label>
@@ -458,7 +458,7 @@
                                 rows="5"
                                 maxlength="2000"
                                 placeholder="مثلاً زمان مناسب برای تحویل یا توضیحی برای سفارش..."
-                                class="mt-3 w-full resize-none rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[var(--color-accent-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-accent-600)]/10"
+                                class="mt-3 w-full resize-none rounded-2xl border border-[#e7e7df] bg-[#f7f7f3] px-5 py-4 text-sm leading-7 outline-none transition placeholder:text-[#929489] focus:border-[var(--color-accent-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-accent-600)]/10"
                             >{{ old('notes') }}</textarea>
 
                             @error('notes')
@@ -481,17 +481,17 @@
                 ================================================== --}}
                 <aside class="xl:sticky xl:top-28 xl:self-start">
 
-                    <div class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                    <div class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
 
                         {{-- Header --}}
-                        <div class="border-b border-gray-100 px-6 py-6">
+                        <div class="border-b border-[#efefe9] px-6 py-6">
 
                             <div class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
                                 Order Summary
                             </div>
 
-                            <h2 class="mt-2 text-xl font-black text-gray-950">
+                            <h2 class="mt-2 text-xl font-black text-[#292b24]">
                                 خلاصه سفارش
                             </h2>
 
@@ -499,7 +499,7 @@
 
 
                         {{-- Items --}}
-                        <div class="max-h-[360px] overflow-y-auto border-b border-gray-100 px-6 py-2">
+                        <div class="max-h-[360px] overflow-y-auto border-b border-[#efefe9] px-6 py-2">
 
                             @foreach($items as $item)
 
@@ -552,11 +552,11 @@
 
                                     <div class="min-w-0 flex-1">
 
-                                        <div class="line-clamp-2 text-xs font-bold leading-6 text-gray-900">
+                                        <div class="line-clamp-2 text-xs font-bold leading-6 text-[#292b24]">
                                             {{ $item->product_name ?? $product?->name }}
                                         </div>
 
-                                        <div class="mt-1 text-[11px] text-gray-400">
+                                        <div class="mt-1 text-[11px] text-[#929489]">
                                             {{ number_format($item->unit_price) }}
                                             تومان
                                         </div>
@@ -564,11 +564,11 @@
                                     </div>
 
 
-                                    <div class="shrink-0 text-left text-xs font-black text-gray-950">
+                                    <div class="shrink-0 text-left text-xs font-black text-[#292b24]">
 
                                         {{ number_format($lineTotal) }}
 
-                                        <span class="text-[9px] font-normal text-gray-400">
+                                        <span class="text-[9px] font-normal text-[#929489]">
                                         تومان
                                     </span>
 
@@ -589,11 +589,11 @@
                             {{-- Subtotal --}}
                             <div class="flex items-center justify-between gap-4 text-sm">
 
-                            <span class="text-gray-500">
+                            <span class="text-[#6f7168]">
                                 مبلغ کالاها
                             </span>
 
-                                <span class="font-bold text-gray-900">
+                                <span class="font-bold text-[#292b24]">
                                 {{ number_format($summary['subtotal']) }}
                                 تومان
                             </span>
@@ -604,7 +604,7 @@
                             {{-- Discount --}}
                             <div class="flex items-center justify-between gap-4 text-sm">
 
-                            <span class="text-gray-500">
+                            <span class="text-[#6f7168]">
                                 تخفیف
                             </span>
 
@@ -617,7 +617,7 @@
 
                                 @else
 
-                                    <span class="font-bold text-gray-400">
+                                    <span class="font-bold text-[#929489]">
                                     —
                                 </span>
 
@@ -629,13 +629,13 @@
                             {{-- Shipping --}}
                             <div class="flex items-center justify-between gap-4 text-sm">
 
-                            <span class="text-gray-500">
+                            <span class="text-[#6f7168]">
                                 هزینه ارسال
                             </span>
 
                                 @if($summary['shipping'] > 0)
 
-                                    <span class="font-bold text-gray-900">
+                                    <span class="font-bold text-[#292b24]">
                                     {{ number_format($summary['shipping']) }}
                                     تومان
                                 </span>
@@ -652,21 +652,21 @@
 
 
                             {{-- Final Total --}}
-                            <div class="border-t border-dashed border-gray-200 pt-5">
+                            <div class="border-t border-dashed border-[#e7e7df] pt-5">
 
                                 <div class="flex items-end justify-between gap-4">
 
                                     <div>
 
-                                        <div class="text-xs text-gray-400">
+                                        <div class="text-xs text-[#929489]">
                                             مبلغ نهایی
                                         </div>
 
-                                        <div class="mt-1 text-2xl font-black text-gray-950">
+                                        <div class="mt-1 text-2xl font-black text-[#292b24]">
 
                                             {{ number_format($summary['total']) }}
 
-                                            <span class="text-xs font-semibold text-gray-400">
+                                            <span class="text-xs font-semibold text-[#929489]">
                                             تومان
                                         </span>
 
@@ -707,7 +707,7 @@
                             {{-- Back --}}
                             <a
                                 href="{{ route('customer.cart.index') }}"
-                                class="flex w-full items-center justify-center rounded-2xl border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
+                                class="flex w-full items-center justify-center rounded-2xl border border-[#e7e7df] px-5 py-4 text-sm font-bold text-[#515349] transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
                             >
                                 بازگشت به سبد خرید
                             </a>
@@ -718,7 +718,7 @@
                         {{-- =================================================
                             TRUST
                         ================================================== --}}
-                        <div class="border-t border-gray-100 bg-gray-50/70 px-6 py-5">
+                        <div class="border-t border-[#efefe9] bg-[#f7f7f3] px-6 py-5">
 
                             <div class="space-y-4">
 
@@ -730,11 +730,11 @@
 
                                     <div>
 
-                                        <div class="text-xs font-bold text-gray-900">
+                                        <div class="text-xs font-bold text-[#292b24]">
                                             پرداخت امن
                                         </div>
 
-                                        <p class="mt-1 text-[11px] leading-6 text-gray-400">
+                                        <p class="mt-1 text-[11px] leading-6 text-[#929489]">
                                             اطلاعات پرداخت شما در محیط امن درگاه انجام می‌شود.
                                         </p>
 
@@ -751,11 +751,11 @@
 
                                     <div>
 
-                                        <div class="text-xs font-bold text-gray-900">
+                                        <div class="text-xs font-bold text-[#292b24]">
                                             قیمت شفاف
                                         </div>
 
-                                        <p class="mt-1 text-[11px] leading-6 text-gray-400">
+                                        <p class="mt-1 text-[11px] leading-6 text-[#929489]">
                                             مبلغ نهایی بر اساس قیمت فعلی محصولات محاسبه می‌شود.
                                         </p>
 
