@@ -501,3 +501,71 @@
         transition: none !important;
     }
 }
+
+/* Warm editorial variation aligned to the supplied light-store reference. */
+.farzin-hero-rail {
+    --hero-bg: #f7f7f3;
+    --hero-panel: #fff;
+    --hero-text: #252720;
+    --hero-muted: #66685f;
+    --hero-accent: #817d45;
+    min-height: 640px;
+    background:
+        radial-gradient(ellipse at 68% 42%, rgb(205 207 187 / .32), transparent 32%),
+        radial-gradient(ellipse at 14% 0%, rgb(255 255 255 / .9), transparent 30%),
+        var(--hero-bg);
+}
+.farzin-hero-rail__inner {
+    grid-template-columns: minmax(260px, .82fr) minmax(0, 1.55fr);
+    width: min(100% - 3rem, 86rem);
+    min-height: 640px;
+}
+.farzin-hero-rail__eyebrow {
+    border-color: #e5e6dc;
+    background: rgb(255 255 255 / .76);
+    color: #66685f;
+}
+.farzin-hero-rail__title strong { color: #73775c; }
+.farzin-hero-rail__description { color: var(--hero-muted); }
+.farzin-hero-rail__primary {
+    border: 1px solid var(--hero-accent);
+    background: var(--hero-accent);
+    box-shadow: 0 8px 20px rgb(129 125 69 / .16);
+}
+.farzin-hero-rail__primary:hover { background: #686438; }
+.farzin-hero-rail__product {
+    border-color: #e2e3db;
+    background: #fff;
+    box-shadow: 0 24px 55px rgb(36 38 30 / .13);
+}
+.farzin-hero-rail__product::after {
+    background: linear-gradient(to bottom, transparent 30%, rgb(17 20 15 / .74));
+}
+.farzin-hero-rail__nav {
+    border-color: #e0e1d8;
+    background: rgb(255 255 255 / .88);
+    color: #32352b;
+    box-shadow: 0 8px 22px rgb(36 38 30 / .09);
+}
+.farzin-hero-rail__nav:hover { background: var(--hero-accent); color: #fff; }
+.farzin-hero-rail__dots {
+    border-color: #e5e5df;
+    background: rgb(255 255 255 / .84);
+}
+.farzin-hero-rail__dots button { background: #c9cbbd; }
+.farzin-hero-rail__dots button.is-active { background: var(--hero-accent); }
+.farzin-hero-rail__glow--one { background: rgb(178 183 147 / .26); }
+.farzin-hero-rail__glow--two { background: rgb(222 223 211 / .5); }
+.farzin-hero-rail__grid {
+    opacity: .035;
+    background-image:
+        linear-gradient(rgb(90 94 73 / .3) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(90 94 73 / .3) 1px, transparent 1px);
+}
+@media (max-width: 639px) {
+    .farzin-hero-rail__inner {
+        width: min(100% - 1.5rem, 40rem);
+    }
+    .farzin-hero-rail__stage { height: 430px; }
+    .farzin-hero-rail__slide { --hero-card-w: min(66vw, 250px); }
+}
