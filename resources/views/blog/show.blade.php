@@ -27,7 +27,7 @@
 
                     <a
                         href="{{ route('home') }}"
-                        class="transition hover:text-[var(--color-accent-600)]"
+                        class="transition hover:text-[#817d45]"
                     >
                         خانه
                     </a>
@@ -38,7 +38,7 @@
 
                     <a
                         href="{{ route('blog.index') }}"
-                        class="transition hover:text-[var(--color-accent-600)]"
+                        class="transition hover:text-[#817d45]"
                     >
                         مجله
                     </a>
@@ -51,7 +51,7 @@
 
                         <a
                             href="{{ route('blog.index', ['category' => $post->category->slug]) }}"
-                            class="transition hover:text-[var(--color-accent-600)]"
+                            class="transition hover:text-[#817d45]"
                         >
                             {{ $post->category->name }}
                         </a>
@@ -105,7 +105,7 @@
 
 
                 {{-- Title --}}
-                <h1 class="mt-6 max-w-4xl text-4xl font-black leading-[1.25] tracking-tight text-[var(--color-brand-950)] sm:text-5xl lg:text-6xl">
+                <h1 class="mt-6 max-w-4xl text-4xl font-black leading-[1.25] tracking-tight text-[#303427] sm:text-5xl lg:text-6xl">
                     {{ $post->title }}
                 </h1>
 
@@ -131,7 +131,7 @@
 
             <section class="mx-auto max-w-6xl px-4 pt-10 sm:px-6 lg:px-8">
 
-                <div class="overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] bg-[var(--color-neutral-100)] shadow-[0_20px_55px_rgba(16,23,34,0.07)]">
+                <div class="overflow-hidden rounded-[2.5rem] border border-[var(--color-border)] bg-[#f0f0e9] shadow-[0_20px_55px_rgba(16,23,34,0.07)]">
 
                     <img
                         src="{{ asset('storage/' . $post->featured_image) }}"
@@ -168,7 +168,7 @@
 
                         <a
                             href="{{ route('blog.index') }}"
-                            class="group inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-5 py-3.5 text-xs font-black text-[var(--color-text-secondary)] transition hover:border-[var(--color-brand-300)] hover:text-[var(--color-brand-800)] hover:shadow-sm"
+                            class="group inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-5 py-3.5 text-xs font-black text-[var(--color-text-secondary)] transition hover:border-[var(--color-brand-300)] hover:text-[#555333] hover:shadow-sm"
                         >
 
                             <span class="transition-transform duration-200 group-hover:-translate-x-1">
@@ -194,7 +194,7 @@
 
                             <div class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
 
-                                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-600)]"></span>
+                                <span class="h-1.5 w-1.5 rounded-full bg-[#817d45]"></span>
 
                                 Article
 
@@ -212,7 +212,7 @@
 
                                         <a
                                             href="{{ route('blog.index', ['category' => $post->category->slug]) }}"
-                                            class="mt-1 block text-sm font-black text-[var(--color-text-primary)] transition hover:text-[var(--color-accent-600)]"
+                                            class="mt-1 block text-sm font-black text-[var(--color-text-primary)] transition hover:text-[#817d45]"
                                         >
                                             {{ $post->category->name }}
                                         </a>
@@ -255,9 +255,9 @@
 
 
                         {{-- CTA --}}
-                        <div class="relative overflow-hidden rounded-[2rem] bg-[var(--color-brand-950)] p-6 text-white">
+                        <div class="relative overflow-hidden rounded-[2rem] bg-[#303427] p-6 text-white">
 
-                            <div class="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[var(--color-accent-600)] opacity-10 blur-2xl"></div>
+                            <div class="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#817d45] opacity-10 blur-2xl"></div>
 
                             <div class="relative">
 
@@ -279,7 +279,7 @@
 
                                 <a
                                     href="{{ route('blog.index') }}"
-                                    class="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent-600)] px-4 py-3 text-xs font-black text-white transition hover:bg-[var(--color-accent-700)] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-100)]"
+                                    class="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#817d45] px-4 py-3 text-xs font-black text-white transition hover:bg-[#686438] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-100)]"
                                 >
                                     رفتن به مجله
 
@@ -315,13 +315,13 @@
 
                         <div class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
 
-                            <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-600)]"></span>
+                            <span class="h-1.5 w-1.5 rounded-full bg-[#817d45]"></span>
 
                             More to read
 
                         </div>
 
-                        <h2 class="mt-3 text-2xl font-black tracking-tight text-[var(--color-brand-950)] sm:text-3xl">
+                        <h2 class="mt-3 text-2xl font-black tracking-tight text-[#303427] sm:text-3xl">
                             مطالب مرتبط
                         </h2>
 
@@ -341,7 +341,7 @@
                                     class="block"
                                 >
 
-                                    <div class="aspect-[1.5] overflow-hidden bg-[var(--color-neutral-100)]">
+                                    <div class="aspect-[1.5] overflow-hidden bg-[#f0f0e9]">
 
                                         @if($relatedPost->featured_image)
 
@@ -356,7 +356,7 @@
 
                                             <div class="flex h-full items-center justify-center bg-gradient-to-br from-[var(--color-neutral-100)] to-[var(--color-brand-100)]">
 
-                                                <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-brand-200)] bg-white/70 text-[var(--color-brand-700)] shadow-sm">
+                                                <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--color-brand-200)] bg-white/70 text-[#686438] shadow-sm">
 
                                                     <svg
                                                         class="h-6 w-6"
@@ -397,7 +397,7 @@
                                             {{ $relatedPost->published_at?->format('Y/m/d') }}
                                         </div>
 
-                                        <h3 class="mt-2 line-clamp-2 text-base font-black leading-7 text-[var(--color-text-primary)] transition group-hover:text-[var(--color-brand-800)]">
+                                        <h3 class="mt-2 line-clamp-2 text-base font-black leading-7 text-[var(--color-text-primary)] transition group-hover:text-[#555333]">
                                             {{ $relatedPost->title }}
                                         </h3>
 
