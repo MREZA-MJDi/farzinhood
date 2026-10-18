@@ -357,4 +357,49 @@ class AdminContentManagementReadinessTest extends TestCase
         ]);
     }
 
+
+    public function test_order_status_and_status_history_are_saved_together(): void
+    {
+        $admin = $this->admin('admin-order-status@example.com');
+
+        $order = \App\Models\Order::query()->create([
+            'user_id' => $admin->id,
+            'order_number' => 'ORD-DEPLOY-TEST-001',
+            'status' => 'pending',
+            'payment_status' => 'paid',
+            'subtotal' => 100000,
+            'discount' => 0,
+            'shipping_cost' => 0,
+            'total' => 100000,
+            'shipping_full_name' => 'Test Customer',
+            'shipping_phone' => '09120000000',
+            'shipping_country' => 'Iran',
+            'shipping_province' => 'Tehran',
+            'shipping_city' => 'Tehran',
+            'shipping_postal_code' => '1234567890',
+            'shipping_address' => 'Test address',
+            'notes' => null,
+        ]);
+
+        $this->actingAs($admin)
+            ->patch(route('admin.orders.status', $order), [
+                'status' => 'processing',
+                'note' => 'تست ثبت تاریخچه',
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status' => 'processing',
+        ]);
+
+        $this->assertDatabaseHas('order_status_histories', [
+            'order_id' => $order->id,
+            'from_status' => 'pending',
+            'to_status' => 'processing',
+            'changed_by' => $admin->id,
+            'note' => 'تست ثبت تاریخچه',
+        ]);
+    }
+
 }
