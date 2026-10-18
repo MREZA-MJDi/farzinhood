@@ -185,15 +185,26 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        $product->load('images');
+        $imagePaths = $product->images()
+            ->whereNotNull('image')
+            ->pluck('image')
+            ->all();
 
-        DB::transaction(function () use ($product) {
-            foreach ($product->images as $image) {
-                $this->deleteImageFile($image);
-            }
+        DB::transaction(function () use ($product): void {
+            $lockedProduct = Product::query()
+                ->whereKey($product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-            $product->delete();
+            $lockedProduct->images()->delete();
+            $lockedProduct->delete();
         });
+
+        foreach ($imagePaths as $path) {
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -203,13 +214,14 @@ class ProductController extends Controller
     public function destroyImage(ProductImage $productImage): RedirectResponse
     {
         $path = DB::transaction(function () use ($productImage): ?string {
-            $image = ProductImage::query()
-                ->whereKey($productImage->getKey())
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $product = Product::query()
-                ->whereKey($image->product_id)
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
 
@@ -247,8 +259,6 @@ class ProductController extends Controller
     public function setPrimaryImage(
         ProductImage $productImage
     ): RedirectResponse {
-        $product = $productImage->product;
-
         DB::transaction(function () use ($productImage): void {
             $product = Product::query()
                 ->whereKey($productImage->product_id)
@@ -283,6 +293,11 @@ class ProductController extends Controller
         if (empty($files)) {
             return;
         }
+
+        $product = Product::query()
+            ->whereKey($product->getKey())
+            ->lockForUpdate()
+            ->firstOrFail();
 
         $hasPrimaryImage = $product
             ->images()
