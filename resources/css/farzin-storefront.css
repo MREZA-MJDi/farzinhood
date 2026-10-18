@@ -71,3 +71,16 @@
 .fz-site-nav{position:sticky!important;top:0!important}
 .fz-public-shell main:has(.fz-home-hero),.fz-public-shell main:has(.fz-shop-hero){background:var(--fz-paper)}
 @media(max-width:700px){.fz-home-hero__products{left:1rem;right:1rem;bottom:1rem;width:auto;max-width:none;padding-bottom:.65rem}.fz-hero-product{flex-basis:10.5rem}.fz-home-hero__counter{display:none}}
+
+/* Shared public pages: product detail, category, journal, contact and auth. */
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)){background:var(--fz-paper);color:var(--fz-ink)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) h1{font-size:clamp(2rem,4vw,3.5rem);font-weight:850;line-height:1.35;letter-spacing:-.035em;color:var(--fz-ink)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) h2{font-weight:850;line-height:1.45;letter-spacing:-.025em;color:var(--fz-ink)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) h3{font-weight:800;line-height:1.55;color:var(--fz-ink)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) p{line-height:2}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) input:not([type=checkbox]):not([type=radio]):not([type=hidden]),.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) select,.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) textarea{border-color:var(--fz-line);border-radius:4px;background:#fffefa;box-shadow:none}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) input:focus,.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) select:focus,.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) textarea:focus{border-color:var(--fz-amber);outline:0;box-shadow:0 0 0 3px rgba(189,137,88,.13)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) button[type=submit]{border-radius:4px}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) [class*="rounded-"][class*="border"]{border-color:var(--fz-line)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) [class*="shadow"]{box-shadow:0 5px 22px rgba(30,29,25,.045)}
+.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) a:focus-visible,.fz-public-shell:not(.fz-dashboard) main:not(:has(.fz-home-hero,.fz-shop-hero)) button:focus-visible{outline:2px solid var(--fz-amber);outline-offset:3px}
