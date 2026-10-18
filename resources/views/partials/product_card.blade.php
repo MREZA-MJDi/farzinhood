@@ -25,9 +25,7 @@
         : null;
 @endphp
 
-<article
-    class="group min-w-0"
->
+<article class="fz-product-card group min-w-0" data-product-card>
     <div
         class="relative overflow-hidden rounded-[1.75rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)] transition duration-300 hover:-translate-y-1 hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-md)]"
     >
