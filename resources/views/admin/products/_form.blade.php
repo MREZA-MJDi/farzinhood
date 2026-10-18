@@ -488,6 +488,13 @@
     </div>
 
 
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $product?->name ? $product->name . ' | فرزین' : 'عنوان محصول | فرزین',
+        'fallbackDescription' => $product?->short_description ?: ($product?->name ?? 'توضیحات محصول'),
+        'fallbackUrl' => $product?->exists ? route('products.show', $product) : '',
+        'fallbackNoindex' => $product?->noindex ?? false,
+    ])
+
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
 
