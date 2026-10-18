@@ -289,10 +289,16 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("[data-seo-preview]").forEach((preview) => {
         const form = preview.closest("form") ?? document;
-        const titleField = form.querySelector('[name="meta_title"]');
-        const descriptionField = form.querySelector('[name="meta_description"]');
-        const canonicalField = form.querySelector('[name="canonical_url"]');
-        const noindexField = form.querySelector('[name="noindex"]');
+        const titleFieldName = preview.dataset.seoTitleField || "meta_title";
+        const descriptionFieldName = preview.dataset.seoDescriptionField || "meta_description";
+        const canonicalFieldName = preview.dataset.seoCanonicalField || "canonical_url";
+        const noindexFieldName = preview.dataset.seoNoindexField || "noindex";
+        const field = (name) => name ? form.querySelector('[name="' + name + '"]') : null;
+
+        const titleField = field(titleFieldName);
+        const descriptionField = field(descriptionFieldName);
+        const canonicalField = field(canonicalFieldName);
+        const noindexField = field(noindexFieldName);
 
         const titleOutput = preview.querySelector("[data-seo-preview-title]");
         const descriptionOutput = preview.querySelector("[data-seo-preview-description]");
