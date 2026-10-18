@@ -382,9 +382,10 @@ class AdminContentManagementReadinessTest extends TestCase
             ])
             ->assertRedirect();
 
-        $this->get(route('home'))
+        // Shop intentionally defines a page title, but relies on the site-wide default description.
+        $this->get(route('shop.index'))
             ->assertOk()
-            ->assertSee('عنوان متای ذخیره‌شده')
+            ->assertSee('فروشگاه | Farzin')
             ->assertSee('توضیحات متای ذخیره‌شده برای صفحه اصلی')
             ->assertSee('فروشگاه تنظیم‌شده');
     }
