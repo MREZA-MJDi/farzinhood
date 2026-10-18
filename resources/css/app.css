@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "./home-hero-reference.css";
 @import "./shop-hero.css";
-@import "./storefront-customer.css";
 
 
 /*
@@ -1546,3 +1545,97 @@ html {
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Storefront and Customer Pages (consolidated from storefront-customer.css)
+|--------------------------------------------------------------------------
+| Uses the shared app design tokens; no second :root palette.
+| Admin layout and business logic remain untouched.
+|--------------------------------------------------------------------------
+*/
+
+/*
+ * Farzinhood — storefront and customer account polish.
+ * Scoped to public shopping flows and customer-owned pages; admin is intentionally untouched.
+ */
+body.farzin-storefront { background: var(--color-neutral-50); color: var(--color-text-primary); }
+.shop-page__catalog-shell,
+.shop-page__hero-shell { max-width: 86rem; }
+.shop-category-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.6rem; padding: .55rem 1rem; border: 1px solid var(--color-border);
+  border-radius: 999px; background: #fff; color: var(--color-text-muted);
+  font-size: .78rem; font-weight: 800; transition: .18s ease;
+}
+.shop-category-chip:hover,
+.shop-category-chip.is-active { border-color: var(--color-brand-700); background: var(--color-brand-50); color: var(--color-brand-800); }
+.shop-category-rail { display:flex; gap:.55rem; flex-wrap:wrap; margin-top:1.5rem; }
+.shop-filter-panel form,
+.shop-page__catalog-shell form:not(.shop-results-toolbar__sort form),
+.shop-results-toolbar {
+  border-color: var(--color-border) !important; border-radius: var(--radius-lg) !important;
+  box-shadow: 0 4px 18px rgb(38 40 30 / .035);
+}
+.shop-results-toolbar {
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  padding:1rem 1.15rem; margin-bottom:1rem; background:#fff; border:1px solid var(--color-border);
+}
+.shop-results-toolbar > div:first-child { display:flex; flex-direction:column; gap:.25rem; }
+.shop-results-toolbar__eyebrow { color:var(--color-text-soft); font-size:.62rem; font-weight:900; letter-spacing:.14em; }
+.shop-results-toolbar strong { color:var(--color-text-primary); font-size:.9rem; }
+.shop-results-toolbar__sort { display:flex; align-items:center; gap:.6rem; color:var(--color-text-muted); font-size:.75rem; }
+.shop-results-toolbar select {
+  max-width: 11rem; border:1px solid var(--color-border); border-radius:.75rem;
+  padding:.65rem .8rem; background:var(--color-neutral-50); color:var(--color-text-primary); font-size:.75rem;
+}
+.shop-product-grid { align-items:stretch; }
+body.farzin-storefront [data-product-card] > div,
+body.farzin-storefront .group.min-w-0 > div { border-color:var(--color-border); border-radius:1.15rem; box-shadow:0 2px 8px rgb(38 40 30 / .025); }
+body.farzin-storefront [data-product-card] img,
+body.farzin-storefront .group.min-w-0 img { mix-blend-mode:multiply; }
+.shop-filter-panel select,
+.shop-filter-panel input,
+.shop-page__catalog-shell input[type="search"] {
+  border-color:var(--color-border) !important; border-radius:.8rem !important;
+}
+.shop-filter-panel button[type="submit"],
+.shop-page__catalog-shell button[type="submit"] {
+  background:var(--color-brand-700) !important; border-radius:.8rem !important;
+}
+.shop-filter-panel button[type="submit"]:hover,
+.shop-page__catalog-shell button[type="submit"]:hover { background:var(--color-brand-800) !important; }
+
+.customer-dashboard,
+.customer-account-page { color:var(--color-text-primary); }
+.customer-dashboard .admin-card,
+.customer-account-page .admin-card {
+  border-color:var(--color-border); border-radius:var(--radius-lg); box-shadow:0 4px 18px rgb(38 40 30 / .035);
+}
+body.farzin-storefront :where(input, select, textarea):focus-visible { outline:2px solid var(--color-brand-700); outline-offset:2px; }
+body.farzin-storefront :where(a, button):focus-visible { outline:2px solid var(--color-brand-700); outline-offset:3px; }
+@media (max-width: 640px) {
+  .shop-page__catalog-shell { padding-inline:.9rem; }
+  .shop-results-toolbar { align-items:flex-start; flex-direction:column; }
+  .shop-results-toolbar__sort { width:100%; justify-content:space-between; }
+  .shop-results-toolbar select { max-width:none; flex:1; }
+  .shop-category-rail { flex-wrap:nowrap; overflow-x:auto; padding-bottom:.4rem; scrollbar-width:none; }
+  .shop-category-rail::-webkit-scrollbar { display:none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-category-chip { transition:none; }
+}
+
+/* Product cards preserve server-rendered stock, price and discount state. */
+body.farzin-storefront .group.min-w-0 > div {
+    border-color: var(--color-border);
+    border-radius: 1.1rem;
+    box-shadow: 0 2px 10px rgb(35 38 28 / .035);
+}
+body.farzin-storefront .group.min-w-0 > div:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: 0 12px 28px rgb(35 38 28 / .075);
+}
+body.farzin-storefront .group.min-w-0 > a > div { background: var(--color-neutral-100); }
+body.farzin-storefront .group.min-w-0 > a img { mix-blend-mode: multiply; }
+body.farzin-storefront .group.min-w-0 h3 { color: var(--color-text-primary); }
