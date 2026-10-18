@@ -12,6 +12,23 @@ class HomeHeroTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    public function test_homepage_uses_the_cinematic_hero_and_storefront_design_scope(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased farzin-storefront"', false)
+            ->assertSee('class="farzin-home-hero" data-home-hero', false)
+            ->assertSee('farzin-home-hero__visual', false)
+            ->assertSee('data-home-trust-strip', false)
+            ->assertSee('data-home-categories', false)
+            ->assertSee('data-home-featured', false)
+            ->assertSee('data-home-editorial', false)
+            ->assertSee('data-home-latest', false)
+            ->assertSee('data-home-final', false);
+    }
+
     public function test_home_hero_only_renders_the_ten_latest_active_products_with_primary_images(): void
     {
         $category = Category::query()->create([
