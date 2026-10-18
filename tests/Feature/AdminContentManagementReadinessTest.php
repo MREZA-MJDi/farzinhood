@@ -390,6 +390,18 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertSee('فروشگاه تنظیم‌شده');
     }
 
+    public function test_authentication_pages_are_noindexed_by_default(): void
+    {
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('noindex, follow');
+
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertSee('noindex, follow');
+    }
+
+
     public function test_invalid_category_image_upload_is_rejected_without_creating_record(): void
     {
         Storage::fake('public');
