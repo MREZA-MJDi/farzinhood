@@ -197,7 +197,7 @@
         @endif
 
 
-<div data-media-picker>
+<div data-media-picker data-media-ratio="1.6">
         <label for="featured_image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -211,7 +211,7 @@
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت
+            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت. قاب برش تصویر مقاله: ۱۶:۱۰، مشابه کارت‌های مقاله در سایت.
         </p>
 
         <div data-media-preview aria-live="polite"></div>
