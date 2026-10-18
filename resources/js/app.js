@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!visual || slides.length < 2) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduceMotion.matches) hero.setAttribute("data-reduced-motion", "true");
     let index = 0;
     let timer = null;
     let startX = null;
@@ -107,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const start = () => {
         stop();
-        if (!reduceMotion.matches) {
+        if (!reduceMotion.matches && !hero.matches(":hover") && !hero.contains(document.activeElement)) {
             timer = window.setInterval(() => render(index + 1), 5500);
         }
     };
