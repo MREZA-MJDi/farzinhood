@@ -13,7 +13,7 @@ use Illuminate\View\View;
 
 class SeoController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
         $groups = [
             $this->auditGroup(
@@ -104,14 +104,20 @@ class SeoController extends Controller
             ->where(fn (Builder $query) => $query->whereNull('meta_description')->orWhere('meta_description', ''))
             ->count();
 
+        $missingCondition = function (Builder $query): void {
+            $query
+                ->whereNull('meta_title')
+                ->orWhere('meta_title', '')
+                ->orWhereNull('meta_description')
+                ->orWhere('meta_description', '');
+        };
+
+        $missingMetadata = (clone $indexableQuery)
+            ->where($missingCondition)
+            ->count();
+
         $missingQuery = (clone $indexableQuery)
-            ->where(function (Builder $query): void {
-                $query
-                    ->whereNull('meta_title')
-                    ->orWhere('meta_title', '')
-                    ->orWhereNull('meta_description')
-                    ->orWhere('meta_description', '');
-            });
+            ->where($missingCondition);
 
         $missingRecords = $missingQuery
             ->orderByDesc('updated_at')
@@ -148,7 +154,14 @@ class SeoController extends Controller
             'indexable' => max(0, $total - $noindex),
             'missing_title' => $missingTitle,
             'missing_description' => $missingDescription,
-            'missing_metadata' => count($missingRecords),
+            'missing_metadata' => $missingMetadata,
+            'manage_url' => match ($key) {
+                'products' => route('admin.products.index'),
+                'categories' => route('admin.categories.index'),
+                'blog_categories' => route('admin.blog-categories.index'),
+                'posts' => route('admin.posts.index'),
+                default => route('admin.dashboard'),
+            },
             'missing_records' => $missingRecords,
         ];
     }
