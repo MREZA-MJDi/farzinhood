@@ -2,10 +2,13 @@
 @import "./home-hero-rail.css";
 @import "./shop-hero.css";
 
-
 /*
 |--------------------------------------------------------------------------
-| Farzin Font
+| Farzin Design System — Charcoal / Graphite / Mist / Teal
+|--------------------------------------------------------------------------
+| Scope: storefront + customer-facing views.
+| Existing controller, routes, form contracts and admin templates remain
+| unchanged. Keep token aliases for legacy Blade classes.
 |--------------------------------------------------------------------------
 */
 
@@ -16,7 +19,6 @@
     font-weight: 400;
     font-display: swap;
 }
-
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/webfonts/Vazirmatn-Medium.woff2") format("woff2");
@@ -24,7 +26,6 @@
     font-weight: 500;
     font-display: swap;
 }
-
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/webfonts/Vazirmatn-SemiBold.woff2") format("woff2");
@@ -32,7 +33,6 @@
     font-weight: 600;
     font-display: swap;
 }
-
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
@@ -40,7 +40,6 @@
     font-weight: 700;
     font-display: swap;
 }
-
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/webfonts/Vazirmatn-ExtraBold.woff2") format("woff2");
@@ -48,7 +47,6 @@
     font-weight: 800;
     font-display: swap;
 }
-
 @font-face {
     font-family: "Vazirmatn";
     src: url("../fonts/webfonts/Vazirmatn-Black.woff2") format("woff2");
@@ -57,1251 +55,398 @@
     font-display: swap;
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Farzin Design Tokens
-|--------------------------------------------------------------------------
-|
-| Brand:
-|   Navy = primary identity
-|   Red  = action / emphasis
-|   Neutral = supporting UI
-|
-|--------------------------------------------------------------------------
-*/
-
 :root {
+    color-scheme: light;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Brand Navy
-    |--------------------------------------------------------------------------
-    */
+    /* Primary brand: ink and charcoal */
+    --color-brand-50: #f3f7f7;
+    --color-brand-100: #e6eeee;
+    --color-brand-200: #c9d8d9;
+    --color-brand-300: #a6bec0;
+    --color-brand-400: #77999d;
+    --color-brand-500: #52777b;
+    --color-brand-600: #3d6064;
+    --color-brand-700: #304c50;
+    --color-brand-800: #263c40;
+    --color-brand-900: #1b2a2d;
+    --color-brand-950: #101719;
 
-    --color-brand-50: #f3f5f9;
-    --color-brand-100: #e8ecf3;
-    --color-brand-200: #d3dae7;
-    --color-brand-300: #b4bfd3;
-    --color-brand-400: #8796b4;
-    --color-brand-500: #5f7095;
-    --color-brand-600: #405477;
-    --color-brand-700: #2b4167;
-    --color-brand-800: #1c3157;
-    --color-brand-900: #0d1b3d;
-    --color-brand-950: #071126;
+    /* Accent: restrained deep teal */
+    --color-accent-50: #edfafa;
+    --color-accent-100: #d2f2ef;
+    --color-accent-200: #a8e5df;
+    --color-accent-300: #71d0c8;
+    --color-accent-400: #3eb7af;
+    --color-accent-500: #249e97;
+    --color-accent-600: #197f7b;
+    --color-accent-700: #176663;
+    --color-accent-800: #185251;
+    --color-accent-900: #174544;
+    --color-accent-950: #0b2929;
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Farzin Red
-    |--------------------------------------------------------------------------
-    */
-
-    --color-accent-50: #fff3f4;
-    --color-accent-100: #ffe3e6;
-    --color-accent-200: #ffcbd0;
-    --color-accent-300: #f9a6ae;
-    --color-accent-400: #f47884;
-    --color-accent-500: #ed4b59;
-    --color-accent-600: #e21f2f;
-    --color-accent-700: #c91929;
-    --color-accent-800: #a91725;
-    --color-accent-900: #8f1722;
-    --color-accent-950: #500910;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Neutral
-    |--------------------------------------------------------------------------
-    */
-
+    /* Neutral scale: clean light gray through graphite */
     --color-neutral-0: #ffffff;
+    --color-neutral-50: #f7f8f8;
+    --color-neutral-100: #ecefef;
+    --color-neutral-200: #dce1e1;
+    --color-neutral-300: #c2caca;
+    --color-neutral-400: #98a3a4;
+    --color-neutral-500: #747f81;
+    --color-neutral-600: #596365;
+    --color-neutral-700: #414a4c;
+    --color-neutral-800: #2c3436;
+    --color-neutral-900: #1b2224;
+    --color-neutral-950: #101517;
 
-    --color-neutral-50: #f7f8fa;
-    --color-neutral-100: #f0f2f5;
-    --color-neutral-200: #e3e6eb;
-    --color-neutral-300: #d2d7df;
-    --color-neutral-400: #aab1bd;
-    --color-neutral-500: #89919d;
-    --color-neutral-600: #697280;
-    --color-neutral-700: #4d5665;
-    --color-neutral-800: #323b4a;
-    --color-neutral-900: #1c2432;
-    --color-neutral-950: #101722;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Semantic Colors
-    |--------------------------------------------------------------------------
-    */
-
+    /* Semantic status */
     --color-success-50: #ecfdf5;
     --color-success-100: #d1fae5;
     --color-success-600: #059669;
     --color-success-700: #047857;
-
     --color-warning-50: #fffbeb;
     --color-warning-100: #fef3c7;
     --color-warning-600: #d97706;
     --color-warning-700: #b45309;
-
     --color-danger-50: #fff1f2;
     --color-danger-100: #ffe4e6;
     --color-danger-600: #e11d48;
     --color-danger-700: #be123c;
+    --color-info-50: #effafa;
+    --color-info-100: #d4f4f1;
+    --color-info-600: #197f7b;
+    --color-info-700: #176663;
 
-    --color-info-50: #eff6ff;
-    --color-info-100: #dbeafe;
-    --color-info-600: #2563eb;
-    --color-info-700: #1d4ed8;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Text
-    |--------------------------------------------------------------------------
-    */
-
-    --color-text-primary: #101722;
-    --color-text-secondary: #4d5665;
-    --color-text-muted: #697280;
-    --color-text-soft: #aab1bd;
+    /* Semantic text */
+    --color-text-primary: #151c1e;
+    --color-text-secondary: #414a4c;
+    --color-text-muted: #667174;
+    --color-text-soft: #929c9e;
     --color-text-inverse: #ffffff;
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Surfaces
-    |--------------------------------------------------------------------------
-    */
-
+    /* Surfaces and borders */
     --color-surface: #ffffff;
-    --color-surface-soft: #fbfcfd;
-    --color-surface-muted: #f7f8fa;
-    --color-surface-dark: #0d1b3d;
+    --color-surface-soft: #fcfdfd;
+    --color-surface-muted: #f5f7f7;
+    --color-surface-dark: #101719;
+    --color-border: #e1e6e6;
+    --color-border-strong: #cbd3d3;
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Borders
-    |--------------------------------------------------------------------------
-    */
-
-    --color-border: #e3e6eb;
-    --color-border-strong: #d2d7df;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Shadows
-    |--------------------------------------------------------------------------
-    */
-
-    --shadow-xs:
-        0 1px 2px rgb(16 23 34 / 0.04);
-
-    --shadow-sm:
-        0 2px 8px rgb(16 23 34 / 0.05),
-        0 1px 2px rgb(16 23 34 / 0.03);
-
-    --shadow-md:
-        0 10px 30px rgb(16 23 34 / 0.07),
-        0 2px 8px rgb(16 23 34 / 0.04);
-
-    --shadow-lg:
-        0 20px 50px rgb(16 23 34 / 0.10),
-        0 8px 20px rgb(16 23px 34 / 0.05);
-
-    --shadow-xl:
-        0 30px 80px rgb(16 23 34 / 0.13),
-        0 10px 30px rgb(16 23 34 / 0.06);
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Motion
-    |--------------------------------------------------------------------------
-    */
+    --shadow-xs: 0 1px 2px rgb(16 23 25 / .035);
+    --shadow-sm: 0 3px 12px rgb(16 23 25 / .045), 0 1px 3px rgb(16 23 25 / .025);
+    --shadow-md: 0 12px 32px rgb(16 23 25 / .075), 0 3px 10px rgb(16 23 25 / .035);
+    --shadow-lg: 0 24px 58px rgb(16 23 25 / .10), 0 8px 24px rgb(16 23 25 / .04);
+    --shadow-xl: 0 34px 84px rgb(16 23 25 / .13), 0 12px 30px rgb(16 23 25 / .055);
 
     --transition-fast: 150ms ease;
     --transition-base: 220ms ease;
-    --transition-slow: 350ms ease;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Layout
-    |--------------------------------------------------------------------------
-    */
-
+    --transition-slow: 360ms cubic-bezier(.22,.75,.26,1);
     --container-width: 80rem;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Radius
-    |--------------------------------------------------------------------------
-    */
-
-    --radius-sm: 0.75rem;
+    --radius-sm: .75rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
     --radius-xl: 2rem;
+
+    /* Compatibility tokens referenced by existing storefront components */
+    --farzin-ink: #151c1e;
+    --farzin-charcoal: #20282a;
+    --farzin-graphite: #414a4c;
+    --farzin-mist: #f5f7f7;
+    --farzin-teal: #197f7b;
+    --farzin-teal-soft: #d2f2ef;
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Backward Compatibility
-|--------------------------------------------------------------------------
-|
-| Existing Blade files may still use:
-| --color-brand-*
-|
-| Those variables are intentionally mapped to the new Farzin navy system.
-|
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
-| Base
-|--------------------------------------------------------------------------
-*/
 
 html {
     scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
-
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 body {
     min-height: 100vh;
     margin: 0;
-
     background: var(--color-neutral-50);
     color: var(--color-text-primary);
-
-    font-family:
-        "Vazirmatn",
-        Tahoma,
-        Arial,
-        sans-serif;
+    font-family: "Vazirmatn", Tahoma, Arial, sans-serif;
 }
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-img,
-svg,
-video,
-canvas {
-    max-width: 100%;
-}
-
-img {
-    display: block;
-}
-
-button,
-input,
-textarea,
-select {
-    font: inherit;
-}
-
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button {
-    cursor: pointer;
-}
-
-button:disabled {
-    cursor: not-allowed;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Alpine
-|--------------------------------------------------------------------------
-*/
-
-[x-cloak] {
-    display: none !important;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Selection
-|--------------------------------------------------------------------------
-*/
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video, canvas { max-width: 100%; }
+img { display: block; }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+[x-cloak] { display: none !important; }
 
 ::selection {
-    background: rgb(226 31 47 / 0.16);
+    background: rgb(36 158 151 / .18);
     color: var(--color-brand-950);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Focus
-|--------------------------------------------------------------------------
-*/
-
 :focus-visible {
     outline: 2px solid var(--color-accent-600);
     outline-offset: 3px;
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Scrollbar
-|--------------------------------------------------------------------------
-*/
-
 * {
     scrollbar-width: thin;
-    scrollbar-color:
-        var(--color-neutral-300)
-        transparent;
+    scrollbar-color: var(--color-neutral-300) transparent;
 }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-neutral-300); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-neutral-400); }
 
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--color-neutral-300);
-    border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-neutral-400);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Forms
-|--------------------------------------------------------------------------
-*/
-
-input,
-textarea,
-select {
-    color: var(--color-text-primary);
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: var(--color-text-soft);
-    opacity: 1;
-}
-
-textarea {
-    min-height: 120px;
-}
-
-input[type="number"] {
-    appearance: textfield;
-}
-
+input, textarea, select { color: var(--color-text-primary); }
+input::placeholder, textarea::placeholder { color: var(--color-text-soft); opacity: 1; }
+textarea { min-height: 120px; }
+input[type="number"] { appearance: textfield; }
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    margin: 0;
+input[type="number"]::-webkit-outer-spin-button { margin: 0; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--color-accent-600); }
+
+/* Shared surfaces */
+.farzin-card, .admin-card {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xs);
 }
-
-input[type="checkbox"],
-input[type="radio"] {
-    accent-color: var(--color-accent-600);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Shared Cards
-|--------------------------------------------------------------------------
-*/
-
-.farzin-card {
-    border:
-        1px solid var(--color-border);
-
-    background:
-        var(--color-surface);
-
-    border-radius:
-        var(--radius-xl);
-
-    box-shadow:
-        var(--shadow-xs);
-}
-
 .farzin-card-hover {
-    transition:
-        transform var(--transition-base),
-        box-shadow var(--transition-base),
-        border-color var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
-
 .farzin-card-hover:hover {
-    border-color:
-        var(--color-border-strong);
-
-    box-shadow:
-        var(--shadow-md);
-
-    transform:
-        translateY(-2px);
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Glass
-|--------------------------------------------------------------------------
-*/
-
 .farzin-glass {
-    background:
-        rgb(255 255 255 / 0.78);
-
-    border:
-        1px solid rgb(255 255 255 / 0.62);
-
-    backdrop-filter:
-        blur(16px);
-
-    -webkit-backdrop-filter:
-        blur(16px);
+    background: rgb(255 255 255 / .82);
+    border: 1px solid rgb(255 255 255 / .72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Brand Gradient
-|--------------------------------------------------------------------------
-*/
-
 .farzin-gradient {
     background:
-        radial-gradient(
-            circle at 82% 12%,
-            rgb(226 31 47 / 0.17),
-            transparent 34%
-        ),
-        radial-gradient(
-            circle at 18% 88%,
-            rgb(64 84 119 / 0.18),
-            transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            var(--color-brand-950) 0%,
-            var(--color-brand-900) 55%,
-            #14284f 100%
-        );
+        radial-gradient(circle at 82% 12%, rgb(36 158 151 / .18), transparent 34%),
+        radial-gradient(circle at 18% 88%, rgb(65 74 76 / .20), transparent 38%),
+        linear-gradient(135deg, #101719 0%, #1b2a2d 58%, #293638 100%);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Navy Hero
-|--------------------------------------------------------------------------
-*/
-
 .farzin-hero {
     position: relative;
     overflow: hidden;
-
-    color:
-        var(--color-text-inverse);
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--color-brand-950),
-            var(--color-brand-900)
-        );
+    color: var(--color-text-inverse);
+    background: linear-gradient(135deg, #101719, #1b2a2d);
 }
-
-.farzin-hero::before {
+.farzin-hero::before, .farzin-hero::after {
     content: "";
-
     position: absolute;
-
+    border-radius: 999px;
+    filter: blur(70px);
+    pointer-events: none;
+}
+.farzin-hero::before {
     width: 28rem;
     height: 28rem;
-
     right: -10rem;
     top: -12rem;
-
-    border-radius: 999px;
-
-    background:
-        rgb(226 31 47 / 0.13);
-
-    filter:
-        blur(70px);
+    background: rgb(36 158 151 / .16);
 }
-
 .farzin-hero::after {
-    content: "";
-
-    position: absolute;
-
     width: 24rem;
     height: 24rem;
-
     left: -10rem;
     bottom: -10rem;
-
-    border-radius: 999px;
-
-    background:
-        rgb(255 255 255 / 0.05);
-
-    filter:
-        blur(65px);
+    background: rgb(255 255 255 / .045);
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Red Accent
-|--------------------------------------------------------------------------
-*/
-
-.farzin-accent {
-    color:
-        var(--color-accent-600);
-}
-
-.farzin-accent-bg {
-    background:
-        var(--color-accent-600);
-    color:
-        var(--color-text-inverse);
-}
-
-.farzin-accent-bg:hover {
-    background:
-        var(--color-accent-700);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Shared Buttons
-|--------------------------------------------------------------------------
-*/
-
+/* CTA helpers */
+.farzin-accent { color: var(--color-accent-700); }
+.farzin-accent-bg { background: var(--color-accent-600); color: #fff; }
+.farzin-accent-bg:hover { background: var(--color-accent-700); }
 .farzin-btn {
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-
+    gap: .5rem;
     min-height: 2.75rem;
-
-    border-radius:
-        var(--radius-md);
-
-    padding-inline:
-        1rem;
-
-    font-weight:
-        800;
-
-    transition:
-        transform var(--transition-fast),
-        background-color var(--transition-fast),
-        border-color var(--transition-fast),
-        color var(--transition-fast),
-        box-shadow var(--transition-fast);
+    border-radius: var(--radius-md);
+    padding-inline: 1rem;
+    font-weight: 800;
+    transition: transform var(--transition-fast), background-color var(--transition-fast),
+        border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
-
-.farzin-btn:hover {
-    transform:
-        translateY(-1px);
-}
-
-.farzin-btn:active {
-    transform:
-        translateY(0);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Primary Button
-|--------------------------------------------------------------------------
-*/
-
+.farzin-btn:hover { transform: translateY(-1px); }
+.farzin-btn:active { transform: translateY(0); }
 .farzin-btn-primary {
-    background:
-        var(--color-brand-900);
-
-    color:
-        #ffffff;
-
-    box-shadow:
-        0 8px 20px rgb(13 27 61 / 0.15);
+    background: var(--color-brand-900);
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(16 23 25 / .14);
 }
-
-.farzin-btn-primary:hover {
-    background:
-        var(--color-brand-950);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Red CTA Button
-|--------------------------------------------------------------------------
-*/
-
+.farzin-btn-primary:hover { background: var(--color-brand-950); }
 .farzin-btn-accent {
-    background:
-        var(--color-accent-600);
-
-    color:
-        #ffffff;
-
-    box-shadow:
-        0 8px 20px rgb(226 31 47 / 0.15);
+    background: var(--color-accent-600);
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(25 127 123 / .18);
 }
-
-.farzin-btn-accent:hover {
-    background:
-        var(--color-accent-700);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Outline Button
-|--------------------------------------------------------------------------
-*/
-
+.farzin-btn-accent:hover { background: var(--color-accent-700); }
 .farzin-btn-outline {
-    border:
-        1px solid var(--color-border);
-
-    background:
-        var(--color-surface);
-
-    color:
-        var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
 }
-
 .farzin-btn-outline:hover {
-    border-color:
-        var(--color-brand-300);
-
-    background:
-        var(--color-brand-50);
-
-    color:
-        var(--color-brand-900);
+    border-color: var(--color-brand-300);
+    background: var(--color-brand-50);
+    color: var(--color-brand-900);
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Dark Outline Button
-|--------------------------------------------------------------------------
-*/
-
 .farzin-btn-dark-outline {
-    border:
-        1px solid rgb(255 255 255 / 0.14);
-
-    background:
-        rgb(255 255 255 / 0.05);
-
-    color:
-        #ffffff;
+    border: 1px solid rgb(255 255 255 / .16);
+    background: rgb(255 255 255 / .05);
+    color: #fff;
 }
-
-.farzin-btn-dark-outline:hover {
-    background:
-        rgb(255 255 255 / 0.10);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Container
-|--------------------------------------------------------------------------
-*/
+.farzin-btn-dark-outline:hover { background: rgb(255 255 255 / .1); }
 
 .farzin-container {
-    width:
-        min(
-            calc(100% - 2rem),
-            var(--container-width)
-        );
-
-    margin-inline:
-        auto;
+    width: min(calc(100% - 2rem), var(--container-width));
+    margin-inline: auto;
 }
-
 @media (min-width: 640px) {
-    .farzin-container {
-        width:
-            min(
-                calc(100% - 3rem),
-                var(--container-width)
-            );
-    }
+    .farzin-container { width: min(calc(100% - 3rem), var(--container-width)); }
 }
-
 @media (min-width: 1024px) {
-    .farzin-container {
-        width:
-            min(
-                calc(100% - 4rem),
-                var(--container-width)
-            );
-    }
+    .farzin-container { width: min(calc(100% - 4rem), var(--container-width)); }
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Admin
-|--------------------------------------------------------------------------
-*/
-
-.admin-card {
-    border:
-        1px solid var(--color-border);
-
-    background:
-        var(--color-surface);
-
-    border-radius:
-        var(--radius-lg);
-
-    box-shadow:
-        var(--shadow-xs);
-}
-
-.admin-section-title {
-    color:
-        var(--color-text-primary);
-
-    font-weight:
-        900;
-}
-
-.admin-muted {
-    color:
-        var(--color-text-muted);
-}
-
+/* Admin utilities are retained: dashboard functionality and layout are not
+   being redesigned in this scope. */
+.admin-section-title { color: var(--color-text-primary); font-weight: 900; }
+.admin-muted { color: var(--color-text-muted); }
 .admin-table-wrap {
     overflow-x: auto;
-
-    border:
-        1px solid var(--color-border);
-
-    border-radius:
-        var(--radius-lg);
-
-    background:
-        var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
 }
-
-.admin-table {
-    width: 100%;
-
-    border-collapse:
-        collapse;
-}
-
+.admin-table { width: 100%; border-collapse: collapse; }
 .admin-table th {
-    background:
-        var(--color-neutral-50);
-
-    color:
-        var(--color-text-secondary);
-
-    font-size:
-        0.75rem;
-
-    font-weight:
-        800;
-
-    white-space:
-        nowrap;
+    background: var(--color-neutral-50);
+    color: var(--color-text-secondary);
+    font-size: .75rem;
+    font-weight: 800;
+    white-space: nowrap;
 }
-
-.admin-table td,
-.admin-table th {
-    padding:
-        0.875rem 1rem;
-
-    border-bottom:
-        1px solid var(--color-border);
-
-    text-align:
-        right;
+.admin-table td, .admin-table th {
+    padding: .875rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: right;
 }
+.admin-table tbody tr { transition: background-color var(--transition-fast); }
+.admin-table tbody tr:hover { background: var(--color-neutral-50); }
 
-.admin-table tbody tr {
-    transition:
-        background-color var(--transition-fast);
-}
-
-.admin-table tbody tr:hover {
-    background:
-        var(--color-neutral-50);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Pagination
-|--------------------------------------------------------------------------
-*/
-
-.pagination {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    align-items: center;
-
-    gap: 0.375rem;
-}
-
-.pagination a,
-.pagination span {
+.pagination { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; }
+.pagination a, .pagination span {
     display: inline-flex;
-
-    min-width:
-        2.5rem;
-
-    height:
-        2.5rem;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    border:
-        1px solid var(--color-border);
-
-    border-radius:
-        0.75rem;
-
-    background:
-        var(--color-surface);
-
-    padding-inline:
-        0.75rem;
-
-    font-size:
-        0.8125rem;
-
-    font-weight:
-        700;
-
-    color:
-        var(--color-text-secondary);
-
-    transition:
-        color var(--transition-fast),
-        background-color var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.pagination a:hover {
-    border-color:
-        var(--color-brand-300);
-
-    background:
-        var(--color-brand-50);
-
-    color:
-        var(--color-brand-900);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Status
-|--------------------------------------------------------------------------
-*/
-
-.farzin-status {
-    display: inline-flex;
-
+    min-width: 2.5rem;
+    min-height: 2.5rem;
     align-items: center;
     justify-content: center;
-
-    border-radius:
-        999px;
-
-    padding:
-        0.375rem 0.75rem;
-
-    font-size:
-        0.6875rem;
-
-    font-weight:
-        800;
-
-    line-height:
-        1;
+    border: 1px solid var(--color-border);
+    border-radius: .75rem;
+    background: var(--color-surface);
+    padding-inline: .75rem;
+    font-size: .8125rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
 }
-
-.farzin-status-success {
-    background:
-        var(--color-success-50);
-
-    color:
-        var(--color-success-700);
+.pagination a:hover {
+    border-color: var(--color-brand-300);
+    background: var(--color-brand-50);
+    color: var(--color-brand-900);
 }
-
-.farzin-status-warning {
-    background:
-        var(--color-warning-50);
-
-    color:
-        var(--color-warning-700);
+.farzin-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: .375rem .75rem;
+    font-size: .6875rem;
+    font-weight: 800;
+    line-height: 1;
 }
+.farzin-status-success { background: var(--color-success-50); color: var(--color-success-700); }
+.farzin-status-warning { background: var(--color-warning-50); color: var(--color-warning-700); }
+.farzin-status-danger { background: var(--color-danger-50); color: var(--color-danger-700); }
+.farzin-status-info { background: var(--color-info-50); color: var(--color-info-700); }
+.farzin-status-brand { background: var(--color-brand-100); color: var(--color-brand-900); }
 
-.farzin-status-danger {
-    background:
-        var(--color-danger-50);
-
-    color:
-        var(--color-danger-700);
+.prose-farzin { color: var(--color-text-secondary); line-height: 2; }
+.prose-farzin h1, .prose-farzin h2, .prose-farzin h3, .prose-farzin h4 {
+    color: var(--color-text-primary);
+    font-weight: 900;
+    line-height: 1.5;
 }
-
-.farzin-status-info {
-    background:
-        var(--color-info-50);
-
-    color:
-        var(--color-info-700);
-}
-
-.farzin-status-brand {
-    background:
-        var(--color-brand-100);
-
-    color:
-        var(--color-brand-900);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Content
-|--------------------------------------------------------------------------
-*/
-
-.prose-farzin {
-    color:
-        var(--color-text-secondary);
-
-    line-height:
-        2;
-}
-
-.prose-farzin h1,
-.prose-farzin h2,
-.prose-farzin h3,
-.prose-farzin h4 {
-    color:
-        var(--color-text-primary);
-
-    font-weight:
-        900;
-
-    line-height:
-        1.5;
-}
-
-.prose-farzin p {
-    margin:
-        1rem 0;
-}
-
+.prose-farzin p { margin: 1rem 0; }
 .prose-farzin a {
-    color:
-        var(--color-brand-700);
-
-    font-weight:
-        700;
-
-    transition:
-        color var(--transition-fast);
+    color: var(--color-brand-700);
+    font-weight: 700;
+    transition: color var(--transition-fast);
 }
+.prose-farzin a:hover { color: var(--color-accent-600); }
+.prose-farzin ul, .prose-farzin ol { margin: 1rem 0; padding-right: 1.5rem; }
+.prose-farzin img { width: 100%; margin: 2rem 0; border-radius: var(--radius-lg); }
 
-.prose-farzin a:hover {
-    color:
-        var(--color-accent-600);
-}
-
-.prose-farzin ul,
-.prose-farzin ol {
-    margin:
-        1rem 0;
-
-    padding-right:
-        1.5rem;
-}
-
-.prose-farzin img {
-    width:
-        100%;
-
-    margin:
-        2rem 0;
-
-    border-radius:
-        var(--radius-lg);
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Utilities
-|--------------------------------------------------------------------------
-*/
-
-.text-balance {
-    text-wrap:
-        balance;
-}
-
-.text-pretty {
-    text-wrap:
-        pretty;
-}
-
-.overflow-wrap-anywhere {
-    overflow-wrap:
-        anywhere;
-}
-
-.no-scrollbar {
-    -ms-overflow-style:
-        none;
-
-    scrollbar-width:
-        none;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-    display:
-        none;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Motion
-|--------------------------------------------------------------------------
-*/
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+.overflow-wrap-anywhere { overflow-wrap: anywhere; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 @keyframes farzin-fade-up {
-
-    from {
-        opacity:
-            0;
-
-        transform:
-            translateY(12px);
-    }
-
-    to {
-        opacity:
-            1;
-
-        transform:
-            translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes farzin-fade-in {
-
-    from {
-        opacity:
-            0;
-    }
-
-    to {
-        opacity:
-            1;
-    }
-}
-
-@keyframes farzin-pulse-soft {
-
-    0%,
-    100% {
-        opacity:
-            0.55;
-    }
-
-    50% {
-        opacity:
-            1;
-    }
-}
-
-.farzin-fade-up {
-    animation:
-        farzin-fade-up
-        0.55s
-        cubic-bezier(0.22, 1, 0.36, 1)
-        both;
-}
-
-.farzin-fade-in {
-    animation:
-        farzin-fade-in
-        0.4s
-        ease
-        both;
-}
-
-.farzin-pulse-soft {
-    animation:
-        farzin-pulse-soft
-        2.2s
-        ease-in-out
-        infinite;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Reduced Motion
-|--------------------------------------------------------------------------
-*/
+@keyframes farzin-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.farzin-fade-up { animation: farzin-fade-up .38s cubic-bezier(.22,.75,.26,1) both; }
+.farzin-fade-in { animation: farzin-fade-in .3s ease both; }
 
 @media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior:
-            auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration:
-            0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            0.01ms !important;
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
     }
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| Mobile Polish
-|--------------------------------------------------------------------------
-*/
-
 @media (max-width: 767px) {
-
-    body {
-        overflow-x:
-            hidden;
-    }
-
-    textarea {
-        min-height:
-            110px;
-    }
+    body { overflow-x: hidden; }
+    textarea { min-height: 110px; }
 }
 
-
-/*
-|--------------------------------------------------------------------------
-| Shared Media Picker
-|--------------------------------------------------------------------------
-*/
-
-.media-picker__preview-grid,
-[data-media-preview] {
+/* Shared media picker — admin tooling remains available and functional. */
+.media-picker__preview-grid, [data-media-preview] {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin-top: 0.9rem;
+    gap: .75rem;
+    margin-top: .9rem;
 }
-
 .media-picker__item {
     overflow: hidden;
     border: 1px solid var(--color-border);
-    border-radius: 0.9rem;
+    border-radius: .9rem;
     background: var(--color-neutral-50);
 }
-
-.media-picker__preview {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    background: var(--color-neutral-100);
-}
-
-.media-picker__meta {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.55rem;
-}
-
+.media-picker__preview { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--color-neutral-100); }
+.media-picker__meta { display: flex; align-items: center; gap: .35rem; padding: .55rem; }
 .media-picker__meta span {
     min-width: 0;
     flex: 1;
     overflow: hidden;
     color: var(--color-text-muted);
-    font-size: 0.62rem;
+    font-size: .62rem;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 .media-picker__feedback {
     margin-top: .65rem;
     border: 1px solid var(--color-border);
@@ -1312,169 +457,75 @@ input[type="radio"] {
     font-size: .7rem;
     line-height: 1.75;
 }
-
-.media-picker__feedback--error {
-    border-color: var(--color-danger-100);
-    background: var(--color-danger-50);
-    color: var(--color-danger-700);
-}
-
-.media-picker__crop,
-.media-picker__remove {
+.media-picker__feedback--error { border-color: var(--color-danger-100); background: var(--color-danger-50); color: var(--color-danger-700); }
+.media-picker__crop, .media-picker__remove {
     min-height: 1.9rem;
     border: 1px solid var(--color-border);
-    border-radius: 0.55rem;
-    padding-inline: 0.55rem;
+    border-radius: .55rem;
+    padding-inline: .55rem;
     background: var(--color-surface);
     color: var(--color-text-secondary);
-    font-size: 0.6rem;
+    font-size: .6rem;
     font-weight: 800;
 }
-
-.media-picker__crop:hover {
-    border-color: var(--color-brand-300);
-    color: var(--color-brand-900);
-}
-
-.media-picker__remove:hover {
-    border-color: var(--color-danger-100);
-    background: var(--color-danger-50);
-    color: var(--color-danger-700);
-}
-
-.media-cropper {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: grid;
-    place-items: center;
-    padding: 1rem;
-}
-
-.media-cropper__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgb(3 6 12 / 0.72);
-    backdrop-filter: blur(10px);
-}
-
+.media-picker__crop:hover { border-color: var(--color-brand-300); color: var(--color-brand-900); }
+.media-picker__remove:hover { border-color: var(--color-danger-100); background: var(--color-danger-50); color: var(--color-danger-700); }
+.media-cropper { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 1rem; }
+.media-cropper__backdrop { position: absolute; inset: 0; background: rgb(3 6 12 / .72); backdrop-filter: blur(10px); }
 .media-cropper__dialog {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 46rem);
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    border-radius: 1.25rem;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-xl);
+    position: relative; z-index: 1; width: min(100%, 46rem); overflow: hidden;
+    border: 1px solid var(--color-border); border-radius: 1.25rem; background: var(--color-surface); box-shadow: var(--shadow-xl);
 }
-
-.media-cropper__header,
-.media-cropper__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.15rem;
+.media-cropper__header, .media-cropper__actions {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem;
 }
-
-.media-cropper__header {
-    border-bottom: 1px solid var(--color-border);
-}
-
-.media-cropper__header div {
-    display: grid;
-    gap: 0.2rem;
-}
-
-.media-cropper__header strong {
-    color: var(--color-text-primary);
-    font-size: 0.85rem;
-}
-
-.media-cropper__header span {
-    color: var(--color-text-muted);
-    font-size: 0.68rem;
-}
-
+.media-cropper__header { border-bottom: 1px solid var(--color-border); }
+.media-cropper__header div { display: grid; gap: .2rem; }
+.media-cropper__header strong { color: var(--color-text-primary); font-size: .85rem; }
+.media-cropper__header span { color: var(--color-text-muted); font-size: .68rem; }
 .media-cropper__header button {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border: 1px solid var(--color-border);
-    border-radius: 0.6rem;
-    background: var(--color-surface);
-    color: var(--color-text-secondary);
-    font-size: 1.2rem;
+    display: grid; width: 2rem; height: 2rem; place-items: center;
+    border: 1px solid var(--color-border); border-radius: .6rem; background: var(--color-surface); color: var(--color-text-secondary); font-size: 1.2rem;
 }
-
-.media-cropper__stage {
-    display: grid;
-    place-items: center;
-    padding: 1rem;
-    background: #080b12;
-}
-
-.media-cropper__stage canvas {
-    width: min(100%, 34rem);
-    aspect-ratio: 1;
-    max-height: 62vh;
-    touch-action: none;
-    cursor: grab;
-}
-
-.media-cropper__stage canvas:active {
-    cursor: grabbing;
-}
-
-.media-cropper__controls {
-    padding: 0.9rem 1.15rem;
-}
-
-.media-cropper__controls label {
-    display: grid;
-    gap: 0.45rem;
-    color: var(--color-text-secondary);
-    font-size: 0.68rem;
-    font-weight: 800;
-}
-
-.media-cropper__controls input {
-    width: 100%;
-}
-
-.media-cropper__actions {
-    justify-content: flex-start;
-    border-top: 1px solid var(--color-border);
-}
-
-.media-cropper__actions button {
-    min-height: 2.6rem;
-    border-radius: 0.7rem;
-    padding-inline: 1rem;
-    font-size: 0.7rem;
-    font-weight: 800;
-}
-
-.media-cropper__actions [data-crop-cancel] {
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
-    color: var(--color-text-secondary);
-}
-
-.media-cropper__actions [data-crop-save] {
-    background: var(--color-brand-900);
-    color: #fff;
-}
+.media-cropper__stage { display: grid; place-items: center; padding: 1rem; background: #080b12; }
+.media-cropper__stage canvas { width: min(100%, 34rem); aspect-ratio: 1; max-height: 62vh; touch-action: none; cursor: grab; }
+.media-cropper__stage canvas:active { cursor: grabbing; }
+.media-cropper__controls { padding: .9rem 1.15rem; }
+.media-cropper__controls label { display: grid; gap: .45rem; color: var(--color-text-secondary); font-size: .68rem; font-weight: 800; }
+.media-cropper__controls input { width: 100%; }
+.media-cropper__actions { justify-content: flex-start; border-top: 1px solid var(--color-border); }
+.media-cropper__actions button { min-height: 2.6rem; border-radius: .7rem; padding-inline: 1rem; font-size: .7rem; font-weight: 800; }
+.media-cropper__actions [data-crop-cancel] { border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text-secondary); }
+.media-cropper__actions [data-crop-save] { background: var(--color-brand-900); color: #fff; }
 
 @media (max-width: 640px) {
-    .media-picker__preview-grid,
-    [data-media-preview] {
-        grid-template-columns: 1fr 1fr;
-    }
+    .media-picker__preview-grid, [data-media-preview] { grid-template-columns: 1fr 1fr; }
+    .media-cropper__dialog { border-radius: 1rem; }
+}
 
-    .media-cropper__dialog {
-        border-radius: 1rem;
-    }
+/*
+|--------------------------------------------------------------------------
+| Storefront palette polish
+|--------------------------------------------------------------------------
+| Kept here as the single source of truth; no duplicate stylesheet or tokens.
+|--------------------------------------------------------------------------
+*/
+body {
+    background-color: var(--color-neutral-50);
+}
+.storefront-shell,
+.shop-page,
+.customer-page {
+    color: var(--color-text-primary);
+}
+.storefront-shell .primary-action,
+.shop-page .primary-action,
+.customer-page .primary-action {
+    background: var(--color-accent-600);
+    color: #fff;
+}
+.storefront-shell .primary-action:hover,
+.shop-page .primary-action:hover,
+.customer-page .primary-action:hover {
+    background: var(--color-accent-700);
 }
