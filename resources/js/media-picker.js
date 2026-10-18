@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const cropRatio = Number.isFinite(parsedRatio) && parsedRatio >= 0.5 && parsedRatio <= 2.5
             ? parsedRatio
             : 1;
+        const cropRatioLabel = Math.abs(cropRatio - 1.6) < 0.01
+            ? "16:10"
+            : cropRatio === 1
+                ? "1:1"
+                : `${Math.round(cropRatio * 100) / 100}:1`;
         const maxFilesValue = Number.parseInt(root.dataset.mediaMaxFiles || (input.multiple ? "10" : "1"), 10);
         const maxFiles = Number.isFinite(maxFilesValue) && maxFilesValue > 0 ? maxFilesValue : 1;
         const maxBytesValue = Number.parseInt(root.dataset.mediaMaxSize || String(5 * 1024 * 1024), 10);
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="media-cropper__header">
                         <div>
                             <strong>برش تصویر</strong>
-                            <span>قاب خروجی ${Math.round(cropRatio * 100) / 100}:1 است؛ تصویر را جابه‌جا و بزرگ‌نمایی کن.</span>
+                            <span>قاب خروجی ${cropRatioLabel} است؛ تصویر را جابه‌جا و بزرگ‌نمایی کن.</span>
                         </div>
                         <button type="button" data-crop-close aria-label="بستن">×</button>
                     </div>
@@ -202,9 +207,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 draw();
             });
 
-            canvas.addEventListener("pointerup", () => {
+            const stopDragging = () => {
                 dragging = false;
-            });
+            };
+
+            canvas.addEventListener("pointerup", stopDragging);
+            canvas.addEventListener("pointercancel", stopDragging);
+            canvas.addEventListener("lostpointercapture", stopDragging);
 
             const imageUrl = URL.createObjectURL(file);
             image.src = imageUrl;
