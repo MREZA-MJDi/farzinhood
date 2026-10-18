@@ -178,7 +178,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased">
+<body class="min-h-screen bg-[#f7f5f0] text-gray-900 antialiased fz-public-shell">
 
 {{-- =========================================================
     Navbar
