@@ -160,3 +160,32 @@ document.addEventListener("DOMContentLoaded", () => {
     start();
 });
 
+
+/* Homepage reveal motion: progressive enhancement, never blocks content without JS. */
+const initFarzinHomeReveal = () => {
+    const home = document.querySelector(".farzin-home-hero");
+    if (!home || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+
+    const revealItems = document.querySelectorAll(
+        "[data-home-categories] a.group, [data-home-featured] .group.min-w-0, [data-home-latest] .group.min-w-0"
+    );
+    revealItems.forEach((item, index) => {
+        item.classList.add("farzin-reveal");
+        item.style.setProperty("--reveal-delay", `${(index % 4) * 65}ms`);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-revealed");
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12, rootMargin: "0px 0px -32px 0px" });
+
+    revealItems.forEach((item) => observer.observe(item));
+};
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFarzinHomeReveal, { once: true });
+} else {
+    initFarzinHomeReveal();
+}
