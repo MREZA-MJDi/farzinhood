@@ -363,3 +363,7 @@
 @media (prefers-reduced-motion: reduce) {
  [data-home-categories] a.group, [data-home-featured] .group.min-w-0 img, [data-home-latest] .group.min-w-0 img { transition:none !important; }
 }
+
+.farzin-reveal { opacity:0; transform:translateY(16px); transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1); transition-delay:var(--reveal-delay,0ms); }
+.farzin-reveal.is-revealed { opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion:reduce) { .farzin-reveal { opacity:1; transform:none; transition:none; } }
