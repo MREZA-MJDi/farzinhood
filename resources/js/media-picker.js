@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!input || !preview) return;
 
         let files = [];
+        const parsedRatio = Number.parseFloat(root.dataset.mediaRatio || "1");
+        const cropRatio = Number.isFinite(parsedRatio) && parsedRatio >= 0.5 && parsedRatio <= 2.5
+            ? parsedRatio
+            : 1;
 
         const syncInput = () => {
             const transfer = new DataTransfer();
@@ -29,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const image = document.createElement("img");
                 image.alt = file.name;
                 image.className = "media-picker__preview";
+                image.style.aspectRatio = `${cropRatio} / 1`;
 
                 const meta = document.createElement("div");
                 meta.className = "media-picker__meta";
@@ -79,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="media-cropper__header">
                         <div>
                             <strong>برش تصویر</strong>
-                            <span>قسمت موردنظر را داخل قاب قرار بده.</span>
+                            <span>قاب خروجی ${Math.round(cropRatio * 100) / 100}:1 است؛ تصویر را جابه‌جا و بزرگ‌نمایی کن.</span>
                         </div>
                         <button type="button" data-crop-close aria-label="بستن">×</button>
                     </div>
@@ -113,32 +118,34 @@ document.addEventListener("DOMContentLoaded", () => {
             let dragging = false;
             let pointerX = 0;
             let pointerY = 0;
-            const size = 720;
+            const cropWidth = 720;
+            const cropHeight = Math.round(cropWidth / cropRatio);
 
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = cropWidth;
+            canvas.height = cropHeight;
+            canvas.style.aspectRatio = `${cropRatio} / 1`;
 
             const draw = () => {
                 if (!image.naturalWidth) return;
 
-                const cover = Math.max(size / image.naturalWidth, size / image.naturalHeight);
+                const cover = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
                 const scale = cover * zoom;
                 const width = image.naturalWidth * scale;
                 const height = image.naturalHeight * scale;
 
-                const maxX = Math.max(0, (width - size) / 2);
-                const maxY = Math.max(0, (height - size) / 2);
+                const maxX = Math.max(0, (width - canvas.width) / 2);
+                const maxY = Math.max(0, (height - canvas.height) / 2);
 
                 offsetX = Math.max(-maxX, Math.min(maxX, offsetX));
                 offsetY = Math.max(-maxY, Math.min(maxY, offsetY));
 
-                ctx.clearRect(0, 0, size, size);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = "#111";
-                ctx.fillRect(0, 0, size, size);
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(
                     image,
-                    (size - width) / 2 + offsetX,
-                    (size - height) / 2 + offsetY,
+                    (canvas.width - width) / 2 + offsetX,
+                    (canvas.height - height) / 2 + offsetY,
                     width,
                     height
                 );
@@ -161,8 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             canvas.addEventListener("pointermove", (event) => {
                 if (!dragging) return;
-                offsetX += event.clientX - pointerX;
-                offsetY += event.clientY - pointerY;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = rect.width > 0 ? canvas.width / rect.width : 1;
+                const scaleY = rect.height > 0 ? canvas.height / rect.height : 1;
+
+                offsetX += (event.clientX - pointerX) * scaleX;
+                offsetY += (event.clientY - pointerY) * scaleY;
                 pointerX = event.clientX;
                 pointerY = event.clientY;
                 draw();
