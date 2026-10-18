@@ -1,6 +1,7 @@
 <aside
+    id="admin-sidebar"
+    data-admin-sidebar
     class="fixed inset-y-0 right-0 z-50 flex w-[280px] -translate-x-full flex-col border-l border-[var(--color-border)] bg-white transition-transform duration-300 lg:translate-x-0"
-    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
 >
     {{-- Brand --}}
     <div
@@ -33,7 +34,7 @@
 
         <button
             type="button"
-            @click="sidebarOpen = false"
+            data-admin-sidebar-close
             class="mr-auto flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-text-muted)] hover:bg-[var(--color-neutral-50)] lg:hidden"
             aria-label="بستن منو"
         >
@@ -362,6 +363,28 @@
                     </svg>
 
                     خبرنامه
+                </a>
+
+                <a
+                    href="{{ route('admin.seo.index') }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
+                    {{ request()->routeIs('admin.seo.*')
+                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)]'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                >
+                    <svg
+                        class="h-5 w-5 shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                    >
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m16 16 4 4M8.5 11h5M11 8.5v5" />
+                    </svg>
+
+                    مدیریت SEO
                 </a>
 
                 <a

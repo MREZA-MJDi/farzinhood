@@ -43,13 +43,14 @@ class InventoryAdjustmentRequest extends FormRequest
         ];
     }
 
-    protected function passedValidation(): void
+    protected function prepareForValidation(): void
     {
-        $this->merge([
-            'quantity' => $this->integer('quantity'),
-            'note' => $this->filled('note')
-                ? trim($this->input('note'))
-                : null,
-        ]);
+        if ($this->has('note')) {
+            $this->merge([
+                'note' => $this->filled('note')
+                    ? trim((string) $this->input('note'))
+                    : null,
+            ]);
+        }
     }
 }

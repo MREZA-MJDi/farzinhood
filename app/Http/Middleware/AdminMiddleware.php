@@ -16,6 +16,10 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
+        if (! $request->user()->is_active) {
+            abort(403, 'Inactive accounts cannot access the admin workspace.');
+        }
+
         if (! $request->user()->isAdmin()) {
             abort(403, 'Unauthorized.');
         }

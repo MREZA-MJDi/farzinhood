@@ -17,11 +17,16 @@ class BlogCategory extends Model
         'image',
         'is_active',
         'sort_order',
+        'meta_title',
+        'meta_description',
+        'canonical_url',
+        'noindex',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'noindex' => 'boolean',
     ];
 
     /*

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
+use App\Http\Controllers\Admin\SeoController as AdminSeoController;
 
 use App\Http\Controllers\Auth\AuthController;
 
@@ -32,6 +33,8 @@ use App\Http\Controllers\Customer\ShopController;
 use App\Http\Controllers\Customer\WishlistController;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SitemapController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +47,16 @@ use Illuminate\Support\Facades\Route;
 | Pages in this section are accessible without authentication.
 |
 */
+
+
+/*
+|--------------------------------------------------------------------------
+| SEO crawl endpoints
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/robots.txt', [RobotsController::class, 'show'])->name('robots');
 
 
 /*
@@ -291,6 +304,9 @@ Route::prefix('customer')
 
         Route::post('/addresses', [AddressController::class, 'store'])
             ->name('addresses.store');
+
+        Route::get('/addresses/{address}/edit', [AddressController::class, 'edit'])
+            ->name('addresses.edit');
 
         Route::put('/addresses/{address}', [AddressController::class, 'update'])
             ->name('addresses.update');
@@ -542,6 +558,16 @@ Route::prefix('admin')
             '/newsletter/{newsletterSubscriber}',
             [AdminNewsletterController::class, 'destroy']
         )->name('newsletter.destroy');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEO audit
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/seo', [AdminSeoController::class, 'index'])
+            ->name('seo.index');
 
 
         /*

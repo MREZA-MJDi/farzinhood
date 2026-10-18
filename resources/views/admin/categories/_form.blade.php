@@ -140,7 +140,7 @@
             </div>
         @endif
 
-        <div data-media-picker>
+        <div data-media-picker data-media-ratio="1" data-media-max-files="1" data-media-max-size="5242880">
         <label for="image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -149,12 +149,12 @@
         <input type="file"
                id="image"
                name="image"
+               accept="image/jpeg,image/png,image/webp"
                data-media-input
-               accept=".jpg,.jpeg,.png,.webp"
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-            فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت
+            فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت. قاب برش دسته‌بندی: مربع ۱:۱.
         </p>
 
             <div data-media-preview aria-live="polite"></div>
@@ -277,6 +277,13 @@
         </div>
     </div>
 
+
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $category?->name ? $category->name . ' | فرزین' : 'عنوان دسته‌بندی | فرزین',
+        'fallbackDescription' => $category?->description ?: ($category?->name ? 'محصولات ' . $category->name . ' در فرزین.' : 'توضیحات دسته‌بندی'),
+        'fallbackUrl' => $category?->exists ? route('categories.show', $category) : '',
+        'fallbackNoindex' => $category?->noindex ?? false,
+    ])
 
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">

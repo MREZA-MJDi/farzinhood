@@ -181,6 +181,16 @@
             </div>
 
 
+            @include('admin.partials.seo-preview', [
+                'fallbackTitle' => (old('site_name', $settings['site_name'] ?? 'فرزین') ?: 'فرزین') . ' | فروشگاه آنلاین',
+                'fallbackDescription' => old('site_description', $settings['site_description'] ?? '') ?: 'فرزین | فروشگاه آنلاین محصولات با کیفیت',
+                'fallbackUrl' => url('/'),
+                'titleFieldName' => 'default_meta_title',
+                'descriptionFieldName' => 'default_meta_description',
+                'canonicalFieldName' => '',
+                'noindexFieldName' => '',
+            ])
+
             {{-- Contact --}}
             <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
 

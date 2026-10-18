@@ -16,6 +16,10 @@ class CustomerMiddleware
             return redirect()->route('login');
         }
 
+        if (! $request->user()->is_active) {
+            abort(403, 'Inactive accounts cannot access the customer workspace.');
+        }
+
         if (! $request->user()->isCustomer()) {
             abort(403, 'Unauthorized.');
         }

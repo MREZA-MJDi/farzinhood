@@ -49,6 +49,140 @@
                                                     <button type="submit" class="grid h-8 w-8 place-items-center rounded-lg border border-[var(--color-border)] text-[10px] text-[var(--color-danger-ink)] transition hover:bg-[var(--color-danger-surface)]" aria-label="حذف">×</button>
                                                 </form>
                                             </div>
+<<<<<<< HEAD
+=======
+
+                                        @endif
+
+                                    </div>
+
+                                </div>
+
+
+                                {{-- Actions --}}
+                                <div class="flex shrink-0 items-center gap-1">
+
+                                    <a
+                                        href="{{ route('customer.addresses.edit', $address) }}"
+                                        class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                                        title="ویرایش"
+                                        aria-label="ویرایش"
+                                    >
+                                        <svg
+                                            class="h-4 w-4"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.7"
+                                        >
+                                            <path d="m4 16-.7 4.7L8 20l11.2-11.2a2.5 2.5 0 0 0-3.5-3.5L4.5 16.5"/>
+                                            <path d="m14.5 6.5 3 3"/>
+                                        </svg>
+                                    </a>
+
+                                    <form
+                                        action="{{ route('customer.addresses.destroy', $address) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('آیا از حذف این آدرس مطمئنی؟');"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-red-50 hover:text-red-600"
+                                            title="حذف"
+                                            aria-label="حذف"
+                                        >
+                                            <svg
+                                                class="h-4 w-4"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.7"
+                                            >
+                                                <path d="M3 6h18"/>
+                                                <path d="M8 6V4h8v2"/>
+                                                <path d="M19 6l-1 15H6L5 6"/>
+                                                <path d="M10 11v6M14 11v6"/>
+                                            </svg>
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+
+                            {{-- Address body --}}
+                            <div class="mt-6 space-y-4">
+
+                                <div>
+
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                        گیرنده
+                                    </div>
+
+                                    <div class="mt-1 text-sm font-bold text-gray-900">
+                                        {{ $address->full_name }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="grid gap-4 sm:grid-cols-2">
+
+                                    <div>
+
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                            تلفن
+                                        </div>
+
+                                        <div class="mt-1 text-sm font-bold text-gray-700">
+                                            {{ $address->phone }}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                            منطقه
+                                        </div>
+
+                                        <div class="mt-1 text-sm font-bold text-gray-700">
+                                            {{ $address->province }}
+                                            ،
+                                            {{ $address->city }}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div>
+
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                        آدرس
+                                    </div>
+
+                                    <div class="mt-1 text-sm leading-7 text-gray-600">
+                                        {{ $address->address }}
+                                    </div>
+
+                                </div>
+
+
+                                @if($address->postal_code)
+
+                                    <div>
+
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                            کد پستی
+>>>>>>> 291263950635f079b586396326c2fa52fde0a0b9
                                         </div>
 
                                         <div class="mt-3 space-y-1.5 text-[10px] leading-6 text-[var(--color-text-secondary)]">
@@ -96,6 +230,7 @@
                                 این آدرس پیش‌فرض باشد.
                             </label>
                         </div>
+<<<<<<< HEAD
                         <button type="submit" class="mt-3 min-h-11 w-full rounded-xl bg-[var(--color-accent-600)] px-4 text-xs font-black text-white transition hover:bg-[var(--color-accent-700)] sm:w-auto">ذخیره آدرس</button>
                     </form>
                 </section>
@@ -128,6 +263,39 @@
                     </details>
                 @endforeach
             </main>
+=======
+                        @enderror
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-end">
+
+                    <button
+                        type="reset"
+                        class="rounded-xl border border-gray-200 px-5 py-3.5 text-sm font-bold text-gray-600 transition hover:border-gray-300 hover:bg-gray-50"
+                    >
+                        پاک کردن
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition hover:-translate-y-0.5 hover:bg-[#321866]"
+                    >
+                        ذخیره آدرس
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+    </section>
+>>>>>>> 291263950635f079b586396326c2fa52fde0a0b9
 
             <aside class="lg:order-1">@include('partials.account-nav')</aside>
         </div>

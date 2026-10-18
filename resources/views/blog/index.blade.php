@@ -1,11 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'مجله Farzin | راهنما، مقایسه و نکات خرید')
+@php
+    $selectedCategory = $categories->firstWhere('slug', $category);
+    $blogPageTitle = $selectedCategory?->meta_title
+        ?: ($selectedCategory ? $selectedCategory->name . ' | مجله فرزین' : 'مجله Farzin | راهنما، مقایسه و نکات خرید');
+    $blogPageDescription = $selectedCategory?->meta_description
+        ?: ($selectedCategory?->description ?: 'مجله Farzin؛ راهنماهای خرید، مقایسه محصولات و مطالب کاربردی برای انتخاب بهتر.');
+    $blogCanonical = $selectedCategory?->canonical_url
+        ?: ($selectedCategory ? route('blog.index', ['category' => $selectedCategory->slug]) : route('blog.index'));
+    $blogRobots = ($search !== '' || ($category !== '' && ! $selectedCategory) || (bool) $selectedCategory?->noindex)
+        ? 'noindex, follow'
+        : 'index, follow';
+@endphp
 
-@section(
-    'meta_description',
-    'مجله Farzin؛ راهنماهای خرید، مقایسه محصولات و مطالب کاربردی برای انتخاب بهتر.'
-)
+@section('title', $blogPageTitle)
+@section('meta_description', $blogPageDescription)
+@section('canonical_url', $blogCanonical)
+@section('meta_robots', $blogRobots)
+@section('og_image', $selectedCategory?->image ? asset('storage/' . $selectedCategory->image) : asset('images/brand/logo.png'))
 
 @section('content')
 

@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\BlogCategoryRequest;
 use App\Models\BlogCategory;
 use App\Services\SeoService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -33,7 +34,7 @@ class BlogCategoryController extends Controller
             ->paginate(15);
 
         return view(
-            'admin.blog.categories.index',
+            'admin.blog-categories.index',
             compact('categories')
         );
     }
@@ -41,7 +42,7 @@ class BlogCategoryController extends Controller
     public function create(): View
     {
         return view(
-            'admin.blog.categories.create'
+            'admin.blog-categories.create'
         );
     }
 
@@ -50,39 +51,46 @@ class BlogCategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $data = $request->validated();
+        $seoData = $seoService->data($data);
+        unset(
+            $data['meta_title'],
+            $data['meta_description'],
+            $data['canonical_url'],
+            $data['noindex'],
+            $data['image']
+        );
 
         $image = $request->file('image');
+        $imagePath = $image?->store('blog/categories', 'public');
 
-        unset($data['image']);
-
-        if ($image) {
-            $data['image'] = $image->store(
-                'blog/categories',
-                'public'
-            );
+        if ($imagePath) {
+            $data['image'] = $imagePath;
         }
 
-        $category = BlogCategory::create($data);
+        try {
+            DB::transaction(function () use ($data, $seoData, $seoService): void {
+                $category = BlogCategory::create($data);
+                $seoService->apply($category, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($imagePath) {
+                Storage::disk('public')->delete($imagePath);
+            }
 
-        $seoService->apply(
-            $category,
-            $data
-        );
+            throw $exception;
+        }
 
         return redirect()
             ->route('admin.blog-categories.index')
-            ->with(
-                'success',
-                'Blog category created successfully.'
-            );
+            ->with('success', 'Blog category created successfully.');
     }
 
     public function edit(
         BlogCategory $blogCategory
     ): View {
         return view(
-            'admin.blog.categories.edit',
-            compact('blogCategory')
+            'admin.blog-categories.edit',
+            ['category' => $blogCategory]
         );
     }
 
@@ -92,60 +100,82 @@ class BlogCategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $data = $request->validated();
+        $seoData = $seoService->data($data);
+        unset(
+            $data['meta_title'],
+            $data['meta_description'],
+            $data['canonical_url'],
+            $data['noindex'],
+            $data['image']
+        );
 
         $image = $request->file('image');
+        $newImagePath = $image?->store('blog/categories', 'public');
+        $oldImagePath = $blogCategory->image;
 
-        unset($data['image']);
-
-        if ($image) {
-            if ($blogCategory->image) {
-                Storage::disk('public')
-                    ->delete($blogCategory->image);
-            }
-
-            $data['image'] = $image->store(
-                'blog/categories',
-                'public'
-            );
+        if ($newImagePath) {
+            $data['image'] = $newImagePath;
         }
 
-        $blogCategory->update($data);
+        try {
+            DB::transaction(function () use ($data, $seoData, $blogCategory, $seoService): void {
+                $lockedCategory = BlogCategory::query()
+                    ->whereKey($blogCategory->getKey())
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-        $seoService->apply(
-            $blogCategory,
-            $data
-        );
+                $lockedCategory->update($data);
+                $seoService->apply($lockedCategory, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($newImagePath) {
+                Storage::disk('public')->delete($newImagePath);
+            }
+
+            throw $exception;
+        }
+
+        if ($newImagePath && $oldImagePath && $oldImagePath !== $newImagePath) {
+            Storage::disk('public')->delete($oldImagePath);
+        }
 
         return redirect()
             ->route('admin.blog-categories.index')
-            ->with(
-                'success',
-                'Blog category updated successfully.'
-            );
+            ->with('success', 'Blog category updated successfully.');
     }
 
     public function destroy(
         BlogCategory $blogCategory
     ): RedirectResponse {
-        if ($blogCategory->posts()->exists()) {
+        [$deleted, $imagePath] = DB::transaction(function () use ($blogCategory): array {
+            $lockedCategory = BlogCategory::query()
+                ->whereKey($blogCategory->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($lockedCategory->posts()->exists()) {
+                return [false, null];
+            }
+
+            $imagePath = $lockedCategory->image;
+            $lockedCategory->delete();
+
+            return [true, $imagePath];
+        });
+
+        if (! $deleted) {
             return back()->with(
                 'error',
                 'This category contains posts and cannot be deleted.'
             );
         }
 
-        if ($blogCategory->image) {
-            Storage::disk('public')
-                ->delete($blogCategory->image);
+        if ($imagePath) {
+            Storage::disk('public')->delete($imagePath);
         }
-
-        $blogCategory->delete();
 
         return redirect()
             ->route('admin.blog-categories.index')
-            ->with(
-                'success',
-                'Blog category deleted successfully.'
-            );
+            ->with('success', 'Blog category deleted successfully.');
     }
 }

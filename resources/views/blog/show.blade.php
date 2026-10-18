@@ -8,6 +8,11 @@
         ?: ($post->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($post->content), 155))
 )
 
+@section('canonical_url', $post->canonical_url ?: url()->current())
+@section('meta_robots', $post->noindex ? 'noindex, follow' : 'index, follow')
+@section('og_type', 'article')
+@section('og_image', $post->featured_image ? asset('storage/' . $post->featured_image) : asset('images/brand/logo.png'))
+
 @section('content')
 
     <article>

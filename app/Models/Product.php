@@ -28,6 +28,10 @@ class Product extends Model
         'review_count',
         'is_active',
         'is_featured',
+        'meta_title',
+        'meta_description',
+        'canonical_url',
+        'noindex',
     ];
 
     protected $casts = [
@@ -40,6 +44,7 @@ class Product extends Model
         'review_count' => 'integer',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'noindex' => 'boolean',
     ];
 
     public function category(): BelongsTo

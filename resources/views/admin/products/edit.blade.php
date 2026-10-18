@@ -36,5 +36,7 @@
             ])
         </form>
 
+        @include('admin.products._images', ['product' => $product])
+
     </div>
 @endsection
