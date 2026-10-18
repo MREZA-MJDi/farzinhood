@@ -396,11 +396,11 @@ class AdminContentManagementReadinessTest extends TestCase
 
         $this->get(route('login'))
             ->assertOk()
-            ->assertSee('noindex, follow');
+            ->assertSee('noindex, nofollow');
 
         $this->get(route('register'))
             ->assertOk()
-            ->assertSee('noindex, follow');
+            ->assertSee('noindex,nofollow');
     }
 
 
