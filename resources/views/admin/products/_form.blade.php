@@ -346,7 +346,7 @@
             </p>
         </div>
 
-        <div data-media-picker data-media-ratio="1">
+        <div data-media-picker data-media-ratio="1" data-media-max-files="10" data-media-max-size="5242880">
             <label for="images"
                    class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
                 تصاویر جدید
@@ -355,6 +355,7 @@
             <input type="file"
                    id="images"
                    name="images[]"
+                   accept="image/jpeg,image/png,image/webp"
                    data-media-input
                    multiple
                    accept=".jpg,.jpeg,.png,.webp"
