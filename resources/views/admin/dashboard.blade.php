@@ -49,8 +49,20 @@
                 </p>
             </div>
 
-            <div class="rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--color-text-secondary)] shadow-sm">
-                {{ now()->locale('fa')->translatedFormat('l، j F Y') }}
+            <div class="flex flex-wrap items-center gap-3">
+                <a
+                    href="{{ route('shop.index') }}"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--color-text-primary)] shadow-sm transition hover:border-[var(--color-accent-600)] hover:text-[var(--color-accent-600)]"
+                >
+                    <span>مشاهده فروشگاه</span>
+                    <span aria-hidden="true">↗</span>
+                </a>
+
+                <div class="rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--color-text-secondary)] shadow-sm">
+                    {{ now()->locale('fa')->translatedFormat('l، j F Y') }}
+                </div>
             </div>
         </div>
 
