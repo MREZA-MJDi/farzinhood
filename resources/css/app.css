@@ -1478,3 +1478,116 @@ input[type="radio"] {
         border-radius: 1rem;
     }
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Farzin storefront + customer visual tokens (audit branch)
+|--------------------------------------------------------------------------
+| Intentionally scoped away from the admin dashboard. Layouts, route names,
+| model fields and submission handlers remain owned by Farzinhood.
+|--------------------------------------------------------------------------
+*/
+:root {
+    --color-brand-50: #f3f7f7;
+    --color-brand-100: #e6eeee;
+    --color-brand-200: #c9d8d9;
+    --color-brand-300: #a6bec0;
+    --color-brand-400: #77999d;
+    --color-brand-500: #52777b;
+    --color-brand-600: #3d6064;
+    --color-brand-700: #304c50;
+    --color-brand-800: #263c40;
+    --color-brand-900: #1b2a2d;
+    --color-brand-950: #101719;
+
+    --color-accent-50: #edfafa;
+    --color-accent-100: #d2f2ef;
+    --color-accent-200: #a8e5df;
+    --color-accent-300: #71d0c8;
+    --color-accent-400: #3eb7af;
+    --color-accent-500: #249e97;
+    --color-accent-600: #197f7b;
+    --color-accent-700: #176663;
+    --color-accent-800: #185251;
+    --color-accent-900: #174544;
+    --color-accent-950: #0b2929;
+
+    --color-neutral-50: #f7f8f8;
+    --color-neutral-100: #ecefef;
+    --color-neutral-200: #dce1e1;
+    --color-neutral-300: #c2caca;
+    --color-neutral-400: #98a3a4;
+    --color-neutral-500: #747f81;
+    --color-neutral-600: #596365;
+    --color-neutral-700: #414a4c;
+    --color-neutral-800: #2c3436;
+    --color-neutral-900: #1b2224;
+    --color-neutral-950: #101517;
+
+    --color-text-primary: #151c1e;
+    --color-text-secondary: #414a4c;
+    --color-text-muted: #667174;
+    --color-text-soft: #929c9e;
+    --color-surface: #fff;
+    --color-surface-soft: #fcfdfd;
+    --color-surface-muted: #f5f7f7;
+    --color-surface-dark: #101719;
+    --color-border: #e1e6e6;
+    --color-border-strong: #cbd3d3;
+
+    --shadow-xs: 0 1px 2px rgb(16 23 25 / .035);
+    --shadow-sm: 0 3px 12px rgb(16 23 25 / .045), 0 1px 3px rgb(16 23 25 / .025);
+    --shadow-md: 0 12px 32px rgb(16 23 25 / .075), 0 3px 10px rgb(16 23 25 / .035);
+    --shadow-lg: 0 24px 58px rgb(16 23 25 / .10), 0 8px 24px rgb(16 23 25 / .04);
+    --shadow-xl: 0 34px 84px rgb(16 23 25 / .13), 0 12px 30px rgb(16 23 25 / .055);
+
+    --farzin-ink: #151c1e;
+    --farzin-charcoal: #20282a;
+    --farzin-graphite: #414a4c;
+    --farzin-mist: #f5f7f7;
+    --farzin-teal: #197f7b;
+    --farzin-teal-soft: #d2f2ef;
+}
+
+::selection {
+    background: rgb(36 158 151 / .18);
+    color: var(--color-brand-950);
+}
+
+:focus-visible {
+    outline-color: var(--color-accent-600);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: var(--color-accent-600);
+}
+
+.farzin-gradient {
+    background:
+        radial-gradient(circle at 82% 12%, rgb(36 158 151 / .18), transparent 34%),
+        radial-gradient(circle at 18% 88%, rgb(65 74 76 / .20), transparent 38%),
+        linear-gradient(135deg, #101719 0%, #1b2a2d 58%, #293638 100%);
+}
+
+.farzin-hero::before {
+    background: rgb(36 158 151 / .16);
+}
+
+.farzin-accent { color: var(--color-accent-700); }
+.farzin-accent-bg { background: var(--color-accent-600); color: #fff; }
+.farzin-accent-bg:hover { background: var(--color-accent-700); }
+
+.farzin-btn-accent {
+    background: var(--color-accent-600);
+    color: #fff;
+    box-shadow: 0 8px 20px rgb(25 127 123 / .18);
+}
+.farzin-btn-accent:hover { background: var(--color-accent-700); }
+
+/* Customer/public pages get a unified base without imposing changes on admin UI. */
+body:not(:has(.admin-layout)):not(:has(.admin-dashboard)) {
+    background: var(--color-neutral-50);
+    color: var(--color-text-primary);
+}
