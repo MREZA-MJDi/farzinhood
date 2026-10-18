@@ -59,3 +59,15 @@
 .fz-product-card>div>a>div:last-child{background:#efebe4}
 .fz-product-card img{mix-blend-mode:normal}
 .fz-public-shell :focus-visible{outline:2px solid var(--fz-amber);outline-offset:3px}
+
+/* Latest-product ribbon keeps live catalog data visible in the hero. */
+.fz-home-hero__products{position:absolute;z-index:2;left:clamp(1.2rem,4.5vw,4.5rem);bottom:2.4rem;width:min(42%,35rem);display:flex;gap:.6rem;overflow-x:auto;padding:.25rem .2rem 1rem;direction:rtl;scrollbar-width:thin;scroll-snap-type:x mandatory}
+.fz-hero-product{flex:0 0 min(11rem,42%);min-width:0;display:flex;flex-direction:column;gap:.45rem;padding:.9rem .95rem;border:1px solid rgba(255,255,255,.18);background:rgba(30,27,22,.53);color:#fff;text-decoration:none;backdrop-filter:blur(14px);scroll-snap-align:start;transition:background .2s,border-color .2s}
+.fz-hero-product:hover{background:rgba(30,27,22,.78);border-color:rgba(231,198,163,.65)}
+.fz-hero-product__number{font-size:.58rem;color:var(--fz-amber-light);direction:ltr;text-align:right}
+.fz-hero-product__name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.74rem;font-weight:800}
+.fz-hero-product__price{font-size:.68rem;font-weight:800;color:#f5e9dc}
+.fz-hero-product__price small{font-size:.57rem;color:rgba(255,255,255,.56);font-weight:500}
+.fz-site-nav{position:sticky!important;top:0!important}
+.fz-public-shell main:has(.fz-home-hero),.fz-public-shell main:has(.fz-shop-hero){background:var(--fz-paper)}
+@media(max-width:700px){.fz-home-hero__products{left:1rem;right:1rem;bottom:1rem;width:auto;max-width:none;padding-bottom:.65rem}.fz-hero-product{flex-basis:10.5rem}.fz-home-hero__counter{display:none}}
