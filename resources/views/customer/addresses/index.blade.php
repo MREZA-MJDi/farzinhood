@@ -637,19 +637,6 @@
         </section>
 
 
-        {{-- =========================================================
-            EDIT ADDRESS MODALS
-        ========================================================== --}}
-        @foreach($addresses as $address)
-
-            <div
-                id="edit-address-{{ $address->id }}"
-                class="hidden"
-            >
-            </div>
-
-        @endforeach
-
     </section>
 
 @endsection
