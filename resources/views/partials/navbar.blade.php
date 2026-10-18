@@ -1,10 +1,10 @@
 <nav
     x-data="{ open: false }"
-    class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_1px_12px_rgb(16_23_34_/0.04)] backdrop-blur-xl"
+    class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_3px_18px_rgb(32_34_27_/0.035)] backdrop-blur-xl"
 >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-[88rem] px-3 sm:px-6 lg:px-8">
 
-        <div class="flex min-h-[76px] items-center justify-between gap-4 lg:gap-6">
+        <div class="flex min-h-[70px] items-center justify-between gap-3 sm:min-h-[76px] lg:gap-6">
 
             {{-- =========================================================
                 Logo
@@ -18,7 +18,7 @@
                 <img
                     src="{{ asset('images/brand/logo.png') }}"
                     alt="فرزین"
-                    class="h-11 w-auto object-contain transition duration-200 group-hover:opacity-90 sm:h-12"
+                    class="h-10 w-auto object-contain transition duration-200 group-hover:opacity-90 sm:h-12"
                 >
             </a>
 
@@ -99,9 +99,9 @@
                         type="search"
                         name="search"
                         value="{{ request('search') }}"
-                        placeholder="جستجوی محصول، برند یا دسته‌بندی..."
+                        placeholder="جستجو در محصولات..."
                         autocomplete="off"
-                        class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] py-3 pr-4 pl-12 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-brand-900)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-900)]/10"
+                        class="w-full rounded-2xl border border-[var(--color-border)] bg-[#f8f8f5] py-3 pr-4 pl-12 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:border-[var(--color-brand-500)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-600)]/10"
                     >
 
                     <button
