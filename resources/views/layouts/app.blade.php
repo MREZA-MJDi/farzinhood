@@ -43,7 +43,7 @@
 
     <meta
         name="theme-color"
-        content="#f7f7f3"
+        content="{{ request()->routeIs('admin.*') ? '#0d1b3d' : '#f7f7f3' }}"
     >
 
     <meta
@@ -140,7 +140,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased {{ request()->routeIs('home', 'shop.*', 'categories.*', 'products.*', 'cart.*', 'checkout.*', 'customer.*', 'login', 'register', 'blog.*') ? 'farzin-storefront' : '' }}">
+<body class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased {{ request()->routeIs('home', 'shop.*', 'categories.*', 'products.*', 'cart.*', 'checkout.*', 'customer.*', 'login', 'register', 'blog.*') ? 'farzin-storefront' : '' }}">
 
 {{-- =========================================================
     Navbar
