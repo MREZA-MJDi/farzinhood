@@ -13,15 +13,15 @@
         ========================================================== --}}
         <div class="mb-10">
 
-            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
+            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#817d45]">
                 Account Settings
             </div>
 
-            <h1 class="mt-3 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
+            <h1 class="mt-3 text-3xl font-black tracking-tight text-[#292b24] sm:text-4xl">
                 تنظیمات حساب
             </h1>
 
-            <p class="mt-2 max-w-2xl text-sm leading-7 text-gray-500">
+            <p class="mt-2 max-w-2xl text-sm leading-7 text-[#6f7168]">
                 اطلاعات حساب و تنظیمات شخصی خودت را مدیریت کن.
             </p>
 
@@ -35,11 +35,11 @@
             ====================================================== --}}
             <aside class="lg:sticky lg:top-28 lg:self-start">
 
-                <div class="rounded-[2rem] border border-gray-200 bg-white p-3">
+                <div class="rounded-[2rem] border border-[#e7e7df] bg-white p-3">
 
                     <a
                         href="{{ route('customer.dashboard') }}"
-                        class="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
+                        class="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-[#606258] transition hover:bg-[#f7f7f3] hover:text-[#686438]"
                     >
                         <span>⌂</span>
                         داشبورد
@@ -47,7 +47,7 @@
 
                     <a
                         href="{{ route('customer.orders.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-[#606258] transition hover:bg-[#f7f7f3] hover:text-[#686438]"
                     >
                         <span>▣</span>
                         سفارش‌ها
@@ -55,7 +55,7 @@
 
                     <a
                         href="{{ route('customer.wishlist.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-[#606258] transition hover:bg-[#f7f7f3] hover:text-[#686438]"
                     >
                         <span>♡</span>
                         علاقه‌مندی‌ها
@@ -63,17 +63,17 @@
 
                     <a
                         href="{{ route('customer.addresses.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-[#606258] transition hover:bg-[#f7f7f3] hover:text-[#686438]"
                     >
                         <span>⌖</span>
                         آدرس‌ها
                     </a>
 
-                    <div class="mt-2 border-t border-gray-100 pt-2">
+                    <div class="mt-2 border-t border-[#efefe9] pt-2">
 
                         <a
                             href="{{ route('customer.settings.index') }}"
-                            class="flex items-center gap-3 rounded-2xl bg-[#f3edfb] px-4 py-3.5 text-sm font-black text-[#3f207e]"
+                            class="flex items-center gap-3 rounded-2xl bg-[#f0f0e7] px-4 py-3.5 text-sm font-black text-[#686438]"
                         >
                             <span>⚙</span>
                             تنظیمات
@@ -95,22 +95,22 @@
                 {{-- =================================================
                     PROFILE
                 ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                    <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
                         <div class="flex items-center gap-4">
 
-                            <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#f3edfb] text-lg font-black text-[#3f207e]">
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#f0f0e7] text-lg font-black text-[#686438]">
                                 {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                             </div>
 
                             <div>
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                                     Profile
                                 </div>
 
-                                <h2 class="mt-1 text-xl font-black text-gray-950">
+                                <h2 class="mt-1 text-xl font-black text-[#292b24]">
                                     اطلاعات شخصی
                                 </h2>
                             </div>
@@ -135,7 +135,7 @@
 
                                 <label
                                     for="name"
-                                    class="text-xs font-bold text-gray-700"
+                                    class="text-xs font-bold text-[#515349]"
                                 >
                                     نام و نام خانوادگی
                                 </label>
@@ -147,7 +147,7 @@
                                     value="{{ old('name', auth()->user()->name) }}"
                                     maxlength="255"
                                     required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                                    class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                                 >
 
                                 @error('name')
@@ -164,7 +164,7 @@
 
                                 <label
                                     for="email"
-                                    class="text-xs font-bold text-gray-700"
+                                    class="text-xs font-bold text-[#515349]"
                                 >
                                     ایمیل
                                 </label>
@@ -176,7 +176,7 @@
                                     value="{{ old('email', auth()->user()->email) }}"
                                     maxlength="255"
                                     required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                                    class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                                 >
 
                                 @error('email')
@@ -193,14 +193,14 @@
 
                                 <label
                                     for="role"
-                                    class="text-xs font-bold text-gray-700"
+                                    class="text-xs font-bold text-[#515349]"
                                 >
                                     نوع حساب
                                 </label>
 
                                 <div
                                     id="role"
-                                    class="mt-2 flex min-h-[52px] items-center rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-bold text-gray-600"
+                                    class="mt-2 flex min-h-[52px] items-center rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 text-sm font-bold text-[#606258]"
                                 >
                                     مشتری
                                 </div>
@@ -214,7 +214,7 @@
 
                             <button
                                 type="submit"
-                                class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
+                                class="rounded-xl bg-[#686438] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#686438]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#555333]"
                             >
                                 ذخیره تغییرات
                             </button>
@@ -229,19 +229,19 @@
                 {{-- =================================================
                     PASSWORD
                 ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                    <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                             Security
                         </div>
 
-                        <h2 class="mt-2 text-xl font-black text-gray-950">
+                        <h2 class="mt-2 text-xl font-black text-[#292b24]">
                             امنیت حساب
                         </h2>
 
-                        <p class="mt-1 text-xs leading-6 text-gray-400">
+                        <p class="mt-1 text-xs leading-6 text-[#929489]">
                             برای امنیت بیشتر، رمز عبور قوی انتخاب کن.
                         </p>
 
@@ -280,7 +280,7 @@
 
                                 <a
                                     href="{{ route('password.request') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#7b20df] hover:bg-[#f8f4fc] hover:text-[#3f207e]"
+                                    class="inline-flex items-center gap-2 rounded-xl border border-[#e7e7df] px-5 py-3.5 text-xs font-bold text-[#515349] transition hover:border-[#817d45] hover:bg-[#f7f7f3] hover:text-[#686438]"
                                 >
                                     بازیابی / تغییر رمز عبور
                                     <span>←</span>
@@ -298,15 +298,15 @@
                 {{-- =================================================
                     ACCOUNT STATUS
                 ================================================== --}}
-                <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+                <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                    <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+                    <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                             Account Status
                         </div>
 
-                        <h2 class="mt-2 text-xl font-black text-gray-950">
+                        <h2 class="mt-2 text-xl font-black text-[#292b24]">
                             وضعیت حساب
                         </h2>
 
@@ -325,11 +325,11 @@
 
                                 <div>
 
-                                    <div class="text-sm font-black text-gray-900">
+                                    <div class="text-sm font-black text-[#292b24]">
                                         حساب فعال است
                                     </div>
 
-                                    <div class="mt-1 text-xs text-gray-400">
+                                    <div class="mt-1 text-xs text-[#929489]">
                                         امکان خرید و مدیریت سفارش‌ها فعال است.
                                     </div>
 
