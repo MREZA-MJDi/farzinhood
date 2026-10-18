@@ -399,6 +399,7 @@
 
                 <div
                     class="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3.5 text-sm text-emerald-800 shadow-sm"
+                    data-dismissible-alert
                     role="status"
                 >
 
@@ -417,9 +418,13 @@
                         </svg>
                     </div>
 
-                    <div class="pt-1 font-bold">
+                    <div class="min-w-0 flex-1 pt-1 font-bold">
                         {{ session('success') }}
                     </div>
+
+                    <button type="button" data-alert-dismiss class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-emerald-700 transition hover:bg-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700" aria-label="بستن پیام موفقیت">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg>
+                    </button>
 
                 </div>
 
@@ -434,6 +439,7 @@
 
                 <div
                     class="mb-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3.5 text-sm text-red-800 shadow-sm"
+                    data-dismissible-alert
                     role="alert"
                 >
 
@@ -454,9 +460,13 @@
                         </svg>
                     </div>
 
-                    <div class="pt-1 font-bold">
+                    <div class="min-w-0 flex-1 pt-1 font-bold">
                         {{ session('error') }}
                     </div>
+
+                    <button type="button" data-alert-dismiss class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-700 transition hover:bg-red-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700" aria-label="بستن پیام خطا">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg>
+                    </button>
 
                 </div>
 
@@ -468,72 +478,43 @@
             ================================================== --}}
 
             @if($errors->any())
-
-                <div
-                    class="mb-6 overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm"
+                <section
+                    id="validation-summary"
+                    data-validation-summary
+                    tabindex="-1"
+                    aria-labelledby="validation-error-heading"
+                    class="mb-6 overflow-hidden rounded-2xl border border-red-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2"
                     role="alert"
                 >
-
-                    <div
-                        class="flex items-center gap-3 border-b border-red-100 bg-red-50 px-4 py-3.5"
-                    >
-
-                        <div
-                            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-700"
-                        >
-                            <svg
-                                class="h-4 w-4"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                aria-hidden="true"
-                            >
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M12 8v5" />
-                                <path d="M12 16h.01" />
-                            </svg>
+                    <div class="flex items-center gap-3 border-b border-red-100 bg-red-50 px-4 py-3.5">
+                        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-700" aria-hidden="true">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><path d="M12 16h.01" /></svg>
                         </div>
-
                         <div>
-                            <div class="text-sm font-black text-red-800">
-                                خطا در اطلاعات واردشده
-                            </div>
-
-                            <div class="mt-0.5 text-xs text-red-600">
-                                لطفاً موارد زیر را بررسی و اصلاح کنید.
-                            </div>
+                            <h2 id="validation-error-heading" class="text-sm font-black text-red-800">خطا در اطلاعات واردشده</h2>
+                            <p class="mt-0.5 text-xs text-red-600">برای رفتن به فیلد مربوط، روی هر خطا کلیک کنید.</p>
                         </div>
-
                     </div>
-
 
                     <div class="px-4 py-4">
-
                         <ul class="space-y-2">
-
-                            @foreach($errors->all() as $error)
-
-                                <li
-                                    class="flex items-start gap-2 text-xs font-semibold leading-6 text-red-700"
-                                >
-                                    <span
-                                        class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500"
-                                    ></span>
-
-                                    <span>
-                                        {{ $error }}
-                                    </span>
-                                </li>
-
+                            @foreach($errors->getMessages() as $field => $messages)
+                                @php($fieldId = \Illuminate\Support\Str::before($field, '.'))
+                                @foreach($messages as $error)
+                                    <li class="flex items-start gap-2 text-xs font-semibold leading-6 text-red-700">
+                                        <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
+                                        <a
+                                            href="#{{ $fieldId }}"
+                                            data-validation-error-link
+                                            data-validation-target="{{ $fieldId }}"
+                                            class="underline decoration-dotted underline-offset-4 hover:text-red-900 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700"
+                                        >{{ $error }} <span class="sr-only">— رفتن به فیلد مربوط</span></a>
+                                    </li>
+                                @endforeach
                             @endforeach
-
                         </ul>
-
                     </div>
-
-                </div>
-
+                </section>
             @endif
 
 
