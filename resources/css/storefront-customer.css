@@ -1,0 +1,80 @@
+/*
+ * Farzinhood — storefront and customer account polish.
+ * Scoped to public shopping flows and customer-owned pages; admin is intentionally untouched.
+ */
+:root {
+  --farzin-paper: #f7f7f3;
+  --farzin-surface: #fff;
+  --farzin-ink: #292b24;
+  --farzin-muted: #6f7168;
+  --farzin-line: #e7e7df;
+  --farzin-olive: #817d45;
+  --farzin-olive-dark: #686438;
+  --farzin-radius: 1.15rem;
+}
+body { background: var(--farzin-paper); color: var(--farzin-ink); }
+.shop-page__catalog-shell,
+.shop-page__hero-shell { max-width: 86rem; }
+.shop-category-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.6rem; padding: .55rem 1rem; border: 1px solid var(--farzin-line);
+  border-radius: 999px; background: #fff; color: var(--farzin-muted);
+  font-size: .78rem; font-weight: 800; transition: .18s ease;
+}
+.shop-category-chip:hover,
+.shop-category-chip.is-active { border-color: var(--farzin-olive); background: #f0f0e7; color: var(--farzin-olive-dark); }
+.shop-category-rail { display:flex; gap:.55rem; flex-wrap:wrap; margin-top:1.5rem; }
+.shop-filter-panel form,
+.shop-page__catalog-shell form:not(.shop-results-toolbar__sort form),
+.shop-results-toolbar {
+  border-color: var(--farzin-line) !important; border-radius: var(--farzin-radius) !important;
+  box-shadow: 0 4px 18px rgb(38 40 30 / .035);
+}
+.shop-results-toolbar {
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  padding:1rem 1.15rem; margin-bottom:1rem; background:#fff; border:1px solid var(--farzin-line);
+}
+.shop-results-toolbar > div:first-child { display:flex; flex-direction:column; gap:.25rem; }
+.shop-results-toolbar__eyebrow { color:#939589; font-size:.62rem; font-weight:900; letter-spacing:.14em; }
+.shop-results-toolbar strong { color:var(--farzin-ink); font-size:.9rem; }
+.shop-results-toolbar__sort { display:flex; align-items:center; gap:.6rem; color:var(--farzin-muted); font-size:.75rem; }
+.shop-results-toolbar select {
+  max-width: 11rem; border:1px solid var(--farzin-line); border-radius:.75rem;
+  padding:.65rem .8rem; background:#fafaf7; color:var(--farzin-ink); font-size:.75rem;
+}
+.shop-product-grid { align-items:stretch; }
+[data-product-card] > div,
+.group.min-w-0 > div { border-color:var(--farzin-line); border-radius:1.15rem; box-shadow:0 2px 8px rgb(38 40 30 / .025); }
+[data-product-card] img,
+.group.min-w-0 img { mix-blend-mode:multiply; }
+.shop-filter-panel select,
+.shop-filter-panel input,
+.shop-page__catalog-shell input[type="search"] {
+  border-color:var(--farzin-line) !important; border-radius:.8rem !important;
+}
+.shop-filter-panel button[type="submit"],
+.shop-page__catalog-shell button[type="submit"] {
+  background:var(--farzin-olive) !important; border-radius:.8rem !important;
+}
+.shop-filter-panel button[type="submit"]:hover,
+.shop-page__catalog-shell button[type="submit"]:hover { background:var(--farzin-olive-dark) !important; }
+
+.customer-dashboard,
+.customer-account-page { color:var(--farzin-ink); }
+.customer-dashboard .admin-card,
+.customer-account-page .admin-card {
+  border-color:var(--farzin-line); border-radius:var(--farzin-radius); box-shadow:0 4px 18px rgb(38 40 30 / .035);
+}
+:where(input, select, textarea):focus-visible { outline:2px solid var(--farzin-olive); outline-offset:2px; }
+:where(a, button):focus-visible { outline:2px solid var(--farzin-olive); outline-offset:3px; }
+@media (max-width: 640px) {
+  .shop-page__catalog-shell { padding-inline:.9rem; }
+  .shop-results-toolbar { align-items:flex-start; flex-direction:column; }
+  .shop-results-toolbar__sort { width:100%; justify-content:space-between; }
+  .shop-results-toolbar select { max-width:none; flex:1; }
+  .shop-category-rail { flex-wrap:nowrap; overflow-x:auto; padding-bottom:.4rem; scrollbar-width:none; }
+  .shop-category-rail::-webkit-scrollbar { display:none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-category-chip { transition:none; }
+}
