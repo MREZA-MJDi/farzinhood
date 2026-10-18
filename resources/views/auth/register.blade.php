@@ -239,7 +239,7 @@
 
 
             {{-- Card --}}
-            <div class="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_20px_60px_rgba(13,27,61,0.08)] sm:p-8">
+            <div class="rounded-[2rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_20px_60px_rgba(41,43,36,0.07)] sm:p-8">
 
                 {{-- Errors --}}
                 @if($errors->any())
@@ -308,7 +308,7 @@
                             required
                             autofocus
                             placeholder="نام شما"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[var(--color-brand-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-100)] @error('name') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('name') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('name')
@@ -338,7 +338,7 @@
                             dir="ltr"
                             inputmode="email"
                             placeholder="you@example.com"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[var(--color-brand-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-100)] @error('email') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('email') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('email')
@@ -367,7 +367,7 @@
                             dir="ltr"
                             placeholder="••••••••"
                             minlength="8"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[var(--color-brand-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-100)] @error('password') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         <div class="mt-2 flex items-center justify-between gap-3">
@@ -402,7 +402,7 @@
                             dir="ltr"
                             placeholder="••••••••"
                             minlength="8"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[var(--color-brand-600)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-100)] @error('password_confirmation') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password_confirmation') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('password_confirmation')
@@ -447,7 +447,7 @@
                     {{-- Submit --}}
                     <button
                         type="submit"
-                        class="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-[rgba(226,31,47,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-100)] active:translate-y-0">
+                        class="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-[rgba(226,31,47,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#e5e6dc] active:translate-y-0">
 
                         <span>
                             ایجاد حساب کاربری
