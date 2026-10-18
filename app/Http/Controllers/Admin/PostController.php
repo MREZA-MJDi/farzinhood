@@ -58,7 +58,7 @@ class PostController extends Controller
             ]);
 
         return view(
-            'admin.blog.posts.create',
+            'admin.posts.create',
             compact('categories')
         );
     }
@@ -140,7 +140,7 @@ class PostController extends Controller
             ]);
 
         return view(
-            'admin.blog.posts.edit',
+            'admin.posts.edit',
             compact('post', 'categories')
         );
     }
