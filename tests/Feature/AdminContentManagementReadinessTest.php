@@ -558,4 +558,62 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertSee('&lt;script&gt;alert(&quot;seo&quot;)&lt;/script&gt;', false);
     }
 
+
+    public function test_dashboard_chart_ranges_return_real_sales_series_and_reject_invalid_ranges(): void
+    {
+        $admin = $this->admin('admin-dashboard-chart@example.com');
+
+        \App\Models\Order::query()->create([
+            'user_id' => $admin->id,
+            'order_number' => 'ORD-DASHBOARD-CHART-001',
+            'status' => 'delivered',
+            'payment_status' => 'paid',
+            'subtotal' => 123456,
+            'discount' => 0,
+            'shipping_cost' => 0,
+            'total' => 123456,
+            'shipping_full_name' => 'Test Customer',
+            'shipping_phone' => '09120000000',
+            'shipping_country' => 'Iran',
+            'shipping_province' => 'Tehran',
+            'shipping_city' => 'Tehran',
+            'shipping_postal_code' => '1234567890',
+            'shipping_address' => 'Test address',
+            'notes' => null,
+        ]);
+
+        $this->actingAs($admin);
+
+        $daily = $this->getJson(route('admin.dashboard.chart', ['range' => 'daily']))
+            ->assertOk()
+            ->assertJsonStructure(['labels', 'data'])
+            ->json();
+
+        $this->assertCount(30, $daily['labels']);
+        $this->assertCount(30, $daily['data']);
+        $this->assertSame(123456, $daily['data'][29]);
+
+        $monthly = $this->getJson(route('admin.dashboard.chart', ['range' => 'monthly']))
+            ->assertOk()
+            ->assertJsonStructure(['labels', 'data'])
+            ->json();
+
+        $this->assertCount(12, $monthly['labels']);
+        $this->assertCount(12, $monthly['data']);
+        $this->assertSame(123456, $monthly['data'][(int) now()->format('n') - 1]);
+
+        $yearly = $this->getJson(route('admin.dashboard.chart', ['range' => 'yearly']))
+            ->assertOk()
+            ->assertJsonStructure(['labels', 'data'])
+            ->json();
+
+        $this->assertCount(5, $yearly['labels']);
+        $this->assertCount(5, $yearly['data']);
+        $this->assertSame(123456, $yearly['data'][4]);
+
+        $this->getJson(route('admin.dashboard.chart', ['range' => 'weekly']))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('range');
+    }
+
 }
