@@ -18,7 +18,7 @@ class HomeHeroTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk()
-            ->assertSee('class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased farzin-storefront"', false)
+            ->assertSee('class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased farzin-storefront"', false)
             ->assertSee('class="farzin-home-hero" data-home-hero', false)
             ->assertSee('farzin-home-hero__visual', false)
             ->assertSee('data-home-trust-strip', false)
