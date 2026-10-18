@@ -322,3 +322,8 @@
     .farzin-home-hero__primary,
     .farzin-home-hero__nav { transition: none !important; }
 }
+
+.farzin-home-hero[data-reduced-motion="true"] .farzin-home-hero__slide:not(.is-active) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
