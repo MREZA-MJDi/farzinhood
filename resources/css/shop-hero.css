@@ -32,7 +32,7 @@
 .shop-hero__media {
     z-index: -3;
     background:
-        radial-gradient(circle at 70% 38%, rgb(226 31 47 / 0.24), transparent 24%),
+        radial-gradient(circle at 70% 38%, rgb(36 158 151 / 0.20), transparent 24%),
         linear-gradient(135deg, #03060c 0%, var(--color-brand-950) 55%, #02040a 100%);
 }
 
