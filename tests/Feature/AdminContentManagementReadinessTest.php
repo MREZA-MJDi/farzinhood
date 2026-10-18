@@ -402,4 +402,86 @@ class AdminContentManagementReadinessTest extends TestCase
         ]);
     }
 
+
+    public function test_unchecked_admin_form_booleans_are_saved_as_false(): void
+    {
+        $admin = $this->admin('admin-unchecked-booleans@example.com');
+
+        $category = Category::query()->create([
+            'name' => 'دسته وضعیت',
+            'slug' => 'category-checkbox-state',
+            'sort_order' => 1,
+            'is_active' => true,
+            'noindex' => true,
+        ]);
+
+        $product = Product::query()->create([
+            'category_id' => $category->id,
+            'name' => 'محصول وضعیت',
+            'slug' => 'product-checkbox-state',
+            'sku' => 'PRODUCT-CHECKBOX-001',
+            'price' => 10000,
+            'stock' => 2,
+            'is_active' => true,
+            'is_featured' => true,
+            'noindex' => true,
+        ]);
+
+        $blogCategory = BlogCategory::query()->create([
+            'name' => 'دسته وبلاگ وضعیت',
+            'slug' => 'blog-checkbox-state',
+            'sort_order' => 1,
+            'is_active' => true,
+            'noindex' => true,
+        ]);
+
+        $post = Post::query()->create([
+            'blog_category_id' => $blogCategory->id,
+            'author_id' => $admin->id,
+            'title' => 'مقاله وضعیت',
+            'slug' => 'post-checkbox-state',
+            'content' => 'محتوای تست',
+            'status' => 'draft',
+            'noindex' => true,
+        ]);
+
+        $this->actingAs($admin);
+
+        $this->put(route('admin.categories.update', $category), [
+            'name' => $category->name,
+            'slug' => $category->slug,
+        ])->assertRedirect(route('admin.categories.index'));
+
+        $this->put(route('admin.products.update', $product), [
+            'category_id' => $category->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'sku' => $product->sku,
+            'price' => $product->price,
+            'stock' => $product->stock,
+        ])->assertRedirect(route('admin.products.index'));
+
+        $this->put(route('admin.blog-categories.update', $blogCategory), [
+            'name' => $blogCategory->name,
+            'slug' => $blogCategory->slug,
+        ])->assertRedirect(route('admin.blog-categories.index'));
+
+        $this->put(route('admin.posts.update', $post), [
+            'blog_category_id' => $blogCategory->id,
+            'title' => $post->title,
+            'slug' => $post->slug,
+            'content' => $post->content,
+            'status' => 'draft',
+        ])->assertRedirect(route('admin.posts.index'));
+
+        $this->assertFalse($category->refresh()->is_active);
+        $this->assertFalse($category->noindex);
+        $this->assertFalse($product->refresh()->is_active);
+        $this->assertFalse($product->is_featured);
+        $this->assertFalse($product->noindex);
+        $this->assertFalse($blogCategory->refresh()->is_active);
+        $this->assertFalse($blogCategory->noindex);
+        $this->assertFalse($post->refresh()->noindex);
+    }
+
 }
