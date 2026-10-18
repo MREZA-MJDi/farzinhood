@@ -125,7 +125,7 @@
 
                     {{-- Main image --}}
                     <div
-                        class="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]"
+                        class="overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[0_2px_10px_rgb(35_38_28_/0.035)]"
                     >
 
                         <div class="relative aspect-[4/4.7] overflow-hidden bg-[var(--color-neutral-100)] sm:aspect-[4/4.35]">
@@ -371,7 +371,7 @@
                     ================================================== --}}
 
                     <div
-                        class="mt-8 rounded-[1.75rem] border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-xs)] sm:p-6"
+                        class="mt-8 rounded-[1.75rem] border border-[var(--color-border)] bg-white p-5 shadow-[0_2px_10px_rgb(35_38_28_/0.035)] sm:p-6"
                     >
 
                         <div class="flex flex-wrap items-end justify-between gap-5">
@@ -794,7 +794,7 @@
                     @forelse($product->reviews as $review)
 
                         <article
-                            class="rounded-[1.75rem] border border-[var(--color-border)] bg-white p-6 shadow-[var(--shadow-xs)]"
+                            class="rounded-[1.75rem] border border-[var(--color-border)] bg-white p-6 shadow-[0_2px_10px_rgb(35_38_28_/0.035)]"
                         >
 
                             <div class="flex items-start justify-between gap-4">
