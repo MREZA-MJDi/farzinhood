@@ -221,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sidebar.classList.add("-translate-x-full");
         sidebar.classList.remove("translate-x-0");
         backdrop.hidden = true;
+        backdrop.classList.add("hidden");
         document.body.classList.remove("overflow-hidden");
         openButton?.setAttribute("aria-expanded", "false");
     };
@@ -230,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sidebar.classList.remove("-translate-x-full");
         sidebar.classList.add("translate-x-0");
         backdrop.hidden = false;
+        backdrop.classList.remove("hidden");
         document.body.classList.add("overflow-hidden");
         openButton?.setAttribute("aria-expanded", "true");
     };
