@@ -136,6 +136,7 @@ class ProductRequest extends FormRequest
             'images' => [
                 'nullable',
                 'array',
+                'max:10',
             ],
 
             'images.*' => [
