@@ -8,12 +8,12 @@
 
         {{-- Hero --}}
         <section class="relative overflow-hidden border-b border-[#e6e0d7] bg-[#f4f1eb]">
-            <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#3f207e]/5 blur-3xl"></div>
-            <div class="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#7b20df]/5 blur-3xl"></div>
+            <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#686438]/5 blur-3xl"></div>
+            <div class="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#817d45]/5 blur-3xl"></div>
 
             <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
                 <div class="max-w-3xl">
-                    <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ddd4e8] bg-white px-4 py-2 text-sm font-medium text-[#3f207e] shadow-sm">
+                    <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ddd4e8] bg-white px-4 py-2 text-sm font-medium text-[#686438] shadow-sm">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z"/>
                         </svg>
@@ -190,7 +190,7 @@
                     <div class="rounded-[2rem] border border-[#e4ded6] bg-white p-6 shadow-[0_18px_55px_rgba(40,32,45,0.06)] sm:p-9">
 
                         <div>
-                        <span class="text-sm font-bold text-[#7b20df]">
+                        <span class="text-sm font-bold text-[#817d45]">
                             پیام شما
                         </span>
 
@@ -228,7 +228,7 @@
                                         maxlength="100"
                                         autocomplete="name"
                                         placeholder="مثلاً رضا محمدی"
-                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('name') border-red-400 @enderror"
+                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('name') border-red-400 @enderror"
                                     >
 
                                     @error('name')
@@ -255,7 +255,7 @@
                                         autocomplete="email"
                                         dir="ltr"
                                         placeholder="name@example.com"
-                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('email') border-red-400 @enderror"
+                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('email') border-red-400 @enderror"
                                     >
 
                                     @error('email')
@@ -286,7 +286,7 @@
                                         autocomplete="tel"
                                         dir="ltr"
                                         placeholder="0912 123 4567"
-                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('phone') border-red-400 @enderror"
+                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('phone') border-red-400 @enderror"
                                     >
 
                                     @error('phone')
@@ -307,7 +307,7 @@
                                         id="subject"
                                         name="subject"
                                         required
-                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('subject') border-red-400 @enderror"
+                                        class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('subject') border-red-400 @enderror"
                                     >
                                         <option value="">انتخاب موضوع</option>
                                         <option value="مشاوره خرید" @selected(old('subject') === 'مشاوره خرید')>
@@ -355,7 +355,7 @@
                                     value="{{ old('order_number') }}"
                                     maxlength="100"
                                     placeholder="در صورت پیگیری سفارش وارد کنید"
-                                    class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('order_number') border-red-400 @enderror"
+                                    class="block w-full rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('order_number') border-red-400 @enderror"
                                 >
 
                                 @error('order_number')
@@ -379,7 +379,7 @@
                                     required
                                     maxlength="3000"
                                     placeholder="پیام، سوال یا درخواست خود را برای ما بنویسید..."
-                                    class="block w-full resize-none rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm leading-7 text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10 @error('message') border-red-400 @enderror"
+                                    class="block w-full resize-none rounded-2xl border border-[#ddd8d1] bg-[#faf9f7] px-4 py-3.5 text-sm leading-7 text-[#17151b] outline-none transition placeholder:text-[#a8a2a8] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10 @error('message') border-red-400 @enderror"
                                 >{{ old('message') }}</textarea>
 
                                 @error('message')
@@ -398,7 +398,7 @@
 
                                 <button
                                     type="submit"
-                                    class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#3f207e] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/15 transition hover:-translate-y-0.5 hover:bg-[#321866] focus:outline-none focus:ring-4 focus:ring-[#3f207e]/15"
+                                    class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#686438] px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#686438]/15 transition hover:-translate-y-0.5 hover:bg-[#555333] focus:outline-none focus:ring-4 focus:ring-[#686438]/15"
                                 >
                                     ارسال پیام
 
@@ -422,7 +422,7 @@
             <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
 
                 <div class="mx-auto max-w-2xl text-center">
-                <span class="text-sm font-bold text-[#7b20df]">
+                <span class="text-sm font-bold text-[#817d45]">
                     قبل از تماس
                 </span>
 
@@ -441,7 +441,7 @@
                         href="{{ route('shop.index') }}"
                         class="group rounded-3xl border border-[#e4ded6] bg-[#faf9f7] p-6 transition hover:-translate-y-1 hover:border-[#d3c8df] hover:bg-white hover:shadow-lg"
                     >
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#3f207e]">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#686438]">
                             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="m3 9 9-6 9 6"/>
                                 <path d="M5 10v10h14V10"/>
@@ -457,7 +457,7 @@
                             محصولات، قیمت‌ها و مشخصات فنی را بررسی کنید.
                         </p>
 
-                        <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#3f207e]">
+                        <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#686438]">
                         رفتن به فروشگاه
                         <svg class="h-4 w-4 transition group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path d="M15 18 9 12l6-6"/>
@@ -469,7 +469,7 @@
                         href="{{ route('blog.index') }}"
                         class="group rounded-3xl border border-[#e4ded6] bg-[#faf9f7] p-6 transition hover:-translate-y-1 hover:border-[#d3c8df] hover:bg-white hover:shadow-lg"
                     >
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#3f207e]">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#686438]">
                             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Z"/>
                                 <path d="M8 8h8M8 12h8M8 16h5"/>
@@ -484,7 +484,7 @@
                             راهنمای خرید، نکات کاربردی و مطالب تخصصی را بخوانید.
                         </p>
 
-                        <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#3f207e]">
+                        <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#686438]">
                         مطالعه مطالب
                         <svg class="h-4 w-4 transition group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path d="M15 18 9 12l6-6"/>
@@ -497,7 +497,7 @@
                             href="{{ route('customer.orders.index') }}"
                             class="group rounded-3xl border border-[#e4ded6] bg-[#faf9f7] p-6 transition hover:-translate-y-1 hover:border-[#d3c8df] hover:bg-white hover:shadow-lg"
                         >
-                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#3f207e]">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#686438]">
                                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                     <path d="M6 4h12v16H6z"/>
                                     <path d="M9 8h6M9 12h6M9 16h4"/>
@@ -512,7 +512,7 @@
                                 وضعیت سفارش‌ها و جزئیات خریدهای خود را مشاهده کنید.
                             </p>
 
-                            <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#3f207e]">
+                            <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#686438]">
                             مشاهده سفارش‌ها
                             <svg class="h-4 w-4 transition group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="M15 18 9 12l6-6"/>
@@ -524,7 +524,7 @@
                             href="{{ route('login') }}"
                             class="group rounded-3xl border border-[#e4ded6] bg-[#faf9f7] p-6 transition hover:-translate-y-1 hover:border-[#d3c8df] hover:bg-white hover:shadow-lg"
                         >
-                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#3f207e]">
+                            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eee8f5] text-[#686438]">
                                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                     <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/>
                                     <path d="M4 21a8 8 0 0 1 16 0"/>
@@ -539,7 +539,7 @@
                                 وارد حساب خود شوید و به امکانات و سفارش‌های خود دسترسی داشته باشید.
                             </p>
 
-                            <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#3f207e]">
+                            <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#686438]">
                             ورود به حساب
                             <svg class="h-4 w-4 transition group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="M15 18 9 12l6-6"/>
