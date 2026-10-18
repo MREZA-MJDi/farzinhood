@@ -311,6 +311,13 @@
     </div>
 
 
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $category?->meta_title ?: ($category?->name ? $category->name . ' | مجله فرزین' : 'عنوان دسته‌بندی | مجله فرزین'),
+        'fallbackDescription' => $category?->meta_description ?: ($category?->description ?: 'راهنماها و مقاله‌های مجله فرزین.'),
+        'fallbackUrl' => $category?->exists ? route('blog.index', ['category' => $category->slug]) : '',
+        'fallbackNoindex' => $category?->noindex ?? false,
+    ])
+
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
 
