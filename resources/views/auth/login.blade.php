@@ -30,7 +30,7 @@
 
     <meta
         name="theme-color"
-        content="#0d1b3d"
+        content="#f7f7f3"
     >
 
     <link
@@ -50,7 +50,7 @@
     ])
 </head>
 
-<body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)] antialiased">
+<body class="min-h-screen bg-[#f7f7f3] text-[var(--color-text-primary)] antialiased">
 
 <div class="min-h-screen lg:grid lg:grid-cols-[0.9fr_1.1fr]">
 
@@ -58,11 +58,11 @@
         BRAND PANEL
     ========================================================== --}}
 
-    <div class="relative hidden overflow-hidden bg-[var(--color-brand-950)] lg:flex">
+    <div class="relative hidden overflow-hidden bg-[#303427] lg:flex">
 
         {{-- Decorative --}}
         <div
-            class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[var(--color-accent-600)]/15 blur-3xl"
+            class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#817d45]/15 blur-3xl"
         ></div>
 
         <div
@@ -95,7 +95,7 @@
             <div class="max-w-xl">
 
                 <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3.5 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-white/60">
-                    <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-600)]"></span>
+                    <span class="h-1.5 w-1.5 rounded-full bg-[#817d45]"></span>
                     FARZIN ACCOUNT
                 </div>
 
@@ -250,7 +250,7 @@
                 {{-- Card Header --}}
                 <div class="border-b border-[var(--color-border)] px-6 py-7 sm:px-8">
 
-                    <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--color-brand-900)]">
+                    <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[#f0f0e7] text-[#686438]">
                         <svg
                             class="h-5 w-5"
                             viewBox="0 0 24 24"
@@ -422,7 +422,7 @@
                                     autofocus
                                     dir="ltr"
                                     placeholder="you@example.com"
-                                    class="w-full rounded-2xl border bg-[var(--color-neutral-50)] py-3.5 pr-12 pl-4 text-left text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:bg-white focus:ring-4 @error('email') border-red-300 focus:border-red-500 focus:ring-red-500/10 @else border-[var(--color-border)] focus:border-[var(--color-brand-900)] focus:ring-[var(--color-brand-900)]/10 @enderror"
+                                    class="w-full rounded-2xl border bg-[#f7f7f3] py-3.5 pr-12 pl-4 text-left text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:bg-white focus:ring-4 @error('email') border-red-300 focus:border-red-500 focus:ring-red-500/10 @else border-[var(--color-border)] focus:border-[var(--color-brand-900)] focus:ring-[var(--color-brand-900)]/10 @enderror"
                                 >
 
                             </div>
@@ -482,7 +482,7 @@
                                     required
                                     dir="ltr"
                                     placeholder="••••••••"
-                                    class="w-full rounded-2xl border bg-[var(--color-neutral-50)] py-3.5 pr-12 pl-4 text-left text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:bg-white focus:ring-4 @error('password') border-red-300 focus:border-red-500 focus:ring-red-500/10 @else border-[var(--color-border)] focus:border-[var(--color-brand-900)] focus:ring-[var(--color-brand-900)]/10 @enderror"
+                                    class="w-full rounded-2xl border bg-[#f7f7f3] py-3.5 pr-12 pl-4 text-left text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-soft)] focus:bg-white focus:ring-4 @error('password') border-red-300 focus:border-red-500 focus:ring-red-500/10 @else border-[var(--color-border)] focus:border-[var(--color-brand-900)] focus:ring-[var(--color-brand-900)]/10 @enderror"
                                 >
 
                             </div>
@@ -524,7 +524,7 @@
                         {{-- Submit --}}
                         <button
                             type="submit"
-                            class="group flex min-h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[var(--color-accent-600)] px-5 py-4 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-600)]/15"
+                            class="group flex min-h-14 w-full items-center justify-center gap-3 rounded-2xl bg-[#817d45] px-5 py-4 text-sm font-black text-white shadow-lg shadow-[var(--color-accent-600)]/15 transition duration-200 hover:-translate-y-0.5 hover:bg-[#686438] focus:outline-none focus:ring-4 focus:ring-[var(--color-accent-600)]/15"
                         >
 
                             ورود به حساب
@@ -554,7 +554,7 @@
 
                         <a
                             href="{{ route('register') }}"
-                            class="mr-1 text-sm font-black text-[var(--color-accent-600)] transition hover:text-[var(--color-accent-700)]"
+                            class="mr-1 text-sm font-black text-[#817d45] transition hover:text-[#686438]"
                         >
                             ثبت‌نام کن
                         </a>
@@ -571,7 +571,7 @@
 
                 <a
                     href="{{ route('home') }}"
-                    class="inline-flex items-center gap-2 text-xs font-bold text-[var(--color-text-secondary)] transition hover:text-[var(--color-brand-900)]"
+                    class="inline-flex items-center gap-2 text-xs font-bold text-[var(--color-text-secondary)] transition hover:text-[#686438]"
                 >
 
                     <svg
