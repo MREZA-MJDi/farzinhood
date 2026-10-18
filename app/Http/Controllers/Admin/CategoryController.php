@@ -37,43 +37,37 @@ class CategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $validated = $request->validated();
-
         $image = $request->file('image');
-
         unset($validated['image']);
 
-        $category = DB::transaction(function () use (
-            $validated,
-            $image,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
+        $imagePath = $image?->store('categories', 'public');
 
-            $categoryData = $validated;
+        if ($imagePath) {
+            $validated['image'] = $imagePath;
+        }
 
-            unset(
-                $categoryData['meta_title'],
-                $categoryData['meta_description'],
-                $categoryData['canonical_url'],
-                $categoryData['noindex']
-            );
+        try {
+            DB::transaction(function () use ($validated, $seoService): void {
+                $seoData = $seoService->data($validated);
+                $categoryData = $validated;
 
-            if ($image) {
-                $categoryData['image'] = $image->store(
-                    'categories',
-                    'public'
+                unset(
+                    $categoryData['meta_title'],
+                    $categoryData['meta_description'],
+                    $categoryData['canonical_url'],
+                    $categoryData['noindex']
                 );
+
+                $category = Category::create($categoryData);
+                $seoService->apply($category, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($imagePath) {
+                Storage::disk('public')->delete($imagePath);
             }
 
-            $category = Category::create($categoryData);
-
-            $seoService->apply(
-                $category,
-                $seoData
-            );
-
-            return $category;
-        });
+            throw $exception;
+        }
 
         return redirect()
             ->route('admin.categories.index')
@@ -94,47 +88,47 @@ class CategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $validated = $request->validated();
-
         $image = $request->file('image');
-
         unset($validated['image']);
 
-        DB::transaction(function () use (
-            $validated,
-            $image,
-            $category,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
+        $newImagePath = $image?->store('categories', 'public');
+        $oldImagePath = $category->image;
 
-            $categoryData = $validated;
+        if ($newImagePath) {
+            $validated['image'] = $newImagePath;
+        }
 
-            unset(
-                $categoryData['meta_title'],
-                $categoryData['meta_description'],
-                $categoryData['canonical_url'],
-                $categoryData['noindex']
-            );
+        try {
+            DB::transaction(function () use ($validated, $category, $seoService): void {
+                $lockedCategory = Category::query()
+                    ->whereKey($category->getKey())
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            if ($image) {
-                if ($category->image) {
-                    Storage::disk('public')
-                        ->delete($category->image);
-                }
+                $seoData = $seoService->data($validated);
+                $categoryData = $validated;
 
-                $categoryData['image'] = $image->store(
-                    'categories',
-                    'public'
+                unset(
+                    $categoryData['meta_title'],
+                    $categoryData['meta_description'],
+                    $categoryData['canonical_url'],
+                    $categoryData['noindex']
                 );
+
+                $lockedCategory->update($categoryData);
+                $seoService->apply($lockedCategory, $seoData);
+            });
+        } catch (\Throwable $exception) {
+            if ($newImagePath) {
+                Storage::disk('public')->delete($newImagePath);
             }
 
-            $category->update($categoryData);
+            throw $exception;
+        }
 
-            $seoService->apply(
-                $category,
-                $seoData
-            );
-        });
+        if ($newImagePath && $oldImagePath && $oldImagePath !== $newImagePath) {
+            Storage::disk('public')->delete($oldImagePath);
+        }
 
         return redirect()
             ->route('admin.categories.index')
@@ -143,19 +137,32 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
-        if ($category->products()->exists()) {
+        [$deleted, $imagePath] = DB::transaction(function () use ($category): array {
+            $lockedCategory = Category::query()
+                ->whereKey($category->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($lockedCategory->products()->exists()) {
+                return [false, null];
+            }
+
+            $imagePath = $lockedCategory->image;
+            $lockedCategory->delete();
+
+            return [true, $imagePath];
+        });
+
+        if (! $deleted) {
             return back()->with(
                 'error',
                 'This category cannot be deleted because it contains products.'
             );
         }
 
-        if ($category->image) {
-            Storage::disk('public')
-                ->delete($category->image);
+        if ($imagePath) {
+            Storage::disk('public')->delete($imagePath);
         }
-
-        $category->delete();
 
         return redirect()
             ->route('admin.categories.index')
