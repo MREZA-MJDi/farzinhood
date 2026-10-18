@@ -281,3 +281,96 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+
+/* =========================================================
+   SEO EDITOR — live snippet preview from the actual form fields
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-seo-preview]").forEach((preview) => {
+        const form = preview.closest("form") ?? document;
+        const titleField = form.querySelector('[name="meta_title"]');
+        const descriptionField = form.querySelector('[name="meta_description"]');
+        const canonicalField = form.querySelector('[name="canonical_url"]');
+        const noindexField = form.querySelector('[name="noindex"]');
+
+        const titleOutput = preview.querySelector("[data-seo-preview-title]");
+        const descriptionOutput = preview.querySelector("[data-seo-preview-description]");
+        const urlOutput = preview.querySelector("[data-seo-preview-url]");
+        const robotsOutput = preview.querySelector("[data-seo-preview-robots]");
+        const titleCount = preview.querySelector("[data-seo-title-count]");
+        const descriptionCount = preview.querySelector("[data-seo-description-count]");
+        const titleGuidance = preview.querySelector("[data-seo-title-guidance]");
+        const descriptionGuidance = preview.querySelector("[data-seo-description-guidance]");
+
+        const fallbackTitle = preview.dataset.fallbackTitle?.trim() ?? "";
+        const fallbackDescription = preview.dataset.fallbackDescription?.trim() ?? "";
+        const fallbackUrl = preview.dataset.fallbackUrl?.trim() ?? "";
+
+        const characterCount = (value) => Array.from(value ?? "").length;
+
+        const render = () => {
+            const enteredTitle = titleField?.value.trim() ?? "";
+            const enteredDescription = descriptionField?.value.trim() ?? "";
+            const enteredCanonical = canonicalField?.value.trim() ?? "";
+            const useNoindex = Boolean(noindexField?.checked);
+
+            if (titleOutput) {
+                titleOutput.textContent = enteredTitle || fallbackTitle || "عنوان صفحه در نتایج جستجو";
+            }
+
+            if (descriptionOutput) {
+                descriptionOutput.textContent = enteredDescription || fallbackDescription
+                    || "پس از وارد کردن توضیحات متا، پیش‌نمایش آن نمایش داده می‌شود.";
+            }
+
+            if (urlOutput) {
+                urlOutput.textContent = enteredCanonical || fallbackUrl
+                    || "URL صفحه پس از ثبت و ساخت نامک مشخص می‌شود";
+            }
+
+            if (robotsOutput) {
+                robotsOutput.textContent = useNoindex ? "noindex, follow" : "index, follow";
+                robotsOutput.classList.toggle("border-amber-200", useNoindex);
+                robotsOutput.classList.toggle("bg-amber-50", useNoindex);
+                robotsOutput.classList.toggle("text-amber-800", useNoindex);
+                robotsOutput.classList.toggle("text-[var(--color-text-secondary)]", !useNoindex);
+            }
+
+            const titleLength = characterCount(enteredTitle);
+            const descriptionLength = characterCount(enteredDescription);
+
+            if (titleCount) titleCount.textContent = String(titleLength);
+            if (descriptionCount) descriptionCount.textContent = String(descriptionLength);
+
+            if (titleGuidance) {
+                titleGuidance.textContent = !enteredTitle
+                    ? "خالی است؛ عنوان پیش‌فرض محتوا در پیش‌نمایش استفاده می‌شود."
+                    : titleLength < 30
+                        ? "از راهنمای تقریبی ۳۰ تا ۶۰ نویسه کوتاه‌تر است."
+                        : titleLength <= 60
+                            ? "در محدوده راهنمای تقریبی قرار دارد."
+                            : "از راهنمای تقریبی ۶۰ نویسه بیشتر است.";
+            }
+
+            if (descriptionGuidance) {
+                descriptionGuidance.textContent = !enteredDescription
+                    ? "خالی است؛ توضیح پیش‌فرض محتوا در پیش‌نمایش استفاده می‌شود."
+                    : descriptionLength < 120
+                        ? "از راهنمای تقریبی ۱۲۰ تا ۱۶۰ نویسه کوتاه‌تر است."
+                        : descriptionLength <= 160
+                            ? "در محدوده راهنمای تقریبی قرار دارد."
+                            : "از راهنمای تقریبی ۱۶۰ نویسه بیشتر است.";
+            }
+        };
+
+        [titleField, descriptionField, canonicalField, noindexField]
+            .filter(Boolean)
+            .forEach((field) => {
+                field.addEventListener("input", render);
+                field.addEventListener("change", render);
+            });
+
+        render();
+    });
+});
