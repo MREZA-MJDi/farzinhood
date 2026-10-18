@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerSettingsRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    public function index(CustomerSettingsRequest $request): View
+    public function index(Request $request): View
     {
         return view('customer.settings.index', [
             'user' => $request->user(),
