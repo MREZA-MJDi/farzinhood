@@ -85,7 +85,7 @@ class SeoManagementTest extends TestCase
         ], $overrides));
     }
 
-    private function post(BlogCategory $category, User $author, array $overrides = []): Post
+    private function makePost(BlogCategory $category, User $author, array $overrides = []): Post
     {
         static $sequence = 0;
         $sequence++;
@@ -202,7 +202,7 @@ class SeoManagementTest extends TestCase
             'slug' => 'sitemap-visible-blog-category',
         ]);
 
-        $publishedPost = $this->post($blogCategory, $admin, [
+        $publishedPost = $this->makePost($blogCategory, $admin, [
             'title' => 'مقاله منتشرشده',
             'slug' => 'sitemap-published-post',
         ]);
