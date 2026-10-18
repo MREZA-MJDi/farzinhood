@@ -16,6 +16,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const cropRatio = Number.isFinite(parsedRatio) && parsedRatio >= 0.5 && parsedRatio <= 2.5
             ? parsedRatio
             : 1;
+        const maxFilesValue = Number.parseInt(root.dataset.mediaMaxFiles || (input.multiple ? "10" : "1"), 10);
+        const maxFiles = Number.isFinite(maxFilesValue) && maxFilesValue > 0 ? maxFilesValue : 1;
+        const maxBytesValue = Number.parseInt(root.dataset.mediaMaxSize || String(5 * 1024 * 1024), 10);
+        const maxBytes = Number.isFinite(maxBytesValue) && maxBytesValue > 0 ? maxBytesValue : 5 * 1024 * 1024;
+        const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+        let feedback = root.querySelector("[data-media-feedback]");
+        if (!feedback) {
+            feedback = document.createElement("p");
+            feedback.className = "media-picker__feedback hidden";
+            feedback.setAttribute("role", "status");
+            feedback.setAttribute("aria-live", "polite");
+            root.insertBefore(feedback, preview);
+        }
+
+        const showFeedback = (messages = []) => {
+            feedback.textContent = messages.join(" ");
+            feedback.classList.toggle("hidden", messages.length === 0);
+            feedback.classList.toggle("media-picker__feedback--error", messages.length > 0);
+        };
 
         const syncInput = () => {
             const transfer = new DataTransfer();
@@ -46,11 +66,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 crop.type = "button";
                 crop.className = "media-picker__crop";
                 crop.textContent = "برش";
+                crop.title = `برش تصویر ${file.name}`;
+                crop.setAttribute("aria-label", `برش تصویر ${file.name}`);
 
                 const remove = document.createElement("button");
                 remove.type = "button";
                 remove.className = "media-picker__remove";
                 remove.textContent = "حذف";
+                remove.title = `حذف تصویر ${file.name}`;
+                remove.setAttribute("aria-label", `حذف تصویر ${file.name}`);
 
                 crop.addEventListener("click", () => openCropper(index));
                 remove.addEventListener("click", () => {
@@ -152,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             image.onload = draw;
-            image.src = URL.createObjectURL(file);
 
             zoomInput.addEventListener("input", () => {
                 zoom = Number(zoomInput.value);
@@ -183,13 +206,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 dragging = false;
             });
 
+            const imageUrl = URL.createObjectURL(file);
+            image.src = imageUrl;
+
             const close = () => {
-                URL.revokeObjectURL(image.src);
+                if (!modal.isConnected) return;
+                URL.revokeObjectURL(imageUrl);
                 modal.remove();
+                input.focus();
             };
 
             closeButtons.forEach((button) => button.addEventListener("click", close));
             modal.querySelector(".media-cropper__backdrop").addEventListener("click", close);
+            modal.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    event.preventDefault();
+                    close();
+                    return;
+                }
+
+                if (event.key !== "Tab") return;
+
+                const focusable = [...modal.querySelectorAll("button, input")].filter((element) => !element.disabled);
+                if (!focusable.length) return;
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            });
+
+            modal.querySelector("[data-crop-close]")?.focus();
 
             modal.querySelector("[data-crop-save]").addEventListener("click", () => {
                 canvas.toBlob((blob) => {
@@ -210,7 +263,34 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         input.addEventListener("change", () => {
-            files = Array.from(input.files || []);
+            const selected = Array.from(input.files || []);
+            const valid = [];
+            const messages = [];
+
+            selected.forEach((file) => {
+                const hasAllowedType = allowedTypes.has(file.type)
+                    || /\\.(jpe?g|png|webp)$/i.test(file.name);
+
+                if (!hasAllowedType) {
+                    messages.push(`«${file.name}» تصویر پشتیبانی‌شده نیست؛ JPG، PNG یا WebP انتخاب کن.`);
+                    return;
+                }
+
+                if (file.size > maxBytes) {
+                    messages.push(`حجم «${file.name}» بیشتر از ${Math.round(maxBytes / (1024 * 1024))} مگابایت است.`);
+                    return;
+                }
+
+                valid.push(file);
+            });
+
+            if (valid.length > maxFiles) {
+                messages.push(`حداکثر ${maxFiles} تصویر در این فرم قابل انتخاب است؛ فقط ${maxFiles} تصویر اول نگه داشته می‌شود.`);
+            }
+
+            files = valid.slice(0, maxFiles);
+            syncInput();
+            showFeedback(messages);
             render();
         });
     });
