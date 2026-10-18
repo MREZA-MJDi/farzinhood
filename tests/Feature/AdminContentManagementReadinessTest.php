@@ -36,21 +36,30 @@ class AdminContentManagementReadinessTest extends TestCase
         $this->get(route('admin.products.create'))
             ->assertOk()
             ->assertSee('data-media-picker', false)
+            ->assertSee('data-media-ratio="1"', false)
+            ->assertSee('data-media-max-files="10"', false)
+            ->assertSee('data-media-max-size="5242880"', false)
+            ->assertSee('accept="image/jpeg,image/png,image/webp"', false)
             ->assertSee('data-media-preview', false);
 
         $this->get(route('admin.categories.create'))
             ->assertOk()
             ->assertSee('data-media-picker', false)
+            ->assertSee('data-media-ratio="1"', false)
+            ->assertSee('data-media-max-files="1"', false)
             ->assertSee('data-media-preview', false);
 
         $this->get(route('admin.posts.create'))
             ->assertOk()
             ->assertSee('data-media-picker', false)
+            ->assertSee('data-media-ratio="1.6"', false)
+            ->assertSee('data-media-max-files="1"', false)
             ->assertSee('data-media-preview', false);
 
         $this->get(route('admin.blog-categories.create'))
             ->assertOk()
             ->assertSee('data-media-picker', false)
+            ->assertSee('data-media-ratio="1"', false)
             ->assertSee('data-media-preview', false);
     }
 
@@ -278,6 +287,7 @@ class AdminContentManagementReadinessTest extends TestCase
             'admin.contact-messages.index',
             'admin.newsletter.index',
             'admin.settings.index',
+            'admin.seo.index',
         ];
 
         foreach ($routes as $routeName) {
