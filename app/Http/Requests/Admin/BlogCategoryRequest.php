@@ -90,7 +90,7 @@ class BlogCategoryRequest extends FormRequest
                 ? Str::slug($this->input('slug'))
                 : Str::slug($this->input('name', '')),
             'is_active' => $this->boolean('is_active'),
-            'sort_order' => $this->filled('sort_order') ? $this->integer('sort_order') : null,
+            'sort_order' => $this->filled('sort_order') ? $this->input('sort_order') : 0,
             'noindex' => $this->boolean('noindex'),
         ]);
     }
