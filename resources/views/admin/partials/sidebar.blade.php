@@ -366,6 +366,28 @@
                 </a>
 
                 <a
+                    href="{{ route('admin.seo.index') }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
+                    {{ request()->routeIs('admin.seo.*')
+                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)]'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                >
+                    <svg
+                        class="h-5 w-5 shrink-0"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                    >
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m16 16 4 4M8.5 11h5M11 8.5v5" />
+                    </svg>
+
+                    مدیریت SEO
+                </a>
+
+                <a
                     href="{{ route('admin.settings.index') }}"
                     class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                     {{ request()->routeIs('admin.settings.*')
