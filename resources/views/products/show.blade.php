@@ -5,6 +5,9 @@
 @section('meta_description', $product->meta_description ?: ($product->short_description ?: $product->name))
 
 @section('canonical_url', $product->canonical_url ?: url()->current())
+@section('meta_robots', $product->noindex ? 'noindex, follow' : 'index, follow')
+@section('og_type', 'product')
+@section('og_image', $product->primaryImage ? asset('storage/' . $product->primaryImage->image) : asset('images/brand/logo.png'))
 
 @section('content')
 
