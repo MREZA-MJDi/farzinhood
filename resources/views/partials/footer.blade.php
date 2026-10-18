@@ -1,4 +1,4 @@
-<footer class="mt-20 border-t border-[var(--color-border)] bg-white">
+<footer class="fz-site-footer mt-20 border-t bg-white">
 
     {{-- =========================================================
         Main Footer
