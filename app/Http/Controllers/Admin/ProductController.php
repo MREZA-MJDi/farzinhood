@@ -202,26 +202,40 @@ class ProductController extends Controller
 
     public function destroyImage(ProductImage $productImage): RedirectResponse
     {
-        $product = $productImage->product;
+        $path = DB::transaction(function () use ($productImage): ?string {
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $wasPrimary = $productImage->is_primary;
+            $product = Product::query()
+                ->whereKey($image->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $this->deleteImageFile($productImage);
+            $wasPrimary = $image->is_primary;
+            $path = $image->image;
 
-        $productImage->delete();
+            $image->delete();
 
-        if ($wasPrimary) {
-            $nextImage = $product
-                ->images()
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->first();
+            if ($wasPrimary) {
+                $nextImage = $product->images()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->first();
 
-            if ($nextImage) {
-                $nextImage->update([
-                    'is_primary' => true,
-                ]);
+                if ($nextImage) {
+                    $nextImage->update([
+                        'is_primary' => true,
+                    ]);
+                }
             }
+
+            return $path;
+        });
+
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
 
         return back()->with(
@@ -235,15 +249,23 @@ class ProductController extends Controller
     ): RedirectResponse {
         $product = $productImage->product;
 
-        DB::transaction(function () use (
-            $product,
-            $productImage
-        ) {
+        DB::transaction(function () use ($productImage): void {
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
             $product->images()->update([
                 'is_primary' => false,
             ]);
 
-            $productImage->update([
+            $image->update([
                 'is_primary' => true,
             ]);
         });
