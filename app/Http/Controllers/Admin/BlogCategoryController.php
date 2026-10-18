@@ -33,7 +33,7 @@ class BlogCategoryController extends Controller
             ->paginate(15);
 
         return view(
-            'admin.blog.categories.index',
+            'admin.blog-categories.index',
             compact('categories')
         );
     }
@@ -41,7 +41,7 @@ class BlogCategoryController extends Controller
     public function create(): View
     {
         return view(
-            'admin.blog.categories.create'
+            'admin.blog-categories.create'
         );
     }
 
@@ -50,6 +50,9 @@ class BlogCategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $data = $request->validated();
+
+        $seoData = $seoService->data($data);
+        unset($data['meta_title'], $data['meta_description'], $data['canonical_url'], $data['noindex']);
 
         $image = $request->file('image');
 
@@ -66,7 +69,7 @@ class BlogCategoryController extends Controller
 
         $seoService->apply(
             $category,
-            $data
+            $seoData
         );
 
         return redirect()
@@ -81,8 +84,8 @@ class BlogCategoryController extends Controller
         BlogCategory $blogCategory
     ): View {
         return view(
-            'admin.blog.categories.edit',
-            compact('blogCategory')
+            'admin.blog-categories.edit',
+            ['category' => $blogCategory]
         );
     }
 
@@ -92,6 +95,9 @@ class BlogCategoryController extends Controller
         SeoService $seoService
     ): RedirectResponse {
         $data = $request->validated();
+
+        $seoData = $seoService->data($data);
+        unset($data['meta_title'], $data['meta_description'], $data['canonical_url'], $data['noindex']);
 
         $image = $request->file('image');
 
@@ -113,7 +119,7 @@ class BlogCategoryController extends Controller
 
         $seoService->apply(
             $blogCategory,
-            $data
+            $seoData
         );
 
         return redirect()
