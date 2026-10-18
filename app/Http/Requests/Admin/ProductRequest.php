@@ -153,15 +153,10 @@ class ProductRequest extends FormRequest
             'slug' => $this->slug
                 ? Str::slug($this->slug)
                 : Str::slug($this->name ?? ''),
-        ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
             'is_active' => $this->boolean('is_active'),
             'is_featured' => $this->boolean('is_featured'),
             'noindex' => $this->boolean('noindex'),
         ]);
     }
+
 }
