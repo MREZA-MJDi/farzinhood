@@ -291,7 +291,7 @@
 
 
                 {{-- Results count --}}
-                <div class="inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-[var(--color-text-secondary)] shadow-[var(--shadow-xs)] ring-1 ring-[var(--color-border)]">
+                <div class="inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-[var(--color-text-secondary)] shadow-[0_2px_10px_rgb(35_38_28_/0.035)] ring-1 ring-[var(--color-border)]">
 
                     <span class="h-2 w-2 rounded-full bg-[var(--color-accent-600)]"></span>
 
