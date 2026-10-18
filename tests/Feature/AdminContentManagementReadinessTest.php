@@ -122,7 +122,6 @@ class AdminContentManagementReadinessTest extends TestCase
 
         $this->get(route('admin.products.edit', $product))
             ->assertOk()
-            ->assertSee('تنظیم به‌عنوان تصویر اصلی')
             ->assertSee('حذف تصویر');
 
         $secondImagePath = 'products/secondary-test-image.jpg';
@@ -134,6 +133,11 @@ class AdminContentManagementReadinessTest extends TestCase
             'sort_order' => 99,
             'is_primary' => false,
         ]);
+
+        $this->get(route('admin.products.edit', $product))
+            ->assertOk()
+            ->assertSee('تنظیم به‌عنوان تصویر اصلی')
+            ->assertSee('حذف تصویر');
 
         $this->patch(route('admin.product-images.primary', $secondImage))
             ->assertRedirect();
