@@ -1,11 +1,16 @@
 @php
+    $titleFieldName = $titleFieldName ?? 'meta_title';
+    $descriptionFieldName = $descriptionFieldName ?? 'meta_description';
+    $canonicalFieldName = $canonicalFieldName ?? 'canonical_url';
+    $noindexFieldName = $noindexFieldName ?? 'noindex';
+
     $previewFallbackTitle = (string) ($fallbackTitle ?? '');
     $previewFallbackDescription = (string) ($fallbackDescription ?? '');
     $previewFallbackUrl = (string) ($fallbackUrl ?? '');
-    $previewTitle = (string) old('meta_title', $previewFallbackTitle);
-    $previewDescription = (string) old('meta_description', $previewFallbackDescription);
-    $previewCanonical = (string) old('canonical_url', $previewFallbackUrl);
-    $previewNoindex = (bool) old('noindex', $fallbackNoindex ?? false);
+    $previewTitle = (string) old($titleFieldName, $previewFallbackTitle);
+    $previewDescription = (string) old($descriptionFieldName, $previewFallbackDescription);
+    $previewCanonical = $canonicalFieldName ? (string) old($canonicalFieldName, $previewFallbackUrl) : $previewFallbackUrl;
+    $previewNoindex = $noindexFieldName ? (bool) old($noindexFieldName, $fallbackNoindex ?? false) : (bool) ($fallbackNoindex ?? false);
 @endphp
 
 <section
@@ -13,6 +18,10 @@
     data-fallback-title="{{ $previewFallbackTitle }}"
     data-fallback-description="{{ $previewFallbackDescription }}"
     data-fallback-url="{{ $previewFallbackUrl }}"
+    data-seo-title-field="{{ $titleFieldName }}"
+    data-seo-description-field="{{ $descriptionFieldName }}"
+    data-seo-canonical-field="{{ $canonicalFieldName ?? '' }}"
+    data-seo-noindex-field="{{ $noindexFieldName ?? '' }}"
     class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] p-5"
     aria-labelledby="seo-preview-heading"
 >
