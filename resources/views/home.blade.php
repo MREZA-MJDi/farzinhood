@@ -18,12 +18,12 @@
             <div class="farzin-home-hero__copy">
                 <span class="farzin-home-hero__eyebrow">
                     <span aria-hidden="true"></span>
-                    انتخابی برای آشپزخانه‌ی شما
+                    طراحی ماندگار · مهندسی دقیق
                 </span>
 
                 <h1 class="farzin-home-hero__title">
-                    جزئیات کوچک،
-                    <strong>تفاوت‌های بزرگ.</strong>
+                    آشپزخانه،
+                    <strong>با امضای فرزین.</strong>
                 </h1>
 
                 <p class="farzin-home-hero__description">
@@ -33,7 +33,7 @@
 
                 <div class="farzin-home-hero__actions">
                     <a href="{{ route('shop.index') }}" class="farzin-home-hero__primary">
-                        دیدن محصولات
+                        کشف مجموعه
                         <span aria-hidden="true">←</span>
                     </a>
                     <span class="farzin-home-hero__note">هود و سینک آشپزخانه</span>
@@ -113,7 +113,7 @@
                 </div>
 
                 <div class="mt-2 text-sm font-black text-[var(--color-text-primary)]">
-                    انتخاب دقیق
+                    طراحی ماندگار
                 </div>
 
                 <div class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="mt-2 text-sm font-black text-[var(--color-text-primary)]">
-                    تجربه سریع
+                    جزئیات حساب‌شده
                 </div>
 
                 <div class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
@@ -141,7 +141,7 @@
                 </div>
 
                 <div class="mt-2 text-sm font-black text-[var(--color-text-primary)]">
-                    پرداخت امن
+                    خرید ساده
                 </div>
 
                 <div class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
@@ -155,7 +155,7 @@
                 </div>
 
                 <div class="mt-2 text-sm font-black text-[var(--color-text-primary)]">
-                    پشتیبانی انسانی
+                    همراهی فرزین
                 </div>
 
                 <div class="mt-1 text-xs leading-6 text-[var(--color-text-muted)]">
@@ -172,7 +172,7 @@
         CATEGORIES
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section data-home-categories class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
 
@@ -317,7 +317,7 @@
         FEATURED PRODUCTS
     ========================================================== --}}
 
-    <section class="bg-[var(--color-neutral-50)] py-20">
+    <section data-home-featured class="bg-[var(--color-neutral-50)] py-20">
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -474,7 +474,7 @@
         LATEST PRODUCTS
     ========================================================== --}}
 
-    <section class="pb-20">
+    <section data-home-latest class="pb-20">
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
@@ -546,7 +546,7 @@
         FINAL CTA
     ========================================================== --}}
 
-    <section class="border-t border-[var(--color-border)] bg-white">
+    <section data-home-final class="border-t border-[var(--color-border)] bg-white">
 
         <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
 
