@@ -17,11 +17,16 @@ class Category extends Model
         'image',
         'sort_order',
         'is_active',
+        'meta_title',
+        'meta_description',
+        'canonical_url',
+        'noindex',
     ];
 
     protected $casts = [
         'sort_order' => 'integer',
         'is_active' => 'boolean',
+        'noindex' => 'boolean',
     ];
 
     public function products(): HasMany

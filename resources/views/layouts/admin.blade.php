@@ -72,24 +72,17 @@
     class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)] antialiased"
 >
 
-<div
-    x-data="{
-        sidebarOpen: false,
-        profileOpen: false
-    }"
-    class="min-h-screen"
->
+<div class="min-h-screen">
 
     {{-- =========================================================
         Mobile Backdrop
     ========================================================== --}}
 
     <div
-        x-show="sidebarOpen"
-        x-cloak
-        x-transition.opacity
-        @click="sidebarOpen = false"
-        class="fixed inset-0 z-40 bg-[var(--color-brand-950)]/45 backdrop-blur-sm lg:hidden"
+        data-admin-sidebar-backdrop
+        hidden
+        class="hidden fixed inset-0 z-40 bg-[var(--color-brand-950)]/45 backdrop-blur-sm lg:hidden"
+        aria-hidden="true"
     ></div>
 
 
@@ -126,7 +119,8 @@
                     {{-- Mobile Menu --}}
                     <button
                         type="button"
-                        @click="sidebarOpen = true"
+                        data-admin-sidebar-open
+                        aria-expanded="false"
                         class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] bg-white text-[var(--color-text-secondary)] transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-900)] lg:hidden"
                         aria-label="باز کردن منو"
                         aria-controls="admin-sidebar"
@@ -206,12 +200,12 @@
                         Profile
                     ================================================== --}}
 
-                    <div class="relative">
+                    <div class="relative" data-admin-profile>
 
                         <button
                             type="button"
-                            @click="profileOpen = !profileOpen"
-                            :aria-expanded="profileOpen.toString()"
+                            data-admin-profile-toggle
+                            aria-expanded="false"
                             aria-haspopup="menu"
                             class="flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-white px-2 py-2 transition duration-200 hover:border-[var(--color-brand-300)] hover:bg-[var(--color-brand-50)] sm:gap-3 sm:px-2.5"
                         >
@@ -249,8 +243,8 @@
 
                             {{-- Chevron --}}
                             <svg
+                                data-admin-profile-chevron
                                 class="hidden h-4 w-4 text-[var(--color-text-muted)] transition duration-200 sm:block"
-                                :class="{ 'rotate-180': profileOpen }"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -268,17 +262,9 @@
                         ================================================== --}}
 
                         <div
-                            x-show="profileOpen"
-                            x-cloak
-                            @click.outside="profileOpen = false"
-                            @keydown.escape.window="profileOpen = false"
-                            x-transition:enter="transition ease-out duration-150"
-                            x-transition:enter-start="opacity-0 translate-y-1 scale-[0.98]"
-                            x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                            x-transition:leave="transition ease-in duration-100"
-                            x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                            x-transition:leave-end="opacity-0 translate-y-1 scale-[0.98]"
-                            class="absolute left-0 top-[calc(100%+10px)] z-50 w-64 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white p-2 shadow-[var(--shadow-lg)]"
+                            data-admin-profile-menu
+                            hidden
+                            class="hidden absolute left-0 top-[calc(100%+10px)] z-50 w-64 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white p-2 shadow-[var(--shadow-lg)]"
                             role="menu"
                         >
 
@@ -320,7 +306,7 @@
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 role="menuitem"
-                                @click="profileOpen = false"
+                                data-admin-profile-close
                                 class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-[var(--color-text-secondary)] transition duration-150 hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]"
                             >
 

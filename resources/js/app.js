@@ -201,3 +201,83 @@ document.addEventListener("DOMContentLoaded", () => {
     render(0);
     start();
 });
+
+
+/* =========================================================
+   ADMIN SHELL — mobile navigation and profile menu
+   Keep this shell dependency-free; the project does not ship Alpine.js.
+========================================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector("[data-admin-sidebar]");
+    const backdrop = document.querySelector("[data-admin-sidebar-backdrop]");
+    const openButton = document.querySelector("[data-admin-sidebar-open]");
+    const profile = document.querySelector("[data-admin-profile]");
+    const profileToggle = document.querySelector("[data-admin-profile-toggle]");
+    const profileMenu = document.querySelector("[data-admin-profile-menu]");
+    const profileChevron = document.querySelector("[data-admin-profile-chevron]");
+
+    const closeSidebar = () => {
+        if (!sidebar || !backdrop) return;
+        sidebar.classList.add("-translate-x-full");
+        sidebar.classList.remove("translate-x-0");
+        backdrop.hidden = true;
+        backdrop.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        openButton?.setAttribute("aria-expanded", "false");
+    };
+
+    const openSidebar = () => {
+        if (!sidebar || !backdrop) return;
+        sidebar.classList.remove("-translate-x-full");
+        sidebar.classList.add("translate-x-0");
+        backdrop.hidden = false;
+        backdrop.classList.remove("hidden");
+        document.body.classList.add("overflow-hidden");
+        openButton?.setAttribute("aria-expanded", "true");
+    };
+
+    const closeProfile = () => {
+        if (!profileMenu) return;
+        profileMenu.hidden = true;
+        profileMenu.classList.add("hidden");
+        profileToggle?.setAttribute("aria-expanded", "false");
+        profileChevron?.classList.remove("rotate-180");
+    };
+
+    const toggleProfile = () => {
+        if (!profileMenu) return;
+        const shouldOpen = profileMenu.hidden;
+        profileMenu.hidden = !shouldOpen;
+        profileMenu.classList.toggle("hidden", !shouldOpen);
+        profileToggle?.setAttribute("aria-expanded", String(shouldOpen));
+        profileChevron?.classList.toggle("rotate-180", shouldOpen);
+    };
+
+    openButton?.addEventListener("click", openSidebar);
+    backdrop?.addEventListener("click", closeSidebar);
+    sidebar?.querySelectorAll("[data-admin-sidebar-close]").forEach((button) => {
+        button.addEventListener("click", closeSidebar);
+    });
+    sidebar?.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+            if (window.matchMedia("(max-width: 1023px)").matches) closeSidebar();
+        });
+    });
+
+    profileToggle?.addEventListener("click", toggleProfile);
+    profileMenu?.querySelectorAll("[data-admin-profile-close]").forEach((link) => {
+        link.addEventListener("click", closeProfile);
+    });
+
+    document.addEventListener("click", (event) => {
+        if (profile && !profile.contains(event.target)) closeProfile();
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeSidebar();
+            closeProfile();
+        }
+    });
+});
+

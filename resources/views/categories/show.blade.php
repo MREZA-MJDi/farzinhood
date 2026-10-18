@@ -12,6 +12,8 @@
     'canonical_url',
     $category->canonical_url ?: url()->current()
 )
+@section('meta_robots', $category->noindex ? 'noindex, follow' : 'index, follow')
+@section('og_image', $category->image ? asset('storage/' . $category->image) : asset('images/brand/logo.png'))
 
 @section('content')
 

@@ -185,15 +185,26 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        $product->load('images');
+        $imagePaths = $product->images()
+            ->whereNotNull('image')
+            ->pluck('image')
+            ->all();
 
-        DB::transaction(function () use ($product) {
-            foreach ($product->images as $image) {
-                $this->deleteImageFile($image);
-            }
+        DB::transaction(function () use ($product): void {
+            $lockedProduct = Product::query()
+                ->whereKey($product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-            $product->delete();
+            $lockedProduct->images()->delete();
+            $lockedProduct->delete();
         });
+
+        foreach ($imagePaths as $path) {
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -202,26 +213,41 @@ class ProductController extends Controller
 
     public function destroyImage(ProductImage $productImage): RedirectResponse
     {
-        $product = $productImage->product;
+        $path = DB::transaction(function () use ($productImage): ?string {
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $wasPrimary = $productImage->is_primary;
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $this->deleteImageFile($productImage);
+            $wasPrimary = $image->is_primary;
+            $path = $image->image;
 
-        $productImage->delete();
+            $image->delete();
 
-        if ($wasPrimary) {
-            $nextImage = $product
-                ->images()
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->first();
+            if ($wasPrimary) {
+                $nextImage = $product->images()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->first();
 
-            if ($nextImage) {
-                $nextImage->update([
-                    'is_primary' => true,
-                ]);
+                if ($nextImage) {
+                    $nextImage->update([
+                        'is_primary' => true,
+                    ]);
+                }
             }
+
+            return $path;
+        });
+
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
 
         return back()->with(
@@ -233,17 +259,23 @@ class ProductController extends Controller
     public function setPrimaryImage(
         ProductImage $productImage
     ): RedirectResponse {
-        $product = $productImage->product;
+        DB::transaction(function () use ($productImage): void {
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        DB::transaction(function () use (
-            $product,
-            $productImage
-        ) {
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
             $product->images()->update([
                 'is_primary' => false,
             ]);
 
-            $productImage->update([
+            $image->update([
                 'is_primary' => true,
             ]);
         });
@@ -262,6 +294,11 @@ class ProductController extends Controller
             return;
         }
 
+        $product = Product::query()
+            ->whereKey($product->getKey())
+            ->lockForUpdate()
+            ->firstOrFail();
+
         $hasPrimaryImage = $product
             ->images()
             ->where('is_primary', true)
@@ -277,7 +314,7 @@ class ProductController extends Controller
                 'public'
             );
 
-            $isPrimary = ! $hasPrimaryImage && $index === 0;
+            $isPrimary = ! $hasPrimaryImage;
 
             $image = ProductImage::create([
                 'product_id' => $product->id,

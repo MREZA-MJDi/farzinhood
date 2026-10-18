@@ -92,15 +92,10 @@ class CategoryRequest extends FormRequest
             'slug' => $this->slug
                 ? Str::slug($this->slug)
                 : Str::slug($this->name ?? ''),
-        ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
-            'sort_order' => $this->integer('sort_order'),
+            'sort_order' => $this->filled('sort_order') ? $this->input('sort_order') : 0,
             'is_active' => $this->boolean('is_active'),
             'noindex' => $this->boolean('noindex'),
         ]);
     }
+
 }
