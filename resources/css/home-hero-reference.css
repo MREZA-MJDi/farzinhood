@@ -327,3 +327,39 @@
     opacity: 0 !important;
     pointer-events: none !important;
 }
+
+/* Home-only art direction: chrome, editorial sections and tactile interactions */
+.farzin-home-nav { background:rgb(8 9 8 / .94) !important; border-color:rgb(255 255 255 / .1) !important; box-shadow:none !important; }
+.farzin-home-nav > div { max-width:94rem; }
+.farzin-home-nav img { filter:brightness(0) invert(1); }
+.farzin-home-nav a { color:#d4d0c7; }
+.farzin-home-nav a:hover { color:#e0c69a; }
+.farzin-home-nav a[aria-label="فرزین - صفحه اصلی"] { color:#fff; }
+.farzin-home-nav a.bg-\[var\(--color-brand-50\)\] { background:rgb(255 255 255 / .07) !important; color:#e0c69a !important; }
+[data-home-categories], [data-home-featured], [data-home-latest] { max-width:none; padding-inline:max(1.5rem,calc((100% - 88rem)/2)); }
+[data-home-categories] { background:#f4f2ec; }
+[data-home-categories] > div:first-child, [data-home-featured] > div:first-child, [data-home-latest] > div:first-child { max-width:88rem; margin-inline:auto; }
+[data-home-categories] > div:last-child, [data-home-featured] .grid.mt-10, [data-home-latest] .grid.mt-10 { max-width:88rem; margin-inline:auto; }
+[data-home-categories] h2, [data-home-featured] h2, [data-home-latest] h2 { letter-spacing:-.045em; }
+[data-home-categories] a.group { border-radius:.35rem !important; background:#fff; box-shadow:none !important; }
+[data-home-categories] a.group:hover { border-color:#b5a17d !important; transform:translateY(-4px); }
+[data-home-featured] { background:#eae8e0 !important; }
+[data-home-featured] .group.min-w-0 > div, [data-home-latest] .group.min-w-0 > div { border-radius:.35rem !important; border-color:#dedbd1 !important; box-shadow:none !important; }
+[data-home-featured] .group.min-w-0 > div:hover, [data-home-latest] .group.min-w-0 > div:hover { box-shadow:0 18px 36px rgb(24 25 20 / .1) !important; transform:translateY(-3px); }
+[data-home-featured] .group.min-w-0 img, [data-home-latest] .group.min-w-0 img { transition:transform .65s cubic-bezier(.2,.8,.2,1); }
+[data-home-featured] .group.min-w-0:hover img, [data-home-latest] .group.min-w-0:hover img { transform:scale(1.035); }
+[data-home-featured] a[href*="shop"], [data-home-latest] a[href*="shop"] { text-underline-offset:5px; }
+[data-home-final] { background:#0a0b09 !important; border-color:rgb(255 255 255 / .1) !important; }
+[data-home-final] > div > div { border:1px solid rgb(255 255 255 / .1); border-radius:.35rem !important; background:linear-gradient(115deg,#1c1c17,#0c0d0b) !important; }
+[data-home-final] h2 { color:#f2ecdf !important; }
+[data-home-final] p { color:rgb(242 236 223 / .56) !important; }
+[data-home-final] a { border-radius:.25rem !important; background:#d8bd91 !important; color:#171511 !important; }
+[data-home-editorial] > div { border-radius:.35rem !important; background:#12130f !important; border:1px solid rgb(255 255 255 / .1); }
+[data-home-editorial] h2 { letter-spacing:-.04em; }
+@media (max-width:639px) {
+ .farzin-home-nav img { max-width:116px; }
+ [data-home-categories], [data-home-featured], [data-home-latest] { padding-inline:1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+ [data-home-categories] a.group, [data-home-featured] .group.min-w-0 img, [data-home-latest] .group.min-w-0 img { transition:none !important; }
+}
