@@ -389,18 +389,5 @@
 
     </div>
 
-/* Lighter and more product-first: reference-aligned card styling. */
-.group.min-w-0 > div {
-    border-color: #e8e8e1;
-    border-radius: 1.1rem;
-    box-shadow: 0 2px 10px rgb(35 38 28 / .035);
-}
-.group.min-w-0 > div:hover {
-    border-color: #d8d9ce;
-    box-shadow: 0 12px 28px rgb(35 38 28 / .075);
-}
-.group.min-w-0 > a > div { background: #f0f0e9; }
-.group.min-w-0 > a img { mix-blend-mode: multiply; }
-.group.min-w-0 h3 { color: #292b24; }
 
 </article>
