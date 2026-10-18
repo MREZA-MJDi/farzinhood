@@ -197,7 +197,7 @@
         @endif
 
 
-<div data-media-picker data-media-ratio="1.6">
+<div data-media-picker data-media-ratio="1.6" data-media-max-files="1" data-media-max-size="5242880">
         <label for="featured_image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -206,6 +206,7 @@
         <input type="file"
                id="featured_image"
                name="featured_image"
+               accept="image/jpeg,image/png,image/webp"
                data-media-input
                accept=".jpg,.jpeg,.png,.webp"
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
