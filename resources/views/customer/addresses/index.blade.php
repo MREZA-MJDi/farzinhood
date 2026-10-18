@@ -15,15 +15,15 @@
 
             <div>
 
-                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
+                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#817d45]">
                     Addresses
                 </div>
 
-                <h1 class="mt-3 text-3xl font-black tracking-tight text-gray-950 sm:text-4xl">
+                <h1 class="mt-3 text-3xl font-black tracking-tight text-[#292b24] sm:text-4xl">
                     آدرس‌های من
                 </h1>
 
-                <p class="mt-2 max-w-2xl text-sm leading-7 text-gray-500">
+                <p class="mt-2 max-w-2xl text-sm leading-7 text-[#6f7168]">
                     آدرس‌های ارسال را مدیریت کن تا در Checkout سریع‌تر سفارشت را ثبت کنی.
                 </p>
 
@@ -32,7 +32,7 @@
 
             <a
                 href="#add-address"
-                class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#3f207e] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
+                class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#686438] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#686438]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#555333]"
             >
                 <span class="text-lg leading-none">+</span>
                 افزودن آدرس
@@ -53,12 +53,12 @@
                     @foreach($addresses as $address)
 
                         <article
-                            class="group relative overflow-hidden rounded-[2rem] border border-gray-200 bg-white p-6 transition duration-300 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-xl hover:shadow-gray-200/40"
+                            class="group relative overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white p-6 transition duration-300 hover:-translate-y-0.5 hover:border-[#d8d9ce] hover:shadow-xl hover:shadow-[#d5d6ca]/40"
                         >
 
                             {{-- Accent --}}
                             <div
-                                class="absolute inset-x-0 top-0 h-1 {{ $address->is_default ? 'bg-[#3f207e]' : 'bg-gray-100' }}"
+                                class="absolute inset-x-0 top-0 h-1 {{ $address->is_default ? 'bg-[#686438]' : 'bg-gray-100' }}"
                             ></div>
 
 
@@ -68,7 +68,7 @@
                                 <div class="flex min-w-0 items-center gap-3">
 
                                     <div
-                                        class="flex size-11 shrink-0 items-center justify-center rounded-2xl {{ $address->is_default ? 'bg-[#f3edfb] text-[#3f207e]' : 'bg-gray-100 text-gray-500' }}"
+                                        class="flex size-11 shrink-0 items-center justify-center rounded-2xl {{ $address->is_default ? 'bg-[#f0f0e7] text-[#686438]' : 'bg-gray-100 text-[#6f7168]' }}"
                                     >
                                         <svg
                                             class="h-5 w-5"
@@ -84,7 +84,7 @@
 
                                     <div class="min-w-0">
 
-                                        <h2 class="truncate text-sm font-black text-gray-950">
+                                        <h2 class="truncate text-sm font-black text-[#292b24]">
                                             {{ $address->title ?: 'آدرس ارسال' }}
                                         </h2>
 
@@ -96,7 +96,7 @@
 
                                         @else
 
-                                            <div class="mt-1 text-[10px] text-gray-400">
+                                            <div class="mt-1 text-[10px] text-[#929489]">
                                                 آدرس ذخیره‌شده
                                             </div>
 
@@ -112,7 +112,7 @@
 
                                     <a
                                         href="#edit-address-{{ $address->id }}"
-                                        class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                                        class="flex size-9 items-center justify-center rounded-xl text-[#929489] transition hover:bg-[#f0f0e7] hover:text-[#686438]"
                                         title="ویرایش"
                                         aria-label="ویرایش"
                                     >
@@ -138,7 +138,7 @@
 
                                         <button
                                             type="submit"
-                                            class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-red-50 hover:text-red-600"
+                                            class="flex size-9 items-center justify-center rounded-xl text-[#929489] transition hover:bg-red-50 hover:text-red-600"
                                             title="حذف"
                                             aria-label="حذف"
                                         >
@@ -168,11 +168,11 @@
 
                                 <div>
 
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-[#929489]">
                                         گیرنده
                                     </div>
 
-                                    <div class="mt-1 text-sm font-bold text-gray-900">
+                                    <div class="mt-1 text-sm font-bold text-[#292b24]">
                                         {{ $address->full_name }}
                                     </div>
 
@@ -183,11 +183,11 @@
 
                                     <div>
 
-                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-[#929489]">
                                             تلفن
                                         </div>
 
-                                        <div class="mt-1 text-sm font-bold text-gray-700">
+                                        <div class="mt-1 text-sm font-bold text-[#515349]">
                                             {{ $address->phone }}
                                         </div>
 
@@ -196,11 +196,11 @@
 
                                     <div>
 
-                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-[#929489]">
                                             منطقه
                                         </div>
 
-                                        <div class="mt-1 text-sm font-bold text-gray-700">
+                                        <div class="mt-1 text-sm font-bold text-[#515349]">
                                             {{ $address->province }}
                                             ،
                                             {{ $address->city }}
@@ -213,11 +213,11 @@
 
                                 <div>
 
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-[#929489]">
                                         آدرس
                                     </div>
 
-                                    <div class="mt-1 text-sm leading-7 text-gray-600">
+                                    <div class="mt-1 text-sm leading-7 text-[#606258]">
                                         {{ $address->address }}
                                     </div>
 
@@ -228,11 +228,11 @@
 
                                     <div>
 
-                                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-[#929489]">
                                             کد پستی
                                         </div>
 
-                                        <div class="mt-1 font-mono text-sm font-bold text-gray-700">
+                                        <div class="mt-1 font-mono text-sm font-bold text-[#515349]">
                                             {{ $address->postal_code }}
                                         </div>
 
@@ -246,7 +246,7 @@
                             {{-- Default action --}}
                             @unless($address->is_default)
 
-                                <div class="mt-6 border-t border-gray-100 pt-5">
+                                <div class="mt-6 border-t border-[#efefe9] pt-5">
 
                                     <form
                                         action="{{ route('customer.addresses.default', $address) }}"
@@ -257,7 +257,7 @@
 
                                         <button
                                             type="submit"
-                                            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-xs font-bold text-gray-600 transition hover:border-[#3f207e] hover:bg-[#f8f4fc] hover:text-[#3f207e]"
+                                            class="w-full rounded-xl border border-[#e7e7df] px-4 py-3 text-xs font-bold text-[#606258] transition hover:border-[#686438] hover:bg-[#f7f7f3] hover:text-[#686438]"
                                         >
                                             انتخاب به‌عنوان آدرس پیش‌فرض
                                         </button>
@@ -268,7 +268,7 @@
 
                             @else
 
-                                <div class="mt-6 border-t border-gray-100 pt-5">
+                                <div class="mt-6 border-t border-[#efefe9] pt-5">
 
                                     <div class="flex items-center gap-2 text-xs font-bold text-emerald-600">
                                     <span class="flex size-6 items-center justify-center rounded-full bg-emerald-50">
@@ -293,21 +293,21 @@
                 {{-- Empty --}}
                 <div class="rounded-[2rem] border border-dashed border-gray-300 bg-white px-6 py-24 text-center">
 
-                    <div class="mx-auto flex size-16 items-center justify-center rounded-[1.5rem] bg-[#f3edfb] text-2xl text-[#3f207e]">
+                    <div class="mx-auto flex size-16 items-center justify-center rounded-[1.5rem] bg-[#f0f0e7] text-2xl text-[#686438]">
                         +
                     </div>
 
-                    <h2 class="mt-5 text-xl font-black text-gray-950">
+                    <h2 class="mt-5 text-xl font-black text-[#292b24]">
                         هنوز آدرسی ثبت نکردی
                     </h2>
 
-                    <p class="mx-auto mt-2 max-w-md text-sm leading-7 text-gray-500">
+                    <p class="mx-auto mt-2 max-w-md text-sm leading-7 text-[#6f7168]">
                         یک آدرس اضافه کن تا موقع خرید لازم نباشه دوباره اطلاعات ارسال را وارد کنی.
                     </p>
 
                     <a
                         href="#add-address"
-                        class="mt-6 inline-flex rounded-2xl bg-[#3f207e] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#321866]"
+                        class="mt-6 inline-flex rounded-2xl bg-[#686438] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#555333]"
                     >
                         افزودن اولین آدرس
                     </a>
@@ -324,20 +324,20 @@
         ========================================================== --}}
         <section
             id="add-address"
-            class="mt-12 scroll-mt-28 overflow-hidden rounded-[2rem] border border-gray-200 bg-white"
+            class="mt-12 scroll-mt-28 overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white"
         >
 
-            <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
+            <div class="border-b border-[#efefe9] px-6 py-6 sm:px-8">
 
-                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                     New Address
                 </div>
 
-                <h2 class="mt-2 text-xl font-black text-gray-950">
+                <h2 class="mt-2 text-xl font-black text-[#292b24]">
                     افزودن آدرس جدید
                 </h2>
 
-                <p class="mt-1 text-xs leading-6 text-gray-400">
+                <p class="mt-1 text-xs leading-6 text-[#929489]">
                     اطلاعات دقیق ارسال را وارد کن.
                 </p>
 
@@ -358,7 +358,7 @@
 
                         <label
                             for="title"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             عنوان آدرس
                         </label>
@@ -370,7 +370,7 @@
                             value="{{ old('title') }}"
                             maxlength="100"
                             placeholder="مثلاً خانه، محل کار..."
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition placeholder:text-[#929489] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('title')
@@ -387,7 +387,7 @@
 
                         <label
                             for="full_name"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             نام گیرنده
                         </label>
@@ -399,7 +399,7 @@
                             value="{{ old('full_name') }}"
                             maxlength="255"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('full_name')
@@ -416,7 +416,7 @@
 
                         <label
                             for="phone"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             شماره تماس
                         </label>
@@ -428,7 +428,7 @@
                             value="{{ old('phone') }}"
                             maxlength="30"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('phone')
@@ -445,7 +445,7 @@
 
                         <label
                             for="country"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             کشور
                         </label>
@@ -457,7 +457,7 @@
                             value="{{ old('country', 'Iran') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('country')
@@ -474,7 +474,7 @@
 
                         <label
                             for="province"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             استان / ایالت
                         </label>
@@ -486,7 +486,7 @@
                             value="{{ old('province') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('province')
@@ -503,7 +503,7 @@
 
                         <label
                             for="city"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             شهر
                         </label>
@@ -515,7 +515,7 @@
                             value="{{ old('city') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('city')
@@ -532,7 +532,7 @@
 
                         <label
                             for="postal_code"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             کد پستی
                         </label>
@@ -543,7 +543,7 @@
                             name="postal_code"
                             value="{{ old('postal_code') }}"
                             maxlength="20"
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-mono outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm font-mono outline-none transition focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >
 
                         @error('postal_code')
@@ -560,7 +560,7 @@
 
                         <label
                             for="address"
-                            class="text-xs font-bold text-gray-700"
+                            class="text-xs font-bold text-[#515349]"
                         >
                             آدرس کامل
                         </label>
@@ -572,7 +572,7 @@
                             maxlength="2000"
                             required
                             placeholder="خیابان، کوچه، پلاک، واحد..."
-                            class="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
+                            class="mt-2 w-full resize-none rounded-xl border border-[#e7e7df] bg-[#f7f7f3] px-4 py-3.5 text-sm leading-7 outline-none transition placeholder:text-[#929489] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#817d45]/10"
                         >{{ old('address') }}</textarea>
 
                         @error('address')
@@ -594,10 +594,10 @@
                                 name="is_default"
                                 value="1"
                                 @checked(old('is_default'))
-                            class="size-5 rounded border-gray-300 text-[#3f207e] focus:ring-[#7b20df]"
+                            class="size-5 rounded border-gray-300 text-[#686438] focus:ring-[#817d45]"
                             >
 
-                            <span class="text-sm font-bold text-gray-700">
+                            <span class="text-sm font-bold text-[#515349]">
                             این آدرس را به‌عنوان پیش‌فرض ذخیره کن.
                         </span>
 
@@ -618,14 +618,14 @@
 
                     <button
                         type="reset"
-                        class="rounded-xl border border-gray-200 px-5 py-3.5 text-sm font-bold text-gray-600 transition hover:border-gray-300 hover:bg-gray-50"
+                        class="rounded-xl border border-[#e7e7df] px-5 py-3.5 text-sm font-bold text-[#606258] transition hover:border-[#d8d9ce] hover:bg-[#f7f7f3]"
                     >
                         پاک کردن
                     </button>
 
                     <button
                         type="submit"
-                        class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition hover:-translate-y-0.5 hover:bg-[#321866]"
+                        class="rounded-xl bg-[#686438] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#686438]/10 transition hover:-translate-y-0.5 hover:bg-[#555333]"
                     >
                         ذخیره آدرس
                     </button>
