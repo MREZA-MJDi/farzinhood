@@ -8,11 +8,12 @@ use App\Models\Address;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {
-    public function index(AddressRequest $request): View
+    public function index(Request $request): View
     {
         $addresses = $request->user()
             ->addresses()
@@ -49,6 +50,18 @@ class AddressController extends Controller
         return redirect()
             ->route('customer.addresses.index')
             ->with('success', 'آدرس با موفقیت ذخیره شد.');
+    }
+
+    public function edit(Request $request, Address $address): View
+    {
+        $ownedAddress = $request->user()
+            ->addresses()
+            ->whereKey($address->getKey())
+            ->firstOrFail();
+
+        return view('customer.addresses.edit', [
+            'address' => $ownedAddress,
+        ]);
     }
 
     public function update(AddressRequest $request, Address $address): RedirectResponse
@@ -97,7 +110,7 @@ class AddressController extends Controller
             ->with('success', 'آدرس با موفقیت ویرایش شد.');
     }
 
-    public function destroy(AddressRequest $request, Address $address): RedirectResponse
+    public function destroy(Request $request, Address $address): RedirectResponse
     {
         DB::transaction(function () use ($request, $address): void {
             $user = User::query()
@@ -129,7 +142,7 @@ class AddressController extends Controller
             ->with('success', 'آدرس حذف شد.');
     }
 
-    public function makeDefault(AddressRequest $request, Address $address): RedirectResponse
+    public function makeDefault(Request $request, Address $address): RedirectResponse
     {
         DB::transaction(function () use ($request, $address): void {
             $user = User::query()
