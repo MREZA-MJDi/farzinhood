@@ -11,7 +11,7 @@
 
             <a
                 href="{{ route('customer.orders.index') }}"
-                class="hover:text-[#197f7b]"
+                class="hover:text-[#7b20df]"
             >
                 سفارش‌های من
             </a>
@@ -30,7 +30,7 @@
 
             <div>
 
-                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#197f7b]">
+                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
                     Order Details
                 </div>
 
@@ -65,7 +65,7 @@
 
             <div class="flex flex-wrap gap-2">
 
-            <span class="rounded-full bg-[#edfafa] px-4 py-2 text-xs font-bold text-[#1b2a2d]">
+            <span class="rounded-full bg-[#f3edfb] px-4 py-2 text-xs font-bold text-[#3f207e]">
                 {{ $statusLabel }}
             </span>
 
@@ -85,7 +85,7 @@
 
                 <div>
 
-                    <div class="text-sm font-black text-[#1b2a2d]">
+                    <div class="text-sm font-black text-[#3f207e]">
                         پرداخت این سفارش هنوز تکمیل نشده
                     </div>
 
@@ -97,7 +97,7 @@
 
                 <a
                     href="{{ route('customer.payment.start', $order) }}"
-                    class="inline-flex items-center justify-center gap-3 rounded-xl bg-[#1b2a2d] px-5 py-3.5 text-xs font-bold text-white transition hover:bg-[#321866]"
+                    class="inline-flex items-center justify-center gap-3 rounded-xl bg-[#3f207e] px-5 py-3.5 text-xs font-bold text-white transition hover:bg-[#321866]"
                 >
                     ادامه پرداخت
                     <span>←</span>
@@ -132,7 +132,7 @@
 
                             <div class="flex gap-4 px-6 py-6">
 
-                                <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[#f5f2f8] text-xs font-black text-[#1b2a2d]">
+                                <div class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[#f5f2f8] text-xs font-black text-[#3f207e]">
                                     {{ $item->quantity }}×
                                 </div>
 
@@ -141,7 +141,7 @@
                                     @if($item->product)
                                         <a
                                             href="{{ route('products.show', $item->product) }}"
-                                            class="text-sm font-black text-gray-950 hover:text-[#1b2a2d]"
+                                            class="text-sm font-black text-gray-950 hover:text-[#3f207e]"
                                         >
                                             {{ $item->product_name }}
                                         </a>
@@ -186,7 +186,7 @@
                 {{-- Shipping --}}
                 <section class="rounded-[2rem] border border-gray-200 bg-white p-6">
 
-                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                         Shipping Address
                     </div>
 
@@ -250,7 +250,7 @@
                 {{-- Timeline --}}
                 <section class="rounded-[2rem] border border-gray-200 bg-white p-6">
 
-                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                         Timeline
                     </div>
 
@@ -278,7 +278,7 @@
 
                                 <div class="flex shrink-0 flex-col items-center">
 
-                                    <div class="flex size-9 items-center justify-center rounded-full bg-[#edfafa] text-xs font-black text-[#1b2a2d]">
+                                    <div class="flex size-9 items-center justify-center rounded-full bg-[#f3edfb] text-xs font-black text-[#3f207e]">
                                         ✓
                                     </div>
 
@@ -324,7 +324,7 @@
 
                     <div class="border-b border-gray-100 px-6 py-6">
 
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                             Summary
                         </div>
 
@@ -395,7 +395,7 @@
 
                         <a
                             href="{{ route('customer.orders.index') }}"
-                            class="flex w-full items-center justify-center rounded-xl border border-gray-200 px-4 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#197f7b] hover:text-[#197f7b]"
+                            class="flex w-full items-center justify-center rounded-xl border border-gray-200 px-4 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#7b20df] hover:text-[#7b20df]"
                         >
                             بازگشت به سفارش‌ها
                         </a>

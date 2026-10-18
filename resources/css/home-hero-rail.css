@@ -6,11 +6,11 @@
 */
 
 .farzin-hero-rail {
-    --hero-bg: #101719;
-    --hero-panel: #1b2a2d;
+    --hero-bg: #0a1222;
+    --hero-panel: #111d31;
     --hero-text: #f8fafc;
     --hero-muted: rgb(226 232 240 / .68);
-    --hero-accent: #197f7b;
+    --hero-accent: #e21f2f;
     --hero-card-w: clamp(205px, 24vw, 330px);
     position: relative;
     isolation: isolate;
@@ -18,8 +18,8 @@
     min-height: 760px;
     color: var(--hero-text);
     background:
-        radial-gradient(circle at 74% 42%, rgb(36 158 151 / .20), transparent 30%),
-        radial-gradient(circle at 30% 8%, rgb(36 158 151 / .08), transparent 24%),
+        radial-gradient(circle at 74% 42%, rgb(64 84 119 / .26), transparent 30%),
+        radial-gradient(circle at 30% 8%, rgb(226 31 47 / .10), transparent 24%),
         var(--hero-bg);
 }
 
@@ -62,7 +62,7 @@
     height: .42rem;
     border-radius: 50%;
     background: var(--hero-accent);
-    box-shadow: 0 0 0 .3rem rgb(36 158 151 / .08);
+    box-shadow: 0 0 0 .3rem rgb(226 31 47 / .10);
 }
 
 .farzin-hero-rail__title {
@@ -349,7 +349,7 @@
     height: 28rem;
     top: -12rem;
     right: 12%;
-    background: rgb(36 158 151 / .08);
+    background: rgb(226 31 47 / .10);
 }
 
 .farzin-hero-rail__glow--two {

@@ -8,7 +8,7 @@
 
         <div class="mb-10">
 
-            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#197f7b]">
+            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
                 My Orders
             </div>
 
@@ -34,7 +34,7 @@
                             'delivered' => 'bg-emerald-50 text-emerald-700',
                             'cancelled' => 'bg-red-50 text-red-700',
                             'shipped' => 'bg-blue-50 text-blue-700',
-                            default => 'bg-[#edfafa] text-[#1b2a2d]',
+                            default => 'bg-[#f3edfb] text-[#3f207e]',
                         };
 
                         $statusLabel = match($order->status) {
@@ -56,7 +56,7 @@
 
                             <div class="flex min-w-0 flex-1 items-center gap-4">
 
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#edfafa] text-sm font-black text-[#1b2a2d]">
+                                <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#f3edfb] text-sm font-black text-[#3f207e]">
                                     #
                                 </div>
 
@@ -112,7 +112,7 @@
 
                                 </div>
 
-                                <span class="text-gray-300 transition group-hover:-translate-x-1 group-hover:text-[#197f7b]">
+                                <span class="text-gray-300 transition group-hover:-translate-x-1 group-hover:text-[#7b20df]">
                                 ←
                             </span>
 
@@ -134,7 +134,7 @@
 
             <div class="rounded-[2rem] border border-dashed border-gray-300 bg-white px-6 py-24 text-center">
 
-                <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#edfafa] text-2xl text-[#1b2a2d]">
+                <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-[#f3edfb] text-2xl text-[#3f207e]">
                     🛍
                 </div>
 
@@ -148,7 +148,7 @@
 
                 <a
                     href="{{ route('shop.index') }}"
-                    class="mt-6 inline-flex rounded-2xl bg-[#1b2a2d] px-6 py-4 text-sm font-bold text-white"
+                    class="mt-6 inline-flex rounded-2xl bg-[#3f207e] px-6 py-4 text-sm font-bold text-white"
                 >
                     شروع خرید
                 </a>

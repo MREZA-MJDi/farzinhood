@@ -15,7 +15,7 @@
 
             <div>
 
-                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#197f7b]">
+                <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
                     Addresses
                 </div>
 
@@ -32,7 +32,7 @@
 
             <a
                 href="#add-address"
-                class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1b2a2d] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1b2a2d]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
+                class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#3f207e] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
             >
                 <span class="text-lg leading-none">+</span>
                 افزودن آدرس
@@ -58,7 +58,7 @@
 
                             {{-- Accent --}}
                             <div
-                                class="absolute inset-x-0 top-0 h-1 {{ $address->is_default ? 'bg-[#1b2a2d]' : 'bg-gray-100' }}"
+                                class="absolute inset-x-0 top-0 h-1 {{ $address->is_default ? 'bg-[#3f207e]' : 'bg-gray-100' }}"
                             ></div>
 
 
@@ -68,7 +68,7 @@
                                 <div class="flex min-w-0 items-center gap-3">
 
                                     <div
-                                        class="flex size-11 shrink-0 items-center justify-center rounded-2xl {{ $address->is_default ? 'bg-[#edfafa] text-[#1b2a2d]' : 'bg-gray-100 text-gray-500' }}"
+                                        class="flex size-11 shrink-0 items-center justify-center rounded-2xl {{ $address->is_default ? 'bg-[#f3edfb] text-[#3f207e]' : 'bg-gray-100 text-gray-500' }}"
                                     >
                                         <svg
                                             class="h-5 w-5"
@@ -112,7 +112,7 @@
 
                                     <a
                                         href="{{ route('customer.addresses.edit', $address) }}"
-                                        class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-[#edfafa] hover:text-[#1b2a2d]"
+                                        class="flex size-9 items-center justify-center rounded-xl text-gray-400 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
                                         title="ویرایش"
                                         aria-label="ویرایش"
                                     >
@@ -257,7 +257,7 @@
 
                                         <button
                                             type="submit"
-                                            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-xs font-bold text-gray-600 transition hover:border-[#1b2a2d] hover:bg-[#f8f4fc] hover:text-[#1b2a2d]"
+                                            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-xs font-bold text-gray-600 transition hover:border-[#3f207e] hover:bg-[#f8f4fc] hover:text-[#3f207e]"
                                         >
                                             انتخاب به‌عنوان آدرس پیش‌فرض
                                         </button>
@@ -293,7 +293,7 @@
                 {{-- Empty --}}
                 <div class="rounded-[2rem] border border-dashed border-gray-300 bg-white px-6 py-24 text-center">
 
-                    <div class="mx-auto flex size-16 items-center justify-center rounded-[1.5rem] bg-[#edfafa] text-2xl text-[#1b2a2d]">
+                    <div class="mx-auto flex size-16 items-center justify-center rounded-[1.5rem] bg-[#f3edfb] text-2xl text-[#3f207e]">
                         +
                     </div>
 
@@ -307,7 +307,7 @@
 
                     <a
                         href="#add-address"
-                        class="mt-6 inline-flex rounded-2xl bg-[#1b2a2d] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#321866]"
+                        class="mt-6 inline-flex rounded-2xl bg-[#3f207e] px-6 py-4 text-sm font-bold text-white transition hover:bg-[#321866]"
                     >
                         افزودن اولین آدرس
                     </a>
@@ -329,7 +329,7 @@
 
             <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
 
-                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                     New Address
                 </div>
 
@@ -370,7 +370,7 @@
                             value="{{ old('title') }}"
                             maxlength="100"
                             placeholder="مثلاً خانه، محل کار..."
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition placeholder:text-gray-400 focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('title')
@@ -399,7 +399,7 @@
                             value="{{ old('full_name') }}"
                             maxlength="255"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('full_name')
@@ -428,7 +428,7 @@
                             value="{{ old('phone') }}"
                             maxlength="30"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('phone')
@@ -457,7 +457,7 @@
                             value="{{ old('country', 'Iran') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('country')
@@ -486,7 +486,7 @@
                             value="{{ old('province') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('province')
@@ -515,7 +515,7 @@
                             value="{{ old('city') }}"
                             maxlength="100"
                             required
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('city')
@@ -543,7 +543,7 @@
                             name="postal_code"
                             value="{{ old('postal_code') }}"
                             maxlength="20"
-                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-mono outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm font-mono outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >
 
                         @error('postal_code')
@@ -572,7 +572,7 @@
                             maxlength="2000"
                             required
                             placeholder="خیابان، کوچه، پلاک، واحد..."
-                            class="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                            class="mt-2 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm leading-7 outline-none transition placeholder:text-gray-400 focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                         >{{ old('address') }}</textarea>
 
                         @error('address')
@@ -594,7 +594,7 @@
                                 name="is_default"
                                 value="1"
                                 @checked(old('is_default'))
-                            class="size-5 rounded border-gray-300 text-[#1b2a2d] focus:ring-[#197f7b]"
+                            class="size-5 rounded border-gray-300 text-[#3f207e] focus:ring-[#7b20df]"
                             >
 
                             <span class="text-sm font-bold text-gray-700">
@@ -625,7 +625,7 @@
 
                     <button
                         type="submit"
-                        class="rounded-xl bg-[#1b2a2d] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1b2a2d]/10 transition hover:-translate-y-0.5 hover:bg-[#321866]"
+                        class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition hover:-translate-y-0.5 hover:bg-[#321866]"
                     >
                         ذخیره آدرس
                     </button>

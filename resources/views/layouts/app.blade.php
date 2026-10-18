@@ -76,7 +76,7 @@
 
     <meta
         name="theme-color"
-        content="#101719"
+        content="#0d1b3d"
     >
 
     <meta
@@ -178,7 +178,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)] antialiased">
+<body class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased">
 
 {{-- =========================================================
     Navbar

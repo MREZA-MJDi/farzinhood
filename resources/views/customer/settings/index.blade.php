@@ -13,7 +13,7 @@
         ========================================================== --}}
         <div class="mb-10">
 
-            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#197f7b]">
+            <div class="text-xs font-bold uppercase tracking-[0.25em] text-[#7b20df]">
                 Account Settings
             </div>
 
@@ -39,7 +39,7 @@
 
                     <a
                         href="{{ route('customer.dashboard') }}"
-                        class="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#1b2a2d]"
+                        class="flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
                     >
                         <span>⌂</span>
                         داشبورد
@@ -47,7 +47,7 @@
 
                     <a
                         href="{{ route('customer.orders.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#1b2a2d]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
                     >
                         <span>▣</span>
                         سفارش‌ها
@@ -55,7 +55,7 @@
 
                     <a
                         href="{{ route('customer.wishlist.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#1b2a2d]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
                     >
                         <span>♡</span>
                         علاقه‌مندی‌ها
@@ -63,7 +63,7 @@
 
                     <a
                         href="{{ route('customer.addresses.index') }}"
-                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#1b2a2d]"
+                        class="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm font-bold text-gray-600 transition hover:bg-gray-50 hover:text-[#3f207e]"
                     >
                         <span>⌖</span>
                         آدرس‌ها
@@ -73,7 +73,7 @@
 
                         <a
                             href="{{ route('customer.settings.index') }}"
-                            class="flex items-center gap-3 rounded-2xl bg-[#edfafa] px-4 py-3.5 text-sm font-black text-[#1b2a2d]"
+                            class="flex items-center gap-3 rounded-2xl bg-[#f3edfb] px-4 py-3.5 text-sm font-black text-[#3f207e]"
                         >
                             <span>⚙</span>
                             تنظیمات
@@ -101,12 +101,12 @@
 
                         <div class="flex items-center gap-4">
 
-                            <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#edfafa] text-lg font-black text-[#1b2a2d]">
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#f3edfb] text-lg font-black text-[#3f207e]">
                                 {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                             </div>
 
                             <div>
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                                     Profile
                                 </div>
 
@@ -147,7 +147,7 @@
                                     value="{{ old('name', auth()->user()->name) }}"
                                     maxlength="255"
                                     required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                                 >
 
                                 @error('name')
@@ -176,7 +176,7 @@
                                     value="{{ old('email', auth()->user()->email) }}"
                                     maxlength="255"
                                     required
-                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#197f7b] focus:bg-white focus:ring-4 focus:ring-[#197f7b]/10"
+                                    class="mt-2 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#7b20df] focus:bg-white focus:ring-4 focus:ring-[#7b20df]/10"
                                 >
 
                                 @error('email')
@@ -214,7 +214,7 @@
 
                             <button
                                 type="submit"
-                                class="rounded-xl bg-[#1b2a2d] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1b2a2d]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
+                                class="rounded-xl bg-[#3f207e] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#3f207e]/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#321866]"
                             >
                                 ذخیره تغییرات
                             </button>
@@ -233,7 +233,7 @@
 
                     <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
 
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                             Security
                         </div>
 
@@ -280,7 +280,7 @@
 
                                 <a
                                     href="{{ route('password.request') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#197f7b] hover:bg-[#f8f4fc] hover:text-[#1b2a2d]"
+                                    class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-5 py-3.5 text-xs font-bold text-gray-700 transition hover:border-[#7b20df] hover:bg-[#f8f4fc] hover:text-[#3f207e]"
                                 >
                                     بازیابی / تغییر رمز عبور
                                     <span>←</span>
@@ -302,7 +302,7 @@
 
                     <div class="border-b border-gray-100 px-6 py-6 sm:px-8">
 
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#197f7b]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
                             Account Status
                         </div>
 
