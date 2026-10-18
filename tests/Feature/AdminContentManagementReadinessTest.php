@@ -199,4 +199,22 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertSee('noindex, follow')
             ->assertSee($postCanonical);
     }
+
+    public function test_inactive_admin_cannot_access_the_admin_workspace(): void
+    {
+        $admin = $this->admin('inactive-admin@example.com');
+        $admin->update(['is_active' => false]);
+
+        $this->actingAs($admin)
+            ->get(route('admin.dashboard'))
+            ->assertForbidden();
+    }
+
+    public function test_newsletter_admin_page_loads_with_its_validated_request(): void
+    {
+        $this->actingAs($this->admin('admin-newsletter@example.com'))
+            ->get(route('admin.newsletter.index'))
+            ->assertOk();
+    }
+
 }
