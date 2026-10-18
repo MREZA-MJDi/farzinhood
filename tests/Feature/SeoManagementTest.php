@@ -207,7 +207,7 @@ class SeoManagementTest extends TestCase
             'slug' => 'sitemap-published-post',
         ]);
 
-        $draftPost = $this->post($blogCategory, $admin, [
+        $draftPost = $this->makePost($blogCategory, $admin, [
             'title' => 'مقاله پیش‌نویس',
             'slug' => 'sitemap-draft-post',
             'status' => 'draft',
