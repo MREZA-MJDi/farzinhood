@@ -10,7 +10,7 @@
     <meta name="description" content="ساخت حساب کاربری در فرزین برای مدیریت سفارش‌ها، آدرس‌ها و خرید آسان‌تر.">
     <meta name="robots" content="noindex,nofollow">
 
-    <meta name="theme-color" content="#0d1b3d">
+    <meta name="theme-color" content="#f7f7f3">
 
     <link rel="icon" type="image/png" href="{{ asset('images/brand/logo.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/brand/logo.png') }}">
@@ -18,19 +18,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)]">
+<body class="min-h-screen bg-[#f7f7f3] text-[var(--color-text-primary)]">
 
 <div class="flex min-h-screen">
 
     {{-- =========================================================
          Brand Panel
     ========================================================== --}}
-    <aside class="relative hidden w-[42%] overflow-hidden bg-[var(--color-brand-950)] lg:flex">
+    <aside class="relative hidden w-[42%] overflow-hidden bg-[#303427] lg:flex">
 
         {{-- Decorative background --}}
         <div class="absolute inset-0">
-            <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[var(--color-brand-900)] opacity-70 blur-3xl"></div>
-            <div class="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[var(--color-accent-600)] opacity-10 blur-3xl"></div>
+            <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#686438] opacity-70 blur-3xl"></div>
+            <div class="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#817d45] opacity-10 blur-3xl"></div>
 
             <div
                 class="absolute inset-0 opacity-[0.06]"
@@ -141,7 +141,7 @@
 
 
                     <div class="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent-600)]/15 text-[var(--color-accent-300)]">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#817d45]/15 text-[var(--color-accent-300)]">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 24 24"
                                  fill="none"
@@ -222,12 +222,12 @@
             {{-- Heading --}}
             <div class="mb-7">
 
-                <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-[var(--color-accent-50)] px-3.5 py-2 text-xs font-black text-[var(--color-accent-700)]">
-                    <span class="h-2 w-2 rounded-full bg-[var(--color-accent-600)]"></span>
+                <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-[#f0f0e7] px-3.5 py-2 text-xs font-black text-[#686438]">
+                    <span class="h-2 w-2 rounded-full bg-[#817d45]"></span>
                     ساخت حساب کاربری
                 </div>
 
-                <h2 class="text-2xl font-black tracking-tight text-[var(--color-brand-950)] sm:text-3xl">
+                <h2 class="text-2xl font-black tracking-tight text-[#303427] sm:text-3xl">
                     به فرزین خوش اومدی
                 </h2>
 
@@ -308,7 +308,7 @@
                             required
                             autofocus
                             placeholder="نام شما"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('name') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[#f7f7f3] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('name') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('name')
@@ -338,7 +338,7 @@
                             dir="ltr"
                             inputmode="email"
                             placeholder="you@example.com"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('email') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[#f7f7f3] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('email') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('email')
@@ -367,7 +367,7 @@
                             dir="ltr"
                             placeholder="••••••••"
                             minlength="8"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[#f7f7f3] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         <div class="mt-2 flex items-center justify-between gap-3">
@@ -402,7 +402,7 @@
                             dir="ltr"
                             placeholder="••••••••"
                             minlength="8"
-                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password_confirmation') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
+                            class="w-full rounded-2xl border border-[var(--color-border)] bg-[#f7f7f3] px-4 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition duration-200 placeholder:text-[var(--color-text-muted)] hover:border-[var(--color-border-strong)] focus:border-[#817d45] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc] @error('password_confirmation') border-red-400 focus:border-red-500 focus:ring-red-100 @enderror"
                         >
 
                         @error('password_confirmation')
@@ -415,11 +415,11 @@
 
 
                     {{-- Account Notice --}}
-                    <div class="rounded-2xl border border-[var(--color-brand-100)] bg-[var(--color-brand-50)] p-4">
+                    <div class="rounded-2xl border border-[var(--color-brand-100)] bg-[#f0f0e7] p-4">
 
                         <div class="flex items-start gap-3">
 
-                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--color-brand-700)] shadow-sm">
+                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-[#686438] shadow-sm">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 24 24"
                                      fill="none"
@@ -447,7 +447,7 @@
                     {{-- Submit --}}
                     <button
                         type="submit"
-                        class="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-accent-600)] px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-[rgba(226,31,47,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--color-accent-700)] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#e5e6dc] active:translate-y-0">
+                        class="group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#817d45] px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-[rgba(129,125,69,0.16)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#686438] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#e5e6dc] active:translate-y-0">
 
                         <span>
                             ایجاد حساب کاربری
@@ -478,7 +478,7 @@
 
                     <a
                         href="{{ route('login') }}"
-                        class="mr-1 text-sm font-black text-[var(--color-brand-700)] transition hover:text-[var(--color-accent-600)]">
+                        class="mr-1 text-sm font-black text-[#686438] transition hover:text-[#817d45]">
                         وارد شو
                     </a>
 
@@ -491,14 +491,14 @@
             <div class="mt-5 flex items-center justify-center gap-4 text-xs text-[var(--color-text-muted)]">
 
                 <a href="{{ route('home') }}"
-                   class="font-bold transition hover:text-[var(--color-brand-800)]">
+                   class="font-bold transition hover:text-[#555333]">
                     فروشگاه
                 </a>
 
                 <span class="h-1 w-1 rounded-full bg-[var(--color-border-strong)]"></span>
 
                 <a href="{{ route('contact.index') }}"
-                   class="font-bold transition hover:text-[var(--color-brand-800)]">
+                   class="font-bold transition hover:text-[#555333]">
                     تماس با ما
                 </a>
 
