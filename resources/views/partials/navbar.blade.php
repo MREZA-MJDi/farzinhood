@@ -1,6 +1,6 @@
 <nav
     x-data="{ open: false }"
-    class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_3px_18px_rgb(32_34_27_/0.035)] backdrop-blur-xl"
+    class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_3px_18px_rgb(32_34_27_/0.035)] backdrop-blur-xl {{ request()->routeIs('home') ? 'farzin-home-nav' : '' }}"
 >
     <div class="mx-auto max-w-[88rem] px-3 sm:px-6 lg:px-8">
 
