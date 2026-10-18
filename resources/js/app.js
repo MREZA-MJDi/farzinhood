@@ -215,6 +215,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileToggle = document.querySelector("[data-admin-profile-toggle]");
     const profileMenu = document.querySelector("[data-admin-profile-menu]");
     const profileChevron = document.querySelector("[data-admin-profile-chevron]");
+    const validationSummary = document.querySelector("[data-validation-summary]");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const scrollBehavior = prefersReducedMotion ? "auto" : "smooth";
+
+    if (validationSummary) {
+        window.requestAnimationFrame(() => {
+            validationSummary.focus({ preventScroll: true });
+            validationSummary.scrollIntoView({ behavior: scrollBehavior, block: "start" });
+        });
+    }
+
+    document.querySelectorAll("[data-validation-error-link]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+            const targetId = link.dataset.validationTarget;
+            const target = targetId ? document.getElementById(targetId) : null;
+            if (!target) return;
+
+            event.preventDefault();
+            target.focus({ preventScroll: true });
+            target.scrollIntoView({ behavior: scrollBehavior, block: "center" });
+        });
+    });
+
+    document.querySelectorAll("[data-alert-dismiss]").forEach((button) => {
+        button.addEventListener("click", () => {
+            button.closest("[data-dismissible-alert]")?.remove();
+        });
+    });
+
 
     const closeSidebar = () => {
         if (!sidebar || !backdrop) return;
