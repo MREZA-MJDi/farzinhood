@@ -208,7 +208,6 @@
                name="featured_image"
                accept="image/jpeg,image/png,image/webp"
                data-media-input
-               accept=".jpg,.jpeg,.png,.webp"
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
