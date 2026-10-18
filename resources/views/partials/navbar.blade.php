@@ -1,6 +1,6 @@
 <nav
     x-data="{ open: false }"
-    class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 shadow-[0_1px_12px_rgb(16_23_34_/0.04)] backdrop-blur-xl"
+    class="fz-site-nav sticky top-0 z-50 border-b bg-white/95 backdrop-blur-xl"
 >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
