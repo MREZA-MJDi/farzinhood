@@ -278,6 +278,13 @@
     </div>
 
 
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $category?->name ? $category->name . ' | فرزین' : 'عنوان دسته‌بندی | فرزین',
+        'fallbackDescription' => $category?->description ?: ($category?->name ? 'محصولات ' . $category->name . ' در فرزین.' : 'توضیحات دسته‌بندی'),
+        'fallbackUrl' => $category?->exists ? route('categories.show', $category) : '',
+        'fallbackNoindex' => $category?->noindex ?? false,
+    ])
+
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
 
