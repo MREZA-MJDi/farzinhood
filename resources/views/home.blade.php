@@ -389,7 +389,7 @@
         EDITORIAL
     ========================================================== --}}
 
-    <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section data-home-editorial class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
 
         <div
             class="overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-900)] text-white"
