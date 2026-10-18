@@ -8,7 +8,7 @@ class AddressRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user() !== null;
+        return $this->user()?->isCustomer() === true && $this->user()?->is_active === true;
     }
 
     public function rules(): array

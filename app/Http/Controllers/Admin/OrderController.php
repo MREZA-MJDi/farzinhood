@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\OrderIndexRequest;
 use App\Http\Requests\Admin\OrderStatusRequest;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class OrderController extends Controller
@@ -73,23 +74,39 @@ class OrderController extends Controller
     ): RedirectResponse {
         $validated = $request->validated();
 
-        $oldStatus = $order->status;
-        $newStatus = $validated['status'];
+        $updated = DB::transaction(function () use ($order, $validated, $request): bool {
+            $lockedOrder = Order::query()
+                ->whereKey($order->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        if ($oldStatus === $newStatus) {
-            return back();
+            $oldStatus = $lockedOrder->status;
+            $newStatus = $validated['status'];
+
+            if ($oldStatus === $newStatus) {
+                return false;
+            }
+
+            $lockedOrder->update([
+                'status' => $newStatus,
+            ]);
+
+            $lockedOrder->statusHistories()->create([
+                'from_status' => $oldStatus,
+                'to_status' => $newStatus,
+                'changed_by' => $request->user()->id,
+                'note' => $validated['note'] ?? null,
+            ]);
+
+            return true;
+        });
+
+        if (! $updated) {
+            return back()->with(
+                'info',
+                'وضعیت سفارش تغییری نکرد.'
+            );
         }
-
-        $order->update([
-            'status' => $newStatus,
-        ]);
-
-        $order->statusHistories()->create([
-            'from_status' => $oldStatus,
-            'to_status' => $newStatus,
-            'changed_by' => $request->user()->id,
-            'note' => $validated['note'] ?? null,
-        ]);
 
         return back()->with(
             'success',

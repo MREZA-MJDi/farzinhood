@@ -57,6 +57,29 @@ class BlogCategoryRequest extends FormRequest
                 'integer',
                 'min:0',
             ],
+
+            'meta_title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'meta_description' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
+
+            'canonical_url' => [
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'noindex' => [
+                'nullable',
+                'boolean',
+            ],
         ];
     }
 
@@ -66,15 +89,10 @@ class BlogCategoryRequest extends FormRequest
             'slug' => $this->filled('slug')
                 ? Str::slug($this->input('slug'))
                 : Str::slug($this->input('name', '')),
-        ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
             'is_active' => $this->boolean('is_active'),
-
-            'sort_order' => $this->integer('sort_order'),
+            'sort_order' => $this->filled('sort_order') ? $this->input('sort_order') : 0,
+            'noindex' => $this->boolean('noindex'),
         ]);
     }
+
 }

@@ -14,27 +14,60 @@
         content="{{ csrf_token() }}"
     >
 
+    @php
+        $seoSettings = \App\Models\SiteSetting::query()
+            ->whereIn('key', [
+                'site_name',
+                'site_description',
+                'default_meta_title',
+                'default_meta_description',
+            ])
+            ->pluck('value', 'key');
+
+        $siteName = trim((string) $seoSettings->get('site_name', 'فرزین')) ?: 'فرزین';
+        $defaultMetaTitle = trim((string) $seoSettings->get('default_meta_title', ''))
+            ?: $siteName . ' | فروشگاه آنلاین';
+        $defaultMetaDescription = trim((string) $seoSettings->get('default_meta_description', ''))
+            ?: trim((string) $seoSettings->get('site_description', ''))
+            ?: $siteName . ' | فروشگاه آنلاین محصولات با کیفیت';
+
+        $seoPageTitle = trim((string) $__env->yieldContent('title', $defaultMetaTitle)) ?: $defaultMetaTitle;
+        $seoPageDescription = trim((string) $__env->yieldContent('meta_description', $defaultMetaDescription)) ?: $defaultMetaDescription;
+        $defaultRobots = request()->routeIs('login', 'register', 'customer.*')
+            ? 'noindex, follow'
+            : 'index, follow';
+        $seoRobots = trim((string) $__env->yieldContent('meta_robots', $defaultRobots)) ?: $defaultRobots;
+        $seoCanonical = trim((string) $__env->yieldContent('canonical_url', url()->current())) ?: url()->current();
+        $seoOgType = trim((string) $__env->yieldContent('og_type', 'website')) ?: 'website';
+        $seoOgTitle = trim((string) $__env->yieldContent('og_title', $seoPageTitle)) ?: $seoPageTitle;
+        $seoOgDescription = trim((string) $__env->yieldContent('og_description', $seoPageDescription)) ?: $seoPageDescription;
+        $seoOgImage = trim((string) $__env->yieldContent('og_image', asset('images/brand/logo.png'))) ?: asset('images/brand/logo.png');
+        $seoTwitterTitle = trim((string) $__env->yieldContent('twitter_title', $seoPageTitle)) ?: $seoPageTitle;
+        $seoTwitterDescription = trim((string) $__env->yieldContent('twitter_description', $seoPageDescription)) ?: $seoPageDescription;
+        $seoTwitterImage = trim((string) $__env->yieldContent('twitter_image', $seoOgImage)) ?: $seoOgImage;
+    @endphp
+
     {{-- =========================================================
         Primary SEO
     ========================================================== --}}
 
     <title>
-        @yield('title', 'فرزین | فروشگاه آنلاین')
+        {{ $seoPageTitle }}
     </title>
 
     <meta
         name="description"
-        content="@yield('meta_description', 'فرزین | فروشگاه آنلاین محصولات با کیفیت')"
+        content="{{ $seoPageDescription }}"
     >
 
     <meta
         name="robots"
-        content="@yield('meta_robots', 'index, follow')"
+        content="{{ $seoRobots }}"
     >
 
     <link
         rel="canonical"
-        href="@yield('canonical_url', url()->current())"
+        href="{{ $seoCanonical }}"
     >
 
     {{-- =========================================================
@@ -48,7 +81,7 @@
 
     <meta
         name="application-name"
-        content="فرزین"
+        content="{{ $siteName }}"
     >
 
     {{-- Favicon --}}
@@ -69,27 +102,27 @@
 
     <meta
         property="og:type"
-        content="@yield('og_type', 'website')"
+        content="{{ $seoOgType }}"
     >
 
     <meta
         property="og:site_name"
-        content="فرزین"
+        content="{{ $siteName }}"
     >
 
     <meta
         property="og:title"
-        content="@yield('og_title', trim($__env->yieldContent('title', 'فرزین | فروشگاه آنلاین')))"
+        content="{{ $seoOgTitle }}"
     >
 
     <meta
         property="og:description"
-        content="@yield('og_description', trim($__env->yieldContent('meta_description', 'فرزین | فروشگاه آنلاین محصولات با کیفیت')))"
+        content="{{ $seoOgDescription }}"
     >
 
     <meta
         property="og:url"
-        content="{{ url()->current() }}"
+        content="{{ $seoCanonical }}"
     >
 
     <meta
@@ -99,7 +132,7 @@
 
     <meta
         property="og:image"
-        content="@yield('og_image', asset('images/brand/logo.png'))"
+        content="{{ $seoOgImage }}"
     >
 
     {{-- =========================================================
@@ -113,17 +146,17 @@
 
     <meta
         name="twitter:title"
-        content="@yield('twitter_title', trim($__env->yieldContent('title', 'فرزین | فروشگاه آنلاین')))"
+        content="{{ $seoTwitterTitle }}"
     >
 
     <meta
         name="twitter:description"
-        content="@yield('twitter_description', trim($__env->yieldContent('meta_description', 'فرزین | فروشگاه آنلاین محصولات با کیفیت')))"
+        content="{{ $seoTwitterDescription }}"
     >
 
     <meta
         name="twitter:image"
-        content="@yield('twitter_image', asset('images/brand/logo.png'))"
+        content="{{ $seoTwitterImage }}"
     >
 
     {{-- =========================================================
@@ -131,6 +164,11 @@
     ========================================================== --}}
 
     @if (!app()->environment('testing'))
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.4/dist/cdn.min.js"
+        ></script>
+
         @vite([
             'resources/css/app.css',
             'resources/js/app.js'

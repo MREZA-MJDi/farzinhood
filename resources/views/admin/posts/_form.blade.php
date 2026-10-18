@@ -197,6 +197,7 @@
         @endif
 
 
+<div data-media-picker data-media-ratio="1.6" data-media-max-files="1" data-media-max-size="5242880">
         <label for="featured_image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -205,18 +206,22 @@
         <input type="file"
                id="featured_image"
                name="featured_image"
-               accept=".jpg,.jpeg,.png,.webp"
+               accept="image/jpeg,image/png,image/webp"
+               data-media-input
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت
+            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت. قاب برش تصویر مقاله: ۱۶:۱۰، مشابه کارت‌های مقاله در سایت.
         </p>
+
+        <div data-media-preview aria-live="polite"></div>
 
         @error('featured_image')
         <p class="mt-2 text-xs font-medium text-red-600">
             {{ $message }}
         </p>
         @enderror
+        </div>
 
     </div>
 
@@ -423,6 +428,13 @@
 
     </div>
 
+
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $post?->meta_title ?: ($post?->title ? $post->title . ' | Farzin' : 'عنوان مقاله | Farzin'),
+        'fallbackDescription' => $post?->meta_description ?: ($post?->excerpt ?: 'خلاصه مقاله در مجله فرزین.'),
+        'fallbackUrl' => $post?->exists ? route('blog.show', $post->slug) : '',
+        'fallbackNoindex' => $post?->noindex ?? false,
+    ])
 
     {{-- Submit --}}
     <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">

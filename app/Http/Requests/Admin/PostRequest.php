@@ -106,13 +106,8 @@ class PostRequest extends FormRequest
             'slug' => $this->slug
                 ? Str::slug($this->slug)
                 : Str::slug($this->title ?? ''),
-        ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
             'noindex' => $this->boolean('noindex'),
         ]);
     }
+
 }

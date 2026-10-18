@@ -346,7 +346,7 @@
             </p>
         </div>
 
-        <div data-media-picker>
+        <div data-media-picker data-media-ratio="1" data-media-max-files="10" data-media-max-size="5242880">
             <label for="images"
                    class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
                 تصاویر جدید
@@ -355,13 +355,13 @@
             <input type="file"
                    id="images"
                    name="images[]"
+                   accept="image/jpeg,image/png,image/webp"
                    data-media-input
                    multiple
-                   accept=".jpg,.jpeg,.png,.webp"
                    class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)] hover:file:bg-[var(--color-neutral-200)] @error('images') border-red-400 @enderror">
 
             <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-                فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت برای هر تصویر
+                فرمت‌های مجاز: JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت برای هر تصویر. قاب برش محصول: مربع ۱:۱؛ می‌توانی تصویر را جابه‌جا کنی یا زوم کنی.
             </p>
             <div data-media-preview aria-live="polite"></div>
 
@@ -378,36 +378,6 @@
             @enderror
         </div>
 
-        {{-- Existing Images --}}
-        @if($isEdit && $product->images->isNotEmpty())
-            <div class="mt-6">
-                <h3 class="mb-4 text-sm font-black text-[var(--color-text-primary)]">
-                    تصاویر فعلی
-                </h3>
-
-                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                    @foreach($product->images->sortBy('sort_order') as $image)
-                        <div class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-neutral-50)]">
-                            <img src="{{ asset('storage/' . $image->image) }}"
-                                 alt="{{ $image->alt ?: $product->name }}"
-                                 class="aspect-square w-full object-cover">
-
-                            <div class="p-3">
-                                @if($image->is_primary)
-                                    <span class="inline-flex rounded-full bg-[var(--color-brand-50)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-brand-700)]">
-                                        تصویر اصلی
-                                    </span>
-                                @else
-                                    <span class="inline-flex rounded-full bg-[var(--color-neutral-100)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-text-secondary)]">
-                                        تصویر محصول
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
     </div>
 
 
@@ -517,6 +487,13 @@
         </div>
     </div>
 
+
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $product?->name ? $product->name . ' | فرزین' : 'عنوان محصول | فرزین',
+        'fallbackDescription' => $product?->short_description ?: ($product?->name ?? 'توضیحات محصول'),
+        'fallbackUrl' => $product?->exists ? route('products.show', $product) : '',
+        'fallbackNoindex' => $product?->noindex ?? false,
+    ])
 
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">

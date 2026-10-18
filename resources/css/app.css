@@ -1302,6 +1302,23 @@ input[type="radio"] {
     white-space: nowrap;
 }
 
+.media-picker__feedback {
+    margin-top: .65rem;
+    border: 1px solid var(--color-border);
+    border-radius: .7rem;
+    padding: .65rem .8rem;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: .7rem;
+    line-height: 1.75;
+}
+
+.media-picker__feedback--error {
+    border-color: var(--color-danger-100);
+    background: var(--color-danger-50);
+    color: var(--color-danger-700);
+}
+
 .media-picker__crop,
 .media-picker__remove {
     min-height: 1.9rem;

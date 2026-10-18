@@ -74,36 +74,38 @@ class ProductController extends Controller
 
         unset($validated['images']);
 
-        $product = DB::transaction(function () use (
-            $validated,
-            $imageFiles,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
+        $storedImagePaths = [];
 
-            $productData = $validated;
+        try {
+            $product = DB::transaction(function () use (
+                $validated,
+                $imageFiles,
+                $seoService,
+                &$storedImagePaths
+            ) {
+                $seoData = $seoService->data($validated);
+                $productData = $validated;
 
-            unset(
-                $productData['meta_title'],
-                $productData['meta_description'],
-                $productData['canonical_url'],
-                $productData['noindex']
-            );
+                unset(
+                    $productData['meta_title'],
+                    $productData['meta_description'],
+                    $productData['canonical_url'],
+                    $productData['noindex']
+                );
 
-            $product = Product::create($productData);
+                $product = Product::create($productData);
+                $seoService->apply($product, $seoData);
+                $this->storeImages($product, $imageFiles, $storedImagePaths);
 
-            $seoService->apply(
-                $product,
-                $seoData
-            );
+                return $product;
+            });
+        } catch (\Throwable $exception) {
+            foreach ($storedImagePaths as $path) {
+                Storage::disk('public')->delete($path);
+            }
 
-            $this->storeImages(
-                $product,
-                $imageFiles
-            );
-
-            return $product;
-        });
+            throw $exception;
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -148,35 +150,42 @@ class ProductController extends Controller
 
         unset($validated['images']);
 
-        DB::transaction(function () use (
-            $validated,
-            $imageFiles,
-            $product,
-            $seoService
-        ) {
-            $seoData = $seoService->data($validated);
+        $storedImagePaths = [];
 
-            $productData = $validated;
-
-            unset(
-                $productData['meta_title'],
-                $productData['meta_description'],
-                $productData['canonical_url'],
-                $productData['noindex']
-            );
-
-            $product->update($productData);
-
-            $seoService->apply(
+        try {
+            DB::transaction(function () use (
+                $validated,
+                $imageFiles,
                 $product,
-                $seoData
-            );
+                $seoService,
+                &$storedImagePaths
+            ): void {
+                $lockedProduct = Product::query()
+                    ->whereKey($product->getKey())
+                    ->lockForUpdate()
+                    ->firstOrFail();
 
-            $this->storeImages(
-                $product,
-                $imageFiles
-            );
-        });
+                $seoData = $seoService->data($validated);
+                $productData = $validated;
+
+                unset(
+                    $productData['meta_title'],
+                    $productData['meta_description'],
+                    $productData['canonical_url'],
+                    $productData['noindex']
+                );
+
+                $lockedProduct->update($productData);
+                $seoService->apply($lockedProduct, $seoData);
+                $this->storeImages($lockedProduct, $imageFiles, $storedImagePaths);
+            });
+        } catch (\Throwable $exception) {
+            foreach ($storedImagePaths as $path) {
+                Storage::disk('public')->delete($path);
+            }
+
+            throw $exception;
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -185,15 +194,28 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        $product->load('images');
+        $imagePaths = DB::transaction(function () use ($product): array {
+            $lockedProduct = Product::query()
+                ->whereKey($product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        DB::transaction(function () use ($product) {
-            foreach ($product->images as $image) {
-                $this->deleteImageFile($image);
-            }
+            $paths = $lockedProduct->images()
+                ->whereNotNull('image')
+                ->pluck('image')
+                ->all();
 
-            $product->delete();
+            $lockedProduct->images()->delete();
+            $lockedProduct->delete();
+
+            return $paths;
         });
+
+        foreach ($imagePaths as $path) {
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
 
         return redirect()
             ->route('admin.products.index')
@@ -202,26 +224,41 @@ class ProductController extends Controller
 
     public function destroyImage(ProductImage $productImage): RedirectResponse
     {
-        $product = $productImage->product;
+        $path = DB::transaction(function () use ($productImage): ?string {
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $wasPrimary = $productImage->is_primary;
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $this->deleteImageFile($productImage);
+            $wasPrimary = $image->is_primary;
+            $path = $image->image;
 
-        $productImage->delete();
+            $image->delete();
 
-        if ($wasPrimary) {
-            $nextImage = $product
-                ->images()
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->first();
+            if ($wasPrimary) {
+                $nextImage = $product->images()
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->first();
 
-            if ($nextImage) {
-                $nextImage->update([
-                    'is_primary' => true,
-                ]);
+                if ($nextImage) {
+                    $nextImage->update([
+                        'is_primary' => true,
+                    ]);
+                }
             }
+
+            return $path;
+        });
+
+        if ($path && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
         }
 
         return back()->with(
@@ -233,17 +270,23 @@ class ProductController extends Controller
     public function setPrimaryImage(
         ProductImage $productImage
     ): RedirectResponse {
-        $product = $productImage->product;
+        DB::transaction(function () use ($productImage): void {
+            $product = Product::query()
+                ->whereKey($productImage->product_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        DB::transaction(function () use (
-            $product,
-            $productImage
-        ) {
+            $image = ProductImage::query()
+                ->whereKey($productImage->getKey())
+                ->where('product_id', $product->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
             $product->images()->update([
                 'is_primary' => false,
             ]);
 
-            $productImage->update([
+            $image->update([
                 'is_primary' => true,
             ]);
         });
@@ -256,30 +299,36 @@ class ProductController extends Controller
 
     private function storeImages(
         Product $product,
-        array $files
+        array $files,
+        array &$storedImagePaths
     ): void {
         if (empty($files)) {
             return;
         }
+
+        $product = Product::query()
+            ->whereKey($product->getKey())
+            ->lockForUpdate()
+            ->firstOrFail();
 
         $hasPrimaryImage = $product
             ->images()
             ->where('is_primary', true)
             ->exists();
 
-        $nextSortOrder = (int) (
-                $product->images()->max('sort_order') ?? -1
-            ) + 1;
+        $nextSortOrder = (int) ($product->images()->max('sort_order') ?? -1) + 1;
 
         foreach ($files as $index => $file) {
-            $path = $file->store(
-                'products',
-                'public'
-            );
+            $path = $file->store('products', 'public');
 
-            $isPrimary = ! $hasPrimaryImage && $index === 0;
+            if (! $path) {
+                throw new \RuntimeException('The product image could not be stored.');
+            }
 
-            $image = ProductImage::create([
+            $storedImagePaths[] = $path;
+            $isPrimary = ! $hasPrimaryImage;
+
+            ProductImage::create([
                 'product_id' => $product->id,
                 'image' => $path,
                 'alt' => $product->name,
@@ -293,16 +342,4 @@ class ProductController extends Controller
         }
     }
 
-    private function deleteImageFile(
-        ProductImage $image
-    ): void {
-        if (
-            $image->image &&
-            Storage::disk('public')->exists($image->image)
-        ) {
-            Storage::disk('public')->delete(
-                $image->image
-            );
-        }
-    }
 }

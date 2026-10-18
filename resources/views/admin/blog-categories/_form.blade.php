@@ -157,6 +157,7 @@
         @endif
 
 
+<div data-media-picker data-media-ratio="1" data-media-max-files="1" data-media-max-size="5242880">
         <label for="image"
                class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
             {{ $isEdit ? 'تصویر جدید' : 'تصویر' }}
@@ -165,18 +166,22 @@
         <input type="file"
                id="image"
                name="image"
-               accept=".jpg,.jpeg,.png,.webp"
+               accept="image/jpeg,image/png,image/webp"
+               data-media-input
                class="block w-full rounded-xl border border-[var(--color-border)] bg-white text-sm text-[var(--color-text-secondary)] file:mr-0 file:border-0 file:bg-[var(--color-neutral-100)] file:px-5 file:py-3 file:text-sm file:font-bold file:text-[var(--color-text-primary)]">
 
         <p class="mt-2 text-xs text-[var(--color-text-muted)]">
-            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت
+            JPG, JPEG, PNG, WEBP — حداکثر ۵ مگابایت. قاب برش دسته‌بندی مقاله: مربع ۱:۱.
         </p>
+
+        <div data-media-preview aria-live="polite"></div>
 
         @error('image')
         <p class="mt-2 text-xs font-medium text-red-600">
             {{ $message }}
         </p>
         @enderror
+        </div>
 
     </div>
 
@@ -305,6 +310,13 @@
 
     </div>
 
+
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $category?->meta_title ?: ($category?->name ? $category->name . ' | مجله فرزین' : 'عنوان دسته‌بندی | مجله فرزین'),
+        'fallbackDescription' => $category?->meta_description ?: ($category?->description ?: 'راهنماها و مقاله‌های مجله فرزین.'),
+        'fallbackUrl' => $category?->exists ? route('blog.index', ['category' => $category->slug]) : '',
+        'fallbackNoindex' => $category?->noindex ?? false,
+    ])
 
     {{-- Status --}}
     <div class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
