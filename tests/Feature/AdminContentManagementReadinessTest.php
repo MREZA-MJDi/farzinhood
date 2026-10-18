@@ -392,6 +392,8 @@ class AdminContentManagementReadinessTest extends TestCase
 
     public function test_authentication_pages_are_noindexed_by_default(): void
     {
+        $this->withoutVite();
+
         $this->get(route('login'))
             ->assertOk()
             ->assertSee('noindex, follow');
