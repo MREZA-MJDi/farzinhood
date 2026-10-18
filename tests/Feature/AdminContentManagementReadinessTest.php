@@ -284,6 +284,14 @@ class AdminContentManagementReadinessTest extends TestCase
             $this->get(route($routeName))
                 ->assertOk();
         }
+
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('data-admin-sidebar', false)
+            ->assertSee('data-admin-sidebar-open', false)
+            ->assertSee('data-admin-profile-menu', false)
+            ->assertDontSee('x-data=', false)
+            ->assertDontSee('x-show=', false);
     }
 
 
@@ -525,6 +533,26 @@ class AdminContentManagementReadinessTest extends TestCase
         $this->assertFalse($blogCategory->refresh()->is_active);
         $this->assertFalse($blogCategory->noindex);
         $this->assertFalse($post->refresh()->noindex);
+    }
+
+
+    public function test_saved_seo_settings_are_escaped_before_rendering_html_attributes(): void
+    {
+        $payload = '<script>alert("seo")</script>';
+
+        $this->actingAs($this->admin('admin-seo-escaping@example.com'))
+            ->put(route('admin.settings.update'), [
+                'site_name' => $payload,
+                'site_description' => 'Description',
+                'default_meta_title' => $payload,
+                'default_meta_description' => $payload,
+            ])
+            ->assertRedirect();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee($payload, false)
+            ->assertSee('&lt;script&gt;alert(&quot;seo&quot;)&lt;/script&gt;', false);
     }
 
 }
