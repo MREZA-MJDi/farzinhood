@@ -161,6 +161,11 @@
     ========================================================== --}}
 
     @if (!app()->environment('testing'))
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.4/dist/cdn.min.js"
+        ></script>
+
         @vite([
             'resources/css/app.css',
             'resources/js/app.js'
