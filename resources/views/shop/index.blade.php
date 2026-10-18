@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <section class="shop-page__hero-shell mx-auto max-w-7xl px-3 pt-3 sm:px-6 lg:px-8 lg:pt-6">
+    <section class="shop-page__hero-shell mx-auto max-w-[88rem] px-3 pt-3 sm:px-6 lg:px-8 lg:pt-6">
         <div class="shop-hero">
             <div class="shop-hero__frame">
                 <div class="shop-hero__media" aria-hidden="true">
@@ -25,13 +25,13 @@
 
                 <div class="shop-hero__content">
                     <div class="shop-hero__eyebrow">
-                        <span>FARZIN / SHOP</span>
+                        <span>فرزین / فروشگاه</span>
                         <span class="shop-hero__line"></span>
-                        <span>COLLECTION</span>
+                        <span>مجموعه محصولات</span>
                     </div>
 
                     <div class="shop-hero__copy">
-                        <p>FARZIN KITCHEN / HOOD & SINK</p>
+                        <p>تجهیزات آشپزخانه / هود و سینک</p>
 
                         <h1>
                             هود و سینک،
@@ -124,7 +124,7 @@
         <form
             action="{{ route('shop.index') }}"
             method="GET"
-            class="mt-8 rounded-[1.75rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm"
+            class="mt-8 rounded-[1.1rem] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm"
         >
             <div class="grid gap-3 md:grid-cols-[1fr_auto]">
 
@@ -289,7 +289,7 @@
             <div class="min-w-0">
                 <div class="shop-results-toolbar" aria-label="ابزارهای کاتالوگ">
                     <div>
-                        <span class="shop-results-toolbar__eyebrow">CATALOG</span>
+                        <span class="shop-results-toolbar__eyebrow">فروشگاه فرزین</span>
                         <strong>{{ number_format($products->total()) }} محصول</strong>
                     </div>
 
