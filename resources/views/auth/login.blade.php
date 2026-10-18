@@ -44,10 +44,12 @@
         href="{{ asset('images/brand/logo.png') }}"
     >
 
+    @if (!app()->environment('testing'))
     @vite([
-    'resources/css/app.css',
-    'resources/js/app.js'
-    ])
+        'resources/css/app.css',
+        'resources/js/app.js'
+        ])
+    @endif
 </head>
 
 <body class="min-h-screen bg-[var(--color-neutral-50)] text-[var(--color-text-primary)] antialiased">
