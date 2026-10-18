@@ -178,7 +178,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f5f0] text-gray-900 antialiased fz-public-shell">
+<body class="min-h-screen bg-[#f7f5f0] text-gray-900 antialiased fz-public-shell {{ request()->routeIs("customer.dashboard") ? "fz-dashboard" : "" }}">
 
 {{-- =========================================================
     Navbar
