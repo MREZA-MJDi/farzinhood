@@ -14,12 +14,12 @@
         {{-- =========================================================
             HERO
         ========================================================== --}}
-        <div class="relative overflow-hidden rounded-[2.5rem] bg-[var(--color-brand-950)] px-7 py-12 text-white shadow-[0_24px_70px_rgba(13,27,61,0.16)] sm:px-10 lg:px-14 lg:py-16">
+        <div class="relative overflow-hidden rounded-[2.5rem] bg-[#303427] px-7 py-12 text-white shadow-[0_24px_70px_rgba(13,27,61,0.16)] sm:px-10 lg:px-14 lg:py-16">
 
             {{-- Decorative elements --}}
-            <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[var(--color-brand-900)] opacity-80 blur-3xl"></div>
+            <div class="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-[#686438] opacity-80 blur-3xl"></div>
 
-            <div class="absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-[var(--color-accent-600)] opacity-10 blur-3xl"></div>
+            <div class="absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-[#817d45] opacity-10 blur-3xl"></div>
 
             <div
                 class="absolute inset-0 opacity-[0.045]"
@@ -40,7 +40,7 @@
 
                 <h1 class="mt-5 text-4xl font-black leading-[1.25] tracking-tight sm:text-5xl lg:text-6xl">
                     قبل از خرید،
-                    <span class="text-[var(--color-accent-400)]">
+                    <span class="text-[#d4d0a9]">
                         هوشمندانه انتخاب کن.
                     </span>
                 </h1>
@@ -55,7 +55,7 @@
 
                     <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 font-bold text-white/65 backdrop-blur-sm">
                         <svg
-                            class="h-4 w-4 text-[var(--color-accent-400)]"
+                            class="h-4 w-4 text-[#d4d0a9]"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -78,7 +78,7 @@
 
                     <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 font-bold text-white/65 backdrop-blur-sm">
                         <svg
-                            class="h-4 w-4 text-[var(--color-accent-400)]"
+                            class="h-4 w-4 text-[#d4d0a9]"
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
@@ -153,14 +153,14 @@
                             name="search"
                             value="{{ $search ?? request('search') }}"
                             placeholder="جستجو در مطالب..."
-                            class="w-full rounded-xl bg-[var(--color-neutral-50)] py-3.5 pl-5 pr-12 text-sm text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-muted)] hover:bg-[var(--color-neutral-100)] focus:bg-white focus:ring-4 focus:ring-[var(--color-brand-100)]"
+                            class="w-full rounded-xl bg-[#f7f7f3] py-3.5 pl-5 pr-12 text-sm text-[var(--color-text-primary)] outline-none transition placeholder:text-[var(--color-text-muted)] hover:bg-[#f0f0e9] focus:bg-white focus:ring-4 focus:ring-[#e5e6dc]"
                         >
 
                     </div>
 
                     <button
                         type="submit"
-                        class="shrink-0 rounded-xl bg-[var(--color-brand-900)] px-5 py-3.5 text-sm font-black text-white transition hover:bg-[var(--color-brand-950)] focus:outline-none focus:ring-4 focus:ring-[var(--color-brand-100)]"
+                        class="shrink-0 rounded-xl bg-[#686438] px-5 py-3.5 text-sm font-black text-white transition hover:bg-[#303427] focus:outline-none focus:ring-4 focus:ring-[#e5e6dc]"
                     >
                         جستجو
                     </button>
@@ -179,8 +179,8 @@
                         href="{{ route('blog.index') }}"
                         class="rounded-xl px-4 py-3 text-xs font-black transition
                         {{ empty($category)
-                            ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-800)]'
-                            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                            ? 'bg-[#f0f0e7] text-[#555333]'
+                            : 'text-[var(--color-text-muted)] hover:bg-[#f7f7f3] hover:text-[var(--color-text-primary)]' }}"
                     >
                         همه مطالب
                     </a>
@@ -191,8 +191,8 @@
                             href="{{ route('blog.index', ['category' => $blogCategory->slug]) }}"
                             class="rounded-xl px-4 py-3 text-xs font-black transition
                             {{ ($category ?? '') === $blogCategory->slug
-                                ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-800)]'
-                                : 'text-[var(--color-text-muted)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                                ? 'bg-[#f0f0e7] text-[#555333]'
+                                : 'text-[var(--color-text-muted)] hover:bg-[#f7f7f3] hover:text-[var(--color-text-primary)]' }}"
                         >
                             {{ $blogCategory->name }}
                         </a>
@@ -215,7 +215,7 @@
 
                 <div class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-600)]">
 
-                    <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-600)]"></span>
+                    <span class="h-1.5 w-1.5 rounded-full bg-[#817d45]"></span>
 
                     Articles
 
@@ -227,7 +227,7 @@
 
             </div>
 
-            <div class="rounded-full bg-[var(--color-neutral-100)] px-3 py-1.5 text-xs font-bold text-[var(--color-text-muted)]">
+            <div class="rounded-full bg-[#f0f0e9] px-3 py-1.5 text-xs font-bold text-[var(--color-text-muted)]">
                 {{ $posts->total() }} مطلب
             </div>
 
@@ -253,7 +253,7 @@
                             class="block"
                         >
 
-                            <div class="relative aspect-[1.45] overflow-hidden bg-[var(--color-neutral-100)]">
+                            <div class="relative aspect-[1.45] overflow-hidden bg-[#f0f0e9]">
 
                                 @if($post->featured_image)
 
@@ -268,7 +268,7 @@
 
                                     <div class="flex h-full items-center justify-center bg-gradient-to-br from-[var(--color-neutral-100)] to-[var(--color-brand-100)]">
 
-                                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--color-brand-200)] bg-white/70 text-[var(--color-brand-700)] shadow-sm">
+                                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--color-brand-200)] bg-white/70 text-[#686438] shadow-sm">
 
                                             <svg
                                                 class="h-7 w-7"
@@ -304,7 +304,7 @@
                                 {{-- Category --}}
                                 @if($post->category)
 
-                                    <div class="absolute right-4 top-4 rounded-full border border-white/60 bg-white/95 px-3 py-1.5 text-[10px] font-black text-[var(--color-brand-800)] shadow-sm backdrop-blur">
+                                    <div class="absolute right-4 top-4 rounded-full border border-white/60 bg-white/95 px-3 py-1.5 text-[10px] font-black text-[#555333] shadow-sm backdrop-blur">
                                         {{ $post->category->name }}
                                     </div>
 
@@ -341,7 +341,7 @@
                             </div>
 
 
-                            <h3 class="mt-4 line-clamp-2 text-xl font-black leading-8 text-[var(--color-text-primary)] transition group-hover:text-[var(--color-brand-800)]">
+                            <h3 class="mt-4 line-clamp-2 text-xl font-black leading-8 text-[var(--color-text-primary)] transition group-hover:text-[#555333]">
 
                                 <a href="{{ route('blog.show', $post) }}">
                                     {{ $post->title }}
@@ -394,7 +394,7 @@
             ====================================================== --}}
             <div class="mt-8 rounded-[2rem] border border-dashed border-[var(--color-border-strong)] bg-white px-6 py-24 text-center">
 
-                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-brand-50)] text-[var(--color-brand-700)]">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f0f0e7] text-[#686438]">
 
                     <svg
                         class="h-7 w-7"
@@ -419,7 +419,7 @@
 
                 <a
                     href="{{ route('blog.index') }}"
-                    class="mt-6 inline-flex rounded-xl bg-[var(--color-brand-900)] px-5 py-3.5 text-sm font-black text-white transition hover:bg-[var(--color-brand-950)] focus:outline-none focus:ring-4 focus:ring-[var(--color-brand-100)]"
+                    class="mt-6 inline-flex rounded-xl bg-[#686438] px-5 py-3.5 text-sm font-black text-white transition hover:bg-[#303427] focus:outline-none focus:ring-4 focus:ring-[#e5e6dc]"
                 >
                     نمایش همه مطالب
                 </a>
