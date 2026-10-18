@@ -294,7 +294,6 @@
             id="mobile-navigation"
             x-show="open"
             x-cloak
-            x-collapse
             class="border-t border-[var(--color-border)] py-4 lg:hidden"
         >
 
