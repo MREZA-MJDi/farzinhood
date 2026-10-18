@@ -140,7 +140,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased">
+<body class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased {{ request()->routeIs('home', 'shop.*', 'categories.*', 'products.*', 'cart.*', 'checkout.*', 'customer.*', 'login', 'register', 'blog.*') ? 'farzin-storefront' : '' }}">
 
 {{-- =========================================================
     Navbar
