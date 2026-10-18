@@ -43,7 +43,7 @@
 
     <meta
         name="theme-color"
-        content="#0d1b3d"
+        content="#f7f7f3"
     >
 
     <meta
@@ -140,7 +140,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen bg-[#f7f8fa] text-gray-900 antialiased">
+<body class="min-h-screen bg-[#f7f7f3] text-gray-900 antialiased">
 
 {{-- =========================================================
     Navbar
