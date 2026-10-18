@@ -9,11 +9,11 @@
     <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
 
         {{-- Header --}}
-        <div class="relative overflow-hidden rounded-[2.5rem] bg-[#20133d] p-7 text-white shadow-xl shadow-[#3f207e]/10 sm:p-10">
+        <div class="relative overflow-hidden rounded-[2.5rem] bg-[#303427] p-7 text-white shadow-xl shadow-[#686438]/10 sm:p-10">
 
-            <div class="absolute -left-20 -top-20 size-64 rounded-full bg-[#7b20df]/20 blur-3xl"></div>
+            <div class="absolute -left-20 -top-20 size-64 rounded-full bg-[#817d45]/20 blur-3xl"></div>
 
-            <div class="absolute -bottom-28 right-1/3 size-72 rounded-full bg-fuchsia-500/10 blur-3xl"></div>
+            <div class="absolute -bottom-28 right-1/3 size-72 rounded-full bg-stone-400/10 blur-3xl"></div>
 
             <div class="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
 
@@ -33,7 +33,7 @@
 
                 <a
                     href="{{ route('customer.orders.index') }}"
-                    class="inline-flex items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-sm font-bold text-[#3f207e] transition hover:-translate-y-0.5"
+                    class="inline-flex items-center justify-center gap-3 rounded-2xl bg-white px-5 py-3.5 text-sm font-bold text-[#686438] transition hover:-translate-y-0.5"
                 >
                     مشاهده سفارش‌ها
                     <span>←</span>
@@ -47,42 +47,42 @@
         {{-- Quick Stats --}}
         <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-            <div class="rounded-[1.75rem] border border-gray-200 bg-white p-5">
-                <div class="text-xs font-bold text-gray-400">
+            <div class="rounded-[1.75rem] border border-[#e7e7df] bg-white p-5">
+                <div class="text-xs font-bold text-[#929489]">
                     سفارش‌ها
                 </div>
 
-                <div class="mt-3 text-3xl font-black text-gray-950">
+                <div class="mt-3 text-3xl font-black text-[#292b24]">
                     {{ auth()->user()->orders()->count() }}
                 </div>
             </div>
 
-            <div class="rounded-[1.75rem] border border-gray-200 bg-white p-5">
-                <div class="text-xs font-bold text-gray-400">
+            <div class="rounded-[1.75rem] border border-[#e7e7df] bg-white p-5">
+                <div class="text-xs font-bold text-[#929489]">
                     علاقه‌مندی‌ها
                 </div>
 
-                <div class="mt-3 text-3xl font-black text-gray-950">
+                <div class="mt-3 text-3xl font-black text-[#292b24]">
                     {{ auth()->user()->wishlists()->count() }}
                 </div>
             </div>
 
-            <div class="rounded-[1.75rem] border border-gray-200 bg-white p-5">
-                <div class="text-xs font-bold text-gray-400">
+            <div class="rounded-[1.75rem] border border-[#e7e7df] bg-white p-5">
+                <div class="text-xs font-bold text-[#929489]">
                     آدرس‌ها
                 </div>
 
-                <div class="mt-3 text-3xl font-black text-gray-950">
+                <div class="mt-3 text-3xl font-black text-[#292b24]">
                     {{ auth()->user()->addresses()->count() }}
                 </div>
             </div>
 
-            <div class="rounded-[1.75rem] border border-gray-200 bg-white p-5">
-                <div class="text-xs font-bold text-gray-400">
+            <div class="rounded-[1.75rem] border border-[#e7e7df] bg-white p-5">
+                <div class="text-xs font-bold text-[#929489]">
                     ایمیل
                 </div>
 
-                <div class="mt-3 truncate text-sm font-black text-gray-950">
+                <div class="mt-3 truncate text-sm font-black text-[#292b24]">
                     {{ auth()->user()->email }}
                 </div>
             </div>
@@ -94,23 +94,23 @@
         <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_330px]">
 
             {{-- Recent Orders --}}
-            <section class="overflow-hidden rounded-[2rem] border border-gray-200 bg-white">
+            <section class="overflow-hidden rounded-[2rem] border border-[#e7e7df] bg-white">
 
-                <div class="flex items-center justify-between border-b border-gray-100 px-6 py-6">
+                <div class="flex items-center justify-between border-b border-[#efefe9] px-6 py-6">
 
                     <div>
-                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                             Recent Orders
                         </div>
 
-                        <h2 class="mt-2 text-xl font-black text-gray-950">
+                        <h2 class="mt-2 text-xl font-black text-[#292b24]">
                             سفارش‌های اخیر
                         </h2>
                     </div>
 
                     <a
                         href="{{ route('customer.orders.index') }}"
-                        class="text-xs font-bold text-[#3f207e] hover:text-[#7b20df]"
+                        class="text-xs font-bold text-[#686438] hover:text-[#817d45]"
                     >
                         همه سفارش‌ها ←
                     </a>
@@ -130,16 +130,16 @@
 
                 @if($recentOrders->isNotEmpty())
 
-                    <div class="divide-y divide-gray-100">
+                    <div class="divide-y divide-[#efefe9]">
 
                         @foreach($recentOrders as $order)
 
                             <a
                                 href="{{ route('customer.orders.show', $order) }}"
-                                class="flex items-center gap-4 px-6 py-5 transition hover:bg-gray-50/70"
+                                class="flex items-center gap-4 px-6 py-5 transition hover:bg-[#f7f7f3]"
                             >
 
-                                <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-[#f3edfb] text-xs font-black text-[#3f207e]">
+                                <div class="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-[#f0f0e7] text-xs font-black text-[#686438]">
                                     #
                                 </div>
 
@@ -147,17 +147,17 @@
 
                                     <div class="flex flex-wrap items-center gap-2">
 
-                                    <span class="text-sm font-black text-gray-900">
+                                    <span class="text-sm font-black text-[#292b24]">
                                         {{ $order->order_number }}
                                     </span>
 
-                                        <span class="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] font-bold text-gray-500">
+                                        <span class="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] font-bold text-[#6f7168]">
                                         {{ $order->items_count }} آیتم
                                     </span>
 
                                     </div>
 
-                                    <div class="mt-1 text-xs text-gray-400">
+                                    <div class="mt-1 text-xs text-[#929489]">
                                         {{ $order->created_at?->format('Y/m/d H:i') }}
                                     </div>
 
@@ -165,15 +165,15 @@
 
                                 <div class="text-left">
 
-                                    <div class="text-sm font-black text-gray-950">
+                                    <div class="text-sm font-black text-[#292b24]">
                                         {{ number_format($order->total) }}
-                                        <span class="text-[10px] font-semibold text-gray-400">
+                                        <span class="text-[10px] font-semibold text-[#929489]">
                                         تومان
                                     </span>
                                     </div>
 
                                     <div class="mt-1 text-[10px] font-bold
-                                    {{ $order->status === 'delivered' ? 'text-emerald-600' : ($order->status === 'cancelled' ? 'text-red-600' : 'text-[#7b20df]') }}"
+                                    {{ $order->status === 'delivered' ? 'text-emerald-600' : ($order->status === 'cancelled' ? 'text-red-600' : 'text-[#817d45]') }}"
                                     >
                                         {{ match($order->status) {
                                             'pending' => 'در انتظار پرداخت',
@@ -201,21 +201,21 @@
 
                     <div class="px-6 py-16 text-center">
 
-                        <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#f3edfb] text-[#3f207e]">
+                        <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-[#f0f0e7] text-[#686438]">
                             🛍
                         </div>
 
-                        <h3 class="mt-4 text-base font-black text-gray-950">
+                        <h3 class="mt-4 text-base font-black text-[#292b24]">
                             هنوز سفارشی ثبت نکردی
                         </h3>
 
-                        <p class="mt-2 text-xs leading-6 text-gray-500">
+                        <p class="mt-2 text-xs leading-6 text-[#6f7168]">
                             اولین خریدت رو از Farzin شروع کن.
                         </p>
 
                         <a
                             href="{{ route('shop.index') }}"
-                            class="mt-5 inline-flex rounded-xl bg-[#3f207e] px-5 py-3 text-xs font-bold text-white"
+                            class="mt-5 inline-flex rounded-xl bg-[#686438] px-5 py-3 text-xs font-bold text-white"
                         >
                             رفتن به فروشگاه
                         </a>
@@ -230,13 +230,13 @@
             {{-- Account Links --}}
             <aside class="space-y-4">
 
-                <div class="rounded-[2rem] border border-gray-200 bg-white p-5">
+                <div class="rounded-[2rem] border border-[#e7e7df] bg-white p-5">
 
-                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#7b20df]">
+                    <div class="text-xs font-bold uppercase tracking-[0.2em] text-[#817d45]">
                         Account
                     </div>
 
-                    <h2 class="mt-2 text-xl font-black text-gray-950">
+                    <h2 class="mt-2 text-xl font-black text-[#292b24]">
                         مدیریت حساب
                     </h2>
 
@@ -245,7 +245,7 @@
 
                         <a
                             href="{{ route('customer.orders.index') }}"
-                            class="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4 text-sm font-bold text-gray-700 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                            class="flex items-center justify-between rounded-2xl bg-[#f7f7f3] px-4 py-4 text-sm font-bold text-[#515349] transition hover:bg-[#f0f0e7] hover:text-[#686438]"
                         >
                             <span>سفارش‌های من</span>
                             <span>←</span>
@@ -253,7 +253,7 @@
 
                         <a
                             href="{{ route('customer.wishlist.index') }}"
-                            class="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4 text-sm font-bold text-gray-700 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                            class="flex items-center justify-between rounded-2xl bg-[#f7f7f3] px-4 py-4 text-sm font-bold text-[#515349] transition hover:bg-[#f0f0e7] hover:text-[#686438]"
                         >
                             <span>علاقه‌مندی‌ها</span>
                             <span>←</span>
@@ -261,7 +261,7 @@
 
                         <a
                             href="{{ route('customer.addresses.index') }}"
-                            class="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4 text-sm font-bold text-gray-700 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                            class="flex items-center justify-between rounded-2xl bg-[#f7f7f3] px-4 py-4 text-sm font-bold text-[#515349] transition hover:bg-[#f0f0e7] hover:text-[#686438]"
                         >
                             <span>آدرس‌ها</span>
                             <span>←</span>
@@ -269,7 +269,7 @@
 
                         <a
                             href="{{ route('customer.settings.index') }}"
-                            class="flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4 text-sm font-bold text-gray-700 transition hover:bg-[#f3edfb] hover:text-[#3f207e]"
+                            class="flex items-center justify-between rounded-2xl bg-[#f7f7f3] px-4 py-4 text-sm font-bold text-[#515349] transition hover:bg-[#f0f0e7] hover:text-[#686438]"
                         >
                             <span>تنظیمات حساب</span>
                             <span>←</span>
