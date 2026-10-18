@@ -57,6 +57,29 @@ class BlogCategoryRequest extends FormRequest
                 'integer',
                 'min:0',
             ],
+
+            'meta_title' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'meta_description' => [
+                'nullable',
+                'string',
+                'max:500',
+            ],
+
+            'canonical_url' => [
+                'nullable',
+                'url',
+                'max:2048',
+            ],
+
+            'noindex' => [
+                'nullable',
+                'boolean',
+            ],
         ];
     }
 
@@ -75,6 +98,7 @@ class BlogCategoryRequest extends FormRequest
             'is_active' => $this->boolean('is_active'),
 
             'sort_order' => $this->integer('sort_order'),
+            'noindex' => $this->boolean('noindex'),
         ]);
     }
 }
