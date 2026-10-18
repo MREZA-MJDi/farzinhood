@@ -67,7 +67,7 @@
 
             @if($items->isEmpty())
 
-                <div class="mt-10 overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[var(--shadow-xs)]">
+                <div class="mt-10 overflow-hidden rounded-[2rem] border border-[var(--color-border)] bg-white shadow-[0_2px_10px_rgb(35_38_28_/0.035)]">
 
                     <div class="relative flex flex-col items-center overflow-hidden px-6 py-20 text-center sm:py-28">
 
@@ -164,7 +164,7 @@
                             @if($product)
 
                                 <article
-                                    class="group rounded-[2rem] border border-[var(--color-border)] bg-white p-4 shadow-[var(--shadow-xs)] transition duration-300 hover:-translate-y-0.5 hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-sm)] sm:p-5"
+                                    class="group rounded-[2rem] border border-[var(--color-border)] bg-white p-4 shadow-[0_2px_10px_rgb(35_38_28_/0.035)] transition duration-300 hover:-translate-y-0.5 hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-sm)] sm:p-5"
                                 >
 
                                     <div class="flex flex-col gap-5 sm:flex-row">
