@@ -501,6 +501,7 @@ class AdminContentManagementReadinessTest extends TestCase
         $this->put(route('admin.categories.update', $category), [
             'name' => $category->name,
             'slug' => $category->slug,
+            'sort_order' => $category->sort_order,
         ])->assertRedirect(route('admin.categories.index'));
 
         $this->put(route('admin.products.update', $product), [
@@ -515,6 +516,7 @@ class AdminContentManagementReadinessTest extends TestCase
         $this->put(route('admin.blog-categories.update', $blogCategory), [
             'name' => $blogCategory->name,
             'slug' => $blogCategory->slug,
+            'sort_order' => $blogCategory->sort_order,
         ])->assertRedirect(route('admin.blog-categories.index'));
 
         $this->put(route('admin.posts.update', $post), [
