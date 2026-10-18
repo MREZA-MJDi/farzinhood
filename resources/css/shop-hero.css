@@ -604,3 +604,55 @@
         transition: none;
     }
 }
+
+/* The catalog keeps the product-led structure but uses the light reference palette. */
+.shop-hero__frame {
+    min-height: clamp(25rem, 48vw, 35rem);
+    border-color: #e6e6df;
+    border-radius: 1.4rem;
+    background: #f1f1eb;
+    box-shadow: 0 15px 42px rgb(36 38 30 / .06);
+}
+.shop-hero__media {
+    background:
+        radial-gradient(circle at 70% 38%, rgb(190 192 165 / .22), transparent 25%),
+        linear-gradient(135deg, #f2f2ed 0%, #e8e9e0 55%, #f9f9f6 100%);
+}
+.shop-hero__media img {
+    opacity: .94;
+    filter: saturate(.86) contrast(1.01);
+}
+.shop-hero__veil {
+    background:
+        linear-gradient(90deg, rgb(31 34 26 / .02) 0%, rgb(31 34 26 / .06) 38%, rgb(31 34 26 / .36) 72%, rgb(31 34 26 / .58) 100%),
+        linear-gradient(180deg, rgb(31 34 26 / .02), transparent 45%, rgb(31 34 26 / .14));
+}
+.shop-hero__frame::before { border-color: rgb(255 255 255 / .56); }
+.shop-hero__content { color: #fff; }
+.shop-hero__copy h1 span { color: rgb(255 255 255 / .78); }
+.shop-hero__cta {
+    border-color: #817d45;
+    background: #817d45;
+    color: #fff;
+}
+.shop-hero__cta:hover { background: #686438; }
+.shop-hero__meta span { color: rgb(255 255 255 / .72); }
+@media (max-width: 640px) {
+    .shop-hero__frame {
+        min-height: 30rem;
+        border-radius: 1.05rem;
+    }
+    .shop-hero__content {
+        width: 100%;
+        padding: 2rem 1.5rem 7rem;
+        background: linear-gradient(90deg, rgb(31 34 26 / .5), rgb(31 34 26 / .2));
+    }
+    .shop-hero__veil {
+        background: linear-gradient(180deg, rgb(31 34 26 / .12), rgb(31 34 26 / .08) 35%, rgb(31 34 26 / .54));
+    }
+    .shop-hero__meta {
+        right: 1.5rem;
+        left: auto;
+        gap: 1.1rem;
+    }
+}
