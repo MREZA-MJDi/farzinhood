@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             selected.forEach((file) => {
                 const hasAllowedType = allowedTypes.has(file.type)
-                    || /\\.(jpe?g|png|webp)$/i.test(file.name);
+                    || /\.(jpe?g|png|webp)$/i.test(file.name);
 
                 if (!hasAllowedType) {
                     messages.push(`«${file.name}» تصویر پشتیبانی‌شده نیست؛ JPG، PNG یا WebP انتخاب کن.`);
