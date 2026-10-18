@@ -14,8 +14,7 @@ class SettingsController extends Controller
     {
         $settings = SiteSetting::query()
             ->orderBy('key')
-            ->get()
-            ->keyBy('key');
+            ->pluck('value', 'key');
 
         return view(
             'admin.settings.index',
