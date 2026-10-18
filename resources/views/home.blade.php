@@ -7,127 +7,90 @@
 @section('content')
 
     {{-- =========================================================
-        HERO
-        Premium product rail. Backend intentionally supplies only the
-        latest 10 active products with a primary image.
+        HERO — reference-led, light and product-first
+        Product data and accessible carousel controls remain server-driven.
     ========================================================== --}}
 
     @php($heroSlides = ($heroProducts ?? collect())->values())
 
-    <section
-        class="farzin-hero-rail"
-        data-home-hero
-        aria-label="جدیدترین محصولات فرزین"
-    >
-        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--one" aria-hidden="true"></div>
-        <div class="farzin-hero-rail__glow farzin-hero-rail__glow--two" aria-hidden="true"></div>
-        <div class="farzin-hero-rail__grid" aria-hidden="true"></div>
-
-        <div class="farzin-hero-rail__inner">
-            <div class="farzin-hero-rail__copy">
-                <span class="farzin-hero-rail__eyebrow">
-                    <span></span>
-                    جدیدترین محصولات فرزین
+    <section class="farzin-home-hero" data-home-hero aria-label="جدیدترین محصولات فرزین">
+        <div class="farzin-home-hero__inner">
+            <div class="farzin-home-hero__copy">
+                <span class="farzin-home-hero__eyebrow">
+                    <span aria-hidden="true"></span>
+                    انتخابی برای آشپزخانه‌ی شما
                 </span>
 
-                <h1 class="farzin-hero-rail__title">
-                    انتخاب تازه،
-                    <strong>با نگاه حرفه‌ای.</strong>
+                <h1 class="farzin-home-hero__title">
+                    جزئیات کوچک،
+                    <strong>تفاوت‌های بزرگ.</strong>
                 </h1>
 
-                <p class="farzin-hero-rail__description">
-                    تازه‌ترین محصولات فروشگاه را در یک نگاه ببین،
-                    انتخاب کن و مستقیم وارد جزئیات محصول شو.
+                <p class="farzin-home-hero__description">
+                    هود و سینک‌هایی با طراحی ماندگار و کاربرد روزمره؛
+                    انتخابی که با فضای آشپزخانه‌ات هماهنگ می‌شود.
                 </p>
 
-                <div class="farzin-hero-rail__actions">
-                    <a
-                        href="{{ route('shop.index', ['sort' => 'latest']) }}"
-                        class="farzin-hero-rail__primary"
-                    >
-                        مشاهده تازه‌ها
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="m9 18 6-6-6-6"/>
-                        </svg>
+                <div class="farzin-home-hero__actions">
+                    <a href="{{ route('shop.index') }}" class="farzin-home-hero__primary">
+                        دیدن محصولات
+                        <span aria-hidden="true">←</span>
                     </a>
-                    <span class="farzin-hero-rail__meta">
-                        حداکثر ۱۰ محصول تازه
-                    </span>
+                    <span class="farzin-home-hero__note">هود و سینک آشپزخانه</span>
                 </div>
             </div>
 
-            <div class="farzin-hero-rail__stage">
+            <div class="farzin-home-hero__visual">
+                <div class="farzin-home-hero__visual-backdrop" aria-hidden="true"></div>
+
                 @forelse($heroSlides as $index => $product)
                     <article
-                        class="farzin-hero-rail__slide {{ $index === 0 ? 'is-active' : '' }}"
+                        class="farzin-home-hero__slide {{ $index === 0 ? 'is-active' : '' }}"
                         data-hero-slide="{{ $index }}"
-                        style="--hero-index: {{ $index }};"
                         aria-hidden="{{ $index === 0 ? 'false' : 'true' }}"
                     >
                         <a
                             href="{{ route('products.show', $product) }}"
-                            class="farzin-hero-rail__product"
+                            class="farzin-home-hero__product"
                             tabindex="{{ $index === 0 ? '0' : '-1' }}"
+                            aria-label="مشاهده {{ $product->name }}"
                         >
-                            <div class="farzin-hero-rail__image-wrap">
+                            <div class="farzin-home-hero__image-wrap">
                                 <img
                                     src="{{ asset('storage/' . $product->primaryImage->image) }}"
                                     alt="{{ $product->primaryImage->alt ?: $product->name }}"
-                                    class="farzin-hero-rail__image"
-                                    {{ $index === 0 ? 'loading=eager' : 'loading=lazy' }}
+                                    loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
                                     decoding="async"
+                                    {{ $index === 0 ? 'fetchpriority=high' : '' }}
                                 >
                             </div>
-
-                            <div class="farzin-hero-rail__product-info">
+                            <div class="farzin-home-hero__product-info">
                                 <div>
-                                    <span class="farzin-hero-rail__category">
-                                        {{ $product->category?->name ?? 'محصول جدید' }}
-                                    </span>
+                                    <span>{{ $product->category?->name ?? 'محصول فرزین' }}</span>
                                     <h2>{{ $product->name }}</h2>
                                 </div>
-
                                 <strong>{{ number_format($product->price) }} <small>تومان</small></strong>
                             </div>
                         </a>
                     </article>
                 @empty
-                    <div class="farzin-hero-rail__empty">
-                        هنوز محصول فعالی برای نمایش در Hero ثبت نشده است.
+                    <div class="farzin-home-hero__empty">
+                        <strong>به‌زودی در فرزین</strong>
+                        <span>محصولات منتخب اینجا نمایش داده می‌شوند.</span>
                     </div>
                 @endforelse
 
                 @if($heroSlides->count() > 1)
-                    <button
-                        type="button"
-                        class="farzin-hero-rail__nav farzin-hero-rail__nav--prev"
-                        data-hero-prev
-                        aria-label="محصول قبلی"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="m14 18-6-6 6-6"/>
-                        </svg>
-                    </button>
-
-                    <button
-                        type="button"
-                        class="farzin-hero-rail__nav farzin-hero-rail__nav--next"
-                        data-hero-next
-                        aria-label="محصول بعدی"
-                    >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                            <path d="m10 18 6-6-6-6"/>
-                        </svg>
-                    </button>
-
-                    <div class="farzin-hero-rail__dots" role="tablist" aria-label="محصولات Hero">
+                    <button type="button" class="farzin-home-hero__nav farzin-home-hero__nav--prev" data-hero-prev aria-label="محصول قبلی">‹</button>
+                    <button type="button" class="farzin-home-hero__nav farzin-home-hero__nav--next" data-hero-next aria-label="محصول بعدی">›</button>
+                    <div class="farzin-home-hero__dots" role="group" aria-label="انتخاب محصول">
                         @foreach($heroSlides as $index => $product)
                             <button
                                 type="button"
                                 data-hero-dot="{{ $index }}"
-                                aria-label="محصول {{ $index + 1 }}"
-                                aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
                                 class="{{ $index === 0 ? 'is-active' : '' }}"
+                                aria-label="نمایش محصول {{ $index + 1 }}"
+                                aria-pressed="{{ $index === 0 ? 'true' : 'false' }}"
                             ></button>
                         @endforeach
                     </div>
