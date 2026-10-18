@@ -1463,60 +1463,6 @@ input[type="radio"] {
 }
 
 
-/* Reference-led Persian storefront polish: warm light surfaces, neutral type,
-   muted olive accent, RTL-safe focus states and comfortable mobile spacing. */
-:root {
-    --color-brand-50: #f2f3ed;
-    --color-brand-100: #e7e9df;
-    --color-brand-200: #d0d4c3;
-    --color-brand-300: #b4baa1;
-    --color-brand-400: #929a78;
-    --color-brand-500: #747d5b;
-    --color-brand-600: #5c6547;
-    --color-brand-700: #4a523b;
-    --color-brand-800: #333a2b;
-    --color-brand-900: #282e23;
-    --color-brand-950: #1b2018;
-    --color-accent-50: #f5f4e9;
-    --color-accent-100: #ebe8cf;
-    --color-accent-200: #d9d4a7;
-    --color-accent-300: #c6c08a;
-    --color-accent-400: #b5ae71;
-    --color-accent-500: #9c9659;
-    --color-accent-600: #817d45;
-    --color-accent-700: #686438;
-    --color-accent-800: #514f30;
-    --color-accent-900: #3f3d28;
-    --color-neutral-50: #f7f7f4;
-    --color-neutral-100: #f0f0eb;
-    --color-neutral-200: #e4e4dd;
-    --color-neutral-300: #d4d5cc;
-    --color-neutral-400: #b1b3a8;
-    --color-neutral-500: #8d9084;
-    --color-neutral-600: #6b6e64;
-    --color-neutral-700: #4e5149;
-    --color-neutral-800: #34372f;
-    --color-neutral-900: #22251f;
-    --color-neutral-950: #151713;
-    --color-text-primary: #252720;
-    --color-text-secondary: #5e6057;
-    --color-text-muted: #7b7d73;
-    --color-text-soft: #a1a398;
-    --color-border: #e7e7e0;
-    --color-border-strong: #d8d9d0;
-    --color-surface: #ffffff;
-    --color-surface-soft: #fbfbf8;
-    --color-surface-muted: #f7f7f4;
-    --radius-sm: .65rem;
-    --radius-md: .9rem;
-    --radius-lg: 1.2rem;
-    --radius-xl: 1.65rem;
-    --shadow-xs: 0 1px 3px rgb(36 38 30 / .035);
-    --shadow-sm: 0 5px 18px rgb(36 38 30 / .045);
-    --shadow-md: 0 12px 30px rgb(36 38 30 / .065);
-    --shadow-lg: 0 20px 45px rgb(36 38 30 / .085);
-}
-
 body {
     background: #f7f7f4;
     color: var(--color-text-primary);
