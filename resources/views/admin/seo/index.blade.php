@@ -34,25 +34,25 @@
         <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="خلاصه ممیزی SEO">
             <article class="rounded-2xl border border-[var(--color-border)] bg-white p-5">
                 <p class="text-sm font-semibold text-[var(--color-text-secondary)]">کل رکوردهای محتوایی فعال</p>
-                <p class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['records']) }}</p>
+                <p data-seo-metric="records" class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['records']) }}</p>
                 <p class="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">محصولات و دسته‌بندی‌های فعال و مقاله‌های منتشرشده</p>
             </article>
 
             <article class="rounded-2xl border border-[var(--color-border)] bg-white p-5">
                 <p class="text-sm font-semibold text-[var(--color-text-secondary)]">قابل ایندکس از نظر تنظیم محتوا</p>
-                <p class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['indexable']) }}</p>
+                <p data-seo-metric="indexable" class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['indexable']) }}</p>
                 <p class="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">رکوردهای فعال که گزینه noindex برایشان روشن نیست</p>
             </article>
 
             <article class="rounded-2xl border border-[var(--color-border)] bg-white p-5">
                 <p class="text-sm font-semibold text-[var(--color-text-secondary)]">محتوای دارای noindex</p>
-                <p class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['noindex']) }}</p>
+                <p data-seo-metric="noindex" class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['noindex']) }}</p>
                 <p class="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">این رکوردها از sitemap تولیدشده حذف می‌شوند</p>
             </article>
 
             <article class="rounded-2xl border border-[var(--color-border)] bg-white p-5">
                 <p class="text-sm font-semibold text-[var(--color-text-secondary)]">رکوردهای ناقص SEO</p>
-                <p class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['missing_metadata']) }}</p>
+                <p data-seo-metric="missing_metadata" class="mt-3 text-3xl font-black tabular-nums text-[var(--color-text-primary)]">{{ number_format($totals['missing_metadata']) }}</p>
                 <p class="mt-2 text-xs leading-5 text-[var(--color-text-muted)]">
                     عنوان ناقص: {{ number_format($totals['missing_title']) }} · توضیحات ناقص: {{ number_format($totals['missing_description']) }}
                 </p>
