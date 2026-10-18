@@ -217,4 +217,30 @@ class AdminContentManagementReadinessTest extends TestCase
             ->assertOk();
     }
 
+
+    public function test_all_admin_management_index_routes_render_for_an_admin(): void
+    {
+        $this->actingAs($this->admin('admin-index-pages@example.com'));
+
+        $routes = [
+            'admin.dashboard',
+            'admin.products.index',
+            'admin.categories.index',
+            'admin.inventory.index',
+            'admin.orders.index',
+            'admin.reviews.index',
+            'admin.blog-categories.index',
+            'admin.posts.index',
+            'admin.customers.index',
+            'admin.contact-messages.index',
+            'admin.newsletter.index',
+            'admin.settings.index',
+        ];
+
+        foreach ($routes as $routeName) {
+            $this->get(route($routeName))
+                ->assertOk();
+        }
+    }
+
 }
