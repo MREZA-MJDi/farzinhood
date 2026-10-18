@@ -243,4 +243,118 @@ class AdminContentManagementReadinessTest extends TestCase
         }
     }
 
+
+    public function test_admin_edit_forms_render_for_existing_catalog_and_blog_records(): void
+    {
+        $admin = $this->admin('admin-edit-forms@example.com');
+
+        $category = Category::query()->create([
+            'name' => 'دسته برای ویرایش',
+            'slug' => 'category-for-edit',
+            'description' => 'دسته آزمایشی',
+            'is_active' => true,
+            'meta_title' => 'SEO دسته برای ویرایش',
+            'meta_description' => 'توضیحات دسته',
+            'canonical_url' => 'https://example.com/category-for-edit',
+            'noindex' => true,
+        ]);
+
+        $product = Product::query()->create([
+            'category_id' => $category->id,
+            'name' => 'محصول برای ویرایش',
+            'slug' => 'product-for-edit',
+            'sku' => 'PRODUCT-FOR-EDIT-01',
+            'price' => 100000,
+            'stock' => 5,
+            'is_active' => true,
+            'meta_title' => 'SEO محصول برای ویرایش',
+            'meta_description' => 'توضیحات محصول',
+            'canonical_url' => 'https://example.com/product-for-edit',
+            'noindex' => true,
+        ]);
+
+        $blogCategory = BlogCategory::query()->create([
+            'name' => 'دسته وبلاگ برای ویرایش',
+            'slug' => 'blog-category-for-edit',
+            'description' => 'دسته وبلاگ آزمایشی',
+            'is_active' => true,
+            'sort_order' => 1,
+            'meta_title' => 'SEO دسته وبلاگ',
+            'meta_description' => 'توضیحات دسته وبلاگ',
+            'canonical_url' => 'https://example.com/blog-category-for-edit',
+            'noindex' => true,
+        ]);
+
+        $post = Post::query()->create([
+            'blog_category_id' => $blogCategory->id,
+            'author_id' => $admin->id,
+            'title' => 'مقاله برای ویرایش',
+            'slug' => 'post-for-edit',
+            'excerpt' => 'چکیده مقاله',
+            'content' => 'متن مقاله آزمایشی',
+            'status' => 'draft',
+            'published_at' => null,
+            'meta_title' => 'SEO مقاله برای ویرایش',
+            'meta_description' => 'توضیحات مقاله',
+            'canonical_url' => 'https://example.com/post-for-edit',
+            'noindex' => true,
+        ]);
+
+        $this->actingAs($admin);
+
+        $this->get(route('admin.categories.edit', $category))
+            ->assertOk()
+            ->assertSee('SEO دسته برای ویرایش');
+
+        $this->get(route('admin.products.edit', $product))
+            ->assertOk()
+            ->assertSee('SEO محصول برای ویرایش');
+
+        $this->get(route('admin.blog-categories.edit', $blogCategory))
+            ->assertOk()
+            ->assertSee('SEO دسته وبلاگ');
+
+        $this->get(route('admin.posts.edit', $post))
+            ->assertOk()
+            ->assertSee('SEO مقاله برای ویرایش');
+    }
+
+    public function test_admin_site_seo_settings_are_reflected_in_public_head_metadata(): void
+    {
+        $this->actingAs($this->admin('admin-seo-settings@example.com'))
+            ->put(route('admin.settings.update'), [
+                'site_name' => 'فروشگاه تنظیم‌شده',
+                'site_description' => 'شرح پیش‌فرض فروشگاه',
+                'default_meta_title' => 'عنوان متای ذخیره‌شده',
+                'default_meta_description' => 'توضیحات متای ذخیره‌شده برای صفحه اصلی',
+                'email' => 'hello@example.com',
+            ])
+            ->assertRedirect();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('عنوان متای ذخیره‌شده')
+            ->assertSee('توضیحات متای ذخیره‌شده برای صفحه اصلی')
+            ->assertSee('فروشگاه تنظیم‌شده');
+    }
+
+    public function test_invalid_category_image_upload_is_rejected_without_creating_record(): void
+    {
+        Storage::fake('public');
+
+        $this->actingAs($this->admin('admin-invalid-upload@example.com'))
+            ->post(route('admin.categories.store'), [
+                'name' => 'دسته تصویر نامعتبر',
+                'slug' => 'invalid-category-image',
+                'description' => 'تست اعتبارسنجی فایل',
+                'is_active' => 1,
+                'image' => UploadedFile::fake()->create('not-an-image.svg', 20, 'image/svg+xml'),
+            ])
+            ->assertSessionHasErrors('image');
+
+        $this->assertDatabaseMissing('categories', [
+            'slug' => 'invalid-category-image',
+        ]);
+    }
+
 }
