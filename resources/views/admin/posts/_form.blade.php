@@ -429,6 +429,13 @@
     </div>
 
 
+    @include('admin.partials.seo-preview', [
+        'fallbackTitle' => $post?->meta_title ?: ($post?->title ? $post->title . ' | Farzin' : 'عنوان مقاله | Farzin'),
+        'fallbackDescription' => $post?->meta_description ?: ($post?->excerpt ?: 'خلاصه مقاله در مجله فرزین.'),
+        'fallbackUrl' => $post?->exists ? route('blog.show', $post->slug) : '',
+        'fallbackNoindex' => $post?->noindex ?? false,
+    ])
+
     {{-- Submit --}}
     <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
