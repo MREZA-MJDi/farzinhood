@@ -50,7 +50,7 @@
             </div>
 
             <div class="rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-sm font-bold text-[var(--color-text-secondary)] shadow-sm">
-                {{ now()->locale('fa')->translatedFormat('l، j F Y') }}
+                {{ \\App\\Support\\JalaliCalendar::format(now(), 'full') }}
             </div>
         </div>
 
@@ -69,7 +69,7 @@
                         </p>
 
                         <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($todaySales) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($todaySales) }}
                         </p>
 
                         <p class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -94,11 +94,11 @@
 
                 <div class="mt-4 flex items-center justify-between text-xs">
                     <span class="text-[var(--color-text-muted)]">
-                        {{ number_format($todayOrderCount) }} سفارش پرداخت‌شده
+                        {{ \\App\\Support\\JalaliCalendar::number($todayOrderCount) }} سفارش پرداخت‌شده
                     </span>
 
                     <span class="font-bold text-[var(--color-brand-700)]">
-                        میانگین {{ number_format($todayAverageOrderValue) }} تومان
+                        میانگین {{ \\App\\Support\\JalaliCalendar::number($todayAverageOrderValue) }} تومان
                     </span>
                 </div>
 
@@ -116,7 +116,7 @@
                         </p>
 
                         <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($monthSales) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($monthSales) }}
                         </p>
 
                         <p class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -142,11 +142,11 @@
                 <div class="mt-4 flex items-center justify-between text-xs">
 
                     <span class="text-[var(--color-text-muted)]">
-                        {{ number_format($monthOrderCount) }} سفارش پرداخت‌شده
+                        {{ \\App\\Support\\JalaliCalendar::number($monthOrderCount) }} سفارش پرداخت‌شده
                     </span>
 
                     <span class="{{ $monthGrowth >= 0 ? 'text-emerald-700' : 'text-red-700' }} font-bold">
-                        {{ $monthGrowth >= 0 ? '+' : '' }}{{ number_format($monthGrowth, 1) }}٪
+                        {{ $monthGrowth >= 0 ? '+' : '' }}{{ \\App\\Support\\JalaliCalendar::number($monthGrowth, 1) }}٪
                     </span>
 
                 </div>
@@ -165,7 +165,7 @@
                         </p>
 
                         <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($yearSales) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($yearSales) }}
                         </p>
 
                         <p class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -206,7 +206,7 @@
                         </p>
 
                         <p class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                            {{ number_format($customersCount) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($customersCount) }}
                         </p>
 
                         <p class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -232,11 +232,11 @@
                 <div class="mt-4 flex items-center justify-between text-xs">
 
                     <span class="text-[var(--color-text-muted)]">
-                        فعال: {{ number_format($activeCustomersCount) }}
+                        فعال: {{ \\App\\Support\\JalaliCalendar::number($activeCustomersCount) }}
                     </span>
 
                     <span class="font-bold text-[var(--color-brand-700)]">
-                        +{{ number_format($newCustomersThisMonth) }} این ماه
+                        +{{ \\App\\Support\\JalaliCalendar::number($newCustomersThisMonth) }} این ماه
                     </span>
 
                 </div>
@@ -338,7 +338,7 @@
                             </div>
 
                             <span class="font-black text-[var(--color-text-primary)]">
-                                {{ number_format($count) }}
+                                {{ \\App\\Support\\JalaliCalendar::number($count) }}
                             </span>
 
                         </div>
@@ -381,7 +381,7 @@
                         </div>
 
                         <div class="mt-2 text-2xl font-black text-red-700">
-                            {{ number_format($outOfStockCount) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($outOfStockCount) }}
                         </div>
                     </div>
 
@@ -391,7 +391,7 @@
                         </div>
 
                         <div class="mt-2 text-2xl font-black text-amber-700">
-                            {{ number_format($lowStockCount) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($lowStockCount) }}
                         </div>
                     </div>
 
@@ -401,7 +401,7 @@
                         </div>
 
                         <div class="mt-2 text-2xl font-black text-emerald-700">
-                            {{ number_format($activeProductsCount) }}
+                            {{ \\App\\Support\\JalaliCalendar::number($activeProductsCount) }}
                         </div>
                     </div>
 
@@ -442,7 +442,7 @@
                                         </span>
                                     @else
                                         <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">
-                                            {{ number_format($product->stock) }} عدد
+                                            {{ \\App\\Support\\JalaliCalendar::number($product->stock) }} عدد
                                         </span>
                                     @endif
 
@@ -513,7 +513,7 @@
                                     </div>
 
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ number_format($order->items_count ?? 0) }}
+                                        {{ \\App\\Support\\JalaliCalendar::number($order->items_count ?? 0) }}
                                         آیتم
                                     </div>
 
@@ -522,7 +522,7 @@
                                 <div class="text-left">
 
                                     <div class="font-black text-[var(--color-text-primary)]">
-                                        {{ number_format($order->total) }}
+                                        {{ \\App\\Support\\JalaliCalendar::number($order->total) }}
                                     </div>
 
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -594,7 +594,7 @@
                                     </div>
 
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                        {{ number_format($product->total_quantity) }}
+                                        {{ \\App\\Support\\JalaliCalendar::number($product->total_quantity) }}
                                         عدد فروخته شده
                                     </div>
 
@@ -605,7 +605,7 @@
                             <div class="flex-shrink-0 text-left">
 
                                 <div class="font-black text-[var(--color-text-primary)]">
-                                    {{ number_format($product->total_sales) }}
+                                    {{ \\App\\Support\\JalaliCalendar::number($product->total_sales) }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -675,7 +675,7 @@
                                 <div class="flex-shrink-0 text-left">
 
                                     <div class="font-black {{ $movement->quantity >= 0 ? 'text-emerald-700' : 'text-red-700' }}">
-                                        {{ $movement->quantity >= 0 ? '+' : '' }}{{ number_format($movement->quantity) }}
+                                        {{ $movement->quantity >= 0 ? '+' : '' }}{{ \\App\\Support\\JalaliCalendar::number($movement->quantity) }}
                                     </div>
 
                                     <div class="mt-1">
@@ -690,9 +690,9 @@
 
                             <div class="mt-2 text-xs text-[var(--color-text-muted)]">
                                 موجودی:
-                                {{ number_format($movement->stock_before) }}
+                                {{ \\App\\Support\\JalaliCalendar::number($movement->stock_before) }}
                                 →
-                                {{ number_format($movement->stock_after) }}
+                                {{ \\App\\Support\\JalaliCalendar::number($movement->stock_after) }}
                             </div>
 
                         </div>
@@ -726,7 +726,7 @@
                     </div>
 
                     <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
-                        {{ number_format($pendingReviews) }} در انتظار
+                        {{ \\App\\Support\\JalaliCalendar::number($pendingReviews) }} در انتظار
                     </span>
 
                 </div>
@@ -811,7 +811,7 @@
                     </div>
 
                     <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">
-                        {{ number_format($unreadMessages) }} جدید
+                        {{ \\App\\Support\\JalaliCalendar::number($unreadMessages) }} جدید
                     </span>
 
                 </div>
@@ -859,7 +859,7 @@
                             </p>
 
                             <div class="mt-2 text-[11px] text-[var(--color-text-muted)]">
-                                {{ $message->created_at->locale('fa')->translatedFormat('Y/m/d H:i') }}
+                                {{ \\App\\Support\\JalaliCalendar::format($message->created_at, 'datetime') }}
                             </div>
 
                         </a>
@@ -890,7 +890,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($ordersCount) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($ordersCount) }}
                 </div>
 
             </a>
@@ -904,7 +904,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($productsCount) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($productsCount) }}
                 </div>
 
             </a>
@@ -918,7 +918,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($reviewsCount) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($reviewsCount) }}
                 </div>
 
             </a>
@@ -932,7 +932,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($totalMessages) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($totalMessages) }}
                 </div>
 
             </a>
@@ -946,7 +946,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($newsletterSubscribers) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($newsletterSubscribers) }}
                 </div>
 
             </a>
@@ -960,7 +960,7 @@
                 </div>
 
                 <div class="mt-2 text-xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($lowStockCount) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($lowStockCount) }}
                 </div>
 
             </a>
