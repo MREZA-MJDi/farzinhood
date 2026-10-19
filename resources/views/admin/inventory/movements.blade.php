@@ -126,7 +126,7 @@
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                    {{ $movement->created_at->format('H:i') }}
+                                    {{ \App\Support\JalaliCalendar::digits($movement->created_at->format('H:i')) }}
                                 </div>
                             </td>
 
