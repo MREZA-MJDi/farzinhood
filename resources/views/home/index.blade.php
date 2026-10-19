@@ -54,6 +54,13 @@
     @endif
 </section>
 
+<section class="store-trust-strip" data-home-trust-strip aria-label="مزیت‌های خرید از فرزین">
+    <div><span aria-hidden="true">✳</span><strong>انتخاب‌های گزیده</strong><small>تمرکز بر کیفیت و کاربرد</small></div>
+    <div><span aria-hidden="true">◇</span><strong>اطلاعات شفاف</strong><small>قیمت و موجودی مشخص</small></div>
+    <div><span aria-hidden="true">↗</span><strong>خرید قابل پیگیری</strong><small>از طریق حساب کاربری</small></div>
+    <div><span aria-hidden="true">◌</span><strong>پشتیبانی فرزین</strong><small>راه ارتباطی روشن</small></div>
+</section>
+
 <section class="store-section store-section--categories">
     <div class="store-section__heading"><div><span class="farzin-eyebrow">EXPLORE BY CATEGORY</span><h2>از کجا شروع کنیم؟</h2><p>دسته‌بندی‌ها را مرور کنید و سریع‌تر به انتخاب خود برسید.</p></div><a class="store-text-link" href="{{ route('shop.index') }}">همه محصولات <span aria-hidden="true">←</span></a></div>
     <div class="store-category-grid">
