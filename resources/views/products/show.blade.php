@@ -3,7 +3,7 @@
 @section('meta_description', $product->meta_description ?: $product->short_description ?: $product->description)
 @section('content')
 <section class="store-section product-page">
-    <nav class="store-breadcrumb" aria-label="مسیر صفحه"><a href="{{ route('home') }}">خانه</a><span>←</span><a href="{{ route('shop.index') }}">فروشگاه</a><span>←</span><a href="{{ route('categories.show', $product->category) }}">{{ $product->category->name }}</a></nav>
+    <nav class="store-breadcrumb" aria-label="مسیر صفحه"><a href="{{ route('home') }}">خانه</a><span>←</span><a href="{{ route('shop.index') }}">فروشگاه</a><span>←</span><a href="{{ route('categories.show', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a></nav>
     <div class="product-v2__layout">
         <div class="product-v2__visual">
             <div class="product-gallery-v2__stage">
@@ -24,7 +24,7 @@
         <div class="product-v2__purchase">
             <div class="product-v2__purchase-inner">
                 <span class="farzin-eyebrow">{{ $product->brand ?: 'FARZIN SELECTED' }}</span>
-                <p class="farzin-product-card__category"><a href="{{ route('categories.show', $product->category) }}">{{ $product->category->name }}</a></p>
+                <p class="farzin-product-card__category"><a href="{{ route('categories.show', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a></p>
                 <h1 class="product-v2__title">{{ $product->name }}</h1>
                 @if ($product->rating)<p class="product-rating">★ {{ number_format((float) $product->rating, 1) }} <span>({{ number_format($reviewCount) }} دیدگاه تأییدشده)</span></p>@endif
                 @if ($product->short_description)<p class="product-short-description">{{ $product->short_description }}</p>@endif
