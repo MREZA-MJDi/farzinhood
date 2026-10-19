@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','فروشگاه فرزین | کشف محصولات')
+@section('title', 'فروشگاه | Farzin')
 @section('meta_description','محصولات فعال فرزین را جستجو و بر اساس دسته‌بندی، قیمت و ترتیب دلخواه فیلتر کنید.')
 @section('content')
 <section class="farzin-catalog"><div class="farzin-container">
