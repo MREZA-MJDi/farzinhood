@@ -61,7 +61,7 @@
             </a>
 
             <a
-                href="{{ route('shop') }}"
+                href="{{ route('shop.index') }}"
                 class="mobile-menu__link {{ request()->routeIs('shop') ? 'is-active' : '' }}"
             >
                 <span>فروشگاه</span>
@@ -69,7 +69,7 @@
             </a>
 
             <a
-                href="{{ route('category.hood') }}"
+                href="{{ route('shop.index', ['category' => 'hood']) }}"
                 class="mobile-menu__link {{ request()->routeIs('category.hood') ? 'is-active' : '' }}"
             >
                 <span>هود</span>
@@ -77,7 +77,7 @@
             </a>
 
             <a
-                href="{{ route('category.sink') }}"
+                href="{{ route('shop.index', ['category' => 'sink']) }}"
                 class="mobile-menu__link {{ request()->routeIs('category.sink') ? 'is-active' : '' }}"
             >
                 <span>سینک</span>
@@ -93,7 +93,7 @@
             </a>
 
             <a
-                href="{{ route('about') }}"
+                href="{{ route('contact.index') }}"
                 class="mobile-menu__link {{ request()->routeIs('about') ? 'is-active' : '' }}"
             >
                 <span>درباره ما</span>
@@ -101,7 +101,7 @@
             </a>
 
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('contact.index') }}"
                 class="mobile-menu__link {{ request()->routeIs('contact') ? 'is-active' : '' }}"
             >
                 <span>تماس با ما</span>
@@ -109,7 +109,7 @@
             </a>
 
             <a
-                href="{{ route('wishlist') }}"
+                href="{{ route('customer.wishlist.index') }}"
                 class="mobile-menu__link {{ request()->routeIs('wishlist') ? 'is-active' : '' }}"
             >
                 <span>علاقه‌مندی‌ها</span>
@@ -117,7 +117,7 @@
             </a>
 
             <a
-                href="{{ route('cart') }}"
+                href="{{ route('customer.cart.index') }}"
                 class="mobile-menu__link {{ request()->routeIs('cart') ? 'is-active' : '' }}"
             >
                 <span>سبد خرید</span>
@@ -131,7 +131,7 @@
         <div class="mobile-menu__footer">
 
             <a
-                href="{{ route('contact') }}"
+                href="{{ route('contact.index') }}"
                 class="mobile-menu__link"
             >
                 <span>
