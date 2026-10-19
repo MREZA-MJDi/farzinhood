@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initQuantityControls();
     initProductGallery();
     initHomeHero();
+    initHomeProductTours();
+    initScrollAwareStorefrontHeader();
 });
 
 function initRevealObserver() {
@@ -336,4 +338,169 @@ function initHomeHero() {
     reduceMotion.addEventListener?.("change", start);
     render(index, false);
     start();
+}
+
+function initScrollAwareStorefrontHeader() {
+    const header = document.querySelector(".fz-header");
+    if (!header) return;
+
+    let lastY = Math.max(0, window.scrollY);
+    let ticking = false;
+
+    const update = () => {
+        const currentY = Math.max(0, window.scrollY);
+        const delta = currentY - lastY;
+
+        if (currentY < 72) {
+            header.classList.remove("is-scroll-hidden");
+        } else if (delta > 7) {
+            header.classList.add("is-scroll-hidden");
+        } else if (delta < -5) {
+            header.classList.remove("is-scroll-hidden");
+        }
+
+        lastY = currentY;
+        ticking = false;
+    };
+
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            window.requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    header.addEventListener("focusin", () => header.classList.remove("is-scroll-hidden"));
+}
+
+function initHomeProductTours() {
+    const tours = [...document.querySelectorAll("[data-product-tour]")];
+    if (!tours.length) return;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    tours.forEach((tour) => {
+        const stage = tour.querySelector("[data-tour-stage]");
+        const frames = [...tour.querySelectorAll("[data-tour-frame]")];
+        const prev = tour.querySelector("[data-tour-prev]");
+        const next = tour.querySelector("[data-tour-next]");
+        const counter = tour.querySelector("[data-tour-count]");
+        const progress = tour.querySelector("[data-tour-progress]");
+        if (!stage || !frames.length) return;
+
+        let activeIndex = 0;
+        let pointerStartX = null;
+        let pointerStartIndex = 0;
+        let pointerId = null;
+        let isDragging = false;
+        let latestPointerX = null;
+        let scrollFrame = 0;
+        const total = frames.length;
+        const countText = (value) => String(value).padStart(2, "0");
+
+        const render = (index) => {
+            activeIndex = (index + total) % total;
+            frames.forEach((frame, i) => {
+                const active = i === activeIndex;
+                frame.classList.toggle("is-active", active);
+                frame.setAttribute("aria-hidden", active ? "false" : "true");
+            });
+            if (counter) counter.textContent = `${countText(activeIndex + 1)} / ${countText(total)}`;
+            if (progress) progress.style.transform = `scaleX(${total > 1 ? activeIndex / (total - 1) : 1})`;
+        };
+
+        prev?.addEventListener("click", () => render(activeIndex - 1));
+        next?.addEventListener("click", () => render(activeIndex + 1));
+
+        // The position in the scroll runway maps to the ordered images.
+        const syncToScroll = () => {
+            scrollFrame = 0;
+            if (isDragging || total < 2) return;
+            const rect = tour.getBoundingClientRect();
+            const scrollable = Math.max(1, tour.offsetHeight - window.innerHeight);
+            const progressValue = clamp(-rect.top / scrollable, 0, 1);
+            render(Math.round(progressValue * (total - 1)));
+        };
+
+        const requestScrollSync = () => {
+            if (scrollFrame) return;
+            scrollFrame = window.requestAnimationFrame(syncToScroll);
+        };
+
+        window.addEventListener("scroll", requestScrollSync, { passive: true });
+        window.addEventListener("resize", requestScrollSync, { passive: true });
+
+        // Mouse hover lets the pointer position select a viewing angle.
+        stage.addEventListener("pointermove", (event) => {
+            if (event.pointerType === "touch") return;
+            if (isDragging && pointerStartX !== null) {
+                const dx = event.clientX - pointerStartX;
+                const pixelsPerFrame = Math.max(8, stage.clientWidth / Math.max(8, total));
+                render(pointerStartIndex - Math.trunc(dx / pixelsPerFrame));
+                return;
+            }
+            if (event.pointerType === "mouse" && total > 1) {
+                const rect = stage.getBoundingClientRect();
+                const ratio = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1);
+                render(Math.round(ratio * (total - 1)));
+            }
+        });
+
+        stage.addEventListener("pointerdown", (event) => {
+            if (event.pointerType === "mouse" && event.button !== 0) return;
+            if (total < 2) return;
+            isDragging = true;
+            pointerStartX = event.clientX;
+            pointerStartIndex = activeIndex;
+            pointerId = event.pointerId;
+            latestPointerX = event.clientX;
+            if (stage.setPointerCapture) stage.setPointerCapture(event.pointerId);
+            stage.classList.add("is-dragging");
+        });
+
+        const finishDrag = (event) => {
+            if (!isDragging) return;
+            if (pointerId !== null && stage.hasPointerCapture?.(pointerId)) {
+                stage.releasePointerCapture(pointerId);
+            }
+            isDragging = false;
+            pointerStartX = null;
+            pointerId = null;
+            stage.classList.remove("is-dragging");
+            requestScrollSync();
+        };
+
+        stage.addEventListener("pointerup", finishDrag);
+        stage.addEventListener("pointercancel", finishDrag);
+        stage.addEventListener("lostpointercapture", finishDrag);
+
+        // Touch swipes work even on browsers without pointer capture.
+        stage.addEventListener("touchstart", (event) => {
+            if (total < 2) return;
+            latestPointerX = event.changedTouches[0]?.clientX ?? null;
+        }, { passive: true });
+
+        stage.addEventListener("touchend", (event) => {
+            const endX = event.changedTouches[0]?.clientX ?? null;
+            if (latestPointerX === null || endX === null) return;
+            const distance = endX - latestPointerX;
+            if (Math.abs(distance) > 18) {
+                const steps = Math.max(1, Math.round(Math.abs(distance) / Math.max(24, stage.clientWidth / total)));
+                render(activeIndex + (distance < 0 ? steps : -steps));
+            }
+            latestPointerX = null;
+        }, { passive: true });
+
+        stage.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                render(activeIndex + 1);
+            } else if (event.key === "ArrowRight") {
+                event.preventDefault();
+                render(activeIndex - 1);
+            }
+        });
+
+        render(0);
+    });
 }
