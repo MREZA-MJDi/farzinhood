@@ -433,6 +433,11 @@ Route::prefix('admin')
             [AdminOrderController::class, 'updateStatus']
         )->name('orders.status');
 
+        Route::post(
+            '/orders/{order}/refund',
+            [AdminOrderController::class, 'refund']
+        )->name('orders.refund');
+
 
         /*
         |--------------------------------------------------------------------------
