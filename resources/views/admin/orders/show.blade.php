@@ -432,6 +432,31 @@
                         </div>
                     @endif
 
+
+                    @php
+                        $refundedAmount = (int) $order->payments
+                            ->where('status', 'refunded')
+                            ->sum('amount');
+                        $remainingRefundable = max(0, (int) $order->total - $refundedAmount);
+                    @endphp
+
+                    @if($order->payment_status === 'paid' && $remainingRefundable > 0)
+                        <div class="mt-6 border-t border-[var(--color-border)] pt-5">
+                            <p class="text-sm font-black text-[var(--color-text-primary)]">بازگشت وجه</p>
+                            <p class="mt-1 text-xs leading-6 text-[var(--color-text-secondary)]">
+                                برای لغو سفارش پرداخت‌شده، ابتدا باید تمام مبلغ قابل‌استرداد بازگردانده شود.
+                            </p>
+                            <form action="{{ route('admin.orders.refund', $order) }}" method="POST" class="mt-4 space-y-3" onsubmit="return confirm('درخواست بازگشت وجه به درگاه ارسال شود؟')">
+                                @csrf
+                                <label for="refund-amount" class="block text-xs font-bold text-[var(--color-text-primary)]">مبلغ بازگشت وجه (تومان)</label>
+                                <input id="refund-amount" type="number" name="amount" min="1" max="{{ $remainingRefundable }}" value="{{ old('amount', $remainingRefundable) }}" required inputmode="numeric" dir="ltr" class="w-full rounded-xl border border-[var(--color-border)] bg-white px-3 py-3 text-sm outline-none focus:border-[var(--color-brand-600)]">
+                                @error('amount')<p class="text-xs font-bold text-red-700">{{ $message }}</p>@enderror
+                                <p class="text-[11px] text-[var(--color-text-muted)]">مبلغ باقی‌مانده برای استرداد: {{ number_format($remainingRefundable) }} تومان</p>
+                                <button type="submit" class="w-full rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-800 hover:bg-red-100">ثبت بازگشت وجه</button>
+                            </form>
+                        </div>
+                    @endif
+
                 </div>
 
             </div>
