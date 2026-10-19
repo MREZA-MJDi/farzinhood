@@ -1,2 +1,32 @@
-/* Hero slider progressive enhancement */
-[data-hero-slide]{animation:farzinFade .65s ease both}@keyframes farzinFade{from{opacity:.1;transform:scale(1.015)}to{opacity:.82;transform:scale(1)}}@media(prefers-reduced-motion:reduce){[data-hero-slide]{animation:none}}
+.farzin-home-hero{position:relative;overflow:hidden;background:#171717;color:#f6f3ee;min-height:clamp(540px,67vw,760px)}
+.farzin-home-hero__slides{position:relative;min-height:clamp(540px,67vw,760px)}
+.farzin-home-hero__slide{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .65s ease,transform .65s ease,visibility .65s; padding:clamp(2rem,7vw,7rem) max(5vw,calc((100vw - 1280px)/2))}
+.farzin-home-hero__slide.is-active{position:relative;opacity:1;visibility:visible;transform:none}
+.farzin-home-hero__copy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:1.5rem clamp(0rem,3vw,3rem) 4rem 0;z-index:2}
+.farzin-eyebrow{display:inline-block;color:#a98b62;font-size:.68rem;font-weight:800;letter-spacing:.16em;line-height:1.8}
+.farzin-home-hero__overline{margin:2.5rem 0 .75rem;color:#c6c0b6;font-size:.9rem}
+.farzin-home-hero__copy h1{max-width:12ch;margin:0;font-size:clamp(2.5rem,5.4vw,5.8rem);font-weight:850;line-height:1.25;letter-spacing:-.055em}
+.farzin-home-hero__description{max-width:32rem;margin:1.3rem 0 0;color:#c4c0ba;font-size:1rem;line-height:2.1}
+.farzin-home-hero__actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.farzin-button{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:.8rem;padding:.85rem 1.2rem;border:1px solid transparent;border-radius:3px;font-size:.84rem;font-weight:800;text-decoration:none;transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease}
+.farzin-button:hover{transform:translateY(-2px)}
+.farzin-button--light{background:#f3efe8;color:#171717}
+.farzin-button--light:hover{background:#d9c9b3}
+.farzin-button--ghost{border-color:#5d5b57;color:#f3efe8;background:transparent}
+.farzin-button--ghost:hover{border-color:#f3efe8}
+.farzin-button--dark{background:#171717;color:#fff}
+.farzin-button--dark:hover{background:#37332e}
+.farzin-home-hero__visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:400px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#49433a 0,#292724 44%,#1c1c1b 74%);text-decoration:none;color:#fff}
+.farzin-home-hero__visual:before{content:"";position:absolute;inset:8%;border:1px solid rgb(255 255 255 / .15);border-radius:50%;transform:scaleX(.75)}
+.farzin-home-hero__visual img{position:relative;z-index:1;width:100%;height:100%;max-height:590px;object-fit:contain;mix-blend-mode:normal;filter:drop-shadow(0 28px 32px rgb(0 0 0 / .3));transition:transform .7s ease}
+.farzin-home-hero__visual:hover img{transform:scale(1.035)}
+.farzin-home-hero__product-label{position:absolute;z-index:2;bottom:1.25rem;right:1.25rem;display:flex;flex-direction:column;gap:.25rem;min-width:155px;padding:.85rem 1rem;background:rgb(18 18 18 / .75);border:1px solid rgb(255 255 255 / .15);backdrop-filter:blur(12px)}
+.farzin-home-hero__product-label small{color:#c2b7a7;font-size:.65rem}.farzin-home-hero__product-label strong{font-size:.88rem}.farzin-home-hero__product-label>span{color:#e5d5bd;font-size:.75rem}
+.farzin-home-hero__placeholder{position:relative;z-index:1;color:#b7a58d;text-align:center;font-size:clamp(3rem,8vw,7rem);font-weight:900;letter-spacing:.12em;line-height:1.1}.farzin-home-hero__placeholder small{font-size:.12em;letter-spacing:.3em}
+.farzin-home-hero__controls{position:absolute;z-index:4;bottom:1.5rem;left:max(5vw,calc((100vw - 1280px)/2));display:flex;align-items:center;gap:1.5rem}
+.farzin-home-hero__counter{display:flex;align-items:center;gap:.7rem;color:#aaa49b;font-size:.75rem;direction:ltr}.farzin-home-hero__counter [data-hero-current]{color:#fff;font-weight:800}.farzin-home-hero__counter-divider{height:1px;width:2rem;background:#6c6862}
+.farzin-home-hero__dots{display:flex;gap:.4rem}.farzin-home-hero__dots button{width:20px;height:3px;padding:0;border:0;background:#5a5752;cursor:pointer}.farzin-home-hero__dots button.is-active{background:#e2c8a6}
+.farzin-home-hero__arrows{display:flex;gap:.4rem}.farzin-home-hero__arrows button{width:36px;height:36px;border:1px solid #5d5b57;background:transparent;color:#fff;cursor:pointer}.farzin-home-hero__arrows button:hover{background:#333}
+.farzin-home-hero__progress{position:absolute;z-index:4;bottom:0;inset-inline:0;height:2px;background:#343330}.farzin-home-hero__progress span{display:block;width:100%;height:100%;background:#c6a981;transform:scaleX(0);transform-origin:right}
+@media(max-width:760px){.farzin-home-hero,.farzin-home-hero__slides{min-height:0}.farzin-home-hero__slide{grid-template-columns:1fr;gap:1.5rem;padding:2.25rem 1.1rem 5.5rem}.farzin-home-hero__copy{padding:0}.farzin-home-hero__overline{margin-top:1.5rem}.farzin-home-hero__copy h1{font-size:clamp(2.4rem,11vw,4rem)}.farzin-home-hero__description{font-size:.9rem}.farzin-home-hero__visual{min-height:280px;max-height:390px}.farzin-home-hero__visual img{max-height:340px}.farzin-home-hero__controls{right:1.1rem;left:1.1rem;bottom:1.1rem;justify-content:space-between;gap:.6rem}.farzin-home-hero__product-label{right:.7rem;bottom:.7rem}.farzin-home-hero__arrows button{width:32px;height:32px}}
+@media(prefers-reduced-motion:reduce){.farzin-home-hero__slide,.farzin-home-hero__visual img,.farzin-button{transition:none}}
