@@ -1,6 +1,14 @@
 @extends('layouts.storefront')
 @section('title', ($product->meta_title ?: $product->name) . ' | فرزین')
 @section('meta_description', $product->meta_description ?: $product->short_description ?: $product->description)
+@push('head')
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="{{ $product->meta_title ?: $product->name }}">
+    <meta property="og:description" content="{{ $product->meta_description ?: $product->short_description ?: $product->description }}">
+    <script type="application/ld+json">
+        @json(['@context' => 'https://schema.org', '@type' => 'Product', 'name' => $product->name, 'description' => $product->short_description ?: $product->description, 'sku' => $product->sku, 'image' => $product->primaryImage?->image ? asset('storage/' . $product->primaryImage->image) : null, 'offers' => ['@type' => 'Offer', 'priceCurrency' => 'IRR', 'price' => (string) $product->price, 'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', 'url' => route('products.show', ['product' => $product->slug])]])
+    </script>
+@endpush
 @section('content')
 <section class="store-section product-page">
     <nav class="store-breadcrumb" aria-label="مسیر صفحه"><a href="{{ route('home') }}">خانه</a><span>←</span><a href="{{ route('shop.index') }}">فروشگاه</a><span>←</span><a href="{{ route('categories.show', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a></nav>
@@ -23,7 +31,7 @@
         </div>
         <div class="product-v2__purchase">
             <div class="product-v2__purchase-inner">
-                <span class="farzin-eyebrow">{{ $product->brand ?: 'FARZIN SELECTED' }}</span>
+                <span class="farzin-eyebrow">{{ 'FARZIN / PRODUCT' }}</span>
                 <p class="farzin-product-card__category"><a href="{{ route('categories.show', ['category' => $product->category->slug]) }}">{{ $product->category->name }}</a></p>
                 <h1 class="product-v2__title">{{ $product->name }}</h1>
                 @if ($product->rating)<p class="product-rating">★ {{ number_format((float) $product->rating, 1) }} <span>({{ number_format($reviewCount) }} دیدگاه تأییدشده)</span></p>@endif
