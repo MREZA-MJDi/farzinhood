@@ -15,7 +15,7 @@
             >
                 <x-slot:action>
                     <a
-                        href="{{ route('shop') }}"
+                        href="{{ route('shop.index') }}"
                         class="btn btn--outline"
                     >
                         مشاهده همه محصولات
@@ -40,7 +40,7 @@
 
                             :alt="$product->primaryImage?->alt"
 
-                            :href="route('product.show', $product)"
+                            :href="route('products.show', $product)"
 
                             :price="$product->price"
 
