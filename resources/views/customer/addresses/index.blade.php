@@ -49,6 +49,9 @@
                         </div>
                     @endforelse
                 </div>
+                @if($addresses->hasPages())
+                    <nav class="farzin-pagination px-5 pb-5 sm:px-6" aria-label="صفحه‌بندی آدرس‌ها">{{ $addresses->links() }}</nav>
+                @endif
             </section>
 
             <section class="h-fit rounded-2xl border border-[var(--color-border)] bg-white p-5 sm:p-6">
