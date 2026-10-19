@@ -153,10 +153,34 @@ class ProductRequest extends FormRequest
             'slug' => $this->slug
                 ? Str::slug($this->slug)
                 : Str::slug($this->name ?? ''),
+            'price' => $this->normalizeIntegerInput($this->input('price')),
+            'old_price' => $this->normalizeIntegerInput($this->input('old_price')),
             'is_active' => $this->boolean('is_active'),
             'is_featured' => $this->boolean('is_featured'),
             'noindex' => $this->boolean('noindex'),
         ]);
+    }
+
+    /**
+     * Accept Persian/Arabic digits and common grouping separators, then validate
+     * and store an integer number of tomans (never a locale-formatted string).
+     */
+    private function normalizeIntegerInput(mixed $value): ?string
+    {
+        if ($value === null || trim((string) $value) === '') {
+            return null;
+        }
+
+        $value = strtr(trim((string) $value), [
+            '۰' => '0', '۱' => '1', '۲' => '2', '۳' => '3', '۴' => '4',
+            '۵' => '5', '۶' => '6', '۷' => '7', '۸' => '8', '۹' => '9',
+            '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4',
+            '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9',
+        ]);
+
+        $digits = preg_replace('/[^0-9]/', '', $value);
+
+        return $digits === '' ? null : $digits;
     }
 
 }
