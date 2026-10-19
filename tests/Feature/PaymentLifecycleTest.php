@@ -183,4 +183,102 @@ class PaymentLifecycleTest extends TestCase
             'stock' => 1,
         ]);
     }
+
+
+    public function test_repeated_failed_callback_releases_reserved_stock_only_once(): void
+    {
+        [, $product, $order] = $this->buildOrder();
+
+        $gateway = new class implements PaymentGatewayInterface {
+            public function purchase(\\App\\Models\\Order $order): array
+            {
+                return [
+                    'authority' => 'AUTH-FAIL-RETRY',
+                    'redirect_url' => 'https://gateway.test/pay/AUTH-FAIL-RETRY',
+                ];
+            }
+
+            public function verify(\\App\\Models\\Order $order, string $authority): array
+            {
+                return ['success' => false, 'message' => 'payment declined'];
+            }
+
+            public function refund(\\App\\Models\\Order $order, int $amount): array
+            {
+                return ['success' => false, 'message' => 'not supported'];
+            }
+        };
+
+        $this->app->instance(PaymentGatewayInterface::class, $gateway);
+        app(PaymentService::class)->start($order);
+
+        foreach ([1, 2] as $attempt) {
+            try {
+                app(PaymentService::class)->verify(
+                    $order->fresh(),
+                    'AUTH-FAIL-RETRY'
+                );
+                $this->fail('A declined payment must not be reported as successful.');
+            } catch (RuntimeException $exception) {
+                $this->assertSame('payment declined', $exception->getMessage());
+            }
+        }
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'stock' => 2,
+        ]);
+
+        $releaseMovements = \\App\\Models\\InventoryMovement::query()
+            ->where('reference_type', \\App\\Models\\Order::class)
+            ->where('reference_id', $order->id)
+            ->where('type', 'return')
+            ->count();
+
+        $this->assertSame(1, $releaseMovements);
+        $this->assertSame(
+            1,
+            $order->statusHistories()->where('to_status', 'cancelled')->count()
+        );
+    }
+
+    public function test_restarting_a_pending_payment_with_authority_reuses_the_same_payment(): void
+    {
+        [, , $order] = $this->buildOrder();
+
+        $gateway = new class implements PaymentGatewayInterface {
+            public int $purchaseCalls = 0;
+
+            public function purchase(\\App\\Models\\Order $order): array
+            {
+                $this->purchaseCalls++;
+
+                return [
+                    'authority' => 'AUTH-IDEMPOTENT-1',
+                    'redirect_url' => 'https://gateway.test/pay/AUTH-IDEMPOTENT-1',
+                ];
+            }
+
+            public function verify(\\App\\Models\\Order $order, string $authority): array
+            {
+                return ['success' => true, 'tracking_code' => 'TRACK-IDEMPOTENT-1'];
+            }
+
+            public function refund(\\App\\Models\\Order $order, int $amount): array
+            {
+                return ['success' => true];
+            }
+        };
+
+        $this->app->instance(PaymentGatewayInterface::class, $gateway);
+
+        $service = app(PaymentService::class);
+        $first = $service->start($order);
+        $second = $service->start($order->fresh());
+
+        $this->assertSame($first->id, $second->id);
+        $this->assertSame('AUTH-IDEMPOTENT-1', $second->transaction_id);
+        $this->assertSame(1, $gateway->purchaseCalls);
+        $this->assertDatabaseCount('payments', 1);
+    }
 }
