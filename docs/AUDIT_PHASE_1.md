@@ -12,7 +12,7 @@ Read-only inspection of the public `main` source tree and targeted source files 
 - The later root route correctly targets `App\Http\Controllers\HomeController@index`, which returns `view('home')`; `resources/views/home.blade.php` also does not exist, but `resources/views/welcome.blade.php` is present. This is a further potential blocking issue requiring tracing the committed view tree before changing the controller's intended view.
 - Removed the first duplicate `/` route that pointed to the missing `home2` view from `routes/web.php`, leaving the HomeController route as the sole root route.
 - Updated `HomeController@index` to render the existing `welcome` view instead of the missing `home` view, preventing a second missing-view error.
-- Change is committed on this audit branch only; `main` was not modified.
+- Changes are committed on this audit branch only; `main` was not modified.
 
 ## Configuration observations
 - `vite.config.js` lists only `resources/js/app.js` as a Laravel Vite input.
