@@ -210,6 +210,7 @@ class OrderWorkflowSafetyTest extends TestCase
 
     public function test_paid_order_must_be_fully_refunded_before_pre_shipment_cancellation(): void
     {
+        $admin = $this->admin();
         [, $product, $order] = $this->buildOrder();
         $this->app->instance(PaymentGatewayInterface::class, $this->successfulGateway());
 
@@ -217,7 +218,7 @@ class OrderWorkflowSafetyTest extends TestCase
         $payments->start($order);
         $payments->verify($order->fresh(), 'AUTH-WORKFLOW-1');
 
-        $this->actingAs($this->admin())
+        $this->actingAs($admin)
             ->from(route('admin.orders.show', $order))
             ->patch(route('admin.orders.status', $order), [
                 'status' => 'cancelled',
@@ -235,7 +236,7 @@ class OrderWorkflowSafetyTest extends TestCase
             'stock' => 3,
         ]);
 
-        $this->actingAs($this->admin())
+        $this->actingAs($admin)
             ->from(route('admin.orders.show', $order))
             ->post(route('admin.orders.refund', $order), [
                 'amount' => $order->total,
@@ -253,7 +254,7 @@ class OrderWorkflowSafetyTest extends TestCase
             'stock' => 3,
         ]);
 
-        $this->actingAs($this->admin())
+        $this->actingAs($admin)
             ->from(route('admin.orders.show', $order))
             ->patch(route('admin.orders.status', $order), [
                 'status' => 'cancelled',
