@@ -86,11 +86,11 @@
                         </a>
                         <div class="farzin-blog-card__body">
                             <span class="farzin-blog-card__category">{{ $post->category?->name ?? 'مجله فرزین' }} <span aria-hidden="true">/</span> {{ (\App\Support\JalaliCalendar::format($post->published_at, 'day-month')) }}</span>
-                            <h3 class="farzin-blog-card__title"><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h3>
+                            <h3 class="farzin-blog-card__title"><a href="{{ route('blog.show', ['post' => $post->slug]) }}">{{ $post->title }}</a></h3>
                             @if($post->excerpt)
                                 <p class="farzin-blog-card__excerpt">{{ \Illuminate\Support\Str::limit($post->excerpt, 150) }}</p>
                             @endif
-                            <a class="farzin-blog-card__link" href="{{ route('blog.show', $post) }}">ادامه‌ی مطلب <span aria-hidden="true">↗</span></a>
+                            <a class="farzin-blog-card__link" href="{{ route('blog.show', ['post' => $post->slug]) }}">ادامه‌ی مطلب <span aria-hidden="true">↗</span></a>
                         </div>
                     </article>
                 @endforeach
