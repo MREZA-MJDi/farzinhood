@@ -58,6 +58,14 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
+        $tourFrames = HomeTourFrame::query()
+            ->active()
+            ->orderBy('scene')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->groupBy('scene');
+
         return view('home', compact(
             'heroProducts',
             'featuredProducts',
