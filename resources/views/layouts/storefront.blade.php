@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#ffffff">
-    <title>@yield('title', 'فرزین | تجهیزات مدرن آشپزخانه')</title>
+    <title>@yield('title', $defaultMetaTitle ?? 'فرزین | تجهیزات مدرن آشپزخانه')</title>
     <meta name="description" content="@yield('meta_description', 'خرید محصولات مدرن آشپزخانه از فروشگاه فرزین؛ مشخصات روشن، انتخاب مطمئن و پشتیبانی واقعی.')">
     @if (!app()->environment('testing'))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -230,7 +230,7 @@
     </style>
 </head>
 <body>
-    <div class="fz-top">فرزین؛ انتخاب دقیق برای آشپزخانه‌های امروزی</div>
+    <div class="fz-top">{{ $siteName ?? 'فرزین' }}؛ انتخاب دقیق برای آشپزخانه‌های امروزی</div>
 
     <header class="fz-header">
         <div class="fz-container fz-nav">
@@ -294,7 +294,7 @@
             <div class="fz-footer-grid">
                 <div>
                     <a class="fz-logo" href="{{ route('home') }}">FARZIN<span>.</span></a>
-                    <p>محصولات منتخب آشپزخانه، اطلاعات شفاف و مسیر خرید ساده؛ برای انتخابی مطمئن‌تر.</p>
+                    <p>{{ $siteName ?? 'فرزین' }}؛ محصولات منتخب آشپزخانه، اطلاعات شفاف و مسیر خرید ساده برای انتخابی مطمئن‌تر.</p>
                 </div>
                 <div>
                     <h3>خرید و کشف</h3>
@@ -313,7 +313,7 @@
                     @endauth
                 </div>
             </div>
-            <div class="fz-copy">© {{ now()->year }} فرزین · تمامی حقوق محفوظ است.</div>
+            <div class="fz-copy">© {{ now()->year }} {{ $siteName ?? 'فرزین' }} · تمامی حقوق محفوظ است.</div>
         </div>
     </footer>
 
