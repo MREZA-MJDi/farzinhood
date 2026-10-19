@@ -39,7 +39,8 @@
             'products.*',
             'categories.*',
             'blog.*',
-            'contact.*'
+            'contact.*',
+            'customer.*'
         ))
             @vite(['resources/css/home.css'])
         @endif
