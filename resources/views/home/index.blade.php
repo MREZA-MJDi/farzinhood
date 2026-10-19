@@ -101,4 +101,96 @@
         @endforelse
     </div>
 </section>
+
+<section class="store-section store-section--blog" aria-labelledby="home-blog-heading">
+    <div class="store-section__heading">
+        <div>
+            <span class="farzin-eyebrow">FROM THE FARZIN JOURNAL</span>
+            <h2 id="home-blog-heading">راهنمای انتخاب بهتر</h2>
+            <p>محتوا و راهنمایی‌های کاربردی از مجله فرزین.</p>
+        </div>
+        <a class="store-text-link" href="{{ route('blog.index') }}">مشاهده همه مطالب <span aria-hidden="true">←</span></a>
+    </div>
+    <div class="store-blog-grid">
+        @forelse ($blogPosts as $post)
+            <article class="store-blog-card" data-gsap-reveal>
+                <a class="store-blog-card__media" href="{{ route('blog.show', ['post' => $post->slug]) }}" aria-label="مطالعه {{ $post->title }}">
+                    @if ($post->featured_image)
+                        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
+                    @else
+                        <span class="store-blog-card__placeholder" aria-hidden="true">F / JOURNAL</span>
+                    @endif
+                </a>
+                <div class="store-blog-card__body">
+                    <div class="store-blog-card__meta">
+                        <span>{{ $post->category?->name ?: 'مجله فرزین' }}</span>
+                        @if ($post->published_at)<time datetime="{{ $post->published_at->toIso8601String() }}">{{ $post->published_at->locale('fa')->translatedFormat('j F Y') }}</time>@endif
+                    </div>
+                    <h3><a href="{{ route('blog.show', ['post' => $post->slug]) }}">{{ $post->title }}</a></h3>
+                    @if ($post->excerpt)<p>{{ $post->excerpt }}</p>@endif
+                    <a class="store-blog-card__read" href="{{ route('blog.show', ['post' => $post->slug]) }}">مطالعه مطلب <span aria-hidden="true">←</span></a>
+                </div>
+            </article>
+        @empty
+            <div class="store-empty">
+                <strong>مطالب تازه به‌زودی در مجله فرزین منتشر می‌شوند.</strong>
+                <span>برای دیدن محصولات، به فروشگاه سر بزن.</span>
+                <a href="{{ route('shop.index') }}">رفتن به فروشگاه</a>
+            </div>
+        @endforelse
+    </div>
+</section>
+
+@foreach ([
+    'hood' => ['eyebrow' => 'PRODUCT TOUR · 360°', 'title' => 'تور ۳۶۰ درجه هودهای فرزین', 'description' => 'جزئیات طراحی هود را از زاویه‌های مختلف ببین؛ با اسکرول، حرکت ماوس یا لمس تصویر را بچرخان.'],
+    'sink' => ['eyebrow' => 'PRODUCT TOUR · 360°', 'title' => 'تور ۳۶۰ درجه سینک‌های فرزین', 'description' => 'نمای محصول را قدم‌به‌قدم بررسی کن. پس از آپلود فریم‌ها به ترتیب زاویه، حرکت تصویر با اسکرول و لمس فعال می‌شود.'],
+] as $scene => $tourCopy)
+    @php $sceneFrames = $tourFrames->get($scene, collect()); @endphp
+    @if ($sceneFrames->isNotEmpty())
+        <section class="fz-tour" data-product-tour data-tour-scene="{{ $scene }}"
+                 style="--tour-scroll-span: {{ max(0, $sceneFrames->count() - 1) * 15 }}svh">
+            <div class="fz-container fz-tour__shell">
+                <div class="fz-tour__intro">
+                    <span class="fz-tour__eyebrow">{{ $tourCopy['eyebrow'] }}</span>
+                    <h2>{{ $tourCopy['title'] }}</h2>
+                    <p>{{ $tourCopy['description'] }}</p>
+                </div>
+
+                <div class="fz-tour__stage" data-tour-stage tabindex="0"
+                     role="group" aria-label="{{ $tourCopy['title'] }}. برای تغییر زاویه از اسکرول، درگ ماوس یا لمس استفاده کن.">
+                    <div class="fz-tour__frames">
+                        @foreach ($sceneFrames as $frameIndex => $frame)
+                            <div class="fz-tour__frame {{ $loop->first ? 'is-active' : '' }}"
+                                 data-tour-frame data-frame-index="{{ $frameIndex }}"
+                                 aria-hidden="{{ $loop->first ? 'false' : 'true' }}">
+                                <img src="{{ asset('storage/' . $frame->image) }}"
+                                     alt="{{ $frame->alt ?: $tourCopy['title'] }}"
+                                     draggable="false"
+                                     loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="fz-tour__shade" aria-hidden="true"></div>
+                    <span class="fz-tour__tag">FARZIN · 360° VIEW</span>
+                    <div class="fz-tour__caption">
+                        <span>حرکت کن و جزئیات را ببین</span>
+                        <strong data-tour-count>01 / {{ str_pad((string) $sceneFrames->count(), 2, '0', STR_PAD_LEFT) }}</strong>
+                    </div>
+                    <div class="fz-tour__controls" aria-label="کنترل زاویه محصول">
+                        <button type="button" data-tour-prev aria-label="زاویه قبلی">←</button>
+                        <div class="fz-tour__track" aria-hidden="true"><span data-tour-progress></span></div>
+                        <button type="button" data-tour-next aria-label="زاویه بعدی">→</button>
+                    </div>
+                    <span class="fz-tour__hint"><span aria-hidden="true">↔</span> اسکرول · درگ · لمس</span>
+                </div>
+
+                <div class="fz-tour__footer">
+                    <span>نمایش محصول از چند زاویه</span>
+                    <a class="fz-btn fz-tour__shop" href="{{ route('shop.index') }}">مشاهده محصولات فرزین <span aria-hidden="true">←</span></a>
+                </div>
+            </div>
+        </section>
+    @endif
+@endforeach
 @endsection
