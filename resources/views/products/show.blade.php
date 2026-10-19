@@ -13,8 +13,7 @@
         $productImages = [asset('storage/' . $product->primaryImage->image)];
     }
 
-    // Prices are stored and displayed by this storefront in toman. Product structured data requires an ISO currency,
-    // so the Offer value is converted to Iranian rial (10 toman = 1 rial? No: 1 toman = 10 rial).
+    // Prices are stored and displayed in toman. Schema.org uses ISO 4217 currency, so the offer amount is represented in Iranian rial.
     $productSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'Product',
@@ -48,7 +47,7 @@
     <meta property="og:title" content="{{ $product->meta_title ?: $product->name }}">
     <meta property="og:description" content="{{ $product->meta_description ?: $product->short_description }}">
     @if ($product->noindex)
-        <meta name="robots" content="noindex,follow">
+        <meta name="robots" content="noindex, follow">
     @endif
     <script type="application/ld+json">@json($productSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
 @endpush
