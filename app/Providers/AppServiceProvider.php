@@ -34,6 +34,9 @@ class AppServiceProvider extends ServiceProvider
                     'site_description',
                     'default_meta_title',
                     'default_meta_description',
+                    'phone',
+                    'email',
+                    'address',
                 ])
                 ->pluck('value', 'key')
                 ->all();

@@ -1,4 +1,10 @@
 <footer class="mt-20 border-t border-[var(--color-border)] bg-white">
+@php
+    $footerPhone = trim((string) ($siteSettings['phone'] ?? ''));
+    $footerPhoneHref = str_replace([' ', '-', '(', ')'], '', $footerPhone);
+    $footerEmail = trim((string) ($siteSettings['email'] ?? ''));
+    $footerAddress = trim((string) ($siteSettings['address'] ?? ''));
+@endphp
 
     {{-- =========================================================
         Main Footer
@@ -35,8 +41,9 @@
                 {{-- Contact mini row --}}
                 <div class="mt-6 space-y-3">
 
+                    @if (filled($footerPhone) && filled($footerPhoneHref))
                     <a
-                        href="tel:+982112345678"
+                        href="tel:{{ $footerPhoneHref }}"
                         class="group inline-flex items-center gap-3 text-sm font-bold text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
                     >
                         <span
@@ -55,12 +62,15 @@
                         </span>
 
                         <span dir="ltr">
-                            ۰۲۱-۱۲۳۴۵۶۷۸
+                            {{ $footerPhone }}
                         </span>
                     </a>
 
+                    @endif
+
+                    @if (filled($footerEmail))
                     <a
-                        href="mailto:info@farzin.ir"
+                        href="mailto:{{ $footerEmail }}"
                         class="group inline-flex items-center gap-3 text-sm font-bold text-[var(--color-text-secondary)] transition hover:text-[var(--color-accent-600)]"
                     >
                         <span
@@ -80,9 +90,14 @@
                         </span>
 
                         <span dir="ltr">
-                            info@farzin.ir
+                            {{ $footerEmail }}
                         </span>
                     </a>
+                    @endif
+
+                    @if (filled($footerAddress))
+                        <p class="max-w-sm text-sm leading-7 text-[var(--color-text-secondary)]">{{ $footerAddress }}</p>
+                    @endif
 
                 </div>
 
