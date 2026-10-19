@@ -11,7 +11,7 @@
     @php $sceneFrames = $tourFrames->get($scene, collect()); @endphp
     @if ($sceneFrames->isNotEmpty())
         <section class="fz-tour" data-product-tour data-tour-scene="{{ $scene }}"
-                 style="--tour-scroll-span: {{ max(0, $sceneFrames->count() - 1) * 42 }}svh">
+                 style="--tour-scroll-span: {{ max(0, $sceneFrames->count() - 1) * 15 }}svh">
             <div class="fz-container fz-tour__shell">
                 <div class="fz-tour__intro">
                     <span class="fz-tour__eyebrow">{{ $tourCopy['eyebrow'] }}</span>
