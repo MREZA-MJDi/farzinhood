@@ -349,7 +349,7 @@
                             <td class="px-5 py-4">
 
                                 <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ \App\Support\JalaliCalendar::format($order->created_at, 'datetime') }}
+                                    {{ \App\Support\JalaliCalendar::format($order->created_at, 'date') }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
