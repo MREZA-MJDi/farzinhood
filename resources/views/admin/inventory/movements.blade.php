@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($product->stock) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($product->stock) }}
                     <span class="text-sm font-medium text-[var(--color-text-muted)]">
                         عدد
                     </span>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                    {{ number_format($movements->total()) }}
+                    {{ \\App\\Support\\JalaliCalendar::number($movements->total()) }}
                 </div>
             </div>
 
@@ -122,11 +122,11 @@
 
                             <td class="px-5 py-4">
                                 <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ $movement->created_at->locale('fa')->translatedFormat('Y/m/d') }}
+                                    {{ \\App\\Support\\JalaliCalendar::format($movement->created_at, 'datetime') }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                    {{ $movement->created_at->locale('fa')->translatedFormat('H:i') }}
+                                    {{ $movement->created_at->format('H:i') }}
                                 </div>
                             </td>
 
@@ -139,22 +139,22 @@
                             <td class="px-5 py-4">
                                 @if($movement->quantity > 0)
                                     <span class="font-black text-emerald-700">
-                                        +{{ number_format($movement->quantity) }}
+                                        +{{ \\App\\Support\\JalaliCalendar::number($movement->quantity) }}
                                     </span>
                                 @else
                                     <span class="font-black text-red-700">
-                                        {{ number_format($movement->quantity) }}
+                                        {{ \\App\\Support\\JalaliCalendar::number($movement->quantity) }}
                                     </span>
                                 @endif
                             </td>
 
                             <td class="px-5 py-4">
-                                {{ number_format($movement->stock_before) }}
+                                {{ \\App\\Support\\JalaliCalendar::number($movement->stock_before) }}
                             </td>
 
                             <td class="px-5 py-4">
                                 <span class="font-bold">
-                                    {{ number_format($movement->stock_after) }}
+                                    {{ \\App\\Support\\JalaliCalendar::number($movement->stock_after) }}
                                 </span>
                             </td>
 
