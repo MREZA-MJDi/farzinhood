@@ -16,7 +16,7 @@
             <p class="farzin-kicker">FARZIN / JOURNAL @if($post->category) / {{ $post->category->name }} @endif</p>
             <h1>{{ $post->title }}</h1>
             @if($post->excerpt)<p class="farzin-blog-article__lead">{{ $post->excerpt }}</p>@endif
-            <div class="farzin-blog-card__meta"><span>{{ $post->published_at?->format('Y/m/d') }}</span><span>{{ number_format($post->view_count) }} بازدید</span></div>
+            <div class="farzin-blog-card__meta"><span>{{ ($post->published_at ? \App\Support\JalaliCalendar::format($post->published_at, 'date') : '—') }}</span><span>{{ \App\Support\JalaliCalendar::number($post->view_count) }} بازدید</span></div>
         </header>
         @if($post->featured_image)
             @php $image=$post->featured_image; $imageUrl=str_starts_with($image,'http://') || str_starts_with($image,'https://') || str_starts_with($image,'/') ? $image : asset('storage/'.ltrim($image,'/')); @endphp
