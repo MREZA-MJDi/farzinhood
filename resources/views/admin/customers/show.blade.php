@@ -104,7 +104,7 @@
                         </div>
 
                         <div class="mt-1 text-sm font-bold text-[var(--color-text-primary)]">
-                            {{ \\App\\Support\\JalaliCalendar::format($customer->created_at, 'full') }}
+                            {{ \App\Support\JalaliCalendar::format($customer->created_at, 'full') }}
                         </div>
                     </div>
 
@@ -190,7 +190,7 @@
                 </div>
 
                 <div class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                    {{ \\App\\Support\\JalaliCalendar::number($customer->orders_count ?? $orders->count()) }}
+                    {{ \App\Support\JalaliCalendar::number($customer->orders_count ?? $orders->count()) }}
                 </div>
 
             </div>
@@ -203,7 +203,7 @@
                 </div>
 
                 <div class="mt-2 text-2xl font-black text-[var(--color-text-primary)]">
-                    {{ \\App\\Support\\JalaliCalendar::number($customer->orders_sum_total ?? $orders->sum('total')) }}
+                    {{ \App\Support\JalaliCalendar::number($customer->orders_sum_total ?? $orders->sum('total')) }}
                     <span class="text-sm font-medium">
                         تومان
                     </span>
@@ -322,7 +322,7 @@
 
                             <td class="px-5 py-4">
                                 <span class="font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($order->total) }}
+                                    {{ \App\Support\JalaliCalendar::number($order->total) }}
                                     تومان
                                 </span>
                             </td>
@@ -349,7 +349,7 @@
                             <td class="px-5 py-4">
 
                                 <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::format($order->created_at, 'datetime') }}
+                                    {{ \App\Support\JalaliCalendar::format($order->created_at, 'datetime') }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
