@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('title', ($product->meta_title ?: $product->name) . ' | فرزین')
 @section('meta_description', $product->meta_description ?: ($product->short_description ?: 'جزئیات و قیمت ' . $product->name . ' در فروشگاه فرزین.'))
+@section('canonical', $product->canonical_url ?: url()->current())
 
 @push('meta')
+@if($product->noindex)<meta name="robots" content="noindex, follow">@endif
 @php
     $productSchema = [
         '@context' => 'https://schema.org',

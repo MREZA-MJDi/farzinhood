@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('title', ($category->meta_title ?: $category->name) . ' | فرزین')
 @section('meta_description', $category->meta_description ?: ($category->description ?: 'محصولات دسته‌بندی ' . $category->name . ' در فروشگاه فرزین.'))
+@section('canonical', $category->canonical_url ?: url()->current())
+@push('meta')
+    @if($category->noindex)<meta name="robots" content="noindex, follow">@endif
+@endpush
 @section('content')
 <section class="farzin-catalog"><div class="farzin-container">
 <nav class="farzin-breadcrumb" aria-label="مسیر صفحه"><a href="{{ route('home') }}">خانه</a><span>/</span><a href="{{ route('shop.index') }}">فروشگاه</a><span>/</span><span aria-current="page">{{ $category->name }}</span></nav>
