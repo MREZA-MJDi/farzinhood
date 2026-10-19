@@ -220,60 +220,54 @@
 
         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
 
-            {{-- Price --}}
+            {{-- Price in Toman: grouped for people, normalized before validation. --}}
             <div>
-                <label for="price"
-                       class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
-                    قیمت
-                    <span class="text-red-500">*</span>
+                <label for="price" class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
+                    قیمت فروش <span class="text-red-500">*</span>
                 </label>
-
                 <div class="relative">
-                    <input type="number"
-                           min="0"
+                    <input type="text"
+                           inputmode="numeric"
+                           autocomplete="off"
+                           dir="ltr"
                            id="price"
                            name="price"
+                           data-money-input
+                           data-money-caption="قیمت فروش"
                            value="{{ old('price', $product?->price) }}"
-                           placeholder="0"
-                           class="w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 pl-16 text-sm text-[var(--color-text-primary)] outline-none transition focus:border-[var(--color-brand-600)] @error('price') border-red-400 @enderror">
-
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)]">
-                        تومان
-                    </span>
+                           placeholder="مثلاً ۱۲٬۵۰۰٬۰۰۰"
+                           aria-describedby="price-preview"
+                           class="w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 pl-16 text-left text-sm text-[var(--color-text-primary)] outline-none transition focus:border-[var(--color-brand-600)] @error('price') border-red-400 @enderror">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)]">تومان</span>
                 </div>
-
+                <p id="price-preview" data-money-preview aria-live="polite" class="mt-2 rounded-lg bg-[var(--color-neutral-50)] px-3 py-2 text-xs font-bold text-[var(--color-text-secondary)]">مبلغ واردشده به تومان</p>
+                <p class="mt-1 text-[11px] leading-5 text-[var(--color-text-muted)]">عدد را به تومان وارد کن؛ جداکننده‌ی سه‌رقمی خودکار است. مقدار بدون جداکننده ذخیره می‌شود.</p>
                 @error('price')
-                <p class="mt-2 text-xs font-medium text-red-600">
-                    {{ $message }}
-                </p>
+                    <p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
-            {{-- Old Price --}}
+            {{-- Previous price --}}
             <div>
-                <label for="old_price"
-                       class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">
-                    قیمت قبل
-                </label>
-
+                <label for="old_price" class="mb-2 block text-sm font-bold text-[var(--color-text-primary)]">قیمت قبل از تخفیف</label>
                 <div class="relative">
-                    <input type="number"
-                           min="0"
+                    <input type="text"
+                           inputmode="numeric"
+                           autocomplete="off"
+                           dir="ltr"
                            id="old_price"
                            name="old_price"
+                           data-money-input
+                           data-money-caption="قیمت قبل از تخفیف"
                            value="{{ old('old_price', $product?->old_price) }}"
-                           placeholder="0"
-                           class="w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 pl-16 text-sm text-[var(--color-text-primary)] outline-none transition focus:border-[var(--color-brand-600)] @error('old_price') border-red-400 @enderror">
-
-                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)]">
-                        تومان
-                    </span>
+                           placeholder="مثلاً ۱۴٬۰۰۰٬۰۰۰"
+                           aria-describedby="old-price-preview"
+                           class="w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 pl-16 text-left text-sm text-[var(--color-text-primary)] outline-none transition focus:border-[var(--color-brand-600)] @error('old_price') border-red-400 @enderror">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-[var(--color-text-muted)]">تومان</span>
                 </div>
-
+                <p id="old-price-preview" data-money-preview aria-live="polite" class="mt-2 rounded-lg bg-[var(--color-neutral-50)] px-3 py-2 text-xs font-bold text-[var(--color-text-secondary)]">در صورت تخفیف، قیمت قبل را وارد کن</p>
                 @error('old_price')
-                <p class="mt-2 text-xs font-medium text-red-600">
-                    {{ $message }}
-                </p>
+                    <p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
