@@ -1,0 +1,705 @@
+/*
+|--------------------------------------------------------------------------
+| Farzin Unified Design System
+|--------------------------------------------------------------------------
+| Public storefront, account, transaction and admin components share the
+| same semantic tokens. Legacy component tokens are mapped here rather than
+| allowing each Blade page to invent its own palette.
+|--------------------------------------------------------------------------
+*/
+
+:root {
+    /* Compatibility layer for the existing component stylesheet. */
+    --primary: var(--color-brand-950);
+    --primary-hover: var(--color-brand-900);
+    --accent: var(--color-accent-700);
+    --accent-hover: var(--color-accent-600);
+    --accent-soft: var(--color-accent-50);
+    --background: var(--farzin-pearl);
+    --border: var(--color-border);
+    --border-dark: var(--color-border-strong);
+    --border-light: var(--color-border);
+    --content-wide: var(--farzin-max);
+    --danger: var(--color-danger-700);
+    --danger-soft: var(--color-danger-50);
+    --ease-smooth: var(--farzin-ease);
+    --font-xs: .75rem;
+    --font-sm: .875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.375rem;
+    --font-2xl: 1.75rem;
+    --font-3xl: 2.25rem;
+    --grid-gap: clamp(1rem, 2vw, 1.75rem);
+    --header-height: 4.5rem;
+    --header-mobile-height: 4rem;
+    --info: var(--color-info-700);
+    --info-soft: var(--color-info-50);
+    --layout-gutter: var(--farzin-gutter);
+    --radius-xs: .375rem;
+    --radius-2xl: 1.75rem;
+    --radius-full: 9999px;
+    --section-space: var(--farzin-space-section);
+    --section-space-sm: clamp(2.75rem, 5vw, 4.5rem);
+    --space-1: .25rem;
+    --space-2: .5rem;
+    --space-3: .75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-7: 1.75rem;
+    --space-8: 2rem;
+    --space-9: 2.25rem;
+    --space-10: 2.5rem;
+    --space-11: 2.75rem;
+    --success: var(--color-success-700);
+    --success-soft: var(--color-success-50);
+    --surface: #fff;
+    --surface-dark: var(--farzin-black);
+    --surface-soft: var(--farzin-pearl);
+    --text: var(--farzin-black);
+    --text-light: var(--color-text-muted);
+    --text-muted: var(--color-text-muted);
+    --text-secondary: var(--color-text-secondary);
+    --text-white: #fff;
+    --warning: var(--color-warning-700);
+    --warning-soft: var(--color-warning-50);
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --weight-extrabold: 800;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 300;
+    --z-toast: 500;
+
+    /* Canonical store tokens. */
+    --store-cream: var(--farzin-pearl);
+    --store-white: #fff;
+    --store-surface: var(--color-neutral-100);
+    --store-ink: var(--farzin-black);
+    --store-stone: var(--color-text-muted);
+    --store-accent: var(--color-brand-800);
+    --store-accent-dark: var(--color-brand-950);
+    --store-border: var(--color-border);
+    --store-ease: var(--farzin-ease);
+}
+
+/* Stable defaults: meaningful content never depends on animation JavaScript. */
+html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+body {
+    min-height: 100vh;
+    background: var(--farzin-pearl);
+    color: var(--farzin-black);
+    font-family: "Vazirmatn", Tahoma, Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+}
+
+body.farzin-home-page {
+    background: var(--farzin-black);
+}
+
+body.farzin-page {
+    background: var(--farzin-pearl);
+}
+
+img {
+    max-width: 100%;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+    -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+    outline: 2px solid var(--farzin-black);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: var(--farzin-black);
+    color: #fff;
+}
+
+/* Header / footer use the same pearl, graphite and monochrome action colors. */
+.store-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    min-height: var(--header-height);
+    border-color: var(--store-border) !important;
+    background: rgb(255 255 255 / .94) !important;
+    color: var(--store-ink);
+    box-shadow: 0 6px 24px rgb(9 9 9 / .045) !important;
+    backdrop-filter: blur(18px);
+}
+
+.store-nav__link {
+    color: var(--color-text-secondary) !important;
+    border-radius: .6rem;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.store-nav__link:hover,
+.store-nav__link.is-active {
+    background: var(--farzin-pearl);
+    color: var(--store-ink) !important;
+}
+
+.store-nav__search input,
+.store-nav__mobile-panel input {
+    border: 1px solid var(--store-border) !important;
+    border-radius: .9rem !important;
+    background: var(--farzin-pearl) !important;
+    color: var(--store-ink) !important;
+}
+
+.store-nav__search button,
+.store-nav__cart,
+.store-nav__admin,
+.store-nav__auth-button {
+    border: 1px solid var(--store-ink) !important;
+    border-radius: .8rem !important;
+    background: var(--store-ink) !important;
+    color: #fff !important;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.store-nav__search button:hover,
+.store-nav__cart:hover,
+.store-nav__admin:hover,
+.store-nav__auth-button:hover {
+    background: #fff !important;
+    color: var(--store-ink) !important;
+}
+
+.store-nav__icon,
+.store-nav__mobile summary {
+    border: 1px solid var(--store-border) !important;
+    border-radius: .8rem;
+    background: #fff;
+    color: var(--store-ink) !important;
+}
+
+.store-nav__account-trigger {
+    border-radius: .85rem;
+    color: var(--store-ink);
+}
+
+.store-nav__account-menu,
+.store-nav__mobile-panel {
+    border: 1px solid var(--store-border);
+    border-radius: 1rem;
+    background: #fff;
+    color: var(--store-ink);
+    box-shadow: 0 22px 56px rgb(9 9 9 / .12);
+}
+
+.store-nav__account-menu a:hover,
+.store-nav__mobile-panel a:hover {
+    background: var(--farzin-pearl);
+    color: var(--store-ink);
+}
+
+body > footer {
+    border-color: var(--store-border) !important;
+    background: #fff !important;
+    color: var(--store-ink);
+}
+
+body > footer a {
+    text-underline-offset: .2em;
+}
+
+body > footer a:hover {
+    color: var(--store-ink) !important;
+}
+
+/* Consistent account sub-navigation across dashboard, orders, addresses and wishlist. */
+.store-account-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    padding: .65rem;
+    border: 1px solid var(--store-border);
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.store-account-nav > a {
+    min-height: 2.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: .6rem .9rem;
+    border: 1px solid transparent;
+    border-radius: .7rem;
+    color: var(--color-text-secondary);
+    font-size: .78rem;
+    font-weight: 700;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.store-account-nav > a:hover,
+.store-account-nav > a.is-active {
+    border-color: var(--store-border);
+    background: var(--farzin-pearl);
+    color: var(--store-ink);
+}
+
+.store-account-nav__logout {
+    margin-inline-start: auto;
+}
+
+.store-account-nav__logout button {
+    min-height: 2.6rem;
+    padding: .6rem .9rem;
+    border: 1px solid var(--store-border);
+    border-radius: .7rem;
+    background: #fff;
+    color: var(--color-text-secondary);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.store-account-nav__logout button:hover {
+    border-color: var(--store-ink);
+    color: var(--store-ink);
+}
+
+/* Forms: one shared field language for public, checkout, account and admin screens. */
+body input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+body select,
+body textarea {
+    border-color: var(--color-border);
+    border-radius: .85rem;
+    background-color: #fff;
+    color: var(--farzin-black);
+    font-family: inherit;
+}
+
+body input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]):focus,
+body select:focus,
+body textarea:focus {
+    border-color: var(--farzin-graphite);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(9 9 9 / .07);
+}
+
+body input::placeholder,
+body textarea::placeholder {
+    color: var(--color-text-soft);
+}
+
+body input[type="checkbox"],
+body input[type="radio"] {
+    accent-color: var(--farzin-black);
+}
+
+body input:disabled,
+body select:disabled,
+body textarea:disabled,
+body button:disabled {
+    cursor: not-allowed;
+    opacity: .56;
+}
+
+/* Legacy and current buttons resolve to the same neutral action hierarchy. */
+.btn--primary,
+.btn--accent,
+.btn--danger,
+.farzin-button,
+.store-checkout__actions button,
+.store-transaction button[type="submit"] {
+    border-color: var(--farzin-black) !important;
+    border-radius: .85rem;
+    background: var(--farzin-black) !important;
+    color: #fff !important;
+    font-family: inherit;
+    font-weight: 800;
+    box-shadow: none;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn--primary:hover,
+.btn--accent:hover,
+.btn--danger:hover,
+.farzin-button:hover,
+.store-checkout__actions button:hover,
+.store-transaction button[type="submit"]:hover {
+    border-color: var(--farzin-black) !important;
+    background: #fff !important;
+    color: var(--farzin-black) !important;
+}
+
+.btn--outline,
+.btn--ghost {
+    border-color: var(--store-border);
+    color: var(--farzin-black);
+}
+
+.farzin-reset,
+.farzin-text-link,
+.farzin-breadcrumb a {
+    color: var(--color-text-secondary);
+}
+
+.farzin-reset:hover,
+.farzin-text-link:hover,
+.farzin-breadcrumb a:hover {
+    color: var(--farzin-black);
+}
+
+/* Transaction panels and empty states follow one section / card / divider scale. */
+.store-transaction,
+.farzin-catalog,
+.farzin-product-page {
+    color: var(--farzin-black);
+    background: var(--farzin-pearl);
+}
+
+.store-panel,
+.store-transaction__summary,
+.store-empty,
+.farzin-empty--large,
+.farzin-auth__panel,
+.farzin-auth__aside {
+    border-color: var(--store-border) !important;
+    border-radius: 1.15rem;
+    box-shadow: 0 10px 28px rgb(9 9 9 / .035);
+}
+
+.store-panel,
+.store-transaction__summary,
+.store-auth-card,
+.farzin-auth__panel {
+    background: #fff;
+}
+
+.store-panel__head {
+    border-color: var(--store-border);
+}
+
+.store-empty {
+    background: #fff;
+}
+
+.farzin-catalog__result {
+    color: var(--color-text-muted);
+}
+
+/* The sign-in and sign-up screens intentionally extend layouts.app. */
+.farzin-auth {
+    padding: clamp(2.25rem, 6vw, 5.5rem) 0;
+    background: var(--farzin-pearl);
+}
+
+.farzin-auth__container {
+    width: min(1140px, calc(100% - 2 * var(--farzin-gutter)));
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    overflow: hidden;
+    border: 1px solid var(--store-border);
+    border-radius: 1.4rem;
+    background: #fff;
+    box-shadow: 0 24px 70px rgb(9 9 9 / .07);
+}
+
+.farzin-auth__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 570px;
+    padding: clamp(1.75rem, 4vw, 3.5rem);
+    border: 0 !important;
+    border-radius: 0;
+    background: var(--farzin-black);
+    color: #fff;
+    box-shadow: none;
+}
+
+.farzin-auth__aside .farzin-kicker {
+    color: #b7b7af;
+}
+
+.farzin-auth__aside h1 {
+    margin: 1.3rem 0 0;
+    color: #fff;
+    font-size: clamp(2.1rem, 4.2vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.35;
+    letter-spacing: -.04em;
+}
+
+.farzin-auth__aside p {
+    color: rgb(255 255 255 / .7);
+    font-size: .9rem;
+    line-height: 2.1;
+}
+
+.farzin-auth__panel {
+    min-width: 0;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.farzin-auth__head {
+    margin-bottom: 1.75rem;
+}
+
+.farzin-auth__head h2 {
+    margin: .5rem 0;
+    color: var(--farzin-black);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -.035em;
+}
+
+.farzin-auth__head p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: .85rem;
+    line-height: 1.9;
+}
+
+.farzin-auth__form {
+    display: grid;
+    gap: 1.15rem;
+}
+
+.farzin-auth__field {
+    display: grid;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.farzin-auth__field label {
+    color: var(--farzin-black);
+    font-size: .82rem;
+    font-weight: 800;
+}
+
+.farzin-auth__field input:not([type="checkbox"]) {
+    width: 100%;
+    min-height: 3.1rem;
+    padding: .75rem 1rem;
+    border: 1px solid var(--store-border);
+    border-radius: .85rem;
+    background: var(--farzin-pearl);
+    font-size: .875rem;
+}
+
+.farzin-auth__field input:focus {
+    background: #fff;
+}
+
+.farzin-auth__error {
+    margin: 0;
+    color: var(--color-danger-700);
+    font-size: .75rem;
+    line-height: 1.8;
+}
+
+.farzin-auth__notice {
+    padding: .9rem 1rem;
+    border: 1px solid var(--store-border);
+    border-radius: .85rem;
+    background: var(--farzin-pearl);
+    color: var(--color-text-secondary);
+    font-size: .76rem;
+    line-height: 1.9;
+}
+
+.farzin-auth__submit {
+    min-height: 3.25rem;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .8rem;
+    border: 1px solid var(--farzin-black);
+    border-radius: .85rem;
+    background: var(--farzin-black);
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 800;
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.farzin-auth__submit:hover {
+    background: #fff;
+    color: var(--farzin-black);
+    transform: translateY(-1px);
+}
+
+.farzin-auth__switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    margin-top: 1.5rem;
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--store-border);
+    color: var(--color-text-secondary);
+    font-size: .82rem;
+}
+
+.farzin-auth__switch a {
+    color: var(--farzin-black);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: .2em;
+}
+
+.farzin-auth__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: 1.3rem;
+    color: var(--color-text-muted);
+    font-size: .78rem;
+}
+
+/* Predictable reveal behavior: no CSS-only invisible content when JS is absent. */
+.product-card {
+    opacity: 1;
+    transform: none;
+}
+
+.product-card .product-card__image img {
+    opacity: 1;
+    transform: none;
+}
+
+.product-card .product-card__content {
+    opacity: 1;
+    transform: none;
+}
+
+.has-reveal-observer .product-card:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(18px);
+}
+
+.has-reveal-observer .product-card:not(.is-visible) .product-card__image img {
+    opacity: 0;
+    transform: scale(.94);
+}
+
+.has-reveal-observer .product-card:not(.is-visible) .product-card__content {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.has-reveal-observer .product-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.has-reveal-observer .product-card.is-visible .product-card__image img {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.has-reveal-observer .product-card.is-visible .product-card__content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+    :root {
+        --header-height: var(--header-mobile-height);
+    }
+
+    .store-account-nav {
+        gap: .35rem;
+        padding: .45rem;
+    }
+
+    .store-account-nav > a {
+        flex: 1 1 calc(50% - .35rem);
+        justify-content: space-between;
+        padding-inline: .7rem;
+        font-size: .72rem;
+    }
+
+    .store-account-nav__logout {
+        flex: 1 1 100%;
+        margin-inline-start: 0;
+    }
+
+    .store-account-nav__logout button {
+        width: 100%;
+    }
+
+    .farzin-auth {
+        padding-block: 1.25rem 2.5rem;
+    }
+
+    .farzin-auth__container {
+        grid-template-columns: minmax(0, 1fr);
+        border-radius: 1rem;
+    }
+
+    .farzin-auth__aside {
+        min-height: 0;
+        gap: .5rem;
+        padding: 1.5rem;
+    }
+
+    .farzin-auth__aside h1 {
+        margin-top: .65rem;
+        font-size: 1.75rem;
+    }
+
+    .farzin-auth__aside p {
+        margin: .35rem 0 0;
+        font-size: .8rem;
+    }
+
+    .farzin-auth__aside .farzin-auth__aside-foot {
+        display: none;
+    }
+
+    .farzin-auth__panel {
+        padding: 1.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+
+    .has-reveal-observer .product-card,
+    .has-reveal-observer .product-card .product-card__image img,
+    .has-reveal-observer .product-card .product-card__content {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
