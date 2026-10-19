@@ -1,20 +1,250 @@
 import { gsap } from "gsap";
-document.addEventListener("DOMContentLoaded", () => document.querySelectorAll("[data-farzin-hero]").forEach(initFarzinHero));
+
+const HERO_SELECTOR = "[data-farzin-hero]";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const AUTOPLAY_DELAY = 6800;
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(HERO_SELECTOR).forEach(initFarzinHero);
+});
+
 function initFarzinHero(hero) {
-    const slides=[...hero.querySelectorAll("[data-hero-slide]")]; if(slides.length<2)return;
-    const prev=hero.querySelector("[data-hero-prev]"),next=hero.querySelector("[data-hero-next]"),dots=[...hero.querySelectorAll("[data-hero-dot]")],progress=hero.querySelector("[data-hero-progress]");
-    const reduced=window.matchMedia("(prefers-reduced-motion: reduce)"); const interval=6800; let index=Math.max(0,slides.findIndex(s=>s.classList.contains("is-active"))),timer=0,busy=false,touchX=null;
-    const stop=()=>{window.clearTimeout(timer);progressTween?.pause()}, start=()=>{window.clearTimeout(timer);progressTween?.kill();if(progress){gsap.set(progress,{scaleX:0,transformOrigin:"right center"});if(!reduced.matches)progressTween=gsap.to(progress,{scaleX:1,duration:interval/1000,ease:"none"})}if(!reduced.matches&&!document.hidden)timer=window.setTimeout(()=>go(index+1),interval)};
-    const sync=()=>{slides.forEach((s,i)=>{const active=i===index;s.classList.toggle("is-active",active);s.setAttribute("aria-hidden",active?"false":"true");s.inert=!active});dots.forEach((d,i)=>{const active=i===index;d.classList.toggle("is-active",active);d.setAttribute("aria-selected",active?"true":"false")})};
-    function go(target){if(busy)return;const to=(target+slides.length)%slides.length;if(to===index){start();return}stop();const old=slides[index],incoming=slides[to],image=incoming.querySelector(".farzin-hero__media img"),frame=incoming.querySelector(".farzin-hero__frame"),copy=incoming.querySelector(".farzin-hero__content"),oldCopy=old.querySelector(".farzin-hero__content");busy=true;incoming.inert=false;incoming.classList.add("is-active");gsap.set(incoming,{zIndex:2,visibility:"visible",opacity:1,clipPath:reduced.matches?"inset(0)":"inset(43% 15% 43% 15%)"});gsap.set(frame,{scaleX:reduced.matches?1:.3,scaleY:reduced.matches?1:.18,transformOrigin:"center",opacity:reduced.matches?1:0});gsap.set(copy,{y:reduced.matches?0:24,autoAlpha:reduced.matches?1:0});gsap.set(image,{scale:reduced.matches?1:1.09});
-      const finish=()=>{old.classList.remove("is-active");old.setAttribute("aria-hidden","true");old.inert=true;gsap.set(old,{zIndex:0,visibility:"hidden",opacity:0,clipPath:"inset(0)"});gsap.set(incoming,{zIndex:1,clipPath:"inset(0)"});index=to;sync();busy=false;start()};
-      if(reduced.matches){gsap.set(old,{opacity:0,visibility:"hidden"});gsap.set(incoming,{opacity:1,visibility:"visible",clipPath:"inset(0)"});finish();return}
-      const tl=gsap.timeline({onComplete:finish,defaults:{ease:"power3.inOut"}});tl.to(old,{opacity:.18,duration:.72},0).to(incoming,{clipPath:"inset(0% 0% 0% 0%)",duration:1.15,ease:"power4.inOut"},0).to(frame,{scaleX:1,scaleY:1,opacity:1,duration:1.12,ease:"power3.out"},.08).to(image,{scale:1,duration:1.45,ease:"power3.out"},0).to(oldCopy,{y:-12,autoAlpha:0,duration:.32,ease:"power2.in"},0).to(copy,{y:0,autoAlpha:1,duration:.62,ease:"power3.out"},.44);
+    const slides = [...hero.querySelectorAll("[data-hero-slide]")];
+    if (slides.length < 2) return;
+
+    const previousButton = hero.querySelector("[data-hero-prev]");
+    const nextButton = hero.querySelector("[data-hero-next]");
+    const dots = [...hero.querySelectorAll("[data-hero-dot]")];
+    const progress = hero.querySelector("[data-hero-progress]");
+    const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
+
+    let activeIndex = Math.max(
+        0,
+        slides.findIndex((slide) => slide.classList.contains("is-active")),
+    );
+    let autoplayTimer = 0;
+    let progressTween = null;
+    let isTransitioning = false;
+    let touchStartX = null;
+
+    const stopAutoplay = () => {
+        window.clearTimeout(autoplayTimer);
+        autoplayTimer = 0;
+        progressTween?.kill();
+        progressTween = null;
+    };
+
+    const startAutoplay = () => {
+        stopAutoplay();
+
+        if (progress) {
+            gsap.set(progress, { scaleX: 0, transformOrigin: "right center" });
+
+            if (!reducedMotion.matches) {
+                progressTween = gsap.to(progress, {
+                    scaleX: 1,
+                    duration: AUTOPLAY_DELAY / 1000,
+                    ease: "none",
+                });
+            }
+        }
+
+        if (!reducedMotion.matches && !document.hidden) {
+            autoplayTimer = window.setTimeout(
+                () => showSlide(activeIndex + 1),
+                AUTOPLAY_DELAY,
+            );
+        }
+    };
+
+    const syncAccessibleState = () => {
+        slides.forEach((slide, index) => {
+            const isActive = index === activeIndex;
+            slide.classList.toggle("is-active", isActive);
+            slide.setAttribute("aria-hidden", String(!isActive));
+            slide.inert = !isActive;
+        });
+
+        dots.forEach((dot, index) => {
+            const isActive = index === activeIndex;
+            dot.classList.toggle("is-active", isActive);
+            dot.setAttribute("aria-selected", String(isActive));
+            dot.tabIndex = isActive ? 0 : -1;
+        });
+    };
+
+    function showSlide(targetIndex) {
+        if (isTransitioning) return;
+
+        const nextIndex = (targetIndex + slides.length) % slides.length;
+        if (nextIndex === activeIndex) {
+            startAutoplay();
+            return;
+        }
+
+        stopAutoplay();
+
+        const currentSlide = slides[activeIndex];
+        const nextSlide = slides[nextIndex];
+        const nextImage = nextSlide.querySelector(".farzin-hero__media img");
+        const nextFrame = nextSlide.querySelector(".farzin-hero__frame");
+        const nextCopy = nextSlide.querySelector(".farzin-hero__content");
+        const currentCopy = currentSlide.querySelector(".farzin-hero__content");
+
+        isTransitioning = true;
+        nextSlide.inert = false;
+        nextSlide.classList.add("is-active");
+
+        gsap.set(nextSlide, {
+            zIndex: 2,
+            visibility: "visible",
+            opacity: 1,
+            clipPath: reducedMotion.matches
+                ? "inset(0)"
+                : "inset(43% 15% 43% 15%)",
+        });
+        gsap.set(nextFrame, {
+            scaleX: reducedMotion.matches ? 1 : 0.3,
+            scaleY: reducedMotion.matches ? 1 : 0.18,
+            transformOrigin: "center",
+            opacity: reducedMotion.matches ? 1 : 0,
+        });
+        gsap.set(nextCopy, {
+            y: reducedMotion.matches ? 0 : 24,
+            autoAlpha: reducedMotion.matches ? 1 : 0,
+        });
+        gsap.set(nextImage, { scale: reducedMotion.matches ? 1 : 1.09 });
+
+        const finishTransition = () => {
+            currentSlide.classList.remove("is-active");
+            currentSlide.setAttribute("aria-hidden", "true");
+            currentSlide.inert = true;
+
+            gsap.set(currentSlide, {
+                zIndex: 0,
+                visibility: "hidden",
+                opacity: 0,
+                clipPath: "inset(0)",
+            });
+            gsap.set(nextSlide, { zIndex: 1, clipPath: "inset(0)" });
+
+            activeIndex = nextIndex;
+            syncAccessibleState();
+            isTransitioning = false;
+            startAutoplay();
+        };
+
+        if (reducedMotion.matches) {
+            gsap.set(currentSlide, { opacity: 0, visibility: "hidden" });
+            gsap.set(nextSlide, {
+                opacity: 1,
+                visibility: "visible",
+                clipPath: "inset(0)",
+            });
+            finishTransition();
+            return;
+        }
+
+        gsap.timeline({
+            onComplete: finishTransition,
+            defaults: { ease: "power3.inOut" },
+        })
+            .to(currentSlide, { opacity: 0.18, duration: 0.72 }, 0)
+            .to(
+                nextSlide,
+                {
+                    clipPath: "inset(0% 0% 0% 0%)",
+                    duration: 1.15,
+                    ease: "power4.inOut",
+                },
+                0,
+            )
+            .to(
+                nextFrame,
+                {
+                    scaleX: 1,
+                    scaleY: 1,
+                    opacity: 1,
+                    duration: 1.12,
+                    ease: "power3.out",
+                },
+                0.08,
+            )
+            .to(nextImage, { scale: 1, duration: 1.45, ease: "power3.out" }, 0)
+            .to(
+                currentCopy,
+                { y: -12, autoAlpha: 0, duration: 0.32, ease: "power2.in" },
+                0,
+            )
+            .to(
+                nextCopy,
+                { y: 0, autoAlpha: 1, duration: 0.62, ease: "power3.out" },
+                0.44,
+            );
     }
-    prev?.addEventListener("click",()=>go(index-1));next?.addEventListener("click",()=>go(index+1));dots.forEach((d,i)=>d.addEventListener("click",()=>go(i)));
-    hero.addEventListener("mouseenter",stop);hero.addEventListener("mouseleave",start);hero.addEventListener("focusin",stop);hero.addEventListener("focusout",e=>{if(!hero.contains(e.relatedTarget))start()});
-    hero.addEventListener("touchstart",e=>{touchX=e.changedTouches[0]?.clientX??null;stop()},{passive:true});hero.addEventListener("touchend",e=>{if(touchX===null)return;const distance=(e.changedTouches[0]?.clientX??touchX)-touchX;touchX=null;if(Math.abs(distance)>45)go(distance<0?index+1:index-1);else start()},{passive:true});
-    hero.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")go(index+1);if(e.key==="ArrowRight")go(index-1)});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());reduced.addEventListener?.("change",start);
-    slides.forEach((s,i)=>{s.inert=i!==index;s.setAttribute("aria-hidden",i===index?"false":"true");if(i!==index)gsap.set(s,{visibility:"hidden",opacity:0,zIndex:0,clipPath:"inset(0)"})});
-    start();
+
+    previousButton?.addEventListener("click", () => showSlide(activeIndex - 1));
+    nextButton?.addEventListener("click", () => showSlide(activeIndex + 1));
+    dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => showSlide(index));
+    });
+
+    hero.addEventListener("mouseenter", stopAutoplay);
+    hero.addEventListener("mouseleave", startAutoplay);
+    hero.addEventListener("focusin", stopAutoplay);
+    hero.addEventListener("focusout", (event) => {
+        if (!hero.contains(event.relatedTarget)) startAutoplay();
+    });
+
+    hero.addEventListener(
+        "touchstart",
+        (event) => {
+            touchStartX = event.changedTouches[0]?.clientX ?? null;
+            stopAutoplay();
+        },
+        { passive: true },
+    );
+    hero.addEventListener(
+        "touchend",
+        (event) => {
+            if (touchStartX === null) return;
+
+            const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+            const distance = touchEndX - touchStartX;
+            touchStartX = null;
+
+            if (Math.abs(distance) > 45) {
+                showSlide(distance < 0 ? activeIndex + 1 : activeIndex - 1);
+            } else {
+                startAutoplay();
+            }
+        },
+        { passive: true },
+    );
+
+    hero.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") showSlide(activeIndex + 1);
+        if (event.key === "ArrowRight") showSlide(activeIndex - 1);
+    });
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopAutoplay();
+        else startAutoplay();
+    });
+
+    reducedMotion.addEventListener?.("change", startAutoplay);
+
+    syncAccessibleState();
+    slides.forEach((slide, index) => {
+        if (index !== activeIndex) {
+            gsap.set(slide, {
+                visibility: "hidden",
+                opacity: 0,
+                zIndex: 0,
+                clipPath: "inset(0)",
+            });
+        }
+    });
+
+    startAutoplay();
 }
