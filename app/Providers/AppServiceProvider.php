@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.storefront', function ($view): void {
+            $settings = SiteSetting::query()
+                ->whereIn('key', ['site_name', 'default_meta_title', 'default_meta_description'])
+                ->pluck('value', 'key');
+
             $user = auth()->user();
             $itemCount = 0;
 
@@ -38,7 +42,12 @@ class AppServiceProvider extends ServiceProvider
                 $itemCount = (int) ($cart?->header_item_count ?? 0);
             }
 
-            $view->with('headerCartCount', $itemCount);
+            $view->with([
+                'siteName' => $settings->get('site_name') ?: 'فرزین',
+                'defaultMetaTitle' => $settings->get('default_meta_title') ?: 'فرزین | تجهیزات مدرن آشپزخانه',
+                'defaultMetaDescription' => $settings->get('default_meta_description') ?: 'خرید محصولات مدرن آشپزخانه از فروشگاه فرزین؛ اطلاعات شفاف و انتخاب مطمئن.',
+                'headerCartCount' => $itemCount,
+            ]);
         });
     }
 }
