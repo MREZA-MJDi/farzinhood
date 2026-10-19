@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\SiteSetting;
 use App\Services\Payment\PaymentGatewayInterface;
 use App\Services\Payment\UnavailablePaymentGateway;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,18 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        View::composer('layouts.app', function ($view): void {
+            $settings = SiteSetting::query()
+                ->whereIn('key', [
+                    'site_name',
+                    'site_description',
+                    'default_meta_title',
+                    'default_meta_description',
+                ])
+                ->pluck('value', 'key')
+                ->all();
+
+            $view->with('siteSettings', $settings);
+        });
     }
 }
