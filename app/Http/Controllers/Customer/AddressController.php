@@ -19,7 +19,8 @@ class AddressController extends Controller
             ->addresses()
             ->orderByDesc('is_default')
             ->latest('updated_at')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('customer.addresses.index', compact('addresses'));
     }
