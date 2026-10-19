@@ -4,7 +4,7 @@
 @section('meta_description', 'ورود امن به حساب فرزین برای پیگیری سفارش‌ها، آدرس‌ها و محصولات ذخیره‌شده.')
 
 @push('meta')
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex,nofollow">
 @endpush
 
 @section('content')
