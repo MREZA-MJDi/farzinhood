@@ -41,7 +41,7 @@
                     </p>
 
                     <a
-                        href="{{ route('shop') }}"
+                        href="{{ route('shop.index') }}"
                         class="btn btn--accent"
                     >
                         کشف محصولات
