@@ -173,6 +173,7 @@ final class JalaliCalendar
 
         return match ($style) {
             'day-month' => $dayText . ' ' . $monthName,
+            'date' => $dayText . ' ' . $monthName . ' ' . $yearText,
             'month' => $monthName,
             'month-year' => $monthName . ' ' . $yearText,
             'year' => $yearText,
