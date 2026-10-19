@@ -697,6 +697,55 @@ body button:disabled {
     }
 }
 
+
+/* Mobile form ergonomics: native-size targets and no iOS focus zoom. */
+@media (max-width: 480px) {
+    .farzin-auth__container {
+        width: calc(100% - 1.25rem);
+        border-radius: .9rem;
+    }
+
+    .farzin-auth__aside {
+        padding: 1.15rem;
+    }
+
+    .farzin-auth__aside h1 {
+        font-size: clamp(1.55rem, 7vw, 2rem);
+        line-height: 1.45;
+    }
+
+    .farzin-auth__panel {
+        padding: 1.1rem;
+    }
+
+    .farzin-auth__head {
+        margin-bottom: 1.25rem;
+    }
+
+    .farzin-auth__head h2 {
+        font-size: 1.65rem;
+    }
+
+    .farzin-auth__form {
+        gap: 1rem;
+    }
+
+    .farzin-auth__field input:not([type="checkbox"]) {
+        min-height: 3.25rem;
+        padding-inline: .85rem;
+        font-size: 16px;
+    }
+
+    .farzin-auth__submit {
+        min-height: 3.25rem;
+        font-size: .9rem;
+    }
+
+    .farzin-auth__switch {
+        font-size: .78rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
