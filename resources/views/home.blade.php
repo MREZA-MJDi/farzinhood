@@ -9,7 +9,7 @@
 @if($categories->isNotEmpty())<div class="farzin-category-grid">
 @foreach($categories as $category)
 @php $categoryImage = $category->image; $categoryImageUrl = filled($categoryImage) ? (str_starts_with($categoryImage,'http://') || str_starts_with($categoryImage,'https://') || str_starts_with($categoryImage,'/') ? $categoryImage : asset('storage/'.ltrim($categoryImage,'/'))) : null; @endphp
-<a class="farzin-category" href="{{ route('categories.show', $category->slug) }}"><span class="farzin-category__number">{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}</span><span class="farzin-category__media">@if($categoryImageUrl)<img src="{{ $categoryImageUrl }}" alt="{{ $category->name }}" width="640" height="720" loading="lazy" decoding="async">@else<span class="farzin-category__placeholder" aria-hidden="true">F.</span>@endif</span><span class="farzin-category__meta"><strong>{{ $category->name }}</strong><span>{{ $category->active_products_count }} محصول <b aria-hidden="true">↗</b></span></span></a>
+<a class="farzin-category" href="{{ route('categories.show', $category->slug) }}"><span class="farzin-category__number">{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}</span><span class="farzin-category__media" data-image-fallback-container>@if($categoryImageUrl)<img src="{{ $categoryImageUrl }}" alt="{{ $category->name }}" width="640" height="720" loading="lazy" decoding="async" data-image-fallback-image><span class="farzin-category__placeholder" data-image-fallback-placeholder hidden aria-hidden="true">F.</span>@else<span class="farzin-category__placeholder" aria-hidden="true">F.</span>@endif</span><span class="farzin-category__meta"><strong>{{ $category->name }}</strong><span>{{ $category->active_products_count }} محصول <b aria-hidden="true">↗</b></span></span></a>
 @endforeach
 </div>@else<p class="farzin-empty">دسته‌بندی‌های محصولات به‌زودی نمایش داده می‌شوند.</p>@endif
 </div></section>
@@ -77,9 +77,9 @@
                             : null;
                     @endphp
                     <article class="farzin-blog-card">
-                        <a class="farzin-blog-card__media" href="{{ route('blog.show', ['post' => $post->slug]) }}" aria-label="خواندن مقاله {{ $post->title }}">
+                        <a class="farzin-blog-card__media" data-image-fallback-container href="{{ route('blog.show', ['post' => $post->slug]) }}" aria-label="خواندن مقاله {{ $post->title }}">
                             @if($postImageUrl)
-                                <img src="{{ $postImageUrl }}" alt="{{ $post->title }}" width="900" height="560" loading="lazy" decoding="async">
+                                <img src="{{ $postImageUrl }}" alt="{{ $post->title }}" width="900" height="560" loading="lazy" decoding="async" data-image-fallback-image><span class="farzin-blog-card__placeholder" data-image-fallback-placeholder hidden aria-hidden="true">F.</span>
                             @else
                                 <span class="farzin-blog-card__placeholder" aria-hidden="true">F.</span>
                             @endif
