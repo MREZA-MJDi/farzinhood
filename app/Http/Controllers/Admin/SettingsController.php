@@ -35,7 +35,7 @@ class SettingsController extends Controller
 
         return back()->with(
             'success',
-            'Settings updated successfully.'
+            'تنظیمات با موفقیت ذخیره شد.'
         );
     }
 }
