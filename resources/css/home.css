@@ -121,3 +121,206 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}body{background:var(--farzin
     [data-farzin-motion] { will-change:auto; }
     .farzin-category__media img,.farzin-product-card .product-card__image img,.farzin-blog-card__media img { transition:none !important; }
 }
+
+
+/* -------------------------------------------------------------------------
+   Cinematic, scroll-led product tours — admin-authored frames and captions
+   ------------------------------------------------------------------------- */
+.farzin-tour {
+    --tour-scroll-span: 0svh;
+    position: relative;
+    min-height: calc(100svh + var(--tour-scroll-span));
+    overflow: clip;
+    color: #f5f4f0;
+    background:
+        radial-gradient(ellipse at 72% 48%, rgb(255 255 255 / .075), transparent 34%),
+        radial-gradient(ellipse at 12% 90%, rgb(181 160 126 / .08), transparent 34%),
+        #090909;
+    isolation: isolate;
+}
+.farzin-tour::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: "";
+    opacity: .2;
+    pointer-events: none;
+    background-image: linear-gradient(rgb(255 255 255 / .035) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(90deg, transparent, #000 36%, #000 80%, transparent);
+}
+.farzin-tour__sticky {
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template-columns: minmax(275px, .76fr) minmax(0, 1.24fr);
+    align-items: center;
+    gap: clamp(28px, 6.4vw, 100px);
+    min-height: 100svh;
+    padding-block: clamp(46px, 7vh, 88px);
+    box-sizing: border-box;
+}
+.farzin-tour__copy { position: relative; z-index: 2; max-width: 470px; }
+.farzin-tour__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 22px;
+    color: rgb(255 255 255 / .62);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .16em;
+}
+.farzin-tour__eyebrow::before { width: 34px; height: 1px; content: ""; background: rgb(255 255 255 / .7); }
+.farzin-tour__title { margin: 0; font-size: clamp(30px, 4vw, 56px); font-weight: 800; line-height: 1.45; letter-spacing: -.04em; }
+.farzin-tour__lead { max-width: 390px; margin: 18px 0 0; color: rgb(255 255 255 / .67); font-size: 14px; line-height: 2.1; }
+.farzin-tour__frame-copy {
+    min-height: 130px;
+    margin-top: clamp(26px, 5vh, 58px);
+    padding-right: 18px;
+    border-right: 1px solid rgb(255 255 255 / .35);
+}
+.farzin-tour__frame-title { display: block; margin-bottom: 8px; font-size: 16px; font-weight: 750; line-height: 1.8; color: #fff; }
+.farzin-tour__frame-description { margin: 0; max-width: 360px; color: rgb(255 255 255 / .62); font-size: 13px; line-height: 2.15; }
+.farzin-tour__stage {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+    aspect-ratio: 1.14;
+    max-height: 70svh;
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid rgb(255 255 255 / .14);
+    background:
+        radial-gradient(ellipse at 50% 48%, rgb(255 255 255 / .08), transparent 55%),
+        linear-gradient(145deg, #161615, #0d0d0c 72%);
+    box-shadow: 0 38px 110px rgb(0 0 0 / .25);
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+}
+.farzin-tour__stage.is-dragging { cursor: grabbing; }
+.farzin-tour__stage:focus-visible { outline: 2px solid #d9d4c8; outline-offset: 5px; }
+.farzin-tour__stage::before {
+    position: absolute;
+    inset: 18px;
+    z-index: 3;
+    border: 1px solid rgb(255 255 255 / .14);
+    content: "";
+    pointer-events: none;
+}
+.farzin-tour__stage::after {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    height: 32%;
+    content: "";
+    background: linear-gradient(0deg, rgb(0 0 0 / .42), transparent);
+    pointer-events: none;
+}
+.farzin-tour__frames, .farzin-tour__frame { position: absolute; inset: 0; }
+.farzin-tour__frame {
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .42s ease, visibility .42s ease;
+}
+.farzin-tour__frame.is-active { z-index: 1; opacity: 1; visibility: visible; }
+.farzin-tour__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: var(--tour-position-x, 50%) var(--tour-position-y, 50%);
+    transform: scale(var(--tour-scale, 1.03));
+    transition: transform .7s cubic-bezier(.2, .75, .25, 1);
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+.farzin-tour__frame.is-active img { transform: scale(var(--tour-scale, 1.03)); }
+.farzin-tour__stage-label {
+    position: absolute;
+    top: 35px;
+    right: 36px;
+    z-index: 4;
+    color: rgb(255 255 255 / .7);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .17em;
+    direction: ltr;
+}
+.farzin-tour__stage-bottom {
+    position: absolute;
+    right: 36px;
+    bottom: 34px;
+    left: 36px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    color: rgb(255 255 255 / .78);
+    font-size: 11px;
+}
+.farzin-tour__counter { direction: ltr; font-variant-numeric: tabular-nums; font-size: 12px; color: #fff; }
+.farzin-tour__controls { display: flex; align-items: center; gap: 16px; }
+.farzin-tour__controls button {
+    display: inline-grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / .28);
+    color: #fff;
+    background: rgb(0 0 0 / .16);
+    cursor: pointer;
+    transition: color .2s ease, background .2s ease, border-color .2s ease;
+}
+.farzin-tour__controls button:hover { color: #090909; background: #fff; border-color: #fff; }
+.farzin-tour__progress { flex: 1; min-width: 34px; height: 1px; background: rgb(255 255 255 / .22); overflow: hidden; }
+.farzin-tour__progress span { display: block; width: 100%; height: 100%; background: #fff; transform: scaleX(0); transform-origin: right center; }
+.farzin-tour__drag-hint { position: absolute; bottom: 92px; left: 36px; z-index: 4; color: rgb(255 255 255 / .5); font-size: 10px; }
+.farzin-tour__footnote { display: flex; align-items: center; gap: 12px; margin-top: 22px; color: rgb(255 255 255 / .45); font-size: 10px; }
+.farzin-tour__footnote::before { width: 24px; height: 1px; content: ""; background: rgb(255 255 255 / .35); }
+.farzin-tour__sticky .farzin-container { width: 100%; }
+.farzin-tour .farzin-text-link { color: rgb(255 255 255 / .8); border-color: rgb(255 255 255 / .35); }
+.farzin-tour .farzin-text-link:hover { color: #fff; }
+
+@media (max-width: 900px) {
+    .farzin-tour__sticky { grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr); gap: 26px; }
+    .farzin-tour__title { font-size: clamp(29px, 4vw, 42px); }
+    .farzin-tour__stage { aspect-ratio: .9; }
+    .farzin-tour__stage-label { top: 27px; right: 27px; }
+    .farzin-tour__stage-bottom { right: 27px; bottom: 27px; left: 27px; }
+}
+@media (max-width: 680px) {
+    .farzin-tour__sticky {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 22px;
+        min-height: 100svh;
+        padding-block: 64px 34px;
+    }
+    .farzin-tour__copy { max-width: none; }
+    .farzin-tour__eyebrow { margin-bottom: 12px; font-size: 9px; }
+    .farzin-tour__title { max-width: 420px; font-size: clamp(28px, 8vw, 39px); line-height: 1.4; }
+    .farzin-tour__lead { margin-top: 9px; font-size: 12px; line-height: 1.9; }
+    .farzin-tour__frame-copy { min-height: 72px; margin-top: 14px; padding-right: 12px; }
+    .farzin-tour__frame-title { margin-bottom: 4px; font-size: 13px; }
+    .farzin-tour__frame-description { font-size: 11px; line-height: 1.8; }
+    .farzin-tour__stage { aspect-ratio: 1.08; max-height: 43svh; }
+    .farzin-tour__stage::before { inset: 10px; }
+    .farzin-tour__stage-label { top: 20px; right: 21px; font-size: 8px; }
+    .farzin-tour__stage-bottom { right: 20px; bottom: 19px; left: 20px; font-size: 9px; }
+    .farzin-tour__controls { gap: 9px; }
+    .farzin-tour__controls button { width: 34px; height: 34px; }
+    .farzin-tour__drag-hint { bottom: 65px; left: 21px; font-size: 8px; }
+    .farzin-tour__footnote { margin-top: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .farzin-tour__frame, .farzin-tour__frame img { transition: none !important; }
+    .farzin-tour__controls button { transition: none !important; }
+}
