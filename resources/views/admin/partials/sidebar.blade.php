@@ -121,6 +121,21 @@
                 </a>
 
                 <a
+                    href="{{ route('admin.home-tour.index') }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
+                    {{ request()->routeIs('admin.home-tour.*')
+                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)]'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                >
+                    <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M4 6h16v12H4z" />
+                        <circle cx="12" cy="12" r="3.5" />
+                        <path d="M8 3v3M16 3v3" />
+                    </svg>
+                    تور ۳۶۰ درجه هود و سینک
+                </a>
+
+                <a
                     href="{{ route('admin.categories.index') }}"
                     class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                     {{ request()->routeIs('admin.categories.*')
