@@ -54,9 +54,9 @@ class PaymentService
 
                 if (is_string($startedAt) && $startedAt !== '') {
                     try {
-                        $leaseIsActive = \\Illuminate\\Support\\Carbon::parse($startedAt)
+                        $leaseIsActive = \Illuminate\\Support\\Carbon::parse($startedAt)
                             ->greaterThan(now()->subSeconds(90));
-                    } catch (\\Throwable) {
+                    } catch (\Throwable) {
                         $leaseIsActive = false;
                     }
 
