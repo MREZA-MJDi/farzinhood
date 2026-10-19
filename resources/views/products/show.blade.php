@@ -43,6 +43,6 @@
 @if($product->description)<div class="farzin-product-detail__description"><h2>درباره محصول</h2><p>{{ $product->description }}</p></div>@endif
 </div></div></div></section>
 @if($relatedProducts->isNotEmpty())<section class="farzin-section farzin-section--pearl"><div class="farzin-container"><header class="farzin-section__head"><div><p class="farzin-kicker">MORE FROM FARZIN</p><h2 class="farzin-section__title">انتخاب‌های <em>مرتبط</em></h2></div><a class="farzin-text-link" href="{{ route('shop.index') }}">همه محصولات <span>↗</span></a></header><div class="farzin-product-grid">@foreach($relatedProducts as $related)
-<x-product.product-card :id="$related->id" :name="$related->name" :image="$related->primaryImage?->image" :href="route('products.show',$related)" :price="$related->price" :old-price="$related->old_price" :discount="$related->discount" :brand="$related->brand" :meta="$related->short_description" :rating="$related->rating" :review-count="$related->review_count" :alt="$related->primaryImage?->alt" />
+<x-product.product-card :id="$related->id" :name="$related->name" :image="$related->primaryImage?->image" :href="route('products.show',$related)" :price="$related->price" :old-price="$related->old_price" :discount="$related->discount" :brand="$related->brand" :meta="$related->short_description" :rating="$related->rating" :review-count="$related->review_count" :alt="$related->primaryImage?->alt" :is-wishlisted="$related->is_wishlisted ?? false" />
 @endforeach</div></div></section>@endif
 @endsection
