@@ -1,6 +1,7 @@
 import "../css/app.css";
 import "../css/components.css";
 import "../css/home.css";
+import "../css/design-system.css";
 import "./home.js";
 import "./bootstrap";
 import "./media-picker";
@@ -21,6 +22,15 @@ function initRevealObserver() {
         items.forEach((item) => item.classList.add("is-visible"));
         return;
     }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        items.forEach((item) => item.classList.add("is-visible"));
+        return;
+    }
+
+    // Only opt into hide/reveal animations when the observer is available.
+    // If JavaScript fails, the stylesheet keeps all meaningful content visible.
+    document.documentElement.classList.add("has-reveal-observer");
 
     const observer = new IntersectionObserver(
         (entries, current) => {
