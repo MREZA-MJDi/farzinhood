@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\HomeTourFrame;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 
@@ -17,7 +18,7 @@ class HomeController extends Controller
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
             ->whereHas('primaryImage')
             ->latest('created_at')
-            ->take(5)
+            ->take(10)
             ->get();
 
         $featuredProducts = Product::query()
@@ -45,6 +46,13 @@ class HomeController extends Controller
             ->get()
             ->groupBy('scene');
 
+        $blogPosts = Post::query()
+            ->published()
+            ->with('category')
+            ->orderByDesc('published_at')
+            ->take(3)
+            ->get();
+
         $categories = Category::query()
             ->withCount(['products as active_products_count' => fn ($query) => $query->where('is_active', true)])
             ->where('is_active', true)
@@ -53,12 +61,13 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        return view('storefront.home', compact(
+        return view('home.index', compact(
             'heroProducts',
             'featuredProducts',
             'latestProducts',
             'categories',
-            'tourFrames'
+            'tourFrames',
+            'blogPosts'
         ));
     }
 }
