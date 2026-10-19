@@ -21,6 +21,7 @@ class HomeController extends Controller
             ->get();
 
         $featuredProducts = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
@@ -31,6 +32,7 @@ class HomeController extends Controller
             ->get();
 
         $latestProducts = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
