@@ -71,7 +71,7 @@
 
                     <x-slot:action>
                         <a
-                            href="{{ route('shop') }}"
+                            href="{{ route('shop.index') }}"
                             class="btn btn--primary"
                         >
                             مشاهده محصولات
@@ -98,14 +98,14 @@
                 <div class="stack stack--sm">
 
                     <a
-                        href="{{ route('cart') }}"
+                        href="{{ route('customer.cart.index') }}"
                         class="btn btn--outline btn--full"
                     >
                         مشاهده سبد خرید
                     </a>
 
                     <a
-                        href="{{ route('checkout') }}"
+                        href="{{ route('customer.checkout.index') }}"
                         class="btn btn--primary btn--full"
                     >
                         ادامه و پرداخت
