@@ -14,11 +14,11 @@
                     <h1>{{ $index === 0 ? 'جزئیات، تفاوت را می‌سازند.' : $product->name }}</h1>
                     <p class="farzin-home-hero__description">{{ $product->short_description ?: 'محصولات منتخب با تمرکز بر کیفیت، زیبایی و کاربرد روزمره.' }}</p>
                     <div class="farzin-home-hero__actions">
-                        <a class="farzin-button farzin-button--light" href="{{ route('products.show', $product) }}">مشاهده محصول <span aria-hidden="true">↙</span></a>
+                        <a class="farzin-button farzin-button--light" href="{{ route('products.show', ['product' => $product->slug]) }}">مشاهده محصول <span aria-hidden="true">↙</span></a>
                         <a class="farzin-button farzin-button--ghost" href="{{ route('shop.index') }}">رفتن به فروشگاه</a>
                     </div>
                 </div>
-                <a class="farzin-home-hero__visual" href="{{ route('products.show', $product) }}" tabindex="{{ $index === 0 ? '0' : '-1' }}" aria-label="مشاهده {{ $product->name }}">
+                <a class="farzin-home-hero__visual" href="{{ route('products.show', ['product' => $product->slug]) }}" tabindex="{{ $index === 0 ? '0' : '-1' }}" aria-label="مشاهده {{ $product->name }}">
                     @if ($product->primaryImage?->image)
                         <img src="{{ asset('storage/' . $product->primaryImage->image) }}" alt="{{ $product->primaryImage->alt ?: $product->name }}" @if ($index > 0) loading="lazy" @endif>
                     @else
@@ -58,7 +58,7 @@
     <div class="store-section__heading"><div><span class="farzin-eyebrow">EXPLORE BY CATEGORY</span><h2>از کجا شروع کنیم؟</h2><p>دسته‌بندی‌ها را مرور کنید و سریع‌تر به انتخاب خود برسید.</p></div><a class="store-text-link" href="{{ route('shop.index') }}">همه محصولات <span aria-hidden="true">←</span></a></div>
     <div class="store-category-grid">
         @forelse ($categories as $category)
-            <a class="store-category-tile" href="{{ route('categories.show', $category) }}">
+            <a class="store-category-tile" href="{{ route('categories.show', ['category' => $category->slug]) }}">
                 @if ($category->image)<img src="{{ asset('storage/' . $category->image) }}" alt="" loading="lazy">@endif
                 <span class="store-category-tile__shade"></span><span class="store-category-tile__content"><small>دسته‌بندی</small><strong>{{ $category->name }}</strong><span>مشاهده محصولات ↙</span></span>
             </a>
