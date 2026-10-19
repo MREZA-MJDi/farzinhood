@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('title', ($product->meta_title ?: $product->name) . ' | فرزین')
 @section('meta_description', $product->meta_description ?: ($product->short_description ?: 'جزئیات و قیمت ' . $product->name . ' در فروشگاه فرزین.'))
+
+@push('meta')
+<script type="application/ld+json">@json(['@context' => 'https://schema.org', '@type' => 'Product', 'name' => $product->name, 'description' => $product->short_description ?: $product->description, 'sku' => $product->sku, 'offers' => ['@type' => 'Offer', 'priceCurrency' => 'IRR', 'price' => (string) ($product->price * 10), 'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', 'url' => url()->current()]])</script>
+@endpush
 @section('content')
 <section class="farzin-product-page"><div class="farzin-container">
 <nav class="farzin-breadcrumb" aria-label="مسیر صفحه"><a href="{{ route('home') }}">خانه</a><span>/</span><a href="{{ route('shop.index') }}">فروشگاه</a><span>/</span>@if($product->category)<a href="{{ route('categories.show',$product->category->slug) }}">{{ $product->category->name }}</a><span>/</span>@endif<span aria-current="page">{{ $product->name }}</span></nav>
@@ -8,7 +12,7 @@
 @php $images=$product->images; if($images->isEmpty() && $product->primaryImage) $images=collect([$product->primaryImage]); @endphp
 @if($images->isNotEmpty())<div class="farzin-product-detail__gallery">@foreach($images as $image)@php $src=$image->image; $src=str_starts_with($src,'http://') || str_starts_with($src,'https://') || str_starts_with($src,'/') ? $src : asset('storage/'.ltrim($src,'/')); @endphp<figure class="farzin-product-detail__image {{ $loop->first ? 'is-active' : '' }}"><img src="{{ $src }}" alt="{{ $image->alt ?: $product->name }}" width="1000" height="1000" @if($loop->first) fetchpriority="high" @else loading="lazy" @endif decoding="async"></figure>@endforeach</div>@else<div class="farzin-product-detail__empty"><span>F.</span><p>تصویر این محصول ثبت نشده است.</p></div>@endif
 @if($product->discount)<span class="farzin-product-detail__badge">{{ $product->discount }}٪ تخفیف</span>@endif
-</div><div class="farzin-product-detail__content"><p class="farzin-kicker">{{ $product->brand ?: 'FARZIN / SELECTED' }}</p>@if($product->category)<a class="farzin-product-detail__category" href="{{ route('categories.show',$product->category->slug) }}">{{ $product->category->name }}</a>@endif
+</div><div class="farzin-product-detail__content"><p class="farzin-kicker">{{ $product->brand ?: 'FARZIN / PRODUCT' }}</p>@if($product->category)<a class="farzin-product-detail__category" href="{{ route('categories.show',$product->category->slug) }}">{{ $product->category->name }}</a>@endif
 <h1>{{ $product->name }}</h1>@if($product->short_description)<p class="farzin-product-detail__lead">{{ $product->short_description }}</p>@endif
 @if($reviewCount>0)<div class="farzin-product-detail__rating" aria-label="امتیاز {{ $reviewAverage }} از ۵"><span>★</span>{{ $reviewAverage }} <small>({{ $reviewCount }} دیدگاه تأییدشده)</small></div>@endif
 <div class="farzin-product-detail__price"><x-product.price :price="$product->price" :old-price="$product->old_price" :discount="$product->discount" /></div>

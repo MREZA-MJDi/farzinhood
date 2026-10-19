@@ -7,7 +7,9 @@
 <meta name="description" content="@yield('meta_description', 'فرزین؛ انتخابی دقیق برای خانه و آشپزخانه‌ی امروز.')">
 @hasSection('canonical')<link rel="canonical" href="@yield('canonical')">@endif
 @stack('meta')
-@vite(['resources/js/app.js'])
+@if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+    @vite(['resources/js/app.js'])
+@endif
 </head>
 <body class="{{ request()->routeIs('home') ? 'farzin-home-page' : 'farzin-page' }}">
 <a class="farzin-skip-link" href="#main-content">رفتن به محتوای اصلی</a>
