@@ -77,7 +77,7 @@
                             : null;
                     @endphp
                     <article class="farzin-blog-card">
-                        <a class="farzin-blog-card__media" href="{{ route('blog.show', $post) }}" aria-label="خواندن مقاله {{ $post->title }}">
+                        <a class="farzin-blog-card__media" href="{{ route('blog.show', ['post' => $post->slug]) }}" aria-label="خواندن مقاله {{ $post->title }}">
                             @if($postImageUrl)
                                 <img src="{{ $postImageUrl }}" alt="{{ $post->title }}" width="900" height="560" loading="lazy" decoding="async">
                             @else
@@ -85,7 +85,7 @@
                             @endif
                         </a>
                         <div class="farzin-blog-card__body">
-                            <span class="farzin-blog-card__category">{{ $post->category?->name ?? 'مجله فرزین' }} <span aria-hidden="true">/</span> {{ $post->published_at?->locale('fa')->translatedFormat('j F') }}</span>
+                            <span class="farzin-blog-card__category">{{ $post->category?->name ?? 'مجله فرزین' }} <span aria-hidden="true">/</span> {{ (\App\Support\JalaliCalendar::format($post->published_at, 'day-month')) }}</span>
                             <h3 class="farzin-blog-card__title"><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h3>
                             @if($post->excerpt)
                                 <p class="farzin-blog-card__excerpt">{{ \Illuminate\Support\Str::limit($post->excerpt, 150) }}</p>
