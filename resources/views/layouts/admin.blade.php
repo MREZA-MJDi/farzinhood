@@ -40,7 +40,7 @@
 
     <meta
         name="theme-color"
-        content="#0d1b3d"
+        content="#090909"
     >
 
     <link
@@ -59,10 +59,7 @@
     ========================================================== --}}
 
     @if (!app()->environment('testing'))
-        @vite([
-            'resources/css/app.css',
-            'resources/js/app.js',
-        ])
+        @vite(['resources/js/app.js'])
     @endif
 
     @stack('head')
