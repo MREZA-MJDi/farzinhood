@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\InventoryMovement;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\CheckoutService;
@@ -82,17 +84,17 @@ class PaymentLifecycleTest extends TestCase
         [$user, $product, $order] = $this->buildOrder();
 
         $gateway = new class implements PaymentGatewayInterface {
-            public function purchase(\App\Models\Order $order): array
+            public function purchase(Order $order): array
             {
                 throw new RuntimeException('gateway unavailable');
             }
 
-            public function verify(\App\Models\Order $order, string $authority): array
+            public function verify(Order $order, string $authority): array
             {
                 throw new RuntimeException('gateway unavailable');
             }
 
-            public function refund(\App\Models\Order $order, int $amount): array
+            public function refund(Order $order, int $amount): array
             {
                 throw new RuntimeException('gateway unavailable');
             }
@@ -128,7 +130,7 @@ class PaymentLifecycleTest extends TestCase
         [$user, $product, $order] = $this->buildOrder();
 
         $gateway = new class implements PaymentGatewayInterface {
-            public function purchase(\App\Models\Order $order): array
+            public function purchase(Order $order): array
             {
                 return [
                     'authority' => 'AUTH-TEST-1',
@@ -136,7 +138,7 @@ class PaymentLifecycleTest extends TestCase
                 ];
             }
 
-            public function verify(\App\Models\Order $order, string $authority): array
+            public function verify(Order $order, string $authority): array
             {
                 return [
                     'success' => true,
@@ -145,7 +147,7 @@ class PaymentLifecycleTest extends TestCase
                 ];
             }
 
-            public function refund(\App\Models\Order $order, int $amount): array
+            public function refund(Order $order, int $amount): array
             {
                 return [
                     'success' => true,
@@ -190,7 +192,7 @@ class PaymentLifecycleTest extends TestCase
         [, $product, $order] = $this->buildOrder();
 
         $gateway = new class implements PaymentGatewayInterface {
-            public function purchase(\\App\\Models\\Order $order): array
+            public function purchase(Order $order): array
             {
                 return [
                     'authority' => 'AUTH-FAIL-RETRY',
@@ -198,12 +200,12 @@ class PaymentLifecycleTest extends TestCase
                 ];
             }
 
-            public function verify(\\App\\Models\\Order $order, string $authority): array
+            public function verify(Order $order, string $authority): array
             {
                 return ['success' => false, 'message' => 'payment declined'];
             }
 
-            public function refund(\\App\\Models\\Order $order, int $amount): array
+            public function refund(Order $order, int $amount): array
             {
                 return ['success' => false, 'message' => 'not supported'];
             }
@@ -229,8 +231,8 @@ class PaymentLifecycleTest extends TestCase
             'stock' => 2,
         ]);
 
-        $releaseMovements = \\App\\Models\\InventoryMovement::query()
-            ->where('reference_type', \\App\\Models\\Order::class)
+        $releaseMovements = \App\Models\InventoryMovement::query()
+            ->where('reference_type', Order::class)
             ->where('reference_id', $order->id)
             ->where('type', 'return')
             ->count();
@@ -249,7 +251,7 @@ class PaymentLifecycleTest extends TestCase
         $gateway = new class implements PaymentGatewayInterface {
             public int $purchaseCalls = 0;
 
-            public function purchase(\\App\\Models\\Order $order): array
+            public function purchase(Order $order): array
             {
                 $this->purchaseCalls++;
 
@@ -259,12 +261,12 @@ class PaymentLifecycleTest extends TestCase
                 ];
             }
 
-            public function verify(\\App\\Models\\Order $order, string $authority): array
+            public function verify(Order $order, string $authority): array
             {
                 return ['success' => true, 'tracking_code' => 'TRACK-IDEMPOTENT-1'];
             }
 
-            public function refund(\\App\\Models\\Order $order, int $amount): array
+            public function refund(Order $order, int $amount): array
             {
                 return ['success' => true];
             }
