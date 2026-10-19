@@ -4,7 +4,7 @@
 @section('meta_description', 'ساخت حساب در فرزین برای مدیریت سفارش‌ها، آدرس‌های ارسال و محصولات علاقه‌مندی.')
 
 @push('meta')
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex,nofollow">
 @endpush
 
 @section('content')
