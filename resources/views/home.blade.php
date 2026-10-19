@@ -43,7 +43,7 @@
         @php $firstFrame = $sceneFrames->first(); @endphp
         <section class="farzin-tour" data-home-motion-section data-product-tour data-tour-scene="{{ $scene }}"
                  data-tour-default-description="{{ $copy['description'] }}"
-                 style="--tour-scroll-span: {{ max(0, ($sceneFrames->count() - 1) * 18) }}svh">
+                 style="--tour-scroll-span: {{ max(0, ($sceneFrames->count() - 1) * 8) }}svh">
             <div class="farzin-container farzin-tour__sticky">
                 <div class="farzin-tour__copy">
                     <p class="farzin-tour__eyebrow">{{ $copy['eyebrow'] }}</p>
