@@ -31,6 +31,7 @@ class ProductController extends Controller
             ->findOrFail($product->id);
 
         $relatedProducts = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas(
