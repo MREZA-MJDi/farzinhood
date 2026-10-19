@@ -14,6 +14,12 @@ class BlogController extends Controller
     {
         $category = $request->string('category')->trim()->toString();
         $search = $request->string('search')->trim()->toString();
+        $activeCategory = $category !== ''
+            ? BlogCategory::query()
+                ->where('is_active', true)
+                ->where('slug', $category)
+                ->first()
+            : null;
 
         $posts = Post::query()
             ->with('category')
@@ -24,7 +30,9 @@ class BlogController extends Controller
                 $category !== '',
                 fn ($query) => $query->whereHas(
                     'category',
-                    fn ($q) => $q->where('slug', $category)
+                    fn ($q) => $q
+                        ->where('slug', $category)
+                        ->where('is_active', true)
                 )
             )
             ->when(
@@ -52,6 +60,7 @@ class BlogController extends Controller
             'categories',
             'category',
             'search',
+            'activeCategory',
         ));
     }
 
