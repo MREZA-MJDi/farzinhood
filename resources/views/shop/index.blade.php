@@ -13,7 +13,7 @@
 </form>
 <div class="farzin-catalog__result"><span>{{ number_format($products->total()) }} محصول</span>@if(request()->filled('search'))<span>نتیجه برای «{{ request('search') }}»</span>@endif</div>
 @if($products->isNotEmpty())<div class="farzin-product-grid">@foreach($products as $product)
-<x-product.product-card :id="$product->id" :name="$product->name" :image="$product->primaryImage?->image" :href="route('products.show',$product)" :price="$product->price" :old-price="$product->old_price" :discount="$product->discount" :brand="$product->brand" :meta="$product->short_description" :rating="$product->rating" :review-count="$product->review_count" :alt="$product->primaryImage?->alt" />
+<x-product.product-card :id="$product->id" :name="$product->name" :image="$product->primaryImage?->image" :href="route('products.show',$product)" :price="$product->price" :old-price="$product->old_price" :discount="$product->discount" :brand="$product->brand" :meta="$product->short_description" :rating="$product->rating" :review-count="$product->review_count" :alt="$product->primaryImage?->alt" :is-wishlisted="$product->is_wishlisted ?? false" />
 @endforeach</div><nav class="farzin-pagination" aria-label="صفحه‌بندی">{{ $products->links() }}</nav>
 @else<div class="farzin-empty farzin-empty--large"><span class="farzin-empty__mark">F.</span><h2>محصولی پیدا نشد</h2><p>فیلترها را تغییر بده یا دوباره همه‌ی محصولات را ببین.</p><a href="{{ route('shop.index') }}" class="farzin-button">نمایش همه محصولات</a></div>@endif
 </div></section>
