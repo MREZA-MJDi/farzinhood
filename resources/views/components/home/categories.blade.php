@@ -15,7 +15,7 @@
             >
                 <x-slot:action>
                     <a
-                        href="{{ route('categories.index') }}"
+                        href="{{ route('shop.index') }}"
                         class="btn btn--outline"
                     >
                         مشاهده دسته‌بندی‌ها
@@ -34,7 +34,7 @@
                             :title="$category->name"
                             :eyebrow="$category->active_products_count . ' محصول'"
                             :description="$category->description"
-                            :href="route('category.show', $category->slug)"
+                            :href="route('categories.show', ['category' => $category->slug])"
                             :image="$category->image
                                 ? asset('storage/' . $category->image)
                                 : null"
