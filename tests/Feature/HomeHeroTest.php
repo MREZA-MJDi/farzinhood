@@ -12,7 +12,7 @@ class HomeHeroTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_home_hero_only_renders_the_ten_latest_active_products_with_primary_images(): void
+    public function test_home_hero_uses_the_four_latest_active_products_with_primary_images(): void
     {
         $category = Category::query()->create([
             'name' => 'هود',
@@ -41,25 +41,20 @@ class HomeHeroTest extends TestCase
             ]);
         }
 
-        $response = $this->get(route('home'));
-
-        $response->assertOk();
-
+        $response = $this->get(route('home'))->assertOk();
         $html = $response->getContent();
-        $heroStart = strpos($html, 'data-home-hero');
-        $trustStart = strpos($html, 'data-home-trust-strip', $heroStart);
+        $heroStart = strpos($html, 'data-farzin-hero');
+        $sectionStart = strpos($html, 'id="home-categories"', $heroStart);
 
         $this->assertNotFalse($heroStart);
-        $this->assertNotFalse($trustStart);
+        $this->assertNotFalse($sectionStart);
+        $heroHtml = substr($html, $heroStart, $sectionStart - $heroStart);
 
-        $heroHtml = substr($html, $heroStart, $trustStart - $heroStart);
-
-        for ($number = 3; $number <= 12; $number++) {
+        foreach (range(9, 12) as $number) {
             $this->assertStringContainsString('Hero Product '.$number, $heroHtml);
         }
-
-        $this->assertStringNotContainsString('>Hero Product 1</h2>', $heroHtml);
-        $this->assertStringNotContainsString('>Hero Product 2</h2>', $heroHtml);
+        $this->assertStringNotContainsString('Hero Product 1</strong>', $heroHtml);
+        $this->assertStringNotContainsString('Hero Product 8</strong>', $heroHtml);
     }
 
     public function test_inactive_or_missing_primary_image_products_do_not_enter_the_home_hero(): void
@@ -70,7 +65,7 @@ class HomeHeroTest extends TestCase
             'is_active' => true,
         ]);
 
-        $inactive = Product::query()->create([
+        Product::query()->create([
             'category_id' => $category->id,
             'name' => 'Inactive Hero Product',
             'slug' => 'inactive-hero-product',
@@ -108,18 +103,14 @@ class HomeHeroTest extends TestCase
             'is_primary' => true,
         ]);
 
-        $response = $this->get(route('home'));
-
-        $response->assertOk();
-
+        $response = $this->get(route('home'))->assertOk();
         $html = $response->getContent();
-        $heroStart = strpos($html, 'data-home-hero');
-        $trustStart = strpos($html, 'data-home-trust-strip', $heroStart);
+        $heroStart = strpos($html, 'data-farzin-hero');
+        $sectionStart = strpos($html, 'id="home-categories"', $heroStart);
 
         $this->assertNotFalse($heroStart);
-        $this->assertNotFalse($trustStart);
-
-        $heroHtml = substr($html, $heroStart, $trustStart - $heroStart);
+        $this->assertNotFalse($sectionStart);
+        $heroHtml = substr($html, $heroStart, $sectionStart - $heroStart);
 
         $this->assertStringContainsString('Valid Hero Product', $heroHtml);
         $this->assertStringNotContainsString('Inactive Hero Product', $heroHtml);

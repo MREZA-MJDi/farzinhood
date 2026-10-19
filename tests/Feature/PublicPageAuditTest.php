@@ -11,6 +11,33 @@ class PublicPageAuditTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    public function test_home_page_renders_catalog_content(): void
+    {
+        $category = Category::query()->create([
+            'name' => 'هود و سینک',
+            'slug' => 'home-hood-sink',
+            'is_active' => true,
+        ]);
+
+        Product::query()->create([
+            'category_id' => $category->id,
+            'name' => 'محصول منتخب صفحه خانه',
+            'slug' => 'home-featured-product',
+            'sku' => 'HOME-FEATURED-1',
+            'price' => 1250000,
+            'stock' => 5,
+            'is_active' => true,
+            'is_featured' => true,
+        ]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('خانه‌ی امروز')
+            ->assertSee('هود و سینک')
+            ->assertSee('محصول منتخب صفحه خانه');
+    }
+
     public function test_active_category_page_renders_its_public_view(): void
     {
         $category = Category::query()->create([

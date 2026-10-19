@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
+use App\Support\JalaliCalendar;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
@@ -31,11 +32,17 @@ class DashboardController extends Controller
         $today = now()->startOfDay();
         $tomorrow = now()->copy()->addDay()->startOfDay();
 
-        $monthStart = now()->copy()->startOfMonth();
-        $nextMonth = now()->copy()->addMonth()->startOfMonth();
+        // Reporting periods follow the Jalali calendar shown throughout the admin UI.
+        [$jalaliYear, $jalaliMonth] = JalaliCalendar::fromGregorian(now());
 
-        $yearStart = now()->copy()->startOfYear();
-        $nextYear = now()->copy()->addYear()->startOfYear();
+        $monthStart = JalaliCalendar::toGregorian($jalaliYear, $jalaliMonth)->startOfDay();
+        [$nextMonthYear, $nextMonthNumber] = $jalaliMonth === 12
+            ? [$jalaliYear + 1, 1]
+            : [$jalaliYear, $jalaliMonth + 1];
+        $nextMonth = JalaliCalendar::toGregorian($nextMonthYear, $nextMonthNumber)->startOfDay();
+
+        $yearStart = JalaliCalendar::toGregorian($jalaliYear, 1)->startOfDay();
+        $nextYear = JalaliCalendar::toGregorian($jalaliYear + 1, 1)->startOfDay();
 
 
         /*
@@ -66,15 +73,16 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $previousMonthStart = now()
-            ->copy()
-            ->subMonth()
-            ->startOfMonth();
+        [$previousJalaliYear, $previousJalaliMonth] = $jalaliMonth === 1
+            ? [$jalaliYear - 1, 12]
+            : [$jalaliYear, $jalaliMonth - 1];
 
-        $previousMonthEnd = now()
-            ->copy()
-            ->subMonth()
-            ->endOfMonth();
+        $previousMonthStart = JalaliCalendar::toGregorian(
+            $previousJalaliYear,
+            $previousJalaliMonth
+        )->startOfDay();
+
+        $previousMonthEnd = $monthStart->copy()->subMicrosecond();
 
         $previousMonthSales = $this->paidOrders()
             ->whereBetween('created_at', [
@@ -478,9 +486,10 @@ class DashboardController extends Controller
         foreach ($period as $date) {
             $key = $date->format('Y-m-d');
 
-            $labels[] = $date
-                ->locale('fa')
-                ->translatedFormat('j F');
+            $labels[] = JalaliCalendar::format(
+                Carbon::parse($key, config('app.timezone')),
+                'day-month'
+            );
 
             $data[] = (int) ($rows[$key]->total ?? 0);
         }
@@ -500,83 +509,75 @@ class DashboardController extends Controller
 
     private function monthlySalesData(): array
     {
-        $year = now()->year;
+        [$currentJalaliYear] = JalaliCalendar::fromGregorian(now());
 
-        $driver = DB::connection()->getDriverName();
+        $start = JalaliCalendar::toGregorian($currentJalaliYear, 1)->startOfDay();
+        $end = JalaliCalendar::toGregorian($currentJalaliYear + 1, 1)->startOfDay();
 
-        $monthExpression = $driver === 'sqlite'
-            ? "CAST(strftime('%m', created_at) AS INTEGER)"
-            : 'MONTH(created_at)';
-
+        // Group daily rows in SQL for an indexed range query, then bucket by
+        // the Jalali month in PHP (Gregorian MONTH() is wrong for this chart).
         $rows = $this->paidOrders()
-            ->selectRaw("{$monthExpression} as month_number, SUM(total) as total")
-            ->whereBetween('created_at', [
-                Carbon::create($year, 1, 1)->startOfYear(),
-                Carbon::create($year, 12, 31)->endOfYear(),
-            ])
-            ->groupByRaw($monthExpression)
-            ->orderBy('month_number')
-            ->get()
-            ->keyBy('month_number');
+            ->selectRaw('DATE(created_at) as sale_date, SUM(total) as total')
+            ->where('created_at', '>=', $start)
+            ->where('created_at', '<', $end)
+            ->groupByRaw('DATE(created_at)')
+            ->orderBy('sale_date')
+            ->get();
 
-        $labels = [];
-        $data = [];
+        $monthlyTotals = array_fill(1, 12, 0);
 
-        for ($month = 1; $month <= 12; $month++) {
-            $date = Carbon::create(
-                $year,
-                $month,
-                1
-            );
-
-            $labels[] = $date
-                ->locale('fa')
-                ->translatedFormat('F');
-
-            $data[] = (int) ($rows[$month]->total ?? 0);
+        foreach ($rows as $row) {
+            $date = Carbon::parse($row->sale_date, config('app.timezone'));
+            [, $month] = JalaliCalendar::fromGregorian($date);
+            $monthlyTotals[$month] += (int) $row->total;
         }
 
         return [
-            'labels' => $labels,
-            'data' => $data,
+            'labels' => JalaliCalendar::MONTHS,
+            'data' => array_values($monthlyTotals),
         ];
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Yearly Sales - Last 5 Years
+    | Yearly Sales - Last 5 Jalali Years
     |--------------------------------------------------------------------------
     */
 
     private function yearlySalesData(): array
     {
-        $currentYear = now()->year;
-        $startYear = $currentYear - 4;
+        [$currentJalaliYear] = JalaliCalendar::fromGregorian(now());
+        $startYear = $currentJalaliYear - 4;
 
-        $driver = DB::connection()->getDriverName();
-
-        $yearExpression = $driver === 'sqlite'
-            ? "CAST(strftime('%Y', created_at) AS INTEGER)"
-            : 'YEAR(created_at)';
+        $start = JalaliCalendar::toGregorian($startYear, 1)->startOfDay();
+        $end = JalaliCalendar::toGregorian($currentJalaliYear + 1, 1)->startOfDay();
 
         $rows = $this->paidOrders()
-            ->selectRaw("{$yearExpression} as sale_year, SUM(total) as total")
-            ->whereBetween('created_at', [
-                Carbon::create($startYear, 1, 1)->startOfYear(),
-                Carbon::create($currentYear, 12, 31)->endOfYear(),
-            ])
-            ->groupByRaw($yearExpression)
-            ->orderBy('sale_year')
-            ->get()
-            ->keyBy('sale_year');
+            ->selectRaw('DATE(created_at) as sale_date, SUM(total) as total')
+            ->where('created_at', '>=', $start)
+            ->where('created_at', '<', $end)
+            ->groupByRaw('DATE(created_at)')
+            ->orderBy('sale_date')
+            ->get();
+
+        $yearlyTotals = array_fill($startYear, 5, 0);
+
+        foreach ($rows as $row) {
+            $date = Carbon::parse($row->sale_date, config('app.timezone'));
+            [$jalaliYear] = JalaliCalendar::fromGregorian($date);
+
+            if (array_key_exists($jalaliYear, $yearlyTotals)) {
+                $yearlyTotals[$jalaliYear] += (int) $row->total;
+            }
+        }
 
         $labels = [];
         $data = [];
 
-        for ($year = $startYear; $year <= $currentYear; $year++) {
-            $labels[] = (string) $year;
-            $data[] = (int) ($rows[$year]->total ?? 0);
+        for ($year = $startYear; $year <= $currentJalaliYear; $year++) {
+            $labels[] = JalaliCalendar::digits($year);
+            $data[] = (int) ($yearlyTotals[$year] ?? 0);
         }
 
         return [
@@ -584,4 +585,5 @@ class DashboardController extends Controller
             'data' => $data,
         ];
     }
+
 }

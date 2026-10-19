@@ -638,7 +638,8 @@ class AdminContentManagementReadinessTest extends TestCase
 
         $this->assertCount(12, $monthly['labels']);
         $this->assertCount(12, $monthly['data']);
-        $this->assertSame(123456, $monthly['data'][(int) now()->format('n') - 1]);
+        [, $currentJalaliMonth] = \App\Support\JalaliCalendar::fromGregorian(now());
+        $this->assertSame(123456, $monthly['data'][$currentJalaliMonth - 1]);
 
         $yearly = $this->getJson(route('admin.dashboard.chart', ['range' => 'yearly']))
             ->assertOk()

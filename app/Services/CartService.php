@@ -3,31 +3,71 @@
 namespace App\Services;
 
 use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class CartService
 {
     public function getCart(?User $user = null): Cart
     {
         if ($user) {
-            return Cart::query()
-                ->firstOrCreate([
-                    'user_id' => $user->id,
-                ], [
-                    'session_id' => null,
-                ]);
+            $existing = Cart::query()
+                ->where('user_id', $user->getKey())
+                ->first();
+
+            if ($existing) {
+                return $existing;
+            }
+
+            // Serialize first-cart creation on the owning user row. The user_id
+            // index is not unique in older installations, so firstOrCreate alone
+            // is not sufficient under concurrent requests.
+            return DB::transaction(function () use ($user): Cart {
+                $lockedUser = User::query()
+                    ->whereKey($user->getKey())
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                return Cart::query()->firstOrCreate(
+                    ['user_id' => $lockedUser->getKey()],
+                    ['session_id' => null],
+                );
+            }, 3);
         }
 
         $sessionId = session()->getId();
 
-        return Cart::query()
-            ->firstOrCreate([
+        $existing = Cart::query()
+            ->whereNull('user_id')
+            ->where('session_id', $sessionId)
+            ->first();
+
+        if ($existing) {
+            return $existing;
+        }
+
+        try {
+            return Cart::query()->create([
                 'session_id' => $sessionId,
                 'user_id' => null,
             ]);
+        } catch (QueryException $exception) {
+            // Guest carts have a unique session_id. If another request created
+            // it first, reuse that row instead of surfacing a duplicate-key 500.
+            $cart = Cart::query()
+                ->whereNull('user_id')
+                ->where('session_id', $sessionId)
+                ->first();
+
+            if ($cart) {
+                return $cart;
+            }
+
+            throw $exception;
+        }
     }
 
     public function add(
@@ -35,36 +75,45 @@ class CartService
         int $quantity,
         ?User $user = null
     ): Cart {
-        $cart = $this->getCart($user);
+        return DB::transaction(function () use ($product, $quantity, $user): Cart {
+            $cart = $this->lockCart($user);
+            $currentProduct = $this->lockActiveProduct($product);
 
-        $item = $cart->items()
-            ->where('product_id', $product->id)
-            ->first();
+            if ($quantity < 1 || $quantity > 99) {
+                throw new RuntimeException('تعداد درخواستی نامعتبر است.');
+            }
 
-        $newQuantity = ($item?->quantity ?? 0) + $quantity;
+            $item = $cart->items()
+                ->where('product_id', $currentProduct->id)
+                ->lockForUpdate()
+                ->first();
 
-        if ($newQuantity > $product->stock) {
-            throw new \RuntimeException(
-                'تعداد درخواستی بیشتر از موجودی محصول است.'
-            );
-        }
+            $newQuantity = ($item?->quantity ?? 0) + $quantity;
+            $maxQuantity = min(99, (int) $currentProduct->stock);
 
-        if ($item) {
-            $item->update([
-                'quantity' => $newQuantity,
-                'unit_price' => $product->price,
+            if ($newQuantity > $maxQuantity) {
+                throw new RuntimeException(
+                    'تعداد درخواستی بیشتر از موجودی محصول است.'
+                );
+            }
+
+            if ($item) {
+                $item->update([
+                    'quantity' => $newQuantity,
+                    'unit_price' => $currentProduct->price,
+                ]);
+            } else {
+                $cart->items()->create([
+                    'product_id' => $currentProduct->id,
+                    'quantity' => $newQuantity,
+                    'unit_price' => $currentProduct->price,
+                ]);
+            }
+
+            return $cart->load([
+                'items.product.primaryImage',
             ]);
-        } else {
-            $cart->items()->create([
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'unit_price' => $product->price,
-            ]);
-        }
-
-        return $cart->load([
-            'items.product.primaryImage',
-        ]);
+        }, 3);
     }
 
     public function update(
@@ -72,48 +121,59 @@ class CartService
         int $quantity,
         ?User $user = null
     ): Cart {
-        $cart = $this->getCart($user);
+        return DB::transaction(function () use ($product, $quantity, $user): Cart {
+            $cart = $this->lockCart($user);
+            $currentProduct = $this->lockActiveProduct($product);
 
-        $item = $cart->items()
-            ->where('product_id', $product->id)
-            ->firstOrFail();
+            if ($quantity < 1 || $quantity > 99) {
+                throw new RuntimeException('تعداد درخواستی نامعتبر است.');
+            }
 
-        if ($quantity > $product->stock) {
-            throw new \RuntimeException(
-                'تعداد درخواستی بیشتر از موجودی محصول است.'
-            );
-        }
+            $item = $cart->items()
+                ->where('product_id', $currentProduct->id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $item->update([
-            'quantity' => $quantity,
-            'unit_price' => $product->price,
-        ]);
+            if ($quantity > $currentProduct->stock) {
+                throw new RuntimeException(
+                    'تعداد درخواستی بیشتر از موجودی محصول است.'
+                );
+            }
 
-        return $cart->load([
-            'items.product.primaryImage',
-        ]);
+            $item->update([
+                'quantity' => $quantity,
+                'unit_price' => $currentProduct->price,
+            ]);
+
+            return $cart->load([
+                'items.product.primaryImage',
+            ]);
+        }, 3);
     }
 
     public function remove(
         Product $product,
         ?User $user = null
     ): Cart {
-        $cart = $this->getCart($user);
+        return DB::transaction(function () use ($product, $user): Cart {
+            $cart = $this->lockCart($user);
 
-        $cart->items()
-            ->where('product_id', $product->id)
-            ->delete();
+            $cart->items()
+                ->where('product_id', $product->id)
+                ->delete();
 
-        return $cart->load([
-            'items.product.primaryImage',
-        ]);
+            return $cart->load([
+                'items.product.primaryImage',
+            ]);
+        }, 3);
     }
 
     public function clear(?User $user = null): void
     {
-        $cart = $this->getCart($user);
-
-        $cart->items()->delete();
+        DB::transaction(function () use ($user): void {
+            $cart = $this->lockCart($user);
+            $cart->items()->delete();
+        }, 3);
     }
 
     public function subtotal(?User $user = null): int
@@ -143,45 +203,83 @@ class CartService
 
     public function mergeGuestCart(User $user): Cart
     {
-        $guestCart = Cart::query()
-            ->whereNull('user_id')
-            ->where('session_id', session()->getId())
-            ->with('items')
-            ->first();
+        $sessionId = session()->getId();
 
-        $userCart = $this->getCart($user);
+        return DB::transaction(function () use ($user, $sessionId): Cart {
+            $lockedUser = User::query()
+                ->whereKey($user->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        if (! $guestCart || $guestCart->id === $userCart->id) {
-            return $userCart->load([
-                'items.product.primaryImage',
-            ]);
-        }
+            $userCart = Cart::query()
+                ->where('user_id', $lockedUser->getKey())
+                ->lockForUpdate()
+                ->first();
 
-        DB::transaction(function () use (
-            $guestCart,
-            $userCart
-        ) {
-            foreach ($guestCart->items as $guestItem) {
+            if (! $userCart) {
+                $userCart = Cart::query()->create([
+                    'user_id' => $lockedUser->getKey(),
+                    'session_id' => null,
+                ]);
+            }
 
-                $existingItem = $userCart->items()
-                    ->where('product_id', $guestItem->product_id)
-                    ->first();
+            $guestCart = Cart::query()
+                ->whereNull('user_id')
+                ->where('session_id', $sessionId)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $guestCart) {
+                return $userCart->load(['items.product.primaryImage']);
+            }
+
+            $guestItems = $guestCart->items()
+                ->orderBy('product_id')
+                ->lockForUpdate()
+                ->get();
+
+            if ($guestItems->isEmpty()) {
+                $guestCart->delete();
+
+                return $userCart->load(['items.product.primaryImage']);
+            }
+
+            $productIds = $guestItems->pluck('product_id')->unique()->values();
+
+            // Lock all product rows in a deterministic order to reduce deadlocks.
+            $products = Product::query()
+                ->with('category')
+                ->whereIn('id', $productIds)
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
+
+            $existingItems = $userCart->items()
+                ->whereIn('product_id', $productIds)
+                ->orderBy('product_id')
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('product_id');
+
+            foreach ($guestItems as $guestItem) {
+                $product = $products->get($guestItem->product_id);
+                $existingItem = $existingItems->get($guestItem->product_id);
+
+                if (! $product || ! $product->is_active || ! $product->category?->is_active || $product->stock < 1) {
+                    $existingItem?->delete();
+                    $guestItem->delete();
+                    continue;
+                }
+
+                $maxQuantity = min(99, (int) $product->stock);
+                $requestedQuantity = (int) $guestItem->quantity;
 
                 if ($existingItem) {
-                    $product = Product::query()
-                        ->find($guestItem->product_id);
-
-                    if (! $product) {
-                        continue;
-                    }
-
-                    $mergedQuantity = $existingItem->quantity
-                        + $guestItem->quantity;
-
                     $existingItem->update([
                         'quantity' => min(
-                            $mergedQuantity,
-                            $product->stock
+                            (int) $existingItem->quantity + $requestedQuantity,
+                            $maxQuantity,
                         ),
                         'unit_price' => $product->price,
                     ]);
@@ -189,41 +287,86 @@ class CartService
                     continue;
                 }
 
-                $userCart->items()->create([
-                    'product_id' => $guestItem->product_id,
-                    'quantity' => $guestItem->quantity,
-                    'unit_price' => $guestItem->unit_price,
+                $quantity = min($requestedQuantity, $maxQuantity);
+
+                if ($quantity < 1) {
+                    $guestItem->delete();
+                    continue;
+                }
+
+                $newItem = $userCart->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => $quantity,
+                    'unit_price' => $product->price,
                 ]);
+
+                $existingItems->put($product->id, $newItem);
             }
 
             $guestCart->items()->delete();
             $guestCart->delete();
-        });
 
-        return $userCart->fresh([
-            'items.product.primaryImage',
-        ]);
+            return $userCart->fresh(['items.product.primaryImage']);
+        }, 3);
     }
 
     public function refreshPrices(?User $user = null): Cart
     {
-        $cart = $this->getCart($user);
+        return DB::transaction(function () use ($user): Cart {
+            $cart = $this->lockCart($user);
+            $items = $cart->items()
+                ->orderBy('product_id')
+                ->lockForUpdate()
+                ->get();
 
-        $cart->load('items.product');
-
-        foreach ($cart->items as $item) {
-            if (! $item->product) {
-                $item->delete();
-                continue;
+            if ($items->isEmpty()) {
+                return $cart->load(['items.product.primaryImage']);
             }
 
-            $item->update([
-                'unit_price' => $item->product->price,
-            ]);
+            $products = Product::query()
+                ->whereIn('id', $items->pluck('product_id')->unique())
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
+
+            foreach ($items as $item) {
+                $product = $products->get($item->product_id);
+
+                if (! $product) {
+                    $item->delete();
+                    continue;
+                }
+
+                $item->update(['unit_price' => $product->price]);
+            }
+
+            return $cart->fresh(['items.product.primaryImage']);
+        }, 3);
+    }
+
+    private function lockCart(?User $user): Cart
+    {
+        $cart = $this->getCart($user);
+
+        return Cart::query()
+            ->whereKey($cart->getKey())
+            ->lockForUpdate()
+            ->firstOrFail();
+    }
+
+    private function lockActiveProduct(Product $product): Product
+    {
+        $currentProduct = Product::query()
+            ->with('category')
+            ->whereKey($product->getKey())
+            ->lockForUpdate()
+            ->firstOrFail();
+
+        if (! $currentProduct->is_active || ! $currentProduct->category?->is_active) {
+            throw new RuntimeException('این محصول دیگر برای خرید در دسترس نیست.');
         }
 
-        return $cart->fresh([
-            'items.product.primaryImage',
-        ]);
+        return $currentProduct;
     }
 }

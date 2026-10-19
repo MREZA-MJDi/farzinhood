@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,6 +51,23 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function wishlists(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function scopeWithWishlistedBy(Builder $query, ?User $user): Builder
+    {
+        if (! $user || ! $user->isCustomer()) {
+            return $query;
+        }
+
+        return $query->withExists([
+            'wishlists as is_wishlisted' => fn (Builder $wishlistQuery) =>
+                $wishlistQuery->where('user_id', $user->getKey()),
+        ]);
     }
 
     public function images(): HasMany

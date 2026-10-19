@@ -125,9 +125,14 @@ class CheckoutService
             |--------------------------------------------------------------------------
             */
 
-            if ((int) $address->user_id !== (int) $user->id) {
+            $address = Address::query()
+                ->whereKey($address->getKey())
+                ->lockForUpdate()
+                ->first();
+
+            if (! $address || (int) $address->user_id !== (int) $user->id) {
                 throw new RuntimeException(
-                    'آدرس انتخاب‌شده متعلق به شما نیست.'
+                    'آدرس انتخاب‌شده متعلق به شما نیست یا دیگر در دسترس نیست.'
                 );
             }
 
@@ -138,7 +143,18 @@ class CheckoutService
             |--------------------------------------------------------------------------
             */
 
-            $cart = $this->getUserCart($user);
+            // Serialize checkouts for the same account and read cart items only
+            // after the lock is acquired. A second request then sees the cleared cart.
+            $cart = Cart::query()
+                ->where('user_id', $user->id)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $cart) {
+                throw new RuntimeException('سبد خرید شما خالی است.');
+            }
+
+            $cart->load('items');
 
             if (! $cart || $cart->items->isEmpty()) {
                 throw new RuntimeException(
@@ -165,6 +181,7 @@ class CheckoutService
                     'category',
                     fn ($query) => $query->where('is_active', true)
                 )
+                ->orderBy('id')
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
@@ -381,7 +398,7 @@ class CheckoutService
             return $order->load([
                 'items',
             ]);
-        });
+        }, 3);
     }
 
     /**
@@ -390,17 +407,38 @@ class CheckoutService
      * This should be called when payment fails, expires, or the order is
      * cancelled before payment completion.
      */
-    public function releaseReservedStock(Order $order): void
+    public function releaseReservedStock(Order $order, bool $allowRefundedOrder = false): void
     {
-        DB::transaction(function () use ($order) {
+        DB::transaction(function () use ($order, $allowRefundedOrder): void {
+            // Lock the order first so repeated or concurrent failure callbacks
+            // cannot credit the same reservation more than once.
+            $lockedOrder = Order::query()
+                ->whereKey($order->getKey())
+                ->lockForUpdate()
+                ->first();
 
-            $order->load([
-                'items',
-            ]);
+            if (! $lockedOrder || $lockedOrder->payment_status === 'paid') {
+                return;
+            }
 
-            foreach ($order->items as $orderItem) {
+            if ($lockedOrder->payment_status === 'refunded' && ! $allowRefundedOrder) {
+                return;
+            }
 
-                if (! $orderItem->product_id) {
+            $alreadyReleased = InventoryMovement::query()
+                ->where('reference_type', Order::class)
+                ->where('reference_id', $lockedOrder->id)
+                ->where('type', 'return')
+                ->exists();
+
+            if ($alreadyReleased) {
+                return;
+            }
+
+            $lockedOrder->load('items');
+
+            foreach ($lockedOrder->items as $orderItem) {
+                if (! $orderItem->product_id || (int) $orderItem->quantity < 1) {
                     continue;
                 }
 
@@ -414,32 +452,21 @@ class CheckoutService
                 }
 
                 $quantity = (int) $orderItem->quantity;
-
-                if ($quantity < 1) {
-                    continue;
-                }
-
                 $stockBefore = (int) $product->stock;
                 $stockAfter = $stockBefore + $quantity;
 
-                $product->update([
-                    'stock' => $stockAfter,
-                ]);
+                $product->update(['stock' => $stockAfter]);
 
                 InventoryMovement::create([
                     'product_id' => $product->id,
-                    'user_id' => $order->user_id,
-
+                    'user_id' => $lockedOrder->user_id,
                     'type' => 'return',
                     'quantity' => $quantity,
-
                     'stock_before' => $stockBefore,
                     'stock_after' => $stockAfter,
-
                     'reference_type' => Order::class,
-                    'reference_id' => $order->id,
-
-                    'note' => "Stock released for Order #{$order->order_number}",
+                    'reference_id' => $lockedOrder->id,
+                    'note' => "Stock released for Order #{$lockedOrder->order_number}",
                 ]);
             }
         });

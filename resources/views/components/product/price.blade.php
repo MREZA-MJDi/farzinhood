@@ -12,13 +12,13 @@
 
     @if($oldPrice)
         <span class="price__old">
-            {{ number_format($oldPrice) }}
+            {{ \App\Support\JalaliCalendar::number($oldPrice) }}
             تومان
         </span>
     @endif
 
     <span class="price__current">
-        {{ number_format($price) }}
+        {{ \App\Support\JalaliCalendar::number($price) }}
         <small>تومان</small>
     </span>
 

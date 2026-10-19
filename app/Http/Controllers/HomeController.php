@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Post;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
@@ -21,6 +22,7 @@ class HomeController extends Controller
             ->get();
 
         $featuredProducts = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
@@ -31,6 +33,7 @@ class HomeController extends Controller
             ->get();
 
         $latestProducts = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
@@ -40,16 +43,27 @@ class HomeController extends Controller
 
         $categories = Category::query()
             ->where('is_active', true)
+            ->withCount('activeProducts')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->take(5)
+            ->get();
+
+        $latestPosts = Post::query()
+            ->with('category')
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
+            ->latest('published_at')
+            ->take(3)
             ->get();
 
         return view('home', compact(
             'heroProducts',
             'featuredProducts',
             'latestProducts',
-            'categories'
+            'categories',
+            'latestPosts'
         ));
     }
 }

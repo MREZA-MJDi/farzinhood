@@ -148,4 +148,20 @@ class StorefrontFlowTest extends TestCase
 
         $this->assertGuest();
     }
+
+    public function test_catalog_product_card_reflects_existing_customer_wishlist_state(): void
+    {
+        $customer = $this->customer();
+        $product = $this->product();
+
+        $customer->wishlists()->create([
+            'product_id' => $product->id,
+        ]);
+
+        $this->actingAs($customer)
+            ->get(route('shop.index'))
+            ->assertOk()
+            ->assertSee('حذف از علاقه‌مندی‌ها')
+            ->assertDontSee('افزودن به علاقه‌مندی‌ها');
+    }
 }

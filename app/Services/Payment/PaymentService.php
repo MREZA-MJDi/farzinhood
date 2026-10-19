@@ -34,18 +34,59 @@ class PaymentService
             $existingPayment = $lockedOrder->payments()
                 ->where('status', 'pending')
                 ->latest()
+                ->lockForUpdate()
                 ->first();
 
             if ($existingPayment) {
-                return $existingPayment;
+                // A persisted gateway authority makes the start operation idempotent:
+                // return the same payment instead of creating another external attempt.
+                if ($existingPayment->transaction_id) {
+                    return $existingPayment;
+                }
+
+                // A concurrent request may already be initializing this payment.
+                // The short lease prevents a second purchase call while allowing
+                // recovery if the process died before persisting the gateway result.
+                $startedAt = data_get(
+                    $existingPayment->gateway_response,
+                    'purchase_started_at'
+                );
+
+                if (is_string($startedAt) && $startedAt !== '') {
+                    $startedTimestamp = strtotime($startedAt);
+                    $leaseIsActive = $startedTimestamp !== false
+                        && $startedTimestamp > now()->subSeconds(90)->getTimestamp();
+
+                    if ($leaseIsActive) {
+                        throw new RuntimeException(
+                            'درخواست پرداخت در حال آماده‌سازی است؛ چند لحظه دیگر دوباره تلاش کن.'
+                        );
+                    }
+                }
+
+                $existingPayment->update([
+                    'gateway_response' => [
+                        'purchase_started_at' => now()->toIso8601String(),
+                    ],
+                    'gateway_message' => null,
+                ]);
+
+                return $existingPayment->fresh();
             }
 
             return $lockedOrder->payments()->create([
                 'gateway' => config('services.payment.default', 'gateway'),
                 'amount' => $lockedOrder->total,
                 'status' => 'pending',
+                'gateway_response' => [
+                    'purchase_started_at' => now()->toIso8601String(),
+                ],
             ]);
         });
+
+        if ($payment->transaction_id) {
+            return $payment;
+        }
 
         try {
             $result = $this->gateway->purchase($order);
@@ -232,50 +273,76 @@ class PaymentService
         string $message
     ): void {
         DB::transaction(function () use ($paymentId, $message): void {
-            $payment = Payment::query()
-                ->lockForUpdate()
-                ->find($paymentId);
+            $orderId = Payment::query()
+                ->whereKey($paymentId)
+                ->value('order_id');
 
-            if (! $payment || $payment->status === 'successful') {
+            if (! $orderId) {
                 return;
             }
 
+            // Always lock order before payment. verify() follows this order too,
+            // avoiding the old payment->order / order->payment deadlock pattern.
             $order = Order::query()
+                ->whereKey($orderId)
                 ->lockForUpdate()
-                ->find($payment->order_id);
+                ->first();
 
-            if (! $order || $order->payment_status === 'paid') {
+            if (! $order) {
+                return;
+            }
+
+            $payment = Payment::query()
+                ->whereKey($paymentId)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $payment || in_array($payment->status, ['successful', 'refunded'], true)) {
+                return;
+            }
+
+            if ($order->payment_status === 'paid') {
+                // A stale failure callback for another attempt must never release
+                // stock belonging to an order that has already been paid.
                 $payment->update([
                     'status' => 'failed',
                     'gateway_message' => $message,
+                    'gateway_response' => ['error' => $message],
                 ]);
 
                 return;
             }
 
+            $alreadyFinalized = $order->status === 'cancelled'
+                && $order->payment_status === 'failed';
+
             $payment->update([
                 'status' => 'failed',
                 'gateway_message' => $message,
-                'gateway_response' => [
-                    'error' => $message,
-                ],
+                'gateway_response' => ['error' => $message],
             ]);
 
-            $this->checkoutService->releaseReservedStock($order);
+            if ($alreadyFinalized) {
+                return;
+            }
 
             $oldStatus = $order->status;
+
+            $this->checkoutService->releaseReservedStock($order);
 
             $order->update([
                 'payment_status' => 'failed',
                 'status' => 'cancelled',
             ]);
 
-            $order->statusHistories()->create([
-                'from_status' => $oldStatus,
-                'to_status' => 'cancelled',
-                'changed_by' => null,
-                'note' => 'پرداخت ناموفق بود و موجودی رزروشده آزاد شد.',
-            ]);
+            if ($oldStatus !== 'cancelled') {
+                $order->statusHistories()->create([
+                    'from_status' => $oldStatus,
+                    'to_status' => 'cancelled',
+                    'changed_by' => null,
+                    'note' => 'پرداخت ناموفق بود و موجودی رزروشده آزاد شد.',
+                ]);
+            }
         });
     }
 }
