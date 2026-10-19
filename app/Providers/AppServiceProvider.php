@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\SiteSetting;
 use App\Services\Payment\PaymentGatewayInterface;
 use App\Services\Payment\UnavailablePaymentGateway;
 use Illuminate\Support\Facades\View;
