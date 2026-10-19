@@ -10,7 +10,7 @@
                 <a href="{{ route('customer.addresses.index') }}">نشانی‌های من</a><span aria-hidden="true">/</span>
                 <span aria-current="page">ویرایش</span>
             </nav>
-            <header class="fz-page-heading"><span class="fz-kicker">FARZIN / ADDRESS</span><h1 class="fz-h2">ویرایش نشانی</h1></header>
+            <header class="fz-page-heading"><span class="fz-kicker">FARZIN / ADDRESS</span><h1 class="fz-h2">ویرایش آدرس</h1></header>
             <div class="fz-panel">
                 <form method="POST" action="{{ route('customer.addresses.update', $address) }}" class="fz-form-grid">
                     @csrf
