@@ -767,3 +767,9 @@ body button:disabled {
         transform: none !important;
     }
 }
+
+
+/* Hidden media fallbacks stay out of layout until an image actually fails. */
+[data-image-fallback-placeholder][hidden] {
+    display: none !important;
+}
