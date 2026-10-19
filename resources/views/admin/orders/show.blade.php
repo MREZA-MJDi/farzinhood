@@ -55,7 +55,7 @@
 
                 <p class="mt-2 text-sm text-[var(--color-text-secondary)]">
                     ثبت شده در
-                    {{ \\App\\Support\\JalaliCalendar::format($order->created_at, 'full') . ' - ' . \\App\\Support\\JalaliCalendar::format($order->created_at, 'datetime') }}
+                    {{ \App\Support\JalaliCalendar::format($order->created_at, 'full') . ' - ' . \App\Support\JalaliCalendar::format($order->created_at, 'datetime') }}
                 </p>
             </div>
 
@@ -170,16 +170,16 @@
                                 @endif
 
                                 <div class="mt-2 text-sm text-[var(--color-text-secondary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($item->quantity) }}
+                                    {{ \App\Support\JalaliCalendar::number($item->quantity) }}
                                     ×
-                                    {{ \\App\\Support\\JalaliCalendar::number($item->unit_price) }}
+                                    {{ \App\Support\JalaliCalendar::number($item->unit_price) }}
                                     تومان
                                 </div>
                             </div>
 
                             <div class="text-left sm:text-right">
                                 <div class="font-black text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($item->total) }}
+                                    {{ \App\Support\JalaliCalendar::number($item->total) }}
                                     تومان
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                             </span>
 
                             <span class="font-bold text-[var(--color-text-primary)]">
-                                {{ \\App\\Support\\JalaliCalendar::number($order->subtotal) }} تومان
+                                {{ \App\Support\JalaliCalendar::number($order->subtotal) }} تومان
                             </span>
                         </div>
 
@@ -217,7 +217,7 @@
                             </span>
 
                             <span class="font-bold text-[var(--color-text-primary)]">
-                                {{ \\App\\Support\\JalaliCalendar::number($order->discount) }} تومان
+                                {{ \App\Support\JalaliCalendar::number($order->discount) }} تومان
                             </span>
                         </div>
 
@@ -227,7 +227,7 @@
                             </span>
 
                             <span class="font-bold text-[var(--color-text-primary)]">
-                                {{ \\App\\Support\\JalaliCalendar::number($order->shipping_cost) }} تومان
+                                {{ \App\Support\JalaliCalendar::number($order->shipping_cost) }} تومان
                             </span>
                         </div>
 
@@ -238,7 +238,7 @@
                                 </span>
 
                                 <span class="text-xl font-black text-[var(--color-brand-700)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($order->total) }} تومان
+                                    {{ \App\Support\JalaliCalendar::number($order->total) }} تومان
                                 </span>
                             </div>
                         </div>
@@ -408,7 +408,7 @@
                                 </div>
 
                                 <div class="mt-1 text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($order->latestPayment->amount) }}
+                                    {{ \App\Support\JalaliCalendar::number($order->latestPayment->amount) }}
                                     تومان
                                 </div>
                             </div>
@@ -420,7 +420,7 @@
                                     </div>
 
                                     <div class="mt-1 text-sm text-[var(--color-text-secondary)]">
-                                        {{ \\App\\Support\\JalaliCalendar::format($order->latestPayment->paid_at, 'datetime') }}
+                                        {{ \App\Support\JalaliCalendar::format($order->latestPayment->paid_at, 'datetime') }}
                                     </div>
                                 </div>
                             @endif
@@ -451,7 +451,7 @@
                                 <label for="refund-amount" class="block text-xs font-bold text-[var(--color-text-primary)]">مبلغ بازگشت وجه (تومان)</label>
                                 <input id="refund-amount" type="number" name="amount" min="1" max="{{ $remainingRefundable }}" value="{{ old('amount', $remainingRefundable) }}" required inputmode="numeric" dir="ltr" class="w-full rounded-xl border border-[var(--color-border)] bg-white px-3 py-3 text-sm outline-none focus:border-[var(--color-brand-600)]">
                                 @error('amount')<p class="text-xs font-bold text-red-700">{{ $message }}</p>@enderror
-                                <p class="text-[11px] text-[var(--color-text-muted)]">مبلغ باقی‌مانده برای استرداد: {{ \\App\\Support\\JalaliCalendar::number($remainingRefundable) }} تومان</p>
+                                <p class="text-[11px] text-[var(--color-text-muted)]">مبلغ باقی‌مانده برای استرداد: {{ \App\Support\JalaliCalendar::number($remainingRefundable) }} تومان</p>
                                 <button type="submit" class="w-full rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-800 hover:bg-red-100">ثبت بازگشت وجه</button>
                             </form>
                         </div>
@@ -513,7 +513,7 @@
                         </div>
 
                         <div class="text-xs text-[var(--color-text-muted)]">
-                            {{ \\App\\Support\\JalaliCalendar::format($history->created_at, 'datetime') }}
+                            {{ \App\Support\JalaliCalendar::format($history->created_at, 'datetime') }}
                         </div>
 
                     </div>
