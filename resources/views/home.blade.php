@@ -25,6 +25,71 @@
 <x-product.product-card :id="$product->id" :name="$product->name" :image="$product->primaryImage?->image" :href="route('products.show',$product)" :price="$product->price" :old-price="$product->old_price" :discount="$product->discount" :brand="$product->brand" :meta="$product->short_description" :rating="$product->rating" :review-count="$product->review_count" :alt="$product->primaryImage?->alt" :is-wishlisted="$product->is_wishlisted ?? false" />
 @endforeach</div>@else<p class="farzin-empty">محصولات جدید به‌زودی در فروشگاه قرار می‌گیرند.</p>@endif
 </div></section>
+
+@foreach ([
+    'hood' => [
+        'eyebrow' => 'FARZIN / HOOD · 360°',
+        'title' => 'تور ۳۶۰ درجه هودهای فرزین',
+        'description' => 'طراحی، خطوط بدنه و جزئیات محصول را از چند زاویه بررسی کن.',
+    ],
+    'sink' => [
+        'eyebrow' => 'FARZIN / SINK · 360°',
+        'title' => 'تور ۳۶۰ درجه سینک‌های فرزین',
+        'description' => 'با اسکرول، درگ یا کنترل‌های تصویر زاویه‌ی محصول را تغییر بده.',
+    ],
+] as $scene => $copy)
+    @php $sceneFrames = $tourFrames->get($scene, collect()); @endphp
+    @if ($sceneFrames->isNotEmpty())
+        @php $firstFrame = $sceneFrames->first(); @endphp
+        <section class="farzin-tour" data-home-motion-section data-product-tour data-tour-scene="{{ $scene }}"
+                 data-tour-default-description="{{ $copy['description'] }}"
+                 style="--tour-scroll-span: {{ max(0, ($sceneFrames->count() - 1) * 18) }}svh">
+            <div class="farzin-container farzin-tour__sticky">
+                <div class="farzin-tour__copy">
+                    <p class="farzin-tour__eyebrow">{{ $copy['eyebrow'] }}</p>
+                    <h2 class="farzin-tour__title">{{ $copy['title'] }}</h2>
+                    <p class="farzin-tour__lead">{{ $copy['description'] }}</p>
+                    <div class="farzin-tour__frame-copy" aria-live="polite" aria-atomic="true">
+                        <strong class="farzin-tour__frame-title" data-tour-active-title>{{ $firstFrame->title ?: 'نمای محصول' }}</strong>
+                        <p class="farzin-tour__frame-description" data-tour-active-description>{{ $firstFrame->description ?: $copy['description'] }}</p>
+                    </div>
+                    <p class="farzin-tour__footnote">اسکرول برای مشاهده‌ی زاویه‌های بعدی · قابل کنترل با کیبورد</p>
+                    <a class="farzin-text-link" href="{{ route('shop.index') }}">مشاهده‌ی محصولات <span aria-hidden="true">↗</span></a>
+                </div>
+                <div class="farzin-tour__stage" data-tour-stage tabindex="0" role="group"
+                     aria-label="{{ $copy['title'] }}. برای تغییر زاویه از اسکرول، درگ ماوس، لمس یا کلیدهای جهت استفاده کن.">
+                    <div class="farzin-tour__frames">
+                        @foreach ($sceneFrames as $frameIndex => $frame)
+                            <div class="farzin-tour__frame {{ $loop->first ? 'is-active' : '' }}"
+                                 data-tour-frame data-frame-index="{{ $frameIndex }}"
+                                 data-frame-title="{{ $frame->title }}"
+                                 data-frame-description="{{ $frame->description }}"
+                                 aria-hidden="{{ $loop->first ? 'false' : 'true' }}"
+                                 style="--tour-scale: {{ number_format($frame->scale, 2, '.', '') }}; --tour-position-x: {{ $frame->object_position_x }}%; --tour-position-y: {{ $frame->object_position_y }}%">
+                                <img src="{{ asset('storage/' . $frame->image) }}"
+                                     alt="{{ $frame->alt ?: ($frame->title ?: $copy['title']) }}"
+                                     width="1600" height="1200" draggable="false"
+                                     loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async">
+                            </div>
+                        @endforeach
+                    </div>
+                    <span class="farzin-tour__stage-label">FARZIN / OBJECT STUDY</span>
+                    <div class="farzin-tour__stage-bottom">
+                        <span>حرکت کن و جزئیات را ببین</span>
+                        <strong class="farzin-tour__counter" data-tour-counter>01 / {{ str_pad((string) $sceneFrames->count(), 2, '0', STR_PAD_LEFT) }}</strong>
+                    </div>
+                    <span class="farzin-tour__drag-hint">DRAG / SCROLL / TOUCH</span>
+                    <div class="farzin-tour__controls" aria-label="کنترل زاویه‌ی محصول">
+                        <button type="button" data-tour-prev aria-label="زاویه‌ی قبلی">←</button>
+                        <div class="farzin-tour__progress" aria-hidden="true"><span data-tour-progress></span></div>
+                        <button type="button" data-tour-next aria-label="زاویه‌ی بعدی">→</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+@endforeach
+
 <section class="farzin-section farzin-features-section" aria-labelledby="home-features-title">
     <div class="farzin-container">
         <header class="farzin-section__head">
