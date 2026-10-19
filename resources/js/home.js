@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.warn("ScrollTrigger unavailable; using IntersectionObserver.", error);
         }
 
-        initHomeScrollAnimations(gsap, ScrollTrigger);\n        initHomeScrollMotion(gsap, ScrollTrigger);
+        initHomeScrollAnimations(gsap, ScrollTrigger);
+        initHomeScrollMotion(gsap, ScrollTrigger);
         heroes.forEach((hero) => initFarzinHero(hero, gsap));
     } catch (error) {
         console.error("Farzin homepage animation could not be loaded.", error);
