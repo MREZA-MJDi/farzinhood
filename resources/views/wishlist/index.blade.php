@@ -32,6 +32,9 @@
                     @endif
                 @endforeach
             </div>
+            @if($wishlist->hasPages())
+                <nav class="farzin-pagination mt-8" aria-label="صفحه‌بندی علاقه‌مندی‌ها">{{ $wishlist->links() }}</nav>
+            @endif
         @else
             <div class="farzin-empty farzin-empty--large mt-8">
                 <span class="farzin-empty__mark">♡</span>
