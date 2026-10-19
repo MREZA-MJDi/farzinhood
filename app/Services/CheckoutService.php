@@ -407,9 +407,9 @@ class CheckoutService
      * This should be called when payment fails, expires, or the order is
      * cancelled before payment completion.
      */
-    public function releaseReservedStock(Order $order): void
+    public function releaseReservedStock(Order $order, bool $allowRefundedOrder = false): void
     {
-        DB::transaction(function () use ($order): void {
+        DB::transaction(function () use ($order, $allowRefundedOrder): void {
             // Lock the order first so repeated or concurrent failure callbacks
             // cannot credit the same reservation more than once.
             $lockedOrder = Order::query()
@@ -417,7 +417,11 @@ class CheckoutService
                 ->lockForUpdate()
                 ->first();
 
-            if (! $lockedOrder || in_array($lockedOrder->payment_status, ['paid', 'refunded'], true)) {
+            if (! $lockedOrder || $lockedOrder->payment_status === 'paid') {
+                return;
+            }
+
+            if ($lockedOrder->payment_status === 'refunded' && ! $allowRefundedOrder) {
                 return;
             }
 
