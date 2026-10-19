@@ -30,7 +30,7 @@
                     <x-content.blog-card
                         title="قبل از خرید هود به چه نکاتی توجه کنیم؟"
                         image="{{ asset('images/blog/hood-guide.webp') }}"
-                        href="{{ route('blog.show', ['slug' => 'guide-to-choosing-hood']) }}"
+                        href="{{ route('blog.index') }}"
                         category="راهنمای خرید"
                         excerpt="چند نکته کاربردی برای انتخاب هودی که با فضای آشپزخانه شما هماهنگ باشد."
                         meta="۵ دقیقه مطالعه"
@@ -39,7 +39,7 @@
                     <x-content.blog-card
                         title="سینک توکار یا روکار؛ کدام مناسب شماست؟"
                         image="{{ asset('images/blog/sink-guide.webp') }}"
-                        href="{{ route('blog.show', ['slug' => 'kitchen-sink-guide']) }}"
+                        href="{{ route('blog.index') }}"
                         category="راهنمای خرید"
                         excerpt="تفاوت‌ها، مزایا و نکاتی که قبل از انتخاب سینک بهتر است بدانید."
                         meta="۴ دقیقه مطالعه"
@@ -48,7 +48,7 @@
                     <x-content.blog-card
                         title="چطور آشپزخانه‌ای مدرن و یکدست داشته باشیم؟"
                         image="{{ asset('images/blog/kitchen-design.webp') }}"
-                        href="{{ route('blog.show', ['slug' => 'modern-kitchen-design']) }}"
+                        href="{{ route('blog.index') }}"
                         category="طراحی"
                         excerpt="از رنگ و متریال تا انتخاب تجهیزات؛ یک نگاه ساده به طراحی آشپزخانه مدرن."
                         meta="۶ دقیقه مطالعه"
