@@ -432,13 +432,14 @@ function initHomeProductTours() {
 
         // Mouse hover lets the pointer position select a viewing angle.
         stage.addEventListener("pointermove", (event) => {
-            if (event.pointerType === "touch") return;
             if (isDragging && pointerStartX !== null) {
                 const dx = event.clientX - pointerStartX;
                 const pixelsPerFrame = Math.max(8, stage.clientWidth / Math.max(8, total));
                 render(pointerStartIndex - Math.trunc(dx / pixelsPerFrame));
+                if (event.pointerType === "touch") latestPointerX = event.clientX;
                 return;
             }
+            if (event.pointerType === "touch") return;
             if (event.pointerType === "mouse" && total > 1) {
                 const rect = stage.getBoundingClientRect();
                 const ratio = clamp((event.clientX - rect.left) / Math.max(1, rect.width), 0, 1);
