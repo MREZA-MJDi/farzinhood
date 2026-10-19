@@ -157,6 +157,13 @@ final class JalaliCalendar
         ]);
     }
 
+    public static function number(int|float|string|null $value, int $decimals = 0): string
+    {
+        $formatted = number_format((float) ($value ?? 0), $decimals, '٫', '٬');
+
+        return self::digits($formatted);
+    }
+
     public static function format(CarbonInterface $date, string $style = 'full'): string
     {
         [$year, $month, $day] = self::fromGregorian($date);
