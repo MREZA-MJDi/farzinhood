@@ -125,9 +125,14 @@ class CheckoutService
             |--------------------------------------------------------------------------
             */
 
-            if ((int) $address->user_id !== (int) $user->id) {
+            $address = Address::query()
+                ->whereKey($address->getKey())
+                ->lockForUpdate()
+                ->first();
+
+            if (! $address || (int) $address->user_id !== (int) $user->id) {
                 throw new RuntimeException(
-                    'آدرس انتخاب‌شده متعلق به شما نیست.'
+                    'آدرس انتخاب‌شده متعلق به شما نیست یا دیگر در دسترس نیست.'
                 );
             }
 
@@ -176,6 +181,7 @@ class CheckoutService
                     'category',
                     fn ($query) => $query->where('is_active', true)
                 )
+                ->orderBy('id')
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
@@ -392,7 +398,7 @@ class CheckoutService
             return $order->load([
                 'items',
             ]);
-        });
+        }, 3);
     }
 
     /**
