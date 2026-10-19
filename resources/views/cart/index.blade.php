@@ -27,8 +27,8 @@
                                 <div class="min-w-0">
                                     <p class="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">{{ $product->brand ?: 'FARZIN / PRODUCT' }}</p>
                                     <h2 class="mt-2 font-black"><a href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h2>
-                                    <p class="mt-2 text-sm font-bold">{{ number_format($item->unit_price) }} تومان</p>
-                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">جمع این کالا: {{ number_format($item->unit_price * $item->quantity) }} تومان</p>
+                                    <p class="mt-2 text-sm font-bold">{{ \\App\\Support\\JalaliCalendar::number($item->unit_price) }} تومان</p>
+                                    <p class="mt-1 text-xs text-[var(--color-text-muted)]">جمع این کالا: {{ \\App\\Support\\JalaliCalendar::number($item->unit_price * $item->quantity) }} تومان</p>
                                     <div class="mt-4 flex flex-wrap items-end gap-3">
                                         <form action="{{ route('customer.cart.update', $product) }}" method="POST" class="flex items-center gap-2">
                                             @csrf
@@ -58,8 +58,8 @@
                 <aside class="rounded-2xl border border-[var(--color-border)] bg-white p-5 sm:p-6 lg:sticky lg:top-24">
                     <p class="farzin-kicker !mb-1">ORDER SUMMARY</p>
                     <h2 class="text-lg font-black">خلاصه سبد</h2>
-                    <div class="mt-5 flex justify-between gap-3 border-b border-[var(--color-border)] py-3 text-sm"><span class="text-[var(--color-text-muted)]">تعداد کالا</span><strong>{{ number_format($itemCount) }}</strong></div>
-                    <div class="flex justify-between gap-3 py-4"><span class="text-sm font-bold">جمع کالاها</span><strong class="text-lg">{{ number_format($subtotal) }} <small class="text-xs font-normal">تومان</small></strong></div>
+                    <div class="mt-5 flex justify-between gap-3 border-b border-[var(--color-border)] py-3 text-sm"><span class="text-[var(--color-text-muted)]">تعداد کالا</span><strong>{{ \\App\\Support\\JalaliCalendar::number($itemCount) }}</strong></div>
+                    <div class="flex justify-between gap-3 py-4"><span class="text-sm font-bold">جمع کالاها</span><strong class="text-lg">{{ \\App\\Support\\JalaliCalendar::number($subtotal) }} <small class="text-xs font-normal">تومان</small></strong></div>
                     <p class="text-xs leading-6 text-[var(--color-text-muted)]">هزینه نهایی و هزینه ارسال در مرحله تکمیل سفارش محاسبه و نمایش داده می‌شود.</p>
                     <a href="{{ route('customer.checkout.index') }}" class="farzin-button mt-5 flex w-full justify-center">ادامه و تکمیل سفارش <span aria-hidden="true">↗</span></a>
                     <a href="{{ route('shop.index') }}" class="mt-4 block text-center text-xs font-bold underline underline-offset-4">ادامه خرید</a>
