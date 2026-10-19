@@ -19,7 +19,7 @@
             @forelse ($products as $product)
                 <x-storefront.product-card :product="$product" />
             @empty
-                <div class="store-empty"><strong>محصولی با این فیلترها پیدا نشد.</strong><p>فیلترها را تغییر بده یا دوباره همه محصولات را ببین.</p><a href="{{ route('shop.index') }}">پاک‌کردن فیلترها</a></div>
+                <div class="store-empty"><strong>محصولی پیدا نشد؛ فیلترها را تغییر بده.</strong><p>فیلترها را تغییر بده یا دوباره همه محصولات را ببین.</p><a href="{{ route('shop.index') }}">پاک‌کردن فیلترها</a></div>
             @endforelse
         </div>
         <div class="catalog-pagination">{{ $products->links() }}</div>
