@@ -54,21 +54,21 @@
                 </a>
 
                 <a
-                    href="{{ route('shop') }}"
+                    href="{{ route('shop.index') }}"
                     class="site-header__nav-link {{ request()->routeIs('shop') ? 'is-active' : '' }}"
                 >
                     فروشگاه
                 </a>
 
                 <a
-                    href="{{ route('category.hood') }}"
+                    href="{{ route('shop.index', ['category' => 'hood']) }}"
                     class="site-header__nav-link {{ request()->routeIs('category.hood') ? 'is-active' : '' }}"
                 >
                     هود
                 </a>
 
                 <a
-                    href="{{ route('category.sink') }}"
+                    href="{{ route('shop.index', ['category' => 'sink']) }}"
                     class="site-header__nav-link {{ request()->routeIs('category.sink') ? 'is-active' : '' }}"
                 >
                     سینک
@@ -82,14 +82,14 @@
                 </a>
 
                 <a
-                    href="{{ route('about') }}"
+                    href="{{ route('contact.index') }}"
                     class="site-header__nav-link {{ request()->routeIs('about') ? 'is-active' : '' }}"
                 >
                     درباره ما
                 </a>
 
                 <a
-                    href="{{ route('contact') }}"
+                    href="{{ route('contact.index') }}"
                     class="site-header__nav-link {{ request()->routeIs('contact') ? 'is-active' : '' }}"
                 >
                     تماس با ما
@@ -128,7 +128,7 @@
 
                 {{-- Wishlist --}}
                 <a
-                    href="{{ route('wishlist') }}"
+                    href="{{ route('customer.wishlist.index') }}"
                     class="icon-btn site-header__action"
                     aria-label="علاقه‌مندی‌ها"
                 >
@@ -174,7 +174,7 @@
 
                 {{-- Cart --}}
                 <a
-                    href="{{ route('cart') }}"
+                    href="{{ route('customer.cart.index') }}"
                     class="site-header__cart"
                     aria-label="سبد خرید"
                 >
@@ -244,7 +244,7 @@
         <div class="container">
 
             <form
-                action="{{ route('search') }}"
+                action="{{ route('shop.index') }}"
                 method="GET"
                 class="site-header__search-form"
             >
