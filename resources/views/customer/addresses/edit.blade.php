@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'ویرایش نشانی | فرزین')
+@section('title', 'ویرایش آدرس | فرزین')
 
 @section('content')
     <section class="fz-section">
