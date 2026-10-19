@@ -34,7 +34,7 @@
 
                 <div class="order-summary__item-price">
                     {{
-                        \\App\\Support\\JalaliCalendar::number(
+                        \App\Support\JalaliCalendar::number(
                             ($item['price'] ?? 0) *
                             ($item['quantity'] ?? 1)
                         )
@@ -57,7 +57,7 @@
                 <span>جمع محصولات</span>
 
                 <strong>
-                    {{ \\App\\Support\\JalaliCalendar::number($subtotal) }}
+                    {{ \App\Support\JalaliCalendar::number($subtotal) }}
                     تومان
                 </strong>
             </div>
@@ -68,7 +68,7 @@
                 <strong>
                     {{
                         $shipping > 0
-                            ? \\App\\Support\\JalaliCalendar::number($shipping) . ' تومان'
+                            ? \App\Support\JalaliCalendar::number($shipping) . ' تومان'
                             : 'رایگان'
                     }}
                 </strong>
@@ -81,7 +81,7 @@
                     <span>تخفیف</span>
 
                     <strong>
-                        -{{ \\App\\Support\\JalaliCalendar::number($discount) }}
+                        -{{ \App\Support\JalaliCalendar::number($discount) }}
                         تومان
                     </strong>
 
@@ -96,7 +96,7 @@
                 </span>
 
                 <strong>
-                    {{ \\App\\Support\\JalaliCalendar::number($total) }}
+                    {{ \App\Support\JalaliCalendar::number($total) }}
                     تومان
                 </strong>
 
