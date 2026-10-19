@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Farzin hero animation could not be loaded.", error);
         // The first product slide remains visible as a static, usable fallback.
-        heroes.forEach((hero) => hero.classList.add("farzin-hero--static"));
+        heroes.forEach((hero) => {
+            hero.classList.add("farzin-hero--static");
+            hero.querySelector(".farzin-hero__controls")?.remove();
+            hero.querySelector(".farzin-hero__progress")?.remove();
+        });
     }
 });
 
@@ -41,7 +45,7 @@ function initFarzinHero(hero, gsap) {
             ?.querySelector(".farzin-hero__media img");
         if (!image || image.complete) return;
         image.loading = "eager";
-        image.decode?.().catch(() => {});
+        if (typeof image.decode === "function") image.decode().catch(() => {});
     };
 
     const stopAutoplay = () => {
@@ -104,6 +108,7 @@ function initFarzinHero(hero, gsap) {
 
         const currentSlide = slides[activeIndex];
         const nextSlide = slides[nextIndex];
+        warmSlideImage(nextIndex);
         warmSlideImage(nextIndex + 1);
         const nextImage = nextSlide.querySelector(".farzin-hero__media img");
         const nextFrame = nextSlide.querySelector(".farzin-hero__frame");
