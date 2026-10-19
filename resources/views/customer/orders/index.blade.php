@@ -14,10 +14,10 @@
                 <a href="{{ route('customer.orders.show', $order) }}" class="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border)] px-5 py-5 last:border-b-0 hover:bg-[var(--color-surface-soft)] sm:px-6">
                     <div>
                         <span class="block text-sm font-black">{{ $order->order_number }}</span>
-                        <span class="mt-1 block text-xs text-[var(--color-text-muted)]">ثبت‌شده در {{ $order->created_at?->format('Y/m/d H:i') }} · {{ number_format($order->items_count) }} قلم</span>
+                        <span class="mt-1 block text-xs text-[var(--color-text-muted)]">ثبت‌شده در {{ ($order->created_at ? \\App\\Support\\JalaliCalendar::format($order->created_at, 'datetime') : '—') }} · {{ \\App\\Support\\JalaliCalendar::number($order->items_count) }} قلم</span>
                     </div>
                     <div class="text-left">
-                        <strong class="block">{{ number_format($order->total) }} تومان</strong>
+                        <strong class="block">{{ \\App\\Support\\JalaliCalendar::number($order->total) }} تومان</strong>
                         <span class="mt-1 block text-xs text-[var(--color-text-muted)]">وضعیت: {{ $order->status }} · پرداخت: {{ $order->payment_status }}</span>
                     </div>
                 </a>
