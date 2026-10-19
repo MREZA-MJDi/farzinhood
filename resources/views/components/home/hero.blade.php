@@ -17,7 +17,7 @@
 <p class="farzin-hero__eyebrow"><span class="farzin-hero__eyebrow-line"></span> FARZIN / HOME ESSENTIALS</p>
 <h1 class="farzin-hero__title">خانه‌ی امروز،<br><span>انتخابی ماندگار.</span></h1>
 <p class="farzin-hero__description">{{ $product?->short_description ?: 'طراحی سنجیده، کیفیت قابل اتکا و جزئیاتی که تجربه‌ی خانه را بهتر می‌کنند.' }}</p>
-<div class="farzin-hero__actions"><a class="farzin-hero__button farzin-hero__button--light" href="{{ $product ? route('products.show', $product) : route('shop.index') }}">کشف محصول <span aria-hidden="true">↗</span></a><a class="farzin-hero__button farzin-hero__button--ghost" href="{{ route('shop.index') }}">مشاهده فروشگاه</a></div>
+<div class="farzin-hero__actions"><a class="farzin-hero__button farzin-hero__button--light" href="{{ $product ? route('products.show', ['product' => $product->slug]) : route('shop.index') }}">کشف محصول <span aria-hidden="true">↗</span></a><a class="farzin-hero__button farzin-hero__button--ghost" href="{{ route('shop.index') }}">مشاهده فروشگاه</a></div>
 <div class="farzin-hero__caption"><span>منتخب فرزین</span><strong>{{ $product?->name ?? 'سادگی در جزئیات' }}</strong></div>
 </div>
 <span class="farzin-hero__index" aria-hidden="true">{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }} <i></i> {{ str_pad((string)$heroSlides->count(),2,'0',STR_PAD_LEFT) }}</span>
