@@ -23,9 +23,10 @@
             </form>
         @endif
         <a href="{{ $href }}" class="product-card__image-link" aria-label="مشاهده {{ $name }}">
-            <div class="product-card__image">
+            <div class="product-card__image" data-image-fallback-container>
                 @if($imageUrl)
-                    <img src="{{ $imageUrl }}" alt="{{ $alt ?? $name }}" width="800" height="800" loading="lazy" decoding="async">
+                    <img src="{{ $imageUrl }}" alt="{{ $alt ?? $name }}" width="800" height="800" loading="lazy" decoding="async" data-image-fallback-image>
+                    <div class="product-card__image-placeholder" data-image-fallback-placeholder hidden role="img" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="M4 16L9 11L13 15L16 12L20 16"/></svg></div>
                 @else
                     <div class="product-card__image-placeholder" role="img" aria-label="تصویر {{ $name }} موجود نیست"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="M4 16L9 11L13 15L16 12L20 16"/></svg></div>
                 @endif
