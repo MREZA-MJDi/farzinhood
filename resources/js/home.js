@@ -482,22 +482,6 @@ function initHomeScrollMotion(gsap, ScrollTrigger) {
             );
         });
 
-        home.querySelectorAll(".farzin-tour__frame.is-active img").forEach((image) => {
-            gsap.fromTo(image,
-                { scale: 1.11 },
-                {
-                    scale: 1.02,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: image.closest(".farzin-tour"),
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: 0.7,
-                        invalidateOnRefresh: true,
-                    },
-                },
-            );
-        });
     }
 
     initHomeProductTours(gsap, ScrollTrigger, reducedMotion);
