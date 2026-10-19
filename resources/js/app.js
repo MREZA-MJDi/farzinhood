@@ -6,6 +6,7 @@ import "./media-picker";
 
 document.addEventListener("DOMContentLoaded", () => {
     initMoneyInputs();
+    initImageFallbacks();
     initRevealObserver();
     initFlashMessages();
     initQuantityControls();
@@ -311,5 +312,36 @@ function initMoneyInputs() {
                 input.value = toAsciiDigits(input.value);
             });
         });
+    });
+}
+
+
+/**
+ * Keep catalog layouts visually stable when a stored image URL is stale or
+ * an upload was moved. Intrinsic dimensions remain in markup to avoid shifts.
+ */
+function initImageFallbacks() {
+    const images = [...document.querySelectorAll("[data-image-fallback-image]")];
+
+    const showFallback = (image) => {
+        if (image.dataset.fallbackHandled === "true") return;
+        image.dataset.fallbackHandled = "true";
+        image.style.display = "none";
+
+        const container = image.closest("[data-image-fallback-container]");
+        const fallback = container?.querySelector("[data-image-fallback-placeholder]");
+        if (!fallback) return;
+
+        fallback.hidden = false;
+        fallback.setAttribute("aria-hidden", "false");
+        fallback.setAttribute("role", "img");
+        fallback.setAttribute("aria-label", image.alt || "تصویر در دسترس نیست");
+    };
+
+    images.forEach((image) => {
+        image.addEventListener("error", () => showFallback(image), { once: true });
+
+        // Handles cached failures that happened before DOMContentLoaded.
+        if (image.complete && image.naturalWidth === 0) showFallback(image);
     });
 }
