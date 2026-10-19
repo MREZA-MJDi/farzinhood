@@ -13,6 +13,7 @@ class CategoryController extends Controller
         abort_unless($category->is_active, 404);
 
         $products = $category->products()
+            ->withWishlistedBy(auth()->user())
             ->with([
                 'primaryImage',
                 'category',
