@@ -30,6 +30,9 @@
     @stack('meta')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/js/app.js'])
+        @if (request()->routeIs('home', 'shop.*', 'products.*', 'categories.*', 'blog.*', 'contact.*'))
+            @vite(['resources/css/home.css'])
+        @endif
     @endif
 </head>
 <body class="{{ request()->routeIs('home') ? 'farzin-home-page' : 'farzin-page' }}">
