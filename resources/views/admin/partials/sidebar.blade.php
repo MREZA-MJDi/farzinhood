@@ -229,6 +229,19 @@
             <nav class="space-y-1">
 
                 <a
+                    href="{{ route('admin.home-tour.index') }}"
+                    class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
+                    {{ request()->routeIs('admin.home-tour.*')
+                        ? 'bg-[var(--color-brand-50)] text-[var(--color-brand-700)]'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-text-primary)]' }}"
+                >
+                    <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                        <path d="M4 5h16v14H4z" /><path d="M7 9h10M7 13h6" /><circle cx="17" cy="16" r="2" />
+                    </svg>
+                    تور محصول / فریم‌ها
+                </a>
+
+                <a
                     href="{{ route('admin.posts.index') }}"
                     class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
                     {{ request()->routeIs('admin.posts.*')
