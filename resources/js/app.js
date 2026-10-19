@@ -7,9 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initFlashMessages();
     initQuantityControls();
     initProductGallery();
+    initSimpleProductThumbs();
     initHomeHero();
     initHomeProductTours();
     initScrollAwareStorefrontHeader();
+    initCartActions();
+    initGsapReveals();
 });
 
 function initRevealObserver() {
@@ -503,4 +506,242 @@ function initHomeProductTours() {
 
         render(0);
     });
+}
+
+
+function initSimpleProductThumbs() {
+    const mainImage = document.getElementById("fz-main-product-image");
+    if (!mainImage) return;
+
+    const thumbs = [...document.querySelectorAll("[data-product-thumb][data-image]")];
+    if (!thumbs.length) return;
+
+    thumbs.forEach((button) => {
+        button.addEventListener("click", () => {
+            const nextSrc = button.dataset.image;
+            if (!nextSrc) return;
+
+            mainImage.src = nextSrc;
+            mainImage.alt = button.dataset.alt || "";
+            thumbs.forEach((thumb) => {
+                const active = thumb === button;
+                thumb.classList.toggle("is-active", active);
+                thumb.setAttribute("aria-pressed", active ? "true" : "false");
+            });
+        });
+    });
+}
+
+let gsapModulePromise = null;
+
+function loadGSAP() {
+    if (!gsapModulePromise) {
+        gsapModulePromise = import("gsap")
+            .then((module) => module.gsap || module.default?.gsap || module.default)
+            .catch(() => null);
+    }
+    return gsapModulePromise;
+}
+
+function appendStorefrontToast(message, isError = false) {
+    const text = String(message || "").trim();
+    if (!text) return;
+
+    let region = document.querySelector("[data-toast-region]");
+    if (!region) {
+        region = document.createElement("div");
+        region.className = "fz-toast-region";
+        region.dataset.toastRegion = "";
+        region.setAttribute("aria-live", "polite");
+        region.setAttribute("aria-atomic", "true");
+        document.body.append(region);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "fz-toast" + (isError ? " fz-toast--error" : "");
+    toast.setAttribute("role", isError ? "alert" : "status");
+    toast.textContent = text;
+    region.append(toast);
+
+    window.setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(6px)";
+        window.setTimeout(() => toast.remove(), 180);
+    }, 4200);
+}
+
+function syncCartCount(itemCount) {
+    const badge = document.querySelector("[data-cart-count]");
+    if (!badge) return;
+
+    const count = Math.max(0, Number.parseInt(itemCount, 10) || 0);
+    badge.textContent = String(count);
+    badge.hidden = count === 0;
+}
+
+async function animateProductIntoCart(form) {
+    const target = document.querySelector("[data-cart-link]");
+    const source = form.closest("[data-product-card], .farzin-product-card")
+        ?.querySelector("[data-product-image], .farzin-product-card__image-link img")
+        || document.getElementById("fz-main-product-image");
+
+    if (!target || !source || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const sourceRect = source.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+
+    if (sourceRect.width < 1 || sourceRect.height < 1 || targetRect.width < 1 || targetRect.height < 1) return;
+
+    const clone = source.cloneNode(false);
+    clone.alt = "";
+    clone.setAttribute("aria-hidden", "true");
+    Object.assign(clone.style, {
+        position: "fixed",
+        zIndex: "9999",
+        left: sourceRect.left + "px",
+        top: sourceRect.top + "px",
+        width: sourceRect.width + "px",
+        height: sourceRect.height + "px",
+        objectFit: "contain",
+        pointerEvents: "none",
+        borderRadius: "5px",
+        boxShadow: "0 16px 40px rgb(17 19 24 / .22)",
+        transformOrigin: "center center",
+        willChange: "transform, opacity",
+    });
+    document.body.append(clone);
+
+    try {
+        const gsap = await loadGSAP();
+        if (!gsap) {
+            clone.remove();
+            return;
+        }
+
+        const currentTarget = document.querySelector("[data-cart-link]") || target;
+        const endRect = currentTarget.getBoundingClientRect();
+        const deltaX = endRect.left + endRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
+        const deltaY = endRect.top + endRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+
+        gsap.fromTo(clone,
+            { x: 0, y: 0, scale: 1, opacity: 0.92, rotate: 0 },
+            {
+                x: deltaX,
+                y: deltaY,
+                scale: 0.16,
+                opacity: 0.12,
+                rotate: -7,
+                duration: 0.62,
+                ease: "power3.in",
+                onComplete: () => clone.remove(),
+            },
+        );
+    } catch {
+        clone.remove();
+    }
+}
+
+function initCartActions() {
+    const forms = [...document.querySelectorAll("form[data-cart-add]")];
+    if (!forms.length || !("fetch" in window)) return;
+
+    forms.forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+            if (form.dataset.cartBusy === "true") {
+                event.preventDefault();
+                return;
+            }
+
+            if (!form.reportValidity()) {
+                event.preventDefault();
+                return;
+            }
+
+            event.preventDefault();
+            form.dataset.cartBusy = "true";
+
+            const button = form.querySelector("[data-cart-add-button], button[type='submit']");
+            const originalText = button?.textContent?.trim() || "افزودن به سبد خرید";
+            if (button) {
+                button.disabled = true;
+                button.setAttribute("aria-busy", "true");
+                button.textContent = "در حال افزودن…";
+            }
+
+            try {
+                const response = await fetch(form.action, {
+                    method: (form.method || "POST").toUpperCase(),
+                    body: new FormData(form),
+                    credentials: "same-origin",
+                    headers: {
+                        Accept: "application/json",
+                        "X-Requested-With": "XMLHttpRequest",
+                    },
+                });
+
+                const contentType = response.headers.get("content-type") || "";
+                const payload = contentType.includes("application/json")
+                    ? await response.json()
+                    : null;
+
+                if (!response.ok || !payload?.success) {
+                    const message = payload?.message
+                        || (response.status === 419
+                            ? "نشست شما منقضی شده است. صفحه را تازه‌سازی کن و دوباره تلاش کن."
+                            : "افزودن محصول انجام نشد. اطلاعات را بررسی و دوباره امتحان کن.");
+                    appendStorefrontToast(message, true);
+                    return;
+                }
+
+                if (payload.item_count !== undefined) syncCartCount(payload.item_count);
+                appendStorefrontToast(payload.message || "محصول به سبد خرید اضافه شد.");
+                void animateProductIntoCart(form);
+            } catch {
+                appendStorefrontToast("ارتباط با سرور برقرار نشد. اتصال را بررسی و دوباره تلاش کن.", true);
+            } finally {
+                delete form.dataset.cartBusy;
+                if (button) {
+                    button.disabled = false;
+                    button.removeAttribute("aria-busy");
+                    button.textContent = originalText;
+                }
+            }
+        });
+    });
+}
+
+function initGsapReveals() {
+    const elements = [...document.querySelectorAll("[data-gsap-reveal], [data-reveal-item]")];
+    if (!elements.length || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const animated = new WeakSet();
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting || animated.has(entry.target)) return;
+
+            animated.add(entry.target);
+            currentObserver.unobserve(entry.target);
+
+            void loadGSAP().then((gsap) => {
+                if (!gsap || !entry.target.isConnected) return;
+
+                gsap.fromTo(entry.target,
+                    { y: 16, autoAlpha: 0 },
+                    {
+                        y: 0,
+                        autoAlpha: 1,
+                        duration: 0.62,
+                        ease: "power3.out",
+                        clearProps: "transform",
+                    },
+                );
+            });
+        });
+    }, {
+        threshold: 0.08,
+        rootMargin: "0px 0px -28px 0px",
+    });
+
+    elements.forEach((element) => observer.observe(element));
 }
