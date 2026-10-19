@@ -17,7 +17,7 @@ class HomeController extends Controller
             ->whereHas('primaryImage')
             ->latest('created_at')
             ->latest('id')
-            ->take(6)
+            ->take(10)
             ->get();
 
         $featuredProducts = Product::query()
