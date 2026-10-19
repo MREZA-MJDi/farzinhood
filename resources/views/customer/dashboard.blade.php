@@ -14,17 +14,17 @@
         <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
             <a href="{{ route('customer.orders.index') }}" class="rounded-2xl border border-[var(--color-border)] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
                 <span class="text-xs text-[var(--color-text-muted)]">سفارش‌ها</span>
-                <strong class="mt-3 block text-3xl font-black">{{ \\App\\Support\\JalaliCalendar::number($orderCount) }}</strong>
+                <strong class="mt-3 block text-3xl font-black">{{ \App\Support\JalaliCalendar::number($orderCount) }}</strong>
                 <span class="mt-3 block text-sm font-bold">مشاهده سفارش‌ها ←</span>
             </a>
             <a href="{{ route('customer.wishlist.index') }}" class="rounded-2xl border border-[var(--color-border)] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
                 <span class="text-xs text-[var(--color-text-muted)]">علاقه‌مندی‌ها</span>
-                <strong class="mt-3 block text-3xl font-black">{{ \\App\\Support\\JalaliCalendar::number($wishlistCount) }}</strong>
+                <strong class="mt-3 block text-3xl font-black">{{ \App\Support\JalaliCalendar::number($wishlistCount) }}</strong>
                 <span class="mt-3 block text-sm font-bold">محصولات ذخیره‌شده ←</span>
             </a>
             <a href="{{ route('customer.addresses.index') }}" class="rounded-2xl border border-[var(--color-border)] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg">
                 <span class="text-xs text-[var(--color-text-muted)]">آدرس‌های ارسال</span>
-                <strong class="mt-3 block text-3xl font-black">{{ \\App\\Support\\JalaliCalendar::number($addressCount) }}</strong>
+                <strong class="mt-3 block text-3xl font-black">{{ \App\Support\JalaliCalendar::number($addressCount) }}</strong>
                 <span class="mt-3 block text-sm font-bold">مدیریت آدرس‌ها ←</span>
             </a>
         </div>
@@ -41,10 +41,10 @@
                 <a href="{{ route('customer.orders.show', $order) }}" class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--color-border)] px-5 py-4 last:border-b-0 hover:bg-[var(--color-surface-soft)] sm:px-6">
                     <div class="min-w-0">
                         <span class="block text-sm font-bold">{{ $order->order_number }}</span>
-                        <span class="mt-1 block text-xs text-[var(--color-text-muted)]">{{ ($order->created_at ? \\App\\Support\\JalaliCalendar::format($order->created_at, 'day-month') : '—') }} · {{ \\App\\Support\\JalaliCalendar::number($order->items_count) }} قلم</span>
+                        <span class="mt-1 block text-xs text-[var(--color-text-muted)]">{{ ($order->created_at ? \App\Support\JalaliCalendar::format($order->created_at, 'day-month') : '—') }} · {{ \App\Support\JalaliCalendar::number($order->items_count) }} قلم</span>
                     </div>
                     <div class="text-left">
-                        <strong class="block text-sm">{{ \\App\\Support\\JalaliCalendar::number($order->total) }} تومان</strong>
+                        <strong class="block text-sm">{{ \App\Support\JalaliCalendar::number($order->total) }} تومان</strong>
                         <span class="mt-1 block text-xs text-[var(--color-text-muted)]">{{ $order->status }}</span>
                     </div>
                 </a>
