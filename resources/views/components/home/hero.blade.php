@@ -26,14 +26,14 @@
             <div class="hero__actions">
 
                 <a
-                    href="{{ route('shop') }}"
+                    href="{{ route('shop.index') }}"
                     class="btn btn--primary btn--lg"
                 >
                     مشاهده محصولات
                 </a>
 
                 <a
-                    href="{{ route('about') }}"
+                    href="{{ route('contact.index') }}"
                     class="btn btn--outline btn--lg"
                 >
                     درباره فرزین
