@@ -53,8 +53,8 @@ class HomeHeroTest extends TestCase
         foreach (range(9, 12) as $number) {
             $this->assertStringContainsString('Hero Product '.$number, $heroHtml);
         }
-        $this->assertStringNotContainsString('Hero Product 1', $heroHtml);
-        $this->assertStringNotContainsString('Hero Product 8', $heroHtml);
+        $this->assertStringNotContainsString('Hero Product 1</strong>', $heroHtml);
+        $this->assertStringNotContainsString('Hero Product 8</strong>', $heroHtml);
     }
 
     public function test_inactive_or_missing_primary_image_products_do_not_enter_the_home_hero(): void

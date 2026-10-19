@@ -3,7 +3,23 @@
 @section('meta_description', $product->meta_description ?: ($product->short_description ?: 'جزئیات و قیمت ' . $product->name . ' در فروشگاه فرزین.'))
 
 @push('meta')
-<script type="application/ld+json">@json(['@context' => 'https://schema.org', '@type' => 'Product', 'name' => $product->name, 'description' => $product->short_description ?: $product->description, 'sku' => $product->sku, 'offers' => ['@type' => 'Offer', 'priceCurrency' => 'IRR', 'price' => (string) ($product->price * 10), 'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', 'url' => url()->current()]])</script>
+@php
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'description' => $product->short_description ?: $product->description,
+        'sku' => $product->sku,
+        'offers' => [
+            '@type' => 'Offer',
+            'priceCurrency' => 'IRR',
+            'price' => (string) ($product->price * 10),
+            'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            'url' => url()->current(),
+        ],
+    ];
+@endphp
+<script type="application/ld+json">{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!}</script>
 @endpush
 @section('content')
 <section class="farzin-product-page"><div class="farzin-container">
