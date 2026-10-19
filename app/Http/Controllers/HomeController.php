@@ -45,7 +45,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        return view('home', compact(
+        return view('welcome', compact(
             'heroProducts',
             'featuredProducts',
             'latestProducts',
