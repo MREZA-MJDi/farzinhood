@@ -49,19 +49,26 @@ class CartController extends Controller
                 auth()->user()
             );
         } catch (\RuntimeException $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ], 422);
+            }
+
             return back()->withInput()->with('error', $e->getMessage());
         }
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Product added to cart.',
+                'message' => 'محصول به سبد خرید اضافه شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
         }
 
-        return back()->with('success', 'Product added to cart.');
+        return back()->with('success', 'محصول به سبد خرید اضافه شد.');
     }
 
     public function update(CartRequest $request, Product $product): RedirectResponse|JsonResponse
@@ -81,19 +88,26 @@ class CartController extends Controller
                 auth()->user()
             );
         } catch (\RuntimeException $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ], 422);
+            }
+
             return back()->withInput()->with('error', $e->getMessage());
         }
 
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Cart updated successfully.',
+                'message' => 'سبد خرید به‌روزرسانی شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
         }
 
-        return back()->with('success', 'Cart updated successfully.');
+        return back()->with('success', 'سبد خرید به‌روزرسانی شد.');
     }
 
     public function remove(Product $product): RedirectResponse|JsonResponse
@@ -106,7 +120,7 @@ class CartController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Product removed from cart.',
+                'message' => 'محصول از سبد خرید حذف شد.',
                 'item_count' => $this->cartService->itemCount(auth()->user()),
                 'subtotal' => $this->cartService->subtotal(auth()->user()),
             ]);
@@ -122,7 +136,7 @@ class CartController extends Controller
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Cart cleared successfully.',
+                'message' => 'سبد خرید خالی شد.',
                 'item_count' => 0,
                 'subtotal' => 0,
             ]);
