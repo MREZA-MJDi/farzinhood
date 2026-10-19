@@ -11,7 +11,7 @@
         <span>جمع محصولات</span>
 
         <strong>
-            {{ \\App\\Support\\JalaliCalendar::number($subtotal) }}
+            {{ \App\Support\JalaliCalendar::number($subtotal) }}
             تومان
         </strong>
     </div>
@@ -21,7 +21,7 @@
 
         <strong>
             @if($shipping > 0)
-                {{ \\App\\Support\\JalaliCalendar::number($shipping) }}
+                {{ \App\Support\JalaliCalendar::number($shipping) }}
                 تومان
             @else
                 رایگان
@@ -38,7 +38,7 @@
             </span>
 
             <strong>
-                -{{ \\App\\Support\\JalaliCalendar::number($discount) }}
+                -{{ \App\Support\JalaliCalendar::number($discount) }}
                 تومان
             </strong>
 
@@ -53,7 +53,7 @@
         </span>
 
         <strong>
-            {{ \\App\\Support\\JalaliCalendar::number($total) }}
+            {{ \App\Support\JalaliCalendar::number($total) }}
             تومان
         </strong>
 
