@@ -5,7 +5,7 @@
     <div class="farzin-container">
         <header class="farzin-page-head">
             <p class="farzin-kicker">FARZIN / SHOPPING CART</p>
-            <h1>سبد خرید <em>شما</em></h1>
+            <h1>سبد خرید شما</h1>
             <p>پیش از ادامه، محصولات و تعداد انتخاب‌شده را بررسی کن.</p>
         </header>
 
