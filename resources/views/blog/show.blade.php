@@ -12,7 +12,7 @@
         <meta property="og:image" content="{{ asset('storage/' . $post->featured_image) }}">
     @endif
     @if ($post->noindex)
-        <meta name="robots" content="noindex,follow">
+        <meta name="robots" content="noindex, follow">
     @endif
     <script type="application/ld+json">@json([
         '@context' => 'https://schema.org',
