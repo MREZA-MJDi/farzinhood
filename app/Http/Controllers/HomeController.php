@@ -40,6 +40,7 @@ class HomeController extends Controller
 
         $categories = Category::query()
             ->where('is_active', true)
+            ->withCount('activeProducts')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->take(5)

@@ -1,4 +1,7 @@
+import "../css/app.css";
 import "../css/components.css";
+import "../css/home.css";
+import "./home.js";
 import "./bootstrap";
 import "./media-picker";
 
@@ -7,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initFlashMessages();
     initQuantityControls();
     initProductGallery();
-    initHomeHero();
 });
 
 function initRevealObserver() {
@@ -219,121 +221,3 @@ function initProductGallery() {
     });
 }
 
-function initHomeHero() {
-    const hero = document.querySelector("[data-home-hero]");
-    if (!hero) return;
-
-    const slides = [...hero.querySelectorAll("[data-hero-slide]")];
-    const prev = hero.querySelector("[data-hero-prev]");
-    const next = hero.querySelector("[data-hero-next]");
-    const dots = [...hero.querySelectorAll("[data-hero-dot]")];
-    const current = hero.querySelector("[data-hero-current]");
-    if (slides.length < 2) return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let index = slides.findIndex((slide) => slide.classList.contains("is-active"));
-    if (index < 0) index = 0;
-    let timer = null;
-    let progressAnimation = null;
-    let touchStartX = null;
-
-
-    const stop = () => {
-        if (timer) {
-            window.clearInterval(timer);
-            timer = null;
-        }
-        window.clearTimeout(progressAnimation);
-    };
-
-    const render = (nextIndex, restart = true) => {
-        index = (nextIndex + slides.length) % slides.length;
-
-        slides.forEach((slide, i) => {
-            const active = i === index;
-            slide.classList.toggle("is-active", active);
-            slide.setAttribute("aria-hidden", active ? "false" : "true");
-
-            const link = slide.querySelector("a");
-            if (link) link.tabIndex = active ? 0 : -1;
-        });
-
-        dots.forEach((dot, i) => {
-            const active = i === index;
-            dot.classList.toggle("is-active", active);
-            dot.setAttribute("aria-selected", active ? "true" : "false");
-        });
-
-        if (current) {
-            current.textContent = String(index + 1).padStart(2, "0");
-        }
-
-        const imageProgress = hero.querySelector(".farzin-home-hero__progress span");
-        if (imageProgress) {
-            imageProgress.style.transition = "none";
-            imageProgress.style.transform = "scaleX(0)";
-            requestAnimationFrame(() => {
-                imageProgress.style.transition = "transform 5.2s linear";
-                imageProgress.style.transform = "scaleX(1)";
-            });
-        }
-
-        if (restart) start();
-    };
-
-    const start = () => {
-        stop();
-        if (reduceMotion.matches) return;
-
-        timer = window.setInterval(() => {
-            render(index + 1, false);
-        }, 5200);
-    };
-
-    prev?.addEventListener("click", () => render(index - 1));
-    next?.addEventListener("click", () => render(index + 1));
-
-    dots.forEach((dot, dotIndex) => {
-        dot.addEventListener("click", () => render(dotIndex));
-    });
-
-    hero.addEventListener("mouseenter", stop);
-    hero.addEventListener("mouseleave", start);
-    hero.addEventListener("focusin", stop);
-    hero.addEventListener("focusout", (event) => {
-        if (!hero.contains(event.relatedTarget)) start();
-    });
-
-    hero.addEventListener("touchstart", (event) => {
-        touchStartX = event.changedTouches[0]?.clientX ?? null;
-        stop();
-    }, { passive: true });
-
-    hero.addEventListener("touchend", (event) => {
-        if (touchStartX === null) return;
-        const endX = event.changedTouches[0]?.clientX ?? touchStartX;
-        const distance = endX - touchStartX;
-        touchStartX = null;
-
-        if (Math.abs(distance) >= 45) {
-            render(distance < 0 ? index + 1 : index - 1);
-        } else {
-            start();
-        }
-    }, { passive: true });
-
-    hero.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-            event.preventDefault();
-            render(index + 1);
-        }
-        if (event.key === "ArrowRight") {
-            event.preventDefault();
-            render(index - 1);
-        }
-    });
-
-    reduceMotion.addEventListener?.("change", start);
-    render(index, false);
-    start();
-}
