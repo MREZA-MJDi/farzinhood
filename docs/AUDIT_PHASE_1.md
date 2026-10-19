@@ -11,7 +11,7 @@ Read-only inspection of the public `main` source tree and targeted source files 
 - The first declaration returned `view('home2')`, but `resources/views/home2.blade.php` does not exist in the repository.
 - The later root route correctly targets `App\Http\Controllers\HomeController@index`, which returns `view('home')`; `resources/views/home.blade.php` also does not exist, but `resources/views/welcome.blade.php` is present. This is a further potential blocking issue requiring tracing the committed view tree before changing the controller's intended view.
 - Removed the first duplicate `/` route that pointed to the missing `home2` view from `routes/web.php`, leaving the HomeController route as the sole root route.
-- Updated `HomeController@index` to render the existing `welcome` view instead of the missing `home` view, preventing a second missing-view error.
+- Initially routed the controller to the existing `welcome` view as a temporary fallback. During Phase 2, this was superseded by a purpose-built `resources/views/home/index.blade.php` storefront view and `HomeController@index` now returns `view('home.index', ...)`.
 - Changes are committed on this audit branch only; `main` was not modified.
 
 ## Configuration observations
@@ -32,3 +32,7 @@ npm run build
 ```
 
 Also validate all `view(...)` references against `resources/views`, all `route(...)` references in Blade/PHP, Vite directives/layouts, and payment gateway configuration. Do not run migrations against persistent data until reviewed and backed up.
+
+## Follow-on work
+
+Phase 2 storefront implementation is documented in [`PHASE_2_STOREFRONT.md`](PHASE_2_STOREFRONT.md). The public homepage, shop catalog, category page, product detail page, shared layout, reusable product card, hero animation styles, and Vite CSS entry have been added on the same branch. Build and tests remain unrun.
