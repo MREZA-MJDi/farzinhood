@@ -1,21 +1,3 @@
 @extends('layouts.storefront')
-@section('title', $category->name . ' | فروشگاه فرزین')
-@section('meta_description', $category->meta_description ?: $category->description ?: 'محصولات دسته‌بندی ' . $category->name . ' در فروشگاه فرزین.')
-@section('content')
-<section class="catalog-hero catalog-hero--category">
-    <a class="store-breadcrumb" href="{{ route('shop.index') }}">فروشگاه <span>←</span> دسته‌بندی‌ها</a>
-    <span class="farzin-eyebrow">SHOP BY CATEGORY</span><h1>{{ $category->name }}</h1>
-    @if ($category->description)<p>{{ $category->description }}</p>@else<p>محصولات منتخب دسته‌بندی {{ $category->name }} را بررسی کنید.</p>@endif
-</section>
-<section class="store-section">
-    <div class="catalog-results__heading"><div><h2>محصولات {{ $category->name }}</h2><p>{{ number_format($products->total()) }} محصول</p></div><a class="store-text-link" href="{{ route('shop.index', ['category' => $category->slug]) }}">فیلتر و مرتب‌سازی <span aria-hidden="true">←</span></a></div>
-    <div class="store-product-grid">
-        @forelse ($products as $product)
-            <x-storefront.product-card :product="$product" />
-        @empty
-            <div class="store-empty"><strong>در این دسته‌بندی هنوز محصولی وجود ندارد.</strong><a href="{{ route('shop.index') }}">مشاهده همه محصولات</a></div>
-        @endforelse
-    </div>
-    <div class="catalog-pagination">{{ $products->links() }}</div>
-</section>
-@endsection
+@section('title',$category->name.' | فرزین')
+@section('content')<div class="fz-container"><div class="fz-breadcrumb"><a href="{{ route('home') }}">خانه</a> / <a href="{{ route('shop.index') }}">فروشگاه</a> / {{ $category->name }}</div><div class="fz-catalog-head"><span class="fz-kicker">دسته‌بندی محصولات</span><h1 class="fz-h2">{{ $category->name }}</h1>@if($category->description)<p class="fz-desc">{{ $category->description }}</p>@endif</div><div class="fz-products">@forelse($products as $product)@include('storefront.partials.product-card',['product'=>$product])@empty<div class="fz-empty" style="grid-column:1/-1">در این دسته‌بندی فعلاً محصول فعالی وجود ندارد.</div>@endforelse</div><div class="fz-pagination">{{ $products->links() }}</div></div>@endsection
