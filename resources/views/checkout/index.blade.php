@@ -116,7 +116,7 @@
                             </div>
                             <div>
                                 <h2>{{ $item->product_name ?? $product?->name }}</h2>
-                                <p>{{ $item->quantity }} عدد · {{ \\App\\Support\\JalaliCalendar::number($item->unit_price) }} تومان</p>
+                                <p>{{ $item->quantity }} عدد · {{ \App\Support\JalaliCalendar::number($item->unit_price) }} تومان</p>
                             </div>
                         </div>
                     @endforeach
@@ -124,23 +124,23 @@
 
                 <div class="store-summary__row">
                     <span>جمع کالاها</span>
-                    <strong>{{ \\App\\Support\\JalaliCalendar::number($summary['subtotal']) }} تومان</strong>
+                    <strong>{{ \App\Support\JalaliCalendar::number($summary['subtotal']) }} تومان</strong>
                 </div>
 
                 <div class="store-summary__row">
                     <span>تخفیف</span>
-                    <strong>{{ $summary['discount'] > 0 ? \\App\\Support\\JalaliCalendar::number($summary['discount']) . ' تومان' : '—' }}</strong>
+                    <strong>{{ $summary['discount'] > 0 ? \App\Support\JalaliCalendar::number($summary['discount']) . ' تومان' : '—' }}</strong>
                 </div>
 
                 <div class="store-summary__row">
                     <span>هزینه ارسال</span>
-                    <strong>{{ $summary['shipping'] > 0 ? \\App\\Support\\JalaliCalendar::number($summary['shipping']) . ' تومان' : 'رایگان' }}</strong>
+                    <strong>{{ $summary['shipping'] > 0 ? \App\Support\JalaliCalendar::number($summary['shipping']) . ' تومان' : 'رایگان' }}</strong>
                 </div>
 
                 <div class="store-summary__total">
                     <span>مبلغ نهایی</span>
                     <div class="text-left">
-                        <strong>{{ \\App\\Support\\JalaliCalendar::number($summary['total']) }}</strong>
+                        <strong>{{ \App\Support\JalaliCalendar::number($summary['total']) }}</strong>
                         <small>تومان</small>
                     </div>
                 </div>
