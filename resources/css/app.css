@@ -63,9 +63,9 @@
 |--------------------------------------------------------------------------
 |
 | Brand:
-|   Navy = primary identity
-|   Red  = action / emphasis
-|   Neutral = supporting UI
+|   Matte black = primary action
+|   Charcoal = secondary hierarchy
+|   Pearl white = surface and whitespace
 |
 |--------------------------------------------------------------------------
 */
@@ -74,7 +74,7 @@
 
     /*
     |--------------------------------------------------------------------------
-    | Brand Navy
+    | Monochrome Brand
     |--------------------------------------------------------------------------
     */
 
@@ -93,7 +93,7 @@
 
     /*
     |--------------------------------------------------------------------------
-    | Farzin Red
+    | Neutral Accent
     |--------------------------------------------------------------------------
     */
 
@@ -211,8 +211,8 @@
         0 2px 8px rgb(16 23 34 / 0.04);
 
     --shadow-lg:
-        0 20px 50px rgb(72 54 42 / 0.10),
-        0 8px 20px rgb(72 54 42 / 0.05);
+        0 20px 50px rgb(9 9 9 / 0.10),
+        0 8px 20px rgb(9 9 9 / 0.05);
 
     --shadow-xl:
         0 30px 80px rgb(16 23 34 / 0.13),
@@ -2938,7 +2938,7 @@ body {
 
 .product-v2__details-content {
     padding: 0 1rem 1rem;
-    color: #655d55;
+    color: #6d6d67;
     font-size: .68rem;
     line-height: 2.1;
 }
@@ -2977,8 +2977,8 @@ body {
 .product-v2__review-score {
     padding: .42rem .65rem;
     border-radius: 999px;
-    background: #fbf4df;
-    color: #85651f;
+    background: #ededE9;
+    color: #41413c;
     font-size: .62rem;
     font-weight: 900;
 }
@@ -3091,7 +3091,7 @@ body {
 }
 
 .product-v2__review-rating {
-    color: #85651f;
+    color: #53534e;
     font-size: .62rem;
     font-weight: 900;
 }
@@ -3316,7 +3316,7 @@ body {
 }
 
 .farzin-product-card__meta span:last-child {
-    color: #85651f;
+    color: #6d6d67;
     white-space: nowrap;
 }
 
