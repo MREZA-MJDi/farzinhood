@@ -467,7 +467,6 @@ function initHomeProductTours() {
             pointerStartX = null;
             pointerId = null;
             stage.classList.remove("is-dragging");
-            requestScrollSync();
         };
 
         stage.addEventListener("pointerup", finishDrag);
