@@ -53,12 +53,9 @@ class PaymentService
                 );
 
                 if (is_string($startedAt) && $startedAt !== '') {
-                    try {
-                        $leaseIsActive = \Illuminate\\Support\\Carbon::parse($startedAt)
-                            ->greaterThan(now()->subSeconds(90));
-                    } catch (\Throwable) {
-                        $leaseIsActive = false;
-                    }
+                    $startedTimestamp = strtotime($startedAt);
+                    $leaseIsActive = $startedTimestamp !== false
+                        && $startedTimestamp > now()->subSeconds(90)->getTimestamp();
 
                     if ($leaseIsActive) {
                         throw new RuntimeException(
