@@ -264,7 +264,7 @@
                             {{-- Views --}}
                             <td class="px-5 py-4">
                                 <span class="font-bold text-[var(--color-text-primary)]">
-                                    {{ number_format($post->view_count) }}
+                                    {{ \App\Support\JalaliCalendar::number($post->view_count) }}
                                 </span>
                             </td>
 
@@ -274,7 +274,7 @@
 
                                 @if($post->published_at)
                                     <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                        {{ $post->published_at->locale('fa')->translatedFormat('Y/m/d') }}
+                                        {{ \App\Support\JalaliCalendar::format($post->published_at, 'date') }}
                                     </div>
 
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -282,7 +282,7 @@
                                     </div>
                                 @else
                                     <div class="text-sm text-[var(--color-text-secondary)]">
-                                        {{ $post->created_at->locale('fa')->translatedFormat('Y/m/d') }}
+                                        {{ \App\Support\JalaliCalendar::format($post->created_at, 'date') }}
                                     </div>
 
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)]">
