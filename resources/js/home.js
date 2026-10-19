@@ -3,23 +3,195 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const AUTOPLAY_DELAY = 6800;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const heroes = [...document.querySelectorAll(HERO_SELECTOR)];
-    if (heroes.length === 0) return;
+    const homePage = document.querySelector(".farzin-home");
+    if (!homePage) return;
 
-    // Keep GSAP out of the main bundle for the shop, account and admin pages.
+    const heroes = [...homePage.querySelectorAll(HERO_SELECTOR)];
+
     try {
+        // Homepage-only entry: GSAP never loads on admin, account or catalog pages.
         const { gsap } = await import("gsap");
+        let ScrollTrigger = null;
+
+        try {
+            ({ ScrollTrigger } = await import("gsap/ScrollTrigger"));
+            gsap.registerPlugin(ScrollTrigger);
+        } catch (error) {
+            console.warn("ScrollTrigger unavailable; using IntersectionObserver.", error);
+        }
+
+        initHomeScrollAnimations(gsap, ScrollTrigger);
         heroes.forEach((hero) => initFarzinHero(hero, gsap));
     } catch (error) {
-        console.error("Farzin hero animation could not be loaded.", error);
-        // The first product slide remains visible as a static, usable fallback.
+        console.error("Farzin homepage animation could not be loaded.", error);
+
+        // Fail open: animations must never be a prerequisite for readable content.
+        document.querySelectorAll("[data-farzin-motion]").forEach((element) => {
+            element.style.removeProperty("opacity");
+            element.style.removeProperty("visibility");
+            element.style.removeProperty("transform");
+            element.removeAttribute("data-farzin-motion");
+        });
+
         heroes.forEach((hero) => {
             hero.classList.add("farzin-hero--static");
+            hero.querySelectorAll("[data-hero-slide]").forEach((slide, index) => {
+                const active = index === 0;
+                slide.classList.toggle("is-active", active);
+                slide.setAttribute("aria-hidden", String(!active));
+                slide.inert = !active;
+                ["opacity", "visibility", "clip-path", "z-index", "transform"].forEach((property) => {
+                    slide.style.removeProperty(property);
+                });
+            });
             hero.querySelector(".farzin-hero__controls")?.remove();
             hero.querySelector(".farzin-hero__progress")?.remove();
         });
     }
 });
+
+function initHomeScrollAnimations(gsap, ScrollTrigger) {
+    if (window.matchMedia(REDUCED_MOTION_QUERY).matches) return;
+
+    const mark = (elements) => elements.forEach((element) => element.setAttribute("data-farzin-motion", ""));
+
+    const nav = document.querySelector(".store-nav");
+    if (nav) {
+        mark([nav]);
+        gsap.fromTo(nav, { autoAlpha: 0, y: -12 }, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.68,
+            ease: "power3.out",
+            clearProps: "opacity,visibility,transform",
+            onComplete: () => nav.removeAttribute("data-farzin-motion"),
+        });
+    }
+
+    const hero = document.querySelector(HERO_SELECTOR);
+    const heroCopy = hero?.querySelector("[data-hero-slide].is-active .farzin-hero__content");
+    if (heroCopy) {
+        mark([heroCopy]);
+        gsap.fromTo(heroCopy, { autoAlpha: 0, x: 24 }, {
+            autoAlpha: 1,
+            x: 0,
+            delay: 0.12,
+            duration: 0.9,
+            ease: "power3.out",
+            clearProps: "opacity,visibility,transform",
+            onComplete: () => heroCopy.removeAttribute("data-farzin-motion"),
+        });
+    }
+
+    // Subtle scrubbed image drift: animate transforms, never layout or dimensions.
+    if (hero && ScrollTrigger && window.matchMedia("(min-width: 761px)").matches) {
+        hero.querySelectorAll(".farzin-hero__media img").forEach((image) => {
+            gsap.to(image, {
+                yPercent: 4,
+                scale: 1.08,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: hero,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 0.6,
+                    invalidateOnRefresh: true,
+                },
+            });
+        });
+    }
+
+    const reveal = (targets, trigger, options = {}) => {
+        if (!targets.length || !trigger) return;
+
+        const { stagger = 0, distance = 22, duration = 0.74 } = options;
+        mark(targets);
+        const fromVars = { autoAlpha: 0, y: distance };
+        const commonVars = {
+            autoAlpha: 1,
+            y: 0,
+            duration,
+            stagger,
+            ease: "power3.out",
+            clearProps: "opacity,visibility,transform",
+            onComplete: () => targets.forEach((element) => element.removeAttribute("data-farzin-motion")),
+        };
+
+        if (ScrollTrigger) {
+            gsap.fromTo(targets, fromVars, {
+                ...commonVars,
+                scrollTrigger: {
+                    trigger,
+                    start: "top 86%",
+                    once: true,
+                    invalidateOnRefresh: true,
+                },
+            });
+            return;
+        }
+
+        if (!("IntersectionObserver" in window)) {
+            targets.forEach((element) => {
+                element.style.removeProperty("opacity");
+                element.style.removeProperty("visibility");
+                element.style.removeProperty("transform");
+                element.removeAttribute("data-farzin-motion");
+            });
+            return;
+        }
+
+        gsap.set(targets, fromVars);
+        const observer = new IntersectionObserver((entries, currentObserver) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                gsap.to(entry.target, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration,
+                    ease: "power3.out",
+                    clearProps: "opacity,visibility,transform",
+                    onComplete: () => entry.target.removeAttribute("data-farzin-motion"),
+                });
+                currentObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -5% 0px" });
+
+        targets.forEach((target) => observer.observe(target));
+    };
+
+    document.querySelectorAll(".farzin-section").forEach((section) => {
+        reveal([...section.querySelectorAll(".farzin-section__head")], section, { distance: 18, duration: 0.68 });
+    });
+
+    document.querySelectorAll(".farzin-category-grid").forEach((grid) => {
+        reveal([...grid.querySelectorAll(".farzin-category")], grid, { stagger: 0.055, distance: 24 });
+    });
+
+    document.querySelectorAll(".farzin-product-grid").forEach((grid) => {
+        reveal([...grid.querySelectorAll(".farzin-product-card")], grid, { stagger: 0.06, distance: 22 });
+    });
+
+    document.querySelectorAll(".farzin-features-grid").forEach((grid) => {
+        reveal([...grid.querySelectorAll(".farzin-feature")], grid, { stagger: 0.07, distance: 20 });
+    });
+
+    document.querySelectorAll(".farzin-blog-grid").forEach((grid) => {
+        reveal([...grid.querySelectorAll(".farzin-blog-card")], grid, { stagger: 0.065, distance: 22 });
+    });
+
+    document.querySelectorAll(".farzin-manifesto, .farzin-newsletter").forEach((section) => {
+        const inner = section.querySelector(":scope > .farzin-container, :scope > .farzin-newsletter__container");
+        reveal(inner ? [inner] : [], section, { distance: 26, duration: 0.82 });
+    });
+
+    const footer = document.querySelector("body > footer");
+    if (footer) reveal([footer], footer, { distance: 16, duration: 0.7 });
+
+    if (ScrollTrigger) {
+        window.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+        document.fonts?.ready?.then(() => ScrollTrigger.refresh()).catch(() => {});
+    }
+}
 
 function initFarzinHero(hero, gsap) {
     const slides = [...hero.querySelectorAll("[data-hero-slide]")];
