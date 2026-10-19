@@ -15,6 +15,7 @@ class ShopController extends Controller
         $filters = $request->validated();
 
         $products = Product::query()
+            ->withWishlistedBy(auth()->user())
             ->with(['primaryImage', 'category'])
             ->where('is_active', true)
             ->whereHas('category', fn ($query) => $query->where('is_active', true))
