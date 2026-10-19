@@ -11,7 +11,7 @@
 <label class="farzin-field"><span>حداقل قیمت (تومان)</span><input type="number" name="min_price" min="0" inputmode="numeric" value="{{ $filters['min_price'] ?? '' }}" placeholder="{{ $priceMin }}"></label><label class="farzin-field"><span>حداکثر قیمت (تومان)</span><input type="number" name="max_price" min="0" inputmode="numeric" value="{{ $filters['max_price'] ?? '' }}" placeholder="{{ $priceMax }}"></label>
 <input type="hidden" name="per_page" value="{{ $filters['per_page'] ?? 12 }}"><div class="farzin-filters__actions"><button type="submit" class="farzin-button">اعمال فیلتر <span aria-hidden="true">↗</span></button><a href="{{ route('shop.index') }}" class="farzin-reset">حذف فیلترها</a></div>
 </form>
-<div class="farzin-catalog__result"><span>{{ number_format($products->total()) }} محصول</span>@if(request()->filled('search'))<span>نتیجه برای «{{ request('search') }}»</span>@endif</div>
+<div class="farzin-catalog__result"><span>{{ \\App\\Support\\JalaliCalendar::number($products->total()) }} محصول</span>@if(request()->filled('search'))<span>نتیجه برای «{{ request('search') }}»</span>@endif</div>
 @if($products->isNotEmpty())<div class="farzin-product-grid">@foreach($products as $product)
 <x-product.product-card :id="$product->id" :name="$product->name" :image="$product->primaryImage?->image" :href="route('products.show',$product)" :price="$product->price" :old-price="$product->old_price" :discount="$product->discount" :brand="$product->brand" :meta="$product->short_description" :rating="$product->rating" :review-count="$product->review_count" :alt="$product->primaryImage?->alt" :is-wishlisted="$product->is_wishlisted ?? false" />
 @endforeach</div><nav class="farzin-pagination" aria-label="صفحه‌بندی">{{ $products->links() }}</nav>
