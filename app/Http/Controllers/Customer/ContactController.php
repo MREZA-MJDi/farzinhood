@@ -21,7 +21,7 @@ class ContactController extends Controller
 
         return back()->with(
             'success',
-            'Your message has been sent successfully.'
+            'پیام شما با موفقیت ارسال شد.'
         );
     }
 }
