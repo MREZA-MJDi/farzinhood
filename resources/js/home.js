@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.warn("ScrollTrigger unavailable; using IntersectionObserver.", error);
         }
 
-        initHomeScrollAnimations(gsap, ScrollTrigger);
+        initHomeScrollAnimations(gsap, ScrollTrigger);\n        initHomeScrollMotion(gsap, ScrollTrigger);
         heroes.forEach((hero) => initFarzinHero(hero, gsap));
     } catch (error) {
         console.error("Farzin homepage animation could not be loaded.", error);
@@ -443,4 +443,199 @@ function initFarzinHero(hero, gsap) {
     });
 
     startAutoplay();
+}
+
+function initHomeScrollMotion(gsap, ScrollTrigger) {
+    const home = document.querySelector(".farzin-home");
+    if (!home) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const desktopMotion = window.matchMedia("(min-width: 768px)").matches;
+
+    // Scroll-scrubbed image depth gives the page a single visual rhythm.
+    // Only transforms are animated so image dimensions and document flow stay stable.
+    if (!reducedMotion && ScrollTrigger && desktopMotion) {
+        const mediaImages = [
+            ...home.querySelectorAll(".farzin-category__media img"),
+            ...home.querySelectorAll(".farzin-product-card .product-card__image img"),
+            ...home.querySelectorAll(".farzin-blog-card__media img"),
+        ];
+
+        mediaImages.forEach((image) => {
+            const card = image.closest(".farzin-category, .farzin-product-card, .farzin-blog-card");
+            if (!card) return;
+
+            gsap.fromTo(image,
+                { scale: 1.12, yPercent: 4 },
+                {
+                    scale: 1,
+                    yPercent: -2,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 0.45,
+                        invalidateOnRefresh: true,
+                    },
+                },
+            );
+        });
+
+        home.querySelectorAll(".farzin-tour__frame.is-active img").forEach((image) => {
+            gsap.fromTo(image,
+                { scale: 1.11 },
+                {
+                    scale: 1.02,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: image.closest(".farzin-tour"),
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: 0.7,
+                        invalidateOnRefresh: true,
+                    },
+                },
+            );
+        });
+    }
+
+    initHomeProductTours(gsap, ScrollTrigger, reducedMotion);
+}
+
+function initHomeProductTours(gsap, ScrollTrigger, reducedMotion) {
+    const tours = [...document.querySelectorAll("[data-product-tour]")];
+    if (!tours.length) return;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    tours.forEach((tour) => {
+        const stage = tour.querySelector("[data-tour-stage]");
+        const frames = [...tour.querySelectorAll("[data-tour-frame]")];
+        const previousButton = tour.querySelector("[data-tour-prev]");
+        const nextButton = tour.querySelector("[data-tour-next]");
+        const title = tour.querySelector("[data-tour-active-title]");
+        const description = tour.querySelector("[data-tour-active-description]");
+        const counter = tour.querySelector("[data-tour-counter]");
+        const progress = tour.querySelector("[data-tour-progress]");
+        if (!stage || !frames.length) return;
+
+        let activeIndex = Math.max(0, frames.findIndex((frame) => frame.classList.contains("is-active")));
+        let isDragging = false;
+        let pointerStartX = 0;
+        let pointerStartIndex = 0;
+        let pointerId = null;
+        let rafId = 0;
+        let scrollTriggerInstance = null;
+        const total = frames.length;
+        const count = (number) => String(number).padStart(2, "0");
+
+        const warmFrame = (index) => {
+            const image = frames[(index + total) % total]?.querySelector("img");
+            if (!image) return;
+            image.loading = "eager";
+            if (typeof image.decode === "function" && !image.complete) image.decode().catch(() => {});
+        };
+
+        const render = (index) => {
+            activeIndex = (index + total) % total;
+            frames.forEach((frame, frameIndex) => {
+                const active = frameIndex === activeIndex;
+                frame.classList.toggle("is-active", active);
+                frame.setAttribute("aria-hidden", active ? "false" : "true");
+                frame.inert = !active;
+            });
+
+            const frame = frames[activeIndex];
+            if (title) title.textContent = frame.dataset.frameTitle || "نمای محصول";
+            if (description) {
+                description.textContent = frame.dataset.frameDescription
+                    || tour.dataset.tourDefaultDescription
+                    || "برای دیدن زاویه‌های دیگر، اسکرول یا کنترل‌های تصویر را استفاده کن.";
+            }
+            if (counter) counter.textContent = count(activeIndex + 1) + " / " + count(total);
+            if (progress) progress.style.transform = "scaleX(" + (total > 1 ? activeIndex / (total - 1) : 1) + ")";
+            warmFrame(activeIndex + 1);
+        };
+
+        previousButton?.addEventListener("click", () => {
+            render(activeIndex - 1);
+        });
+        nextButton?.addEventListener("click", () => {
+            render(activeIndex + 1);
+        });
+
+        stage.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                render(activeIndex + 1);
+            } else if (event.key === "ArrowRight") {
+                event.preventDefault();
+                render(activeIndex - 1);
+            }
+        });
+
+        if (total > 1) {
+            stage.addEventListener("pointerdown", (event) => {
+                if (event.pointerType === "mouse" && event.button !== 0) return;
+                isDragging = true;
+                pointerStartX = event.clientX;
+                pointerStartIndex = activeIndex;
+                pointerId = event.pointerId;
+                stage.classList.add("is-dragging");
+                stage.setPointerCapture?.(event.pointerId);
+            });
+
+            stage.addEventListener("pointermove", (event) => {
+                if (!isDragging || pointerId !== event.pointerId) return;
+                const threshold = Math.max(12, stage.clientWidth / Math.max(total, 12));
+                const delta = event.clientX - pointerStartX;
+                render(pointerStartIndex - Math.trunc(delta / threshold));
+            });
+
+            const finishDrag = (event) => {
+                if (!isDragging || (pointerId !== null && event.pointerId !== pointerId)) return;
+                isDragging = false;
+                stage.classList.remove("is-dragging");
+                if (pointerId !== null && stage.hasPointerCapture?.(pointerId)) {
+                    stage.releasePointerCapture(pointerId);
+                }
+                pointerId = null;
+            };
+            stage.addEventListener("pointerup", finishDrag);
+            stage.addEventListener("pointercancel", finishDrag);
+            stage.addEventListener("lostpointercapture", finishDrag);
+        }
+
+        if (!reducedMotion && ScrollTrigger && total > 1) {
+            scrollTriggerInstance = ScrollTrigger.create({
+                trigger: tour,
+                start: "top top",
+                end: "bottom bottom",
+                invalidateOnRefresh: true,
+                onUpdate: (self) => {
+                    if (isDragging) return;
+                    render(Math.round(self.progress * (total - 1)));
+                },
+            });
+        } else if (!reducedMotion && total > 1) {
+            // Graceful fallback if ScrollTrigger is unavailable.
+            const syncOnScroll = () => {
+                if (rafId || isDragging) return;
+                rafId = window.requestAnimationFrame(() => {
+                    rafId = 0;
+                    const rect = tour.getBoundingClientRect();
+                    const scrollable = Math.max(1, tour.offsetHeight - window.innerHeight);
+                    const progressValue = clamp(-rect.top / scrollable, 0, 1);
+                    render(Math.round(progressValue * (total - 1)));
+                });
+            };
+            window.addEventListener("scroll", syncOnScroll, { passive: true });
+            window.addEventListener("resize", syncOnScroll, { passive: true });
+            syncOnScroll();
+        }
+
+        render(activeIndex);
+        warmFrame(activeIndex + 1);
+    });
 }
