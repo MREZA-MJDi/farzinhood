@@ -36,35 +36,35 @@
                 >
 
                     <a
-                        href="{{ route('shop') }}"
+                        href="{{ route('shop.index') }}"
                         class="site-footer__link"
                     >
                         فروشگاه
                     </a>
 
                     <a
-                        href="{{ route('category.hood') }}"
+                        href="{{ route('shop.index', ['category' => 'hood']) }}"
                         class="site-footer__link"
                     >
                         هود
                     </a>
 
                     <a
-                        href="{{ route('category.sink') }}"
+                        href="{{ route('shop.index', ['category' => 'sink']) }}"
                         class="site-footer__link"
                     >
                         سینک
                     </a>
 
                     <a
-                        href="{{ route('wishlist') }}"
+                        href="{{ route('customer.wishlist.index') }}"
                         class="site-footer__link"
                     >
                         علاقه‌مندی‌ها
                     </a>
 
                     <a
-                        href="{{ route('cart') }}"
+                        href="{{ route('customer.cart.index') }}"
                         class="site-footer__link"
                     >
                         سبد خرید
@@ -88,7 +88,7 @@
                 >
 
                     <a
-                        href="{{ route('about') }}"
+                        href="{{ route('contact.index') }}"
                         class="site-footer__link"
                     >
                         درباره ما
@@ -102,7 +102,7 @@
                     </a>
 
                     <a
-                        href="{{ route('contact') }}"
+                        href="{{ route('contact.index') }}"
                         class="site-footer__link"
                     >
                         تماس با ما
