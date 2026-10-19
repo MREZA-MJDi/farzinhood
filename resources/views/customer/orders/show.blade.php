@@ -27,9 +27,9 @@
                             @else
                                 <span class="font-bold">محصول حذف‌شده</span>
                             @endif
-                            <p class="mt-1 text-xs text-[var(--color-text-muted)]">تعداد: {{ \\App\\Support\\JalaliCalendar::number($item->quantity) }} · هر واحد {{ \\App\\Support\\JalaliCalendar::number($item->unit_price) }} تومان</p>
+                            <p class="mt-1 text-xs text-[var(--color-text-muted)]">تعداد: {{ \App\Support\JalaliCalendar::number($item->quantity) }} · هر واحد {{ \App\Support\JalaliCalendar::number($item->unit_price) }} تومان</p>
                         </div>
-                        <strong>{{ \\App\\Support\\JalaliCalendar::number($item->total ?? ($item->quantity * $item->unit_price)) }} تومان</strong>
+                        <strong>{{ \App\Support\JalaliCalendar::number($item->total ?? ($item->quantity * $item->unit_price)) }} تومان</strong>
                     </div>
                 @endforeach
             </section>
@@ -39,10 +39,10 @@
                 <dl class="mt-4 space-y-3 text-sm">
                     <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">وضعیت</dt><dd class="font-bold">{{ $order->status }}</dd></div>
                     <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">وضعیت پرداخت</dt><dd class="font-bold">{{ $order->payment_status }}</dd></div>
-                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">جمع کالاها</dt><dd class="font-bold">{{ \\App\\Support\\JalaliCalendar::number($order->subtotal) }} تومان</dd></div>
-                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">تخفیف</dt><dd class="font-bold">{{ \\App\\Support\\JalaliCalendar::number($order->discount) }} تومان</dd></div>
-                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">ارسال</dt><dd class="font-bold">{{ \\App\\Support\\JalaliCalendar::number($order->shipping_cost) }} تومان</dd></div>
-                    <div class="flex justify-between gap-3 border-t border-[var(--color-border)] pt-3"><dt class="font-black">مبلغ نهایی</dt><dd class="font-black">{{ \\App\\Support\\JalaliCalendar::number($order->total) }} تومان</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">جمع کالاها</dt><dd class="font-bold">{{ \App\Support\JalaliCalendar::number($order->subtotal) }} تومان</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">تخفیف</dt><dd class="font-bold">{{ \App\Support\JalaliCalendar::number($order->discount) }} تومان</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-[var(--color-text-muted)]">ارسال</dt><dd class="font-bold">{{ \App\Support\JalaliCalendar::number($order->shipping_cost) }} تومان</dd></div>
+                    <div class="flex justify-between gap-3 border-t border-[var(--color-border)] pt-3"><dt class="font-black">مبلغ نهایی</dt><dd class="font-black">{{ \App\Support\JalaliCalendar::number($order->total) }} تومان</dd></div>
                 </dl>
                 @if($order->payment_status !== 'paid' && ! $order->isCancelled())
                     <a href="{{ route('customer.payment.start', $order) }}" class="farzin-button mt-5 flex w-full justify-center">ادامه پرداخت <span aria-hidden="true">↗</span></a>
