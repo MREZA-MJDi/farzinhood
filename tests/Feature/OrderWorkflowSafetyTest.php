@@ -124,9 +124,10 @@ class OrderWorkflowSafetyTest extends TestCase
 
     public function test_admin_cancelling_an_unpaid_order_releases_reserved_stock_once(): void
     {
+        $admin = $this->admin();
         [, $product, $order] = $this->buildOrder();
 
-        $this->actingAs($this->admin())
+        $this->actingAs($admin)
             ->from(route('admin.orders.show', $order))
             ->patch(route('admin.orders.status', $order), [
                 'status' => 'cancelled',
@@ -153,7 +154,7 @@ class OrderWorkflowSafetyTest extends TestCase
                 ->count()
         );
 
-        $this->actingAs($this->admin())
+        $this->actingAs($admin)
             ->from(route('admin.orders.show', $order))
             ->patch(route('admin.orders.status', $order), [
                 'status' => 'cancelled',
