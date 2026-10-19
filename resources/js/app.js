@@ -224,6 +224,7 @@ function initHomeHero() {
     if (!hero) return;
 
     const slides = [...hero.querySelectorAll("[data-hero-slide]")];
+    const images = [...hero.querySelectorAll("[data-hero-image]")];
     const prev = hero.querySelector("[data-hero-prev]");
     const next = hero.querySelector("[data-hero-next]");
     const dots = [...hero.querySelectorAll("[data-hero-dot]")];
@@ -256,6 +257,10 @@ function initHomeHero() {
 
             const link = slide.querySelector("a");
             if (link) link.tabIndex = active ? 0 : -1;
+        });
+
+        images.forEach((image, i) => {
+            image.classList.toggle("is-active", i === index);
         });
 
         dots.forEach((dot, i) => {
