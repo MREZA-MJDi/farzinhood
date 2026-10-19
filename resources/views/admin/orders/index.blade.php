@@ -180,7 +180,7 @@
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($order->items_count ?? $order->orderItems?->count() ?? 0) }}
+                                    {{ \App\Support\JalaliCalendar::number($order->items_count ?? $order->orderItems?->count() ?? 0) }}
                                     آیتم
                                 </div>
                             </td>
@@ -199,7 +199,7 @@
                             {{-- Total --}}
                             <td class="px-5 py-4">
                                 <div class="font-black text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($order->total) }}
+                                    {{ \App\Support\JalaliCalendar::number($order->total) }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -224,7 +224,7 @@
                             {{-- Date --}}
                             <td class="px-5 py-4">
                                 <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::format($order->created_at, 'datetime') }}
+                                    {{ \App\Support\JalaliCalendar::format($order->created_at, 'datetime') }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
