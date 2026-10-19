@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\HomeTourController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
@@ -55,9 +56,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('home2');
-})->name('home');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [RobotsController::class, 'show'])->name('robots');
 
@@ -360,6 +358,24 @@ Route::prefix('admin')
 
         Route::get('/dashboard/chart', [AdminDashboardController::class, 'chart'])
             ->name('dashboard.chart');
+
+        /*
+        |----------------------------------------------------------------------
+        | Homepage product tours
+        |----------------------------------------------------------------------
+        */
+
+        Route::get('/home-tour', [HomeTourController::class, 'index'])
+            ->name('home-tour.index');
+
+        Route::post('/home-tour', [HomeTourController::class, 'store'])
+            ->name('home-tour.store');
+
+        Route::patch('/home-tour/{frame}', [HomeTourController::class, 'update'])
+            ->name('home-tour.update');
+
+        Route::delete('/home-tour/{frame}', [HomeTourController::class, 'destroy'])
+            ->name('home-tour.destroy');
 
 
         /*

@@ -16,14 +16,7 @@
     <link rel="apple-touch-icon" href="{{ asset('images/brand/logo.png') }}">
 
     @if (!app()->environment('testing'))
-<<<<<<< HEAD
-        @vite([
-            'resources/css/app.css',
-            'resources/js/app.js'
-        ])
-=======
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
->>>>>>> 291263950635f079b586396326c2fa52fde0a0b9
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 </head>
 
