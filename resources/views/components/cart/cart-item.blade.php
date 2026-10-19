@@ -47,7 +47,7 @@
 
 
         <div class="cart-item__price">
-            {{ number_format($item['price'] ?? 0) }}
+            {{ \\App\\Support\\JalaliCalendar::number($item['price'] ?? 0) }}
             تومان
         </div>
 
