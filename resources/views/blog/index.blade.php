@@ -21,7 +21,7 @@
             <label class="farzin-field"><span>موضوع</span><select name="category"><option value="">همه موضوع‌ها</option>@foreach($categories as $item)<option value="{{ $item->slug }}" @selected($category === $item->slug)>{{ $item->name }}</option>@endforeach</select></label>
             <div class="farzin-filters__actions"><button class="farzin-button" type="submit">جستجو <span aria-hidden="true">↗</span></button><a class="farzin-reset" href="{{ route('blog.index') }}">پاک کردن</a></div>
         </form>
-        <div class="farzin-catalog__result"><span>{{ number_format($posts->total()) }} مقاله</span>@if($selectedCategory)<span>{{ $selectedCategory->name }}</span>@endif</div>
+        <div class="farzin-catalog__result"><span>{{ \App\Support\JalaliCalendar::number($posts->total()) }} مقاله</span>@if($selectedCategory)<span>{{ $selectedCategory->name }}</span>@endif</div>
         @if($posts->isNotEmpty())
             <div class="farzin-blog-grid">
                 @foreach($posts as $post)
@@ -34,7 +34,7 @@
                             @if($imageUrl)<img src="{{ $imageUrl }}" alt="{{ $post->title }}" width="960" height="600" loading="lazy" decoding="async">@else<span aria-hidden="true">F.</span>@endif
                         </a>
                         <div class="farzin-blog-card__content">
-                            <div class="farzin-blog-card__meta">@if($post->category)<span>{{ $post->category->name }}</span>@endif<span>{{ $post->published_at?->format('Y/m/d') }}</span></div>
+                            <div class="farzin-blog-card__meta">@if($post->category)<span>{{ $post->category->name }}</span>@endif<span>{{ ($post->published_at ? \App\Support\JalaliCalendar::format($post->published_at, 'date') : '—') }}</span></div>
                             <h2><a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a></h2>
                             @if($post->excerpt)<p>{{ $post->excerpt }}</p>@endif
                             <a class="farzin-text-link" href="{{ route('blog.show', $post->slug) }}">ادامه‌ی مطلب <span aria-hidden="true">↗</span></a>
