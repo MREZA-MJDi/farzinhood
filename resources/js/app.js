@@ -1,6 +1,5 @@
 import "../css/app.css";
 import "../css/components.css";
-import "../css/home.css";
 import "../css/design-system.css";
 import "./home.js";
 import "./bootstrap";
