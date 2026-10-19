@@ -38,25 +38,27 @@ class HomeTourController extends Controller
         $storedPaths = [];
 
         try {
-            foreach ($validated['images'] as $index => $image) {
-                $path = $image->store('home-tour/' . $validated['scene'], 'public');
+            DB::transaction(function () use ($validated, $nextOrder, &$storedPaths): void {
+                foreach ($validated['images'] as $index => $image) {
+                    $path = $image->store('home-tour/' . $validated['scene'], 'public');
 
-                if (! $path) {
-                    throw new \\RuntimeException('ذخیره یکی از تصاویر انجام نشد.');
+                    if (! $path) {
+                        throw new \\RuntimeException('ذخیره یکی از تصاویر انجام نشد.');
+                    }
+
+                    $storedPaths[] = $path;
+
+                    HomeTourFrame::create([
+                        'scene' => $validated['scene'],
+                        'image' => $path,
+                        'alt' => $validated['scene'] === 'hood'
+                            ? 'فریم تور ۳۶۰ درجه هود فرزین'
+                            : 'فریم تور ۳۶۰ درجه سینک فرزین',
+                        'sort_order' => $nextOrder + $index,
+                        'is_active' => true,
+                    ]);
                 }
-
-                $storedPaths[] = $path;
-
-                HomeTourFrame::create([
-                    'scene' => $validated['scene'],
-                    'image' => $path,
-                    'alt' => $validated['scene'] === 'hood'
-                        ? 'فریم تور ۳۶۰ درجه هود فرزین'
-                        : 'فریم تور ۳۶۰ درجه سینک فرزین',
-                    'sort_order' => $nextOrder + $index,
-                    'is_active' => true,
-                ]);
-            }
+            });
         } catch (\\Throwable $exception) {
             foreach ($storedPaths as $path) {
                 Storage::disk('public')->delete($path);
