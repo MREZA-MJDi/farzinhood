@@ -7,7 +7,9 @@
     <meta name="theme-color" content="#ffffff">
     <title>@yield('title', 'فرزین | تجهیزات مدرن آشپزخانه')</title>
     <meta name="description" content="@yield('meta_description', 'خرید محصولات مدرن آشپزخانه از فروشگاه فرزین؛ مشخصات روشن، انتخاب مطمئن و پشتیبانی واقعی.')">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (!app()->environment('testing'))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
     @stack('head')
     <style>
         :root {
