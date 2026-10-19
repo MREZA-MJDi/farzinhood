@@ -36,6 +36,14 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
+        $tourFrames = HomeTourFrame::query()
+            ->where('is_active', true)
+            ->orderBy('scene')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->groupBy('scene');
+
         $categories = Category::query()
             ->withCount(['products as active_products_count' => fn ($query) => $query->where('is_active', true)])
             ->where('is_active', true)
