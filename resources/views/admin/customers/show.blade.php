@@ -353,7 +353,7 @@
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
-                                    {{ $order->created_at->format('H:i') }}
+                                    {{ \App\Support\JalaliCalendar::digits($order->created_at->format('H:i')) }}
                                 </div>
 
                             </td>
