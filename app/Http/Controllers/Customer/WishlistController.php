@@ -23,7 +23,8 @@ class WishlistController extends Controller
             })
             ->with(['product.primaryImage', 'product.category'])
             ->latest()
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('wishlist.index', compact('wishlist'));
     }
