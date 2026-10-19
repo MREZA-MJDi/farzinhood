@@ -164,7 +164,7 @@
                             <td class="px-5 py-4">
 
                                 <span class="font-bold text-[var(--color-text-primary)]">
-                                    {{ number_format($customer->orders_count ?? 0) }}
+                                    {{ \\App\\Support\\JalaliCalendar::number($customer->orders_count ?? 0) }}
                                 </span>
 
                                 <span class="text-xs text-[var(--color-text-muted)]">
@@ -178,7 +178,7 @@
                             <td class="px-5 py-4">
 
                                 <div class="font-black text-[var(--color-text-primary)]">
-                                    {{ number_format($customer->orders_sum_total ?? 0) }}
+                                    {{ \\App\\Support\\JalaliCalendar::number($customer->orders_sum_total ?? 0) }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
@@ -212,7 +212,7 @@
                             <td class="px-5 py-4">
 
                                 <div class="text-sm font-bold text-[var(--color-text-primary)]">
-                                    {{ $customer->created_at->locale('fa')->translatedFormat('Y/m/d') }}
+                                    {{ \\App\\Support\\JalaliCalendar::format($customer->created_at, 'datetime') }}
                                 </div>
 
                                 <div class="mt-1 text-xs text-[var(--color-text-muted)]">
