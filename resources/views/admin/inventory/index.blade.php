@@ -155,7 +155,7 @@
 
                             <td class="px-5 py-4">
                                 <span class="text-lg font-black text-[var(--color-text-primary)]">
-                                    {{ number_format($product->stock) }}
+                                    {{ \App\Support\JalaliCalendar::number($product->stock) }}
                                 </span>
                                 <span class="text-xs text-[var(--color-text-muted)]">
                                     عدد
