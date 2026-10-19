@@ -5,6 +5,7 @@ import "./bootstrap";
 import "./media-picker";
 
 document.addEventListener("DOMContentLoaded", () => {
+    initMoneyInputs();
     initRevealObserver();
     initFlashMessages();
     initQuantityControls();
@@ -230,3 +231,77 @@ function initProductGallery() {
     });
 }
 
+
+
+/**
+ * Persian/Arabic digit aware money input used by admin product prices.
+ * Inputs stay readable while editing; forms submit plain integer toman values.
+ */
+function initMoneyInputs() {
+    const inputs = [...document.querySelectorAll("[data-money-input]")];
+    if (!inputs.length) return;
+
+    const toAsciiDigits = (value) => String(value ?? "")
+        .replace(/[۰-۹٠-٩]/g, (digit) => {
+            const fa = "۰۱۲۳۴۵۶۷۸۹".indexOf(digit);
+            if (fa >= 0) return String(fa);
+            const ar = "٠١٢٣٤٥٦٧٨٩".indexOf(digit);
+            return ar >= 0 ? String(ar) : digit;
+        })
+        .replace(/[^0-9]/g, "");
+
+    const formatToman = (value) => {
+        const digits = toAsciiDigits(value);
+        if (!digits) return "";
+        const amount = Number(digits);
+        if (!Number.isSafeInteger(amount)) return digits;
+        return new Intl.NumberFormat("fa-IR", {
+            maximumFractionDigits: 0,
+            useGrouping: true,
+        }).format(amount);
+    };
+
+    const refreshPreview = (input) => {
+        const previewId = input.getAttribute("aria-describedby");
+        const preview = previewId ? document.getElementById(previewId) : null;
+        if (!preview) return;
+
+        const digits = toAsciiDigits(input.value);
+        const caption = input.dataset.moneyCaption || "مبلغ واردشده";
+        preview.textContent = digits
+            ? `${caption}: ${formatToman(digits)} تومان`
+            : input.name === "old_price"
+                ? "اگر محصول تخفیف ندارد، این فیلد را خالی بگذار."
+                : "قیمت را به تومان وارد کن تا مبلغ نهایی را ببینی.";
+    };
+
+    inputs.forEach((input) => {
+        input.value = formatToman(input.value);
+        refreshPreview(input);
+
+        input.addEventListener("input", () => {
+            const raw = toAsciiDigits(input.value);
+            const formatted = formatToman(raw);
+            input.value = formatted;
+
+            // Keep the insertion point near the end on purpose: for grouped
+            // amounts, predictable editing beats fragile cursor arithmetic.
+            input.setSelectionRange?.(formatted.length, formatted.length);
+            refreshPreview(input);
+        });
+
+        input.addEventListener("blur", () => {
+            input.value = formatToman(input.value);
+            refreshPreview(input);
+        });
+    });
+
+    const forms = new Set(inputs.map((input) => input.form).filter(Boolean));
+    forms.forEach((form) => {
+        form.addEventListener("submit", () => {
+            inputs.filter((input) => input.form === form).forEach((input) => {
+                input.value = toAsciiDigits(input.value);
+            });
+        });
+    });
+}
