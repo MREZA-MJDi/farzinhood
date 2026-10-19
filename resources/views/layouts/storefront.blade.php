@@ -7,7 +7,9 @@
     <title>@yield('title', config('app.name', 'فرزین'))</title>
     <meta name="description" content="@yield('meta_description', 'فروشگاه فرزین؛ انتخابی دقیق برای سبک زندگی شما.')">
     <meta name="theme-color" content="#171717">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
     @stack('head')
 </head>
 <body class="farzin-store">
