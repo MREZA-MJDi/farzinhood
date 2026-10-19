@@ -358,6 +358,15 @@ Route::prefix('admin')
         Route::get('/dashboard/chart', [AdminDashboardController::class, 'chart'])
             ->name('dashboard.chart');
 
+        Route::get('/home-tour', [HomeTourController::class, 'index'])
+            ->name('home-tour.index');
+        Route::post('/home-tour', [HomeTourController::class, 'store'])
+            ->name('home-tour.store');
+        Route::patch('/home-tour/{frame}', [HomeTourController::class, 'update'])
+            ->name('home-tour.update');
+        Route::delete('/home-tour/{frame}', [HomeTourController::class, 'destroy'])
+            ->name('home-tour.destroy');
+
 
         /*
         |--------------------------------------------------------------------------
