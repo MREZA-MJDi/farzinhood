@@ -27,7 +27,7 @@
 
 
                     <form
-                        action="{{ route('newsletter.subscribe') }}"
+                        action="{{ route('newsletter.store') }}"
                         method="POST"
                         class="newsletter__form"
                     >
