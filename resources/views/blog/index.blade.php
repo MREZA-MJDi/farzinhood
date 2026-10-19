@@ -1,7 +1,14 @@
 @extends('layouts.storefront')
 
-@section('title', 'مجله فرزین | راهنمای انتخاب تجهیزات آشپزخانه')
-@section('meta_description', 'راهنماها و مقاله‌های منتشرشده فرزین درباره انتخاب، نگهداری و استفاده از تجهیزات آشپزخانه.')
+@section('title', $activeCategory?->meta_title ?: 'مجله فرزین | راهنمای انتخاب تجهیزات آشپزخانه')
+@section('meta_description', $activeCategory?->meta_description ?: 'راهنماها و مقاله‌های منتشرشده فرزین درباره انتخاب، نگهداری و استفاده از تجهیزات آشپزخانه.')
+
+@push('head')
+    <link rel="canonical" href="{{ $activeCategory?->canonical_url ?: ($activeCategory ? route('blog.index', ['category' => $activeCategory->slug]) : route('blog.index')) }}">
+    @if (($activeCategory && $activeCategory->noindex) || $search !== '')
+        <meta name="robots" content="noindex, follow">
+    @endif
+@endpush
 
 @section('content')
     <section class="fz-blog-hero">
@@ -13,7 +20,7 @@
             </nav>
             <div class="fz-blog-heading">
                 <span class="fz-kicker">دانش کاربردی، انتخاب بهتر</span>
-                <h1 class="fz-h2">مجله فرزین</h1>
+                <h1 class="fz-h2">{{ $activeCategory?->name ?: 'مجله فرزین' }}</h1>
                 <p class="fz-desc">راهنماهای منتشرشده برای مقایسه آگاهانه، نگهداری بهتر و انتخاب متناسب با نیاز خانه.</p>
             </div>
 
