@@ -209,13 +209,13 @@
                             {{-- Price --}}
                             <td class="px-5 py-4">
                                 <div class="font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($product->price) }}
+                                    {{ \App\Support\JalaliCalendar::number($product->price) }}
                                     تومان
                                 </div>
 
                                 @if($product->old_price)
                                     <div class="mt-1 text-xs text-[var(--color-text-muted)] line-through">
-                                        {{ \\App\\Support\\JalaliCalendar::number($product->old_price) }}
+                                        {{ \App\Support\JalaliCalendar::number($product->old_price) }}
                                     </div>
                                 @endif
                             </td>
@@ -228,11 +228,11 @@
                                     </span>
                                 @elseif($product->stock <= 5)
                                     <span class="inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">
-                                        {{ \\App\\Support\\JalaliCalendar::number($product->stock) }} عدد
+                                        {{ \App\Support\JalaliCalendar::number($product->stock) }} عدد
                                     </span>
                                 @else
                                     <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                                        {{ \\App\\Support\\JalaliCalendar::number($product->stock) }} عدد
+                                        {{ \App\Support\JalaliCalendar::number($product->stock) }} عدد
                                     </span>
                                 @endif
                             </td>
@@ -354,7 +354,7 @@
                                 </div>
 
                                 <div class="mt-2 font-bold text-[var(--color-text-primary)]">
-                                    {{ \\App\\Support\\JalaliCalendar::number($product->price) }} تومان
+                                    {{ \App\Support\JalaliCalendar::number($product->price) }} تومان
                                 </div>
 
                                 <div class="mt-2 flex flex-wrap gap-2">
