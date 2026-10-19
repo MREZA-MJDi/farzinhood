@@ -280,13 +280,21 @@ function initMoneyInputs() {
         refreshPreview(input);
 
         input.addEventListener("input", () => {
-            const raw = toAsciiDigits(input.value);
-            const formatted = formatToman(raw);
+            const cursor = input.selectionStart ?? input.value.length;
+            const digitsBeforeCursor = toAsciiDigits(input.value.slice(0, cursor)).length;
+            const formatted = formatToman(input.value);
             input.value = formatted;
 
-            // Keep the insertion point near the end on purpose: for grouped
-            // amounts, predictable editing beats fragile cursor arithmetic.
-            input.setSelectionRange?.(formatted.length, formatted.length);
+            // Preserve caret location while the grouping separators are added.
+            let caret = 0;
+            let seenDigits = 0;
+            for (let index = 0; index < formatted.length; index += 1) {
+                if (/[۰-۹]/.test(formatted[index])) seenDigits += 1;
+                caret = index + 1;
+                if (seenDigits >= digitsBeforeCursor) break;
+            }
+            if (digitsBeforeCursor === 0) caret = 0;
+            input.setSelectionRange?.(caret, caret);
             refreshPreview(input);
         });
 
