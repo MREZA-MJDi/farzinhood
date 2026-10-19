@@ -42,6 +42,7 @@ class CheckoutService
             ->values();
 
         $products = Product::query()
+            ->with('primaryImage')
             ->whereIn('id', $productIds)
             ->where('is_active', true)
             ->whereHas(
