@@ -30,14 +30,16 @@
     @stack('meta')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/js/app.js'])
+        @if (request()->routeIs('home'))
+            @vite(['resources/js/home.js'])
+        @endif
         @if (request()->routeIs(
             'home',
             'shop.*',
             'products.*',
             'categories.*',
             'blog.*',
-            'contact.*',
-            'customer.*'
+            'contact.*'
         ))
             @vite(['resources/css/home.css'])
         @endif
