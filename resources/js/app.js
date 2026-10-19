@@ -1,7 +1,6 @@
 import "../css/app.css";
 import "../css/components.css";
 import "../css/design-system.css";
-import "./home.js";
 import "./bootstrap";
 import "./media-picker";
 
@@ -13,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initRevealObserver() {
-    const items = document.querySelectorAll("[data-product-card], .reveal-up");
+    const items = [...document.querySelectorAll("[data-product-card], .reveal-up")]
+        .filter((item) => !item.closest(".farzin-home"));
 
     if (!items.length) return;
 
