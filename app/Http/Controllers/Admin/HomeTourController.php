@@ -1,13 +1,13 @@
 <?php
 
-namespace App\\Http\\Controllers\\Admin;
+namespace App\Http\Controllers\Admin;
 
-use App\\Http\\Controllers\\Controller;
-use App\\Models\\HomeTourFrame;
-use Illuminate\\Http\\RedirectResponse;
-use Illuminate\\Http\\Request;
-use Illuminate\\Support\\Facades\\Storage;
-use Illuminate\\View\\View;
+use App\Http\Controllers\Controller;
+use App\Models\HomeTourFrame;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class HomeTourController extends Controller
 {
@@ -43,7 +43,7 @@ class HomeTourController extends Controller
                     $path = $image->store('home-tour/' . $validated['scene'], 'public');
 
                     if (! $path) {
-                        throw new \\RuntimeException('ذخیره یکی از تصاویر انجام نشد.');
+                        throw new \RuntimeException('ذخیره یکی از تصاویر انجام نشد.');
                     }
 
                     $storedPaths[] = $path;
@@ -59,7 +59,7 @@ class HomeTourController extends Controller
                     ]);
                 }
             });
-        } catch (\\Throwable $exception) {
+        } catch (\Throwable $exception) {
             foreach ($storedPaths as $path) {
                 Storage::disk('public')->delete($path);
             }
@@ -101,7 +101,7 @@ class HomeTourController extends Controller
                 'is_active' => (bool) $validated['is_active'],
                 ...($newPath ? ['image' => $newPath] : []),
             ]);
-        } catch (\\Throwable $exception) {
+        } catch (\Throwable $exception) {
             if ($newPath) {
                 Storage::disk('public')->delete($newPath);
             }
