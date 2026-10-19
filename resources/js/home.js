@@ -1,14 +1,23 @@
-import { gsap } from "gsap";
-
 const HERO_SELECTOR = "[data-farzin-hero]";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const AUTOPLAY_DELAY = 6800;
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(HERO_SELECTOR).forEach(initFarzinHero);
+document.addEventListener("DOMContentLoaded", async () => {
+    const heroes = [...document.querySelectorAll(HERO_SELECTOR)];
+    if (heroes.length === 0) return;
+
+    // Keep GSAP out of the main bundle for the shop, account and admin pages.
+    try {
+        const { gsap } = await import("gsap");
+        heroes.forEach((hero) => initFarzinHero(hero, gsap));
+    } catch (error) {
+        console.error("Farzin hero animation could not be loaded.", error);
+        // The first product slide remains visible as a static, usable fallback.
+        heroes.forEach((hero) => hero.classList.add("farzin-hero--static"));
+    }
 });
 
-function initFarzinHero(hero) {
+function initFarzinHero(hero, gsap) {
     const slides = [...hero.querySelectorAll("[data-hero-slide]")];
     if (slides.length < 2) return;
 
@@ -27,6 +36,14 @@ function initFarzinHero(hero) {
     let isTransitioning = false;
     let touchStartX = null;
 
+    const warmSlideImage = (targetIndex) => {
+        const image = slides[(targetIndex + slides.length) % slides.length]
+            ?.querySelector(".farzin-hero__media img");
+        if (!image || image.complete) return;
+        image.loading = "eager";
+        image.decode?.().catch(() => {});
+    };
+
     const stopAutoplay = () => {
         window.clearTimeout(autoplayTimer);
         autoplayTimer = 0;
@@ -36,6 +53,7 @@ function initFarzinHero(hero) {
 
     const startAutoplay = () => {
         stopAutoplay();
+        warmSlideImage(activeIndex + 1);
 
         if (progress) {
             gsap.set(progress, { scaleX: 0, transformOrigin: "right center" });
@@ -86,6 +104,7 @@ function initFarzinHero(hero) {
 
         const currentSlide = slides[activeIndex];
         const nextSlide = slides[nextIndex];
+        warmSlideImage(nextIndex + 1);
         const nextImage = nextSlide.querySelector(".farzin-hero__media img");
         const nextFrame = nextSlide.querySelector(".farzin-hero__frame");
         const nextCopy = nextSlide.querySelector(".farzin-hero__content");
